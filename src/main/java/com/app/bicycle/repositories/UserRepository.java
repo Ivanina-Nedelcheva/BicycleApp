@@ -1,0 +1,7 @@
+package com.app.bicycle.repositories;
+
+import com.app.bicycle.entities.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface UserRepository extends JpaRepository<User, Long> {
+}
