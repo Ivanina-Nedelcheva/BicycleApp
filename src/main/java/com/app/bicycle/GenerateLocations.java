@@ -1,4 +1,4 @@
-package com.app.bicycle.service;
+package com.app.bicycle;
 
 import java.util.ArrayList;
 import java.util.List;
