@@ -22,9 +22,6 @@ public class User extends BaseEntity {
     private String phoneNumber;
 
     @Column(nullable = false, unique = true)
-    private String EGN;
-
-    @Column(nullable = false, unique = true)
     private String email;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
@@ -69,14 +66,6 @@ public class User extends BaseEntity {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
-    }
-
-    public String getEGN() {
-        return EGN;
-    }
-
-    public void setEGN(String EGN) {
-        this.EGN = EGN;
     }
 
     public String getEmail() {
