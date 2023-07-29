@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/bicycles")
+@RequestMapping("app/bicycles")
 public class BicycleController {
     @RequestMapping(method = RequestMethod.GET, value = "/rent", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).ORDINARY_USER)")
