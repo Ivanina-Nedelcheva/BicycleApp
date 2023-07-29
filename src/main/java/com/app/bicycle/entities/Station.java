@@ -2,39 +2,31 @@ package com.app.bicycle.entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 @Entity
 public class Station extends BaseEntity {
     @Column
-    private Long latitude;
+    private Double latitude;
 
     @Column
-    private Long longitude;
+    private Double longitude;
 
-    @Column(name = "active_flag")
+    @Column(name = "active_flag", columnDefinition = "BIT(1) default 1")
     private Boolean activeFlag;
 
-//    @OneToMany(mappedBy = "station")
-//    private List<Bicycle> bicycles;
-
-    public Long getLatitude() {
+    public Double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(Long latitude) {
+    public void setLatitude(Double latitude) {
         this.latitude = latitude;
     }
 
-    public Long getLongitude() {
+    public Double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(Long longitude) {
+    public void setLongitude(Double longitude) {
         this.longitude = longitude;
     }
 
