@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface StationService {
     List<Station> getAllActiveStations();
+    Station deactivateStation(Long stationId);
 }

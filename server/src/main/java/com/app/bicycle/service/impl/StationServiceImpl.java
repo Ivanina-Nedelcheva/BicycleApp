@@ -13,7 +13,18 @@ public class StationServiceImpl implements StationService {
         this.stationRepository = stationRepository;
     }
 
+    @Override
     public List<Station> getAllActiveStations() {
         return stationRepository.findByActiveFlagTrue();
+    }
+
+    @Override
+    public Station deactivateStation(Long stationId) {
+        Station station = stationRepository.findById(stationId).orElse(null);
+        if (station != null) {
+            station.setActiveFlag(false);
+            stationRepository.save(station);
+        }
+        return station;
     }
 }
