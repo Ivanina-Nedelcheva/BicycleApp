@@ -1,0 +1,226 @@
+{
+  "stations": [
+    {
+      "id": 1,
+      "longitude": 23.321,
+      "latitude": 42.698,
+      "active_flag": true,
+      "bicycles": [
+        {
+          "id": 101,
+          "state": "Working",
+          "damage_flag": false,
+          "status": "Available"
+        },
+        {
+          "id": 102,
+          "state": "Working",
+          "damage_flag": false,
+          "status": "Available"
+        },
+        {
+          "id": 103,
+          "state": "Needs Repair",
+          "damage_flag": true,
+          "status": "In Use"
+        },
+        {
+          "id": 104,
+          "state": "Working",
+          "damage_flag": false,
+          "status": "Available"
+        },
+        {
+          "id": 105,
+          "state": "Working",
+          "damage_flag": false,
+          "status": "Available"
+        },
+        {
+          "id": 106,
+          "state": "Needs Repair",
+          "damage_flag": true,
+          "status": "In Use"
+        },
+        {
+          "id": 107,
+          "state": "Working",
+          "damage_flag": false,
+          "status": "Available"
+        },
+        {
+          "id": 108,
+          "state": "Working",
+          "damage_flag": false,
+          "status": "Available"
+        },
+        {
+          "id": 109,
+          "state": "Needs Repair",
+          "damage_flag": true,
+          "status": "In Use"
+        }
+      ],
+      "district": "Serdika"
+    },
+    {
+      "id": 2,
+      "longitude": 23.343,
+      "latitude": 42.655,
+      "active_flag": true,
+      "bicycles": [
+        {
+          "id": 104,
+          "state": "Working",
+          "damage_flag": false,
+          "status": "Available"
+        },
+        {
+          "id": 105,
+          "state": "Needs Repair",
+          "damage_flag": true,
+          "status": "In Use"
+        }
+      ],
+      "district": "Studentski grad"
+    },
+    {
+      "id": 3,
+      "longitude": 23.274,
+      "latitude": 42.678,
+      "active_flag": true,
+      "bicycles": [
+        {
+          "id": 106,
+          "state": "Working",
+          "damage_flag": false,
+          "status": "Available"
+        },
+        {
+          "id": 107,
+          "state": "Working",
+          "damage_flag": false,
+          "status": "Available"
+        },
+        {
+          "id": 108,
+          "state": "Needs Repair",
+          "damage_flag": true,
+          "status": "In Use"
+        }
+      ],
+      "district": "Slavia"
+    },
+    {
+      "id": 4,
+      "longitude": 23.413,
+      "latitude": 42.707,
+      "active_flag": true,
+      "bicycles": [
+        {
+          "id": 109,
+          "state": "Working",
+          "damage_flag": false,
+          "status": "Available"
+        },
+        {
+          "id": 110,
+          "state": "Working",
+          "damage_flag": false,
+          "status": "Available"
+        }
+      ],
+      "district": "Vrazhdebna"
+    },
+    {
+      "id": 5,
+      "longitude": 23.343,
+      "latitude": 42.696,
+      "active_flag": true,
+      "bicycles": [
+        {
+          "id": 111,
+          "state": "Needs Repair",
+          "damage_flag": true,
+          "status": "In Use"
+        },
+        {
+          "id": 112,
+          "state": "Working",
+          "damage_flag": false,
+          "status": "Available"
+        }
+      ],
+      "district": "Serdika2"
+    },
+    {
+      "id": 6,
+      "longitude": 23.313,
+      "latitude": 42.625,
+      "active_flag": true,
+      "bicycles": [
+        {
+          "id": 113,
+          "state": "Working",
+          "damage_flag": false,
+          "status": "Available"
+        }
+      ],
+      "district": "Vitosha"
+    },
+    {
+      "id": 7,
+      "longitude": 23.314,
+      "latitude": 42.65,
+      "active_flag": true,
+      "bicycles": [
+        {
+          "id": 114,
+          "state": "Needs Repair",
+          "damage_flag": true,
+          "status": "In Use"
+        },
+        {
+          "id": 115,
+          "state": "Working",
+          "damage_flag": false,
+          "status": "Available"
+        },
+        {
+          "id": 116,
+          "state": "Working",
+          "damage_flag": false,
+          "status": "Available"
+        }
+      ],
+      "district": "Krastova vada"
+    },
+    {
+      "id": 8,
+      "longitude": 23.277,
+      "latitude": 42.656,
+      "active_flag": true,
+      "bicycles": [
+        {
+          "id": 117,
+          "state": "Working",
+          "damage_flag": false,
+          "status": "Available"
+        },
+        {
+          "id": 118,
+          "state": "Working",
+          "damage_flag": false,
+          "status": "Available"
+        },
+        {
+          "id": 119,
+          "state": "Needs Repair",
+          "damage_flag": true,
+          "status": "In Use"
+        }
+      ],
+      "district": "Manastirski livadi"
+    }
+  ]
+}
