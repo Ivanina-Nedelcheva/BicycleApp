@@ -30,4 +30,13 @@ public class StationServiceImpl implements StationService {
         }
         return station;
     }
+
+    @Override
+    public Station addStation(double latitude, double longitude) {
+        Station station = new Station();
+        station.setLatitude(latitude);
+        station.setLongitude(longitude);
+
+        return stationRepository.save(station);
+    }
 }

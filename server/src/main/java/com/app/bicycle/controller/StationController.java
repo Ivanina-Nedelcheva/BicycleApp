@@ -43,4 +43,21 @@ public class StationController {
 
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/addStation", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).TECH_SUPPORT_MEMBER, T(com.app.bicycle.enums.UserRole).SYSTEM_ADMIN," +
+            " T(com.app.bicycle.enums.UserRole).OBSERVER)")
+    public ResponseEntity<Station> addStation(@RequestParam double latitude, @RequestParam double longitude,
+                                              @RequestHeader("X-Auth-Token") String token) throws Exception {
+
+        Station result;
+        try {
+            result = stationService.addStation(latitude, longitude);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
 }
