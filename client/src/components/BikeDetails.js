@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
+import React, { useRef, useState, useCallback, useMemo } from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 import { BottomSheetModal, BottomSheetModalProvider, } from '@gorhom/bottom-sheet';
 import { colors } from '../../styles/styles'
@@ -9,14 +9,6 @@ const BikeDetails = ({ bike, bottomSheetRef }) => {
   const handleSheetChanges = useCallback((index) => {
     console.log('handleSheetChanges', index);
   }, []);
-
-  const handlePresentModalPress = useCallback(() => {
-    bottomSheetRef.current?.present();
-  }, []);
-
-  useEffect(() => {
-    handlePresentModalPress()
-  })
 
   return (
     <BottomSheetModalProvider>

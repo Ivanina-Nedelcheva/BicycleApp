@@ -11,7 +11,7 @@ const BikeSelect = ({ route }) => {
 
   const selectBike = (bike) => {
     setSelectedBike(bike)
-    bottomSheetRef.current?.present()
+    bottomSheetRef.current?.present();
   };
 
   const bike = ({ item }) => (
