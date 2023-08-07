@@ -36,6 +36,7 @@ public class StationServiceImpl implements StationService {
         Station station = new Station();
         station.setLatitude(latitude);
         station.setLongitude(longitude);
+        station.setActiveFlag(true);
 
         return stationRepository.save(station);
     }
