@@ -1,6 +1,7 @@
 package com.app.bicycle.controller;
 
 import com.app.bicycle.entities.Station;
+import com.app.bicycle.entities.StationBicycle;
 import com.app.bicycle.service.StationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -61,4 +62,18 @@ public class StationController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    @RequestMapping(method = RequestMethod.POST, value = "/addBicycleToStation", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).TECH_SUPPORT_MEMBER, T(com.app.bicycle.enums.UserRole).SYSTEM_ADMIN," +
+            " T(com.app.bicycle.enums.UserRole).OBSERVER)")
+    public ResponseEntity<StationBicycle> addBikeToStation(@RequestParam Long bikeId, @RequestParam Long stationId) throws Exception {
+
+        StationBicycle result;
+        try {
+            result = stationService.addBikeToStation(bikeId, stationId);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
 }
