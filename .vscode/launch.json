@@ -1,0 +1,14 @@
+{
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Spring Boot-BicycleApplication<bicycle>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "com.app.bicycle.BicycleApplication",
+      "projectName": "bicycle",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    }
+  ]
+}
