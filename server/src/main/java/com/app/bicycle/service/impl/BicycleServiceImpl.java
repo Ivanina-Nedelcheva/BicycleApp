@@ -70,4 +70,15 @@ public class BicycleServiceImpl implements BicycleService {
         }
         return Constants.BICYCLE_ALREADY_DEACTIVATED;
     }
+
+    @Override
+    public int activateBicycle(Long bikeId) {
+        Bicycle bicycle = bicycleRepository.getBicycleByIdAndActiveFlagFalse(bikeId);
+        if (bicycle != null) {
+            bicycle.setActiveFlag(true);
+            bicycleRepository.save(bicycle);
+            return Constants.SUCCESSFUL_OPERATION;
+        }
+        return Constants.BICYCLE_ALREADY_ACTIVATED;
+    }
 }

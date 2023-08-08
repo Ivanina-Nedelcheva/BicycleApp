@@ -31,13 +31,24 @@ public class StationServiceImpl implements StationService {
 
     @Override
     public int deactivateStation(Long stationId) {
-        Station station = stationRepository.getStationById(stationId);
+        Station station = stationRepository.getStationByIdAndActiveFlagTrue(stationId);
         if (station != null) {
             station.setActiveFlag(false);
             stationRepository.save(station);
             return Constants.SUCCESSFUL_OPERATION;
         }
         return Constants.STATION_ALREADY_DEACTIVATED;
+    }
+
+    @Override
+    public int activateStation(Long stationId) {
+        Station station = stationRepository.getStationByIdAndActiveFlagFalse(stationId);
+        if (station != null) {
+            station.setActiveFlag(true);
+            stationRepository.save(station);
+            return Constants.SUCCESSFUL_OPERATION;
+        }
+        return Constants.STATION_ALREADY_ACTIVATED;
     }
 
     @Override

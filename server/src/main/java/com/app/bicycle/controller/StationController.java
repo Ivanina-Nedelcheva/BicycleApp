@@ -51,6 +51,21 @@ public class StationController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    @RequestMapping(method = RequestMethod.POST, value = "/activateStation", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).TECH_SUPPORT_MEMBER, T(com.app.bicycle.enums.UserRole).SYSTEM_ADMIN, T(com.app.bicycle.enums.UserRole).OBSERVER)")
+    public ResponseEntity<Station> activateStation(@RequestParam Long stationId) throws Exception {
+
+        Station result = new Station();
+        int beResponse = stationService.activateStation(stationId);
+        if (beResponse == Constants.SUCCESSFUL_OPERATION) {
+            result = stationService.findStationById(stationId);
+        } else if (beResponse == Constants.STATION_ALREADY_ACTIVATED) {
+            return new ResponseEntity<>(null, HttpStatusCode.valueOf(Constants.STATION_ALREADY_ACTIVATED));
+        }
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
     @RequestMapping(method = RequestMethod.POST, value = "/newStation", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).TECH_SUPPORT_MEMBER, T(com.app.bicycle.enums.UserRole).SYSTEM_ADMIN, T(com.app.bicycle.enums.UserRole).OBSERVER)")
     public ResponseEntity<Station> addStation(@RequestParam double latitude, @RequestParam double longitude,

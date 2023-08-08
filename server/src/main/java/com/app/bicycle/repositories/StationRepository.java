@@ -11,4 +11,5 @@ public interface StationRepository extends JpaRepository<Station, Long> {
     List<Station> findByActiveFlagTrue();
     Station getStationById(Long stationId);
     Station getStationByIdAndActiveFlagTrue(Long stationId);
+    Station getStationByIdAndActiveFlagFalse(Long stationId);
 }

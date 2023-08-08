@@ -10,6 +10,8 @@ public class Constants {
     public static final int BICYCLE_DOESNT_EXIST = 103;
     public static final int STATION_DOESNT_EXIST = 104;
     public static final int STATION_ALREADY_DEACTIVATED = 105;
-    public static final int BICYCLE_ALREADY_DEACTIVATED = 106;
+    public static final int STATION_ALREADY_ACTIVATED = 106;
+    public static final int BICYCLE_ALREADY_DEACTIVATED = 107;
+    public static final int BICYCLE_ALREADY_ACTIVATED = 108;
 
 }

@@ -45,7 +45,7 @@ public class BicycleController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/deactivateBicycle", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).TECH_SUPPORT_MEMBER, T(com.app.bicycle.enums.UserRole).SYSTEM_ADMIN, T(com.app.bicycle.enums.UserRole).OBSERVER)")
-    public ResponseEntity<Bicycle> deactivateStation(@RequestParam Long bikeId) throws Exception {
+    public ResponseEntity<Bicycle> deactivateBicycle(@RequestParam Long bikeId) throws Exception {
 
         Bicycle result = new Bicycle();
         int beResponse = bicycleService.deactivateBicycle(bikeId);
@@ -53,6 +53,21 @@ public class BicycleController {
             result = bicycleService.findBicycleById(bikeId);
         } else if (beResponse == Constants.BICYCLE_ALREADY_DEACTIVATED) {
             return new ResponseEntity<>(null, HttpStatusCode.valueOf(Constants.BICYCLE_ALREADY_DEACTIVATED));
+        }
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/activateBicycle", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).TECH_SUPPORT_MEMBER, T(com.app.bicycle.enums.UserRole).SYSTEM_ADMIN, T(com.app.bicycle.enums.UserRole).OBSERVER)")
+    public ResponseEntity<Bicycle> activateBicycle(@RequestParam Long bikeId) throws Exception {
+
+        Bicycle result = new Bicycle();
+        int beResponse = bicycleService.activateBicycle(bikeId);
+        if (beResponse == Constants.SUCCESSFUL_OPERATION) {
+            result = bicycleService.findBicycleById(bikeId);
+        } else if (beResponse == Constants.BICYCLE_ALREADY_ACTIVATED) {
+            return new ResponseEntity<>(null, HttpStatusCode.valueOf(Constants.BICYCLE_ALREADY_ACTIVATED));
         }
 
         return new ResponseEntity<>(result, HttpStatus.OK);

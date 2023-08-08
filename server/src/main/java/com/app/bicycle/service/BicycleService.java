@@ -7,4 +7,6 @@ public interface BicycleService {
     Bicycle findBicycleById(Long bikeId);
     Long getBicycleNextId();
     int deactivateBicycle(Long bikeId);
+    int activateBicycle(Long bikeId);
+
 }
