@@ -5,6 +5,10 @@ import jakarta.persistence.Entity;
 
 @Entity
 public class Station extends BaseEntity {
+
+    @Column(name = "station_name")
+    private String stationName;
+
     @Column
     private Double latitude;
 
@@ -13,6 +17,14 @@ public class Station extends BaseEntity {
 
     @Column(name = "active_flag", columnDefinition = "BIT(1) default 1")
     private Boolean activeFlag;
+
+    public String getStationName() {
+        return stationName;
+    }
+
+    public void setStationName(String stationName) {
+        this.stationName = stationName;
+    }
 
     public Double getLatitude() {
         return latitude;

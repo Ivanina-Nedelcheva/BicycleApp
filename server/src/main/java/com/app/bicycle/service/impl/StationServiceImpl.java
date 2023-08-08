@@ -40,10 +40,11 @@ public class StationServiceImpl implements StationService {
     }
 
     @Override
-    public Station addStation(double latitude, double longitude) {
+    public Station addStation(double latitude, double longitude, String name) {
         Station station = new Station();
         station.setLatitude(latitude);
         station.setLongitude(longitude);
+        station.setStationName(name);
         station.setActiveFlag(true);
 
         return stationRepository.save(station);

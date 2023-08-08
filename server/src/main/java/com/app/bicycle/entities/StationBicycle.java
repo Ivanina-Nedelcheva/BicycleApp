@@ -1,13 +1,10 @@
 package com.app.bicycle.entities;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
-@Table(name = "Station_Bicycle")
+@Table(name = "Station_Bicycle", uniqueConstraints = @UniqueConstraint(columnNames = "bicycle_id"))
 public class StationBicycle extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "station_id")

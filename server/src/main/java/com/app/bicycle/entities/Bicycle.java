@@ -18,6 +18,9 @@ public class Bicycle extends BaseEntity {
     @Column(name = "damage_flag")
     private Boolean damageFlag;
 
+    @Column(name = "active_flag", columnDefinition = "BIT(1) default 1")
+    private Boolean activeFlag;
+
     @OneToMany(mappedBy = "bicycle")
     private List<StationBicycle> stationBicycles = new ArrayList<>();
 
@@ -49,6 +52,14 @@ public class Bicycle extends BaseEntity {
 
     public void setDamageFlag(Boolean damageFlag) {
         this.damageFlag = damageFlag;
+    }
+
+    public Boolean getActiveFlag() {
+        return activeFlag;
+    }
+
+    public void setActiveFlag(Boolean activeFlag) {
+        this.activeFlag = activeFlag;
     }
 
     public List<StationBicycle> getStationBicycles() {
