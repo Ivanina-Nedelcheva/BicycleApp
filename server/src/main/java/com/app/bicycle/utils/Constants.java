@@ -1,7 +1,7 @@
 package com.app.bicycle.utils;
 
 public class Constants {
-    public static final int SUCCESSFUL_CONNECTION_MADE = 99;
+    public static final int SUCCESSFUL_OPERATION = 99;
 
     //ERROR CODES
     public static final int CONNECTION_ALREADY_EXISTS = 100;

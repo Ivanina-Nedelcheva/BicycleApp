@@ -36,7 +36,7 @@ public class StationController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/deactivateStation", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).TECH_SUPPORT_MEMBER, T(com.app.bicycle.enums.UserRole).SYSTEM_ADMIN," + " T(com.app.bicycle.enums.UserRole).OBSERVER)")
+    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).TECH_SUPPORT_MEMBER, T(com.app.bicycle.enums.UserRole).SYSTEM_ADMIN, T(com.app.bicycle.enums.UserRole).OBSERVER)")
     public ResponseEntity<Station> deactivateStation(@RequestParam Long stationId) throws Exception {
 
         Station result;
@@ -49,8 +49,8 @@ public class StationController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/addStation", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).TECH_SUPPORT_MEMBER, T(com.app.bicycle.enums.UserRole).SYSTEM_ADMIN," + " T(com.app.bicycle.enums.UserRole).OBSERVER)")
+    @RequestMapping(method = RequestMethod.POST, value = "/newStation", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).TECH_SUPPORT_MEMBER, T(com.app.bicycle.enums.UserRole).SYSTEM_ADMIN, T(com.app.bicycle.enums.UserRole).OBSERVER)")
     public ResponseEntity<Station> addStation(@RequestParam double latitude, @RequestParam double longitude,
                                               @RequestParam String name) throws Exception {
 
@@ -65,12 +65,12 @@ public class StationController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/addBicycleToStation", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).TECH_SUPPORT_MEMBER, T(com.app.bicycle.enums.UserRole).SYSTEM_ADMIN," + " T(com.app.bicycle.enums.UserRole).OBSERVER)")
+    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).TECH_SUPPORT_MEMBER, T(com.app.bicycle.enums.UserRole).SYSTEM_ADMIN,  T(com.app.bicycle.enums.UserRole).OBSERVER)")
     public ResponseEntity<StationBicycle> addBikeToStation(@RequestParam Long bikeId, @RequestParam Long stationId) throws Exception {
 
         StationBicycle result = new StationBicycle();
         int beResponse = stationService.addBikeToStation(bikeId, stationId);
-        if (beResponse == Constants.SUCCESSFUL_CONNECTION_MADE) {
+        if (beResponse == Constants.SUCCESSFUL_OPERATION) {
             result = stationService.findSBConnection(bikeId, stationId);
         } else if (beResponse == Constants.CONNECTION_ALREADY_EXISTS) {
             return new ResponseEntity<>(null, HttpStatusCode.valueOf(Constants.CONNECTION_ALREADY_EXISTS));

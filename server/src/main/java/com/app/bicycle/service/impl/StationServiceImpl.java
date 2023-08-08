@@ -90,6 +90,6 @@ public class StationServiceImpl implements StationService {
 
         sbRepository.save(stationBicycle);
 
-        return Constants.SUCCESSFUL_CONNECTION_MADE;
+        return Constants.SUCCESSFUL_OPERATION;
     }
 }
