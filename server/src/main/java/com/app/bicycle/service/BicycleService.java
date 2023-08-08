@@ -8,5 +8,6 @@ public interface BicycleService {
     Long getBicycleNextId();
     int deactivateBicycle(Long bikeId);
     int activateBicycle(Long bikeId);
+    Bicycle changeDamageFlag(Long bikeId);
 
 }

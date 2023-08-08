@@ -2,6 +2,7 @@ package com.app.bicycle.controller;
 
 import com.app.bicycle.entities.Bicycle;
 
+import com.app.bicycle.entities.Station;
 import com.app.bicycle.service.BicycleService;
 import com.app.bicycle.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,6 +69,20 @@ public class BicycleController {
             result = bicycleService.findBicycleById(bikeId);
         } else if (beResponse == Constants.BICYCLE_ALREADY_ACTIVATED) {
             return new ResponseEntity<>(null, HttpStatusCode.valueOf(Constants.BICYCLE_ALREADY_ACTIVATED));
+        }
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/switchDamageFlag", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).TECH_SUPPORT_MEMBER, T(com.app.bicycle.enums.UserRole).SYSTEM_ADMIN, T(com.app.bicycle.enums.UserRole).OBSERVER)")
+    public ResponseEntity<Bicycle> addStation(@RequestParam Long bikeId) throws Exception {
+
+        Bicycle result;
+        try {
+            result = bicycleService.changeDamageFlag(bikeId);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         return new ResponseEntity<>(result, HttpStatus.OK);

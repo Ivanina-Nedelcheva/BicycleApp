@@ -81,4 +81,18 @@ public class BicycleServiceImpl implements BicycleService {
         }
         return Constants.BICYCLE_ALREADY_ACTIVATED;
     }
+
+    @Override
+    public Bicycle changeDamageFlag(Long bikeId) {
+        Bicycle bicycle = bicycleRepository.getBicycleById(bikeId);
+        if (!bicycle.getDamageFlag()) {
+            bicycle.setDamageFlag(true);
+            bicycle.setActiveFlag(false);
+        } else {
+            bicycle.setDamageFlag(false);
+            bicycle.setActiveFlag(true);
+        }
+        bicycleRepository.save(bicycle);
+        return bicycle;
+    }
 }
