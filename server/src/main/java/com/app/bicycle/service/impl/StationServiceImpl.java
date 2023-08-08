@@ -30,13 +30,14 @@ public class StationServiceImpl implements StationService {
     }
 
     @Override
-    public Station deactivateStation(Long stationId) {
-        Station station = stationRepository.findById(stationId).orElse(null);
+    public int deactivateStation(Long stationId) {
+        Station station = stationRepository.getStationById(stationId);
         if (station != null) {
             station.setActiveFlag(false);
             stationRepository.save(station);
+            return Constants.SUCCESSFUL_OPERATION;
         }
-        return station;
+        return Constants.STATION_ALREADY_DEACTIVATED;
     }
 
     @Override
@@ -53,7 +54,7 @@ public class StationServiceImpl implements StationService {
     @Override
     public StationBicycle findSBConnection(Long bikeId, Long stationId) {
         Bicycle bicycle = bicycleRepository.getBicycleById(bikeId);
-        Station station = stationRepository.getStationsById(stationId);
+        Station station = stationRepository.getStationById(stationId);
         StationBicycle existingStationBicycle = sbRepository.findByBicycleAndStation(bicycle, station);
 
         return existingStationBicycle;
@@ -62,7 +63,7 @@ public class StationServiceImpl implements StationService {
     @Override
     public int addBikeToStation(Long bikeId, Long stationId) {
         Bicycle bicycle = bicycleRepository.getBicycleById(bikeId);
-        Station station = stationRepository.getStationsById(stationId);
+        Station station = stationRepository.getStationById(stationId);
 
         if (bicycle == null) {
             return Constants.BICYCLE_DOESNT_EXIST;
@@ -91,5 +92,10 @@ public class StationServiceImpl implements StationService {
         sbRepository.save(stationBicycle);
 
         return Constants.SUCCESSFUL_OPERATION;
+    }
+
+    @Override
+    public Station findStationById(Long stationId) {
+        return stationRepository.getStationById(stationId);
     }
 }

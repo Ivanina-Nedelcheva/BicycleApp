@@ -1,5 +1,6 @@
 package com.app.bicycle.controller;
 
+import com.app.bicycle.entities.Bicycle;
 import com.app.bicycle.entities.Station;
 import com.app.bicycle.entities.StationBicycle;
 import com.app.bicycle.service.StationService;
@@ -39,11 +40,12 @@ public class StationController {
     @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).TECH_SUPPORT_MEMBER, T(com.app.bicycle.enums.UserRole).SYSTEM_ADMIN, T(com.app.bicycle.enums.UserRole).OBSERVER)")
     public ResponseEntity<Station> deactivateStation(@RequestParam Long stationId) throws Exception {
 
-        Station result;
-        try {
-            result = stationService.deactivateStation(stationId);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        Station result = new Station();
+        int beResponse = stationService.deactivateStation(stationId);
+        if (beResponse == Constants.SUCCESSFUL_OPERATION) {
+            result = stationService.findStationById(stationId);
+        } else if (beResponse == Constants.STATION_ALREADY_DEACTIVATED) {
+            return new ResponseEntity<>(null, HttpStatusCode.valueOf(Constants.STATION_ALREADY_DEACTIVATED));
         }
 
         return new ResponseEntity<>(result, HttpStatus.OK);

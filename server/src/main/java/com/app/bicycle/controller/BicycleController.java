@@ -2,7 +2,6 @@ package com.app.bicycle.controller;
 
 import com.app.bicycle.entities.Bicycle;
 
-import com.app.bicycle.entities.StationBicycle;
 import com.app.bicycle.service.BicycleService;
 import com.app.bicycle.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +32,7 @@ public class BicycleController {
     @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).TECH_SUPPORT_MEMBER, T(com.app.bicycle.enums.UserRole).SYSTEM_ADMIN, T(com.app.bicycle.enums.UserRole).OBSERVER)")
     public ResponseEntity<Bicycle> addBicycle(@RequestParam Long stationId) throws Exception {
 
-        Bicycle result = null;
+        Bicycle result = new Bicycle();
         int beResponse = bicycleService.addBicycle(stationId);
         if (beResponse == Constants.SUCCESSFUL_OPERATION) {
             result = bicycleService.findBicycleById(bicycleService.getBicycleNextId());
@@ -42,5 +41,20 @@ public class BicycleController {
         }
 
         return new ResponseEntity<>(result, HttpStatus.OK); //it stays null
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/deactivateBicycle", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).TECH_SUPPORT_MEMBER, T(com.app.bicycle.enums.UserRole).SYSTEM_ADMIN, T(com.app.bicycle.enums.UserRole).OBSERVER)")
+    public ResponseEntity<Bicycle> deactivateStation(@RequestParam Long bikeId) throws Exception {
+
+        Bicycle result = new Bicycle();
+        int beResponse = bicycleService.deactivateBicycle(bikeId);
+        if (beResponse == Constants.SUCCESSFUL_OPERATION) {
+            result = bicycleService.findBicycleById(bikeId);
+        } else if (beResponse == Constants.BICYCLE_ALREADY_DEACTIVATED) {
+            return new ResponseEntity<>(null, HttpStatusCode.valueOf(Constants.BICYCLE_ALREADY_DEACTIVATED));
+        }
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }

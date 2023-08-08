@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BicycleRepository extends JpaRepository<Bicycle, Long> {
     Bicycle getBicycleById(Long bikeId);
+    Bicycle getBicycleByIdAndActiveFlagTrue(Long bikeId);
     @Query("SELECT MAX(b.id) FROM Bicycle b")
     Long getMaxBicycleId();
 }

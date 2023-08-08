@@ -37,7 +37,7 @@ public class BicycleServiceImpl implements BicycleService {
         bicycleRepository.save(newBike);
 
         StationBicycle newConnection = new StationBicycle();
-        Station station = stationRepository.getStationsById(stationId);
+        Station station = stationRepository.getStationById(stationId);
         newConnection.setBicycle(newBike);
         newConnection.setStation(station);
 
@@ -58,5 +58,16 @@ public class BicycleServiceImpl implements BicycleService {
     @Override
     public Long getBicycleNextId() {
         return bicycleRepository.getMaxBicycleId() + 1;
+    }
+
+    @Override
+    public int deactivateBicycle(Long bikeId) {
+        Bicycle bicycle = bicycleRepository.getBicycleByIdAndActiveFlagTrue(bikeId);
+        if (bicycle != null) {
+            bicycle.setActiveFlag(false);
+            bicycleRepository.save(bicycle);
+            return Constants.SUCCESSFUL_OPERATION;
+        }
+        return Constants.BICYCLE_ALREADY_DEACTIVATED;
     }
 }
