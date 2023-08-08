@@ -9,5 +9,6 @@ public interface StationService {
     List<Station> getAllActiveStations();
     Station deactivateStation(Long stationId);
     Station addStation(double longitude, double latitude);
-    StationBicycle addBikeToStation(Long bikeId, Long stationId);
+    StationBicycle findSBConnection(Long bikeId, Long stationId);
+    int addBikeToStation(Long bikeId, Long stationId);
 }

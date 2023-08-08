@@ -1,11 +1,10 @@
 package com.app.bicycle.utils;
 
 public class Constants {
+    public static final int SUCCESSFUL_CONNECTION_MADE = 99;
 
-    //ENDPOINTS
-    public final String ALL_STATIONS = "app/stations/getAllActiveStations";
-    public final String DEACTIVATE_STATION = "app/stations/deactivateStation";
-
-    public final String ADD_STATION = "app/stations/addStation";
-
+    //ERROR CODES
+    public static final int CONNECTION_ALREADY_EXISTS = 100;
+    public static final int BICYCLE_ALREADY_ADDED_TO_A_STATION = 101;
+    public static final int STATION_AT_FULL_CAPACITY = 102;
 }

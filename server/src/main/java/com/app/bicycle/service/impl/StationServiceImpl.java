@@ -7,6 +7,7 @@ import com.app.bicycle.repositories.BicycleRepository;
 import com.app.bicycle.repositories.StationBicycleRepository;
 import com.app.bicycle.repositories.StationRepository;
 import com.app.bicycle.service.StationService;
+import com.app.bicycle.utils.Constants;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -49,14 +50,39 @@ public class StationServiceImpl implements StationService {
     }
 
     @Override
-    public StationBicycle addBikeToStation(Long bikeId, Long stationId) {
+    public StationBicycle findSBConnection(Long bikeId, Long stationId) {
         Bicycle bicycle = bicycleRepository.getBicycleById(bikeId);
         Station station = stationRepository.getStationsById(stationId);
+        StationBicycle existingStationBicycle = sbRepository.findByBicycleAndStation(bicycle, station);
+
+        return existingStationBicycle;
+    }
+
+    @Override
+    public int addBikeToStation(Long bikeId, Long stationId) {
+        Bicycle bicycle = bicycleRepository.getBicycleById(bikeId);
+        Station station = stationRepository.getStationsById(stationId);
+
+        if (findSBConnection(bikeId, stationId) != null) {
+            return Constants.CONNECTION_ALREADY_EXISTS;
+        }
+
+        StationBicycle existingBicycleAssociation = sbRepository.findByBicycle(bicycle);
+        if (existingBicycleAssociation != null) {
+            return Constants.BICYCLE_ALREADY_ADDED_TO_A_STATION;
+        }
+
+        List<StationBicycle> stationBicyclesAtStation = sbRepository.findAllBicyclesByStation(station);
+        if (stationBicyclesAtStation.size() >= 10) {
+            return Constants.STATION_AT_FULL_CAPACITY;
+        }
 
         StationBicycle stationBicycle = new StationBicycle();
         stationBicycle.setBicycle(bicycle);
         stationBicycle.setStation(station);
 
-        return sbRepository.save(stationBicycle);
+        sbRepository.save(stationBicycle);
+
+        return Constants.SUCCESSFUL_CONNECTION_MADE;
     }
 }
