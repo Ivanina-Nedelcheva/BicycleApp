@@ -63,6 +63,12 @@ public class StationServiceImpl implements StationService {
         Bicycle bicycle = bicycleRepository.getBicycleById(bikeId);
         Station station = stationRepository.getStationsById(stationId);
 
+        if (bicycle == null) {
+            return Constants.BICYCLE_DOESNT_EXIST;
+        } else if (station == null) {
+            return Constants.STATION_DOESNT_EXIST;
+        }
+
         if (findSBConnection(bikeId, stationId) != null) {
             return Constants.CONNECTION_ALREADY_EXISTS;
         }
