@@ -1,8 +1,6 @@
 package com.app.bicycle.controller;
 
 import com.app.bicycle.entities.Bicycle;
-
-import com.app.bicycle.entities.Station;
 import com.app.bicycle.service.BicycleService;
 import com.app.bicycle.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,12 +11,27 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
 @RequestMapping("app/bicycles")
 public class BicycleController {
     @Autowired
     BicycleService bicycleService;
+
+    @RequestMapping(method = RequestMethod.GET, value = "/getAllBicycles", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Bicycle>> getAllBicycles() throws Exception {
+
+        List<Bicycle> result;
+        try {
+            result = bicycleService.getAllBicycles();
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
 
     @RequestMapping(method = RequestMethod.GET, value = "/rent", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).ORDINARY_USER)")

@@ -1,6 +1,5 @@
 package com.app.bicycle.controller;
 
-import com.app.bicycle.entities.Bicycle;
 import com.app.bicycle.entities.Station;
 import com.app.bicycle.entities.StationBicycle;
 import com.app.bicycle.service.StationService;
@@ -11,7 +10,10 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 

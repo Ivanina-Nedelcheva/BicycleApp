@@ -95,4 +95,9 @@ public class BicycleServiceImpl implements BicycleService {
         bicycleRepository.save(bicycle);
         return bicycle;
     }
+
+    @Override
+    public List<Bicycle> getAllBicycles() {
+        return bicycleRepository.getAllFreeActiveBicyclesWithFullCharge();
+    }
 }
