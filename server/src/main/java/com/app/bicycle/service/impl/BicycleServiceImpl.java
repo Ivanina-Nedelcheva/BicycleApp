@@ -88,12 +88,17 @@ public class BicycleServiceImpl implements BicycleService {
         if (!bicycle.getDamageFlag()) {
             bicycle.setDamageFlag(true);
             bicycle.setActiveFlag(false);
+            //TODO: notify TECHNICAL SUPPORT GROUP
         } else {
             bicycle.setDamageFlag(false);
             bicycle.setActiveFlag(true);
         }
         bicycleRepository.save(bicycle);
         return bicycle;
+    }
+
+    private void notifyTechnicalSupport(){
+
     }
 
     @Override
