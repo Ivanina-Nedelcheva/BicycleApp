@@ -15,6 +15,7 @@ import java.util.List;
 
 
 @RestController
+@CrossOrigin(origins="*")
 @RequestMapping("app/bicycles")
 public class BicycleController {
     @Autowired
