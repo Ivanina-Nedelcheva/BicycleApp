@@ -22,7 +22,7 @@ public class StationController {
     StationService stationService;
 
     //Available for all users
-    @RequestMapping(method = RequestMethod.GET, value = "/getStations", produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.GET, value = "/getAllStations", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Station>> getStations() throws Exception {
 
         List<Station> result;

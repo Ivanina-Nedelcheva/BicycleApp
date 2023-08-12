@@ -1,6 +1,5 @@
 package com.app.bicycle.service;
 
-import com.app.bicycle.entities.Bicycle;
 import com.app.bicycle.entities.Station;
 import com.app.bicycle.entities.StationBicycle;
 
