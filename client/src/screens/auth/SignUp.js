@@ -1,14 +1,19 @@
 import React, { useState } from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import { StyleSheet, View, Image, TextInput, Text, ScrollView } from 'react-native';
+import { StyleSheet, View, Image, TextInput, Text, ScrollView, TouchableWithoutFeedback } from 'react-native';
+import Checkbox from 'expo-checkbox';
 import CustomButton from '../../components/CustomButton';
 import { colors } from '../../../styles/styles.js'
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { AntDesign } from '@expo/vector-icons';
 
 
 const SignUp = ({ navigation }) => {
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const [termsAccepted, setTermsAccepted] = useState(false);
+  const [privacyAccepted, setPrivacyAccepted] = useState(false);
+
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
@@ -37,10 +42,10 @@ const SignUp = ({ navigation }) => {
   return (
     <ScrollView contentContainerStyle={styles.scroll}>
       <View style={styles.container}>
-        <Image
+        {/* <Image
           style={styles.image}
           source={require('../../../assets/images/bike3.jpg')}
-        />
+        /> */}
 
         <Formik
           initialValues={{ firstName: '', lastName: '', id: '', phoneNumber: '', email: '', password: '' }}
@@ -124,6 +129,42 @@ const SignUp = ({ navigation }) => {
               </View>
               {errors.password && <Text style={styles.errorMessage}>{errors.password}</Text>}
 
+
+              <View style={styles.terms}>
+                <TouchableWithoutFeedback onPress={() => navigation.navigate('TermsAndConditions')}>
+                  <View style={styles.linkWrapper}>
+                    <Text style={styles.linkText}>Read Terms and Conditions</Text>
+
+                    <AntDesign name="right" size={16} color="black" />
+                  </View>
+                </TouchableWithoutFeedback>
+
+                <View style={styles.checkboxContainer}>
+                  <Checkbox
+                    value={termsAccepted}
+                    onValueChange={() => setTermsAccepted(!termsAccepted)}
+                    color={termsAccepted ? colors.primary : undefined}
+                  />
+                  <Text style={styles.checkboxLabel}>I accept the terms and conditions</Text>
+                </View>
+
+                <TouchableWithoutFeedback onPress={() => navigation.navigate('PrivacyPolicy')}>
+                  <View style={styles.linkWrapper}>
+                    <Text style={styles.linkText}>Read Privacy Policy</Text>
+                    <AntDesign name="right" size={16} color="black" />
+                  </View>
+                </TouchableWithoutFeedback>
+
+                <View style={styles.checkboxContainer}>
+                  <Checkbox
+                    value={privacyAccepted}
+                    onValueChange={() => setPrivacyAccepted(!privacyAccepted)}
+                    color={privacyAccepted ? colors.primary : undefined}
+                  />
+                  <Text style={styles.checkboxLabel}>I accept the privacy policy</Text>
+                </View>
+              </View>
+
               <CustomButton
                 title="Register"
                 color={colors.primary}
@@ -178,7 +219,31 @@ const styles = StyleSheet.create({
   },
   errorMessage: {
     color: colors.red
-  }
+  },
+  terms: {
+    marginTop: 20,
+    marginBottom: 20,
+  },
+  linkWrapper: {
+    flexDirection: 'row',
+    justifyContent: "space-between",
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    marginTop: 20,
+  },
+  linkText: {
+    color: colors.primary,
+    textDecorationLine: 'underline',
+  },
+  checkboxContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    marginTop: 20,
+  },
+  checkboxLabel: {
+    marginLeft: 8,
+  },
 });
 
 export default SignUp

@@ -1,18 +1,35 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { StyleSheet, Text, View, StatusBar, Image } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
-
 import CustomButton from '../../components/CustomButton'
 import * as Location from 'expo-location';
 import { throttle } from 'lodash';
 import { colors } from '../../../styles/styles'
 import stationsData from '../../stations.json'
 
+import axios from 'axios'
+
 
 const Map = ({ navigation }) => {
+	const url = 'http://localhost:8080/app/stations/getStations'
+
+	useEffect(() => {
+		axios.get('http://localhost:8080/app/stations/getStations')
+			.then(function (response) {
+				// handle success
+				console.log(response);
+			})
+			.catch(function (error) {
+				// handle error
+				console.log(error);
+			})
+	}, [])
+
+
+
 	const mapRef = useRef()
 	const sofiaCity = {
-		latitude: 42.698334,
+		latitude: 42.69833,
 		longitude: 23.319941,
 		latitudeDelta: 0.08,
 		longitudeDelta: 0.07,
