@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
     padding: 20,
-    borderWidth: 1,
+    // borderWidth: 1,
   },
   heading: {
     fontSize: 18,

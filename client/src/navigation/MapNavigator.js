@@ -1,6 +1,6 @@
 import React from "react"
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { Map, Profile, History, NoHistory } from '../screens'
+import { Map, Profile, History } from '../screens'
 import { Ionicons } from '@expo/vector-icons';
 
 const Drawer = createDrawerNavigator();
@@ -45,7 +45,6 @@ const MapNavigator = () => {
           ),
           drawerLabelStyle
         }} />
-
 
       <Drawer.Screen
         name="History"
