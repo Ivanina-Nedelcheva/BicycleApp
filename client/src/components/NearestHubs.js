@@ -38,8 +38,23 @@ const NearestHubs = ({ userPosition, stations }) => {
       }))
     );
 
+    function calculateTimeToStation(distance) {
+      const averageSpeed = 4.5
+      // Calculate time in seconds (time = distance / speed)
+      return distance / averageSpeed;
+    }
+
+
     // Map the ordered stations back to the original stations data
-    const orderedStationsData = ordered.map(orderedStation => stations[orderedStation.key]);
+    const orderedStationsData = ordered.map(orderedStation => {
+      const station = stations[orderedStation.key];
+      const meters = geolib.getDistance({ latitude, longitude }, { latitude: orderedStation.latitude, longitude: orderedStation.longitude })
+      const km = geolib.convertDistance(meters, 'km');
+      const hours = calculateTimeToStation(km).toFixed(2)
+      return { ...station, km, hours };
+    });
+
+    setOrderedStations(orderedStationsData)
     console.log(orderedStationsData);
   }
 
