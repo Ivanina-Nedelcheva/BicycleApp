@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, TouchableOpacity, Text, StyleSheet, useWindowDimensions } from 'react-native';
-import { AntDesign } from '@expo/vector-icons';
-import { Feather } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { colors } from '../../styles/styles'
 
 const CustomButton = ({ icon, title, color, onPress, style, magicNumber, disabled }) => {
@@ -23,9 +22,7 @@ const CustomButton = ({ icon, title, color, onPress, style, magicNumber, disable
             disabled={disabled}
         >
             <View style={styles.wrapper}>
-                {icon == 'navigation' ?
-                    <Feather name={icon} size={24} color="black" /> : <AntDesign name={icon} size={24} color="black" />
-                }
+                <MaterialCommunityIcons name={icon} size={24} color="black" />
 
                 <Text style={styles.title}>{title}</Text>
             </View>

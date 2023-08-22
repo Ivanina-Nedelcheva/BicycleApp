@@ -2,12 +2,12 @@ import React, { useState, useEffect, useRef } from 'react';
 import { StyleSheet, Text, View, StatusBar, Image } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
+import { throttle } from 'lodash';
 
 import NearestHubs from '../../components/NearestHubs';
 import CustomButton from '../../components/CustomButton'
-import { throttle } from 'lodash';
-import { colors } from '../../../styles/styles'
 import stationsData from '../../stations.json'
+import { colors } from '../../../styles/styles'
 
 import axios from 'axios'
 
@@ -30,9 +30,8 @@ const Map = ({ navigation }) => {
 	const [region, setRegion] = useState({})
 	const [currentUserPosition, setCurrentUserPosition] = useState({});
 	const [errorMsg, setErrorMsg] = useState('');
-	const [time, setTime] = useState(0)
-	const [distance, setDistance] = useState(0)
 
+	const hubsRef = useRef();
 	const mapRef = useRef()
 	const sofiaCity = {
 		latitude: 42.69833,
@@ -82,6 +81,7 @@ const Map = ({ navigation }) => {
 				center: currentUserPosition,
 				zoom: 15,
 				heading: 0,
+				// altitude: 1,
 				// pitch: 45
 			})
 		}
@@ -89,21 +89,29 @@ const Map = ({ navigation }) => {
 
 	useEffect(() => {
 		async function fetchDataAndProcess() {
-			const position = await updateCurrentPosition();
-			setCurrentUserPosition({
-				latitude: position.coords.latitude.toFixed(3),
-				longitude: position.coords.longitude.toFixed(3),
-				latitudeDelta: 0.03,
-				longitudeDelta: 0.04,
-			})
+			try {
+				const position = await updateCurrentPosition();
+				setCurrentUserPosition({
+					latitude: position.coords.latitude,
+					longitude: position.coords.longitude,
+					latitudeDelta: 0.03,
+					longitudeDelta: 0.04,
+				})
+
+				// console.log('Updated user position:', {
+				// 	latitude: position.coords.latitude.toFixed(3),
+				// 	longitude: position.coords.longitude.toFixed(3),
+				// });
+			} catch (error) {
+				console.error('Error fetching data:', error);
+			}
 		}
 
-		// console.log(currentUserPosition);
 		const interval = setInterval(() => {
 			fetchDataAndProcess()
-		}, 1000);
+		}, 3000);
 		return () => clearInterval(interval)
-	})
+	}, [])
 
 	return (
 		<View style={styles.container}>
@@ -145,7 +153,7 @@ const Map = ({ navigation }) => {
 
 			<View style={styles.uppperBtnsWrapper}>
 				<CustomButton
-					icon="user"
+					icon="account"
 					color="white"
 					onPress={() => handleOpenDrawer()}
 					magicNumber={0.12}
@@ -154,22 +162,23 @@ const Map = ({ navigation }) => {
 				{errorMsg && <Text style={styles.errorMessage}>{errorMsg}</Text>}
 
 				<CustomButton
-					icon="navigation"
+					icon="navigation-variant"
 					color="white"
-					onPress={centerCamera}
+					onPress={() => centerCamera()}
 					magicNumber={0.12}
 				/>
 			</View>
 
-			<NearestHubs userPosition={currentUserPosition} stations={stations} />
-			{/* <View style={styles.bottomBtnsWrapper}>
+			<View style={styles.bottomBtnsWrapper}>
 				<CustomButton
-					icon="scan1"
-					title=" Add code"
-					color="hsl(160, 80%, 45%)"
-					magicNumber={0.45}
+					icon="hubspot"
+					color="white"
+					magicNumber={0.12}
+					onPress={() => hubsRef.current.presentBottomSheet()}
 				/>
-			</View> */}
+			</View>
+
+			<NearestHubs userPosition={currentUserPosition} stations={stations} ref={hubsRef} />
 		</View >
 	);
 }
@@ -198,8 +207,8 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		position: 'absolute',
-		paddingHorizontal: 10,
-		bottom: 10
+		paddingHorizontal: 20,
+		bottom: StatusBar.currentHeight,
 	},
 	stationDot: {
 		width: 16,
