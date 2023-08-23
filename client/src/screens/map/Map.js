@@ -75,17 +75,23 @@ const Map = ({ navigation }) => {
 	};
 
 	const centerCamera = () => {
-		console.log(currentUserPosition);
 		if (currentUserPosition) {
 			mapRef.current.animateCamera({
 				center: currentUserPosition,
 				zoom: 15,
 				heading: 0,
-				// altitude: 1,
-				// pitch: 45
 			})
 		}
 	}
+
+	const locateStation = (hub) => {
+		mapRef.current.animateToRegion({
+			latitude: hub.latitude,
+			longitude: hub.longitude,
+			latitudeDelta: 0.03,
+			longitudeDelta: 0.04,
+		}, 1000);
+	};
 
 	useEffect(() => {
 		async function fetchDataAndProcess() {
@@ -178,7 +184,7 @@ const Map = ({ navigation }) => {
 				/>
 			</View>
 
-			<NearestHubs userPosition={currentUserPosition} stations={stations} ref={hubsRef} />
+			<NearestHubs userPosition={currentUserPosition} ref={hubsRef} stations={stations} onSelectStation={locateStation} />
 		</View >
 	);
 }

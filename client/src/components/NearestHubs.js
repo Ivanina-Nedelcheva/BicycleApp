@@ -6,7 +6,7 @@ import * as geolib from 'geolib';
 
 import { colors } from '../../styles/styles'
 
-const NearestHubs = forwardRef(({ userPosition, stations }, ref) => {
+const NearestHubs = forwardRef(({ userPosition, stations, onSelectStation }, ref) => {
   const bottomSheetRef = useRef(null);
   const [bottomSheetPresented, setBottomSheetPresented] = useState(false);
 
@@ -17,22 +17,17 @@ const NearestHubs = forwardRef(({ userPosition, stations }, ref) => {
     }
   }));
 
-  const snapPoints = useMemo(() => ['35%', '50%'], []);
+  const snapPoints = useMemo(() => ['35%', '95%'], []);
 
-  const handleSheetChanges = useCallback((index) => {
-    console.log('handleSheetChanges', index);
-  }, []);
-
-  const { latitude, longitude } = userPosition
   const [orderedStations, setOrderedStations] = useState([])
 
   useEffect(() => {
+    if (!Object.keys(userPosition).length || bottomSheetPresented) return
+
     const fetchData = async () => {
-      if (Object.keys(userPosition).length && !bottomSheetPresented) {
-        setBottomSheetPresented(true); // Mark bottom sheet as presented
-        await orderLocations();
-        bottomSheetRef.current?.present();
-      }
+      setBottomSheetPresented(true)
+      await orderLocations()
+      bottomSheetRef.current?.present()
     };
 
     fetchData();
@@ -41,10 +36,7 @@ const NearestHubs = forwardRef(({ userPosition, stations }, ref) => {
 
   async function orderLocations() {
     const ordered = geolib.orderByDistance(
-      {
-        latitude,
-        longitude,
-      },
+      userPosition,
       stations.map((item, index) => ({
         key: index,
         longitude: item.longitude,
@@ -52,20 +44,21 @@ const NearestHubs = forwardRef(({ userPosition, stations }, ref) => {
       }))
     );
 
-    function calculateTimeToStation(distance) {
-      const averageSpeed = 4.5
-      // Calculate time in seconds (time = distance / speed)
-      return distance / averageSpeed;
+    function calculateTimeToStation(distanceMeters) {
+      const averageSpeedMps = 1.4;  // meters per second
+      const timeSeconds = distanceMeters / averageSpeedMps;
+      const timeMinutes = timeSeconds / 60;
+      return timeMinutes;
     }
 
 
     // Map the ordered stations back to the original stations data
     const orderedStationsData = ordered.map(orderedStation => {
       const station = stations[orderedStation.key];
-      const meters = geolib.getDistance({ latitude, longitude }, { latitude: orderedStation.latitude, longitude: orderedStation.longitude })
-      const km = geolib.convertDistance(meters, 'km');
-      const hours = calculateTimeToStation(km).toFixed(2)
-      return { ...station, meters, km, hours };
+      const meters = geolib.getDistance(userPosition, { latitude: orderedStation.latitude, longitude: orderedStation.longitude })
+      const km = geolib.convertDistance(meters, 'km').toFixed(2);
+      const minutes = Math.round(calculateTimeToStation(meters))
+      return { ...station, meters, km, minutes };
     });
 
     setOrderedStations(orderedStationsData)
@@ -74,8 +67,10 @@ const NearestHubs = forwardRef(({ userPosition, stations }, ref) => {
 
   const selectHub = (hub) => {
     console.log(hub)
-    // setSelectedBike(hub)
-    // bottomSheetRef.current?.present();
+    bottomSheetRef.current?.dismiss();
+    setTimeout(() => {
+      onSelectStation(hub)
+    }, 500);
   };
 
   const hub = ({ item, index }) => (
@@ -84,17 +79,30 @@ const NearestHubs = forwardRef(({ userPosition, stations }, ref) => {
       underlayColor="transparent"
       onPress={() => selectHub(item)}
     >
-      <View>
-        <View>
-          <Text>{item.district}</Text>
+      <View style={styles.hubContainer}>
+        <View style={styles.left}>
+          <View style={styles.info}>
+            <MaterialCommunityIcons name="navigation-variant-outline" size={24} color="black" />
+            <Text>{item.km} km</Text>
+          </View>
+          <View style={styles.info}>
+            <MaterialCommunityIcons name="clock-check-outline" size={24} color="black" />
+            <Text>{item.minutes} min walk</Text>
+          </View>
         </View>
 
-        <View>
-          <MaterialCommunityIcons name="navigation-variant-outline" size={24} color="black" />
-          <MaterialCommunityIcons name="clock-check-outline" size={24} color="black" />
+        <View style={styles.right}>
+          <View>
+            <Text style={{ fontSize: 16 }}>{item.district}</Text>
+            <Text style={{ fontSize: 12 }}>Cycle avaiable</Text>
+          </View>
+
+          <View>
+            <MaterialCommunityIcons name="arrow-right" size={24} color="black" />
+          </View>
         </View>
       </View>
-    </TouchableHighlight>
+    </TouchableHighlight >
   );
 
   return (
@@ -103,12 +111,11 @@ const NearestHubs = forwardRef(({ userPosition, stations }, ref) => {
         ref={bottomSheetRef}
         index={0}
         snapPoints={snapPoints}
-        onChange={handleSheetChanges}
         style={styles.modal}
       >
+        <Text style={styles.heading}>Nearest Hubs</Text>
         <View>
-          <Text style={styles.heading}>Nearest Poho Hubs</Text>
-          {/* {
+          {
             orderedStations.length ? (
               <FlatList
                 data={orderedStations}
@@ -117,14 +124,10 @@ const NearestHubs = forwardRef(({ userPosition, stations }, ref) => {
                 style={styles.list}
               />
             ) : (
-              <Text>Loading...</Text>
-              )
-            } */}
-          <Text>Loading...</Text>
-          <ActivityIndicator size="large" color={colors.primary} />
-
+              <ActivityIndicator style={styles.spinner} size={60} color={colors.primary} />
+            )
+          }
         </View>
-
       </BottomSheetModal>
     </BottomSheetModalProvider >
   );
@@ -141,11 +144,37 @@ const styles = StyleSheet.create({
     marginTop: 10
   },
   hub: {
-    paddingVertical: 24,
     marginTop: 10,
     borderWidth: 2,
     borderRadius: 10,
-  }
+  },
+  hubContainer: {
+    flexDirection: 'row',
+  },
+  left: {
+    paddingHorizontal: 10,
+    paddingVertical: 18,
+    gap: 8,
+    borderRightWidth: 0.2,
+    borderColor: colors.lightgrey,
+  },
+  right: {
+    flexDirection: 'row',
+    gap: 8,
+    flex: 2,
+    paddingHorizontal: 10,
+    paddingVertical: 18,
+    alignItems: 'center',
+    justifyContent: 'space-between'
+  },
+  info: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  spinner: {
+    marginTop: 60
+  },
 });
 
 export default NearestHubs;
