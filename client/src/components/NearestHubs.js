@@ -81,20 +81,25 @@ const NearestHubs = forwardRef(({ userPosition, stations, onSelectStation }, ref
     >
       <View style={styles.hubContainer}>
         <View style={styles.left}>
-          <View style={styles.info}>
+          <View style={styles.infoContainer}>
             <MaterialCommunityIcons name="navigation-variant-outline" size={24} color="black" />
-            <Text>{item.km} km</Text>
+            <Text style={styles.info}>{item.km} km</Text>
           </View>
-          <View style={styles.info}>
+          <View style={styles.infoContainer}>
             <MaterialCommunityIcons name="clock-check-outline" size={24} color="black" />
-            <Text>{item.minutes} min walk</Text>
+            <Text style={styles.info}>{item.minutes} min walk</Text>
           </View>
         </View>
 
         <View style={styles.right}>
           <View>
-            <Text style={{ fontSize: 16 }}>{item.district}</Text>
-            <Text style={{ fontSize: 12 }}>Cycle avaiable</Text>
+            <Text style={{ fontSize: 18 }}>{item.district}</Text>
+
+            {item.bicycles.some(bike => bike.status === 'Available') ? (
+              <Text style={styles.info}>Cycle available</Text>
+            ) : (
+              <Text style={styles.info}>Not available bicycles</Text>
+            )}
           </View>
 
           <View>
@@ -167,10 +172,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between'
   },
-  info: {
+  infoContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
+  },
+  info: {
+    fontSize: 14,
+    color: colors.darkgrey
   },
   spinner: {
     marginTop: 60

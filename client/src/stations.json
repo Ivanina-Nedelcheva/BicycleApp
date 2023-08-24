@@ -205,13 +205,13 @@
           "id": 117,
           "state": "Working",
           "damage_flag": false,
-          "status": "Available"
+          "status": "In Use"
         },
         {
           "id": 118,
           "state": "Working",
           "damage_flag": false,
-          "status": "Available"
+          "status": "In Use"
         },
         {
           "id": 119,

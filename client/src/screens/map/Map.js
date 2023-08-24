@@ -63,10 +63,7 @@ const Map = ({ navigation }) => {
 	const updateCurrentPosition = async () => {
 		let { status } = await Location.requestForegroundPermissionsAsync();
 		if (status !== 'granted') {
-			setErrorMsg('Permission to access location was denied');
-			setTimeout(() => {
-				setErrorMsg('')
-			}, 1200);
+			setErrorMsg('Permission to access location was denied')
 			return;
 		}
 
@@ -80,7 +77,7 @@ const Map = ({ navigation }) => {
 				center: currentUserPosition,
 				zoom: 15,
 				heading: 0,
-			})
+			}, 1000)
 		}
 	}
 
@@ -88,8 +85,8 @@ const Map = ({ navigation }) => {
 		mapRef.current.animateToRegion({
 			latitude: hub.latitude,
 			longitude: hub.longitude,
-			latitudeDelta: 0.03,
-			longitudeDelta: 0.04,
+			latitudeDelta: 0.006,
+			longitudeDelta: 0.008,
 		}, 1000);
 	};
 
