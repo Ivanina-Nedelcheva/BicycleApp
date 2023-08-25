@@ -138,6 +138,8 @@ const Map = ({ navigation }) => {
 							longitude: station.longitude,
 						}}
 						key={index}
+						onCalloutPress={() => console.log("Callout pressed")}
+
 						onPress={() => navigation.navigate('BikeSelect', { station })}
 					>
 						{region.longitudeDelta > 0.2 || region.latitudeDelta > 0.2 ? (

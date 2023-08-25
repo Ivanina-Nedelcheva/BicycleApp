@@ -8,8 +8,3 @@ export const colors = {
     disabled: 'hsl(0, 0%, 60%)',
     darkgrey: 'hsl(0, 0%, 40%)',
 };
-
-export const fonts = {
-    regular: 'Roboto-Regular',
-    bold: 'Roboto-Bold',
-};

@@ -1,7 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableHighlight } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { MaterialIcons } from '@expo/vector-icons';
 import BikeDetails from '../../components/BikeDetails';
 
 const BikeSelect = ({ route }) => {
@@ -24,11 +23,11 @@ const BikeSelect = ({ route }) => {
         <View style={styles.textContainer}>
           <Text style={styles.itemText}>ID: {item.id}</Text>
           <Text style={styles.itemText}>Status: {item.status}</Text>
-          <Text style={styles.itemText}>State: {item.state}</Text>
+          {/* <Text style={styles.itemText}>State: {item.state}</Text> */}
         </View>
 
         <View>
-          <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
+          <MaterialCommunityIcons name="arrow-right" size={24} color="black" />
         </View>
       </View>
     </TouchableHighlight>
@@ -36,7 +35,7 @@ const BikeSelect = ({ route }) => {
 
   return (
     <View style={styles.contentContainer}>
-      <Text style={styles.heading}>Station: {station.district}</Text>
+      <Text style={styles.heading}>{station.district}</Text>
 
       <FlatList
         data={station.bicycles}
@@ -64,6 +63,7 @@ const styles = StyleSheet.create({
     marginTop: 25,
   },
   heading: {
+    fontFamily: 'Roboto-Bold',
     fontSize: 24,
     marginTop: 24
   },
@@ -81,6 +81,7 @@ const styles = StyleSheet.create({
     width: 120,
   },
   itemText: {
+    fontFamily: 'Roboto-Bold',
     fontSize: 12,
   },
 });

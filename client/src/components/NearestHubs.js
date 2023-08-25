@@ -66,7 +66,6 @@ const NearestHubs = forwardRef(({ userPosition, stations, onSelectStation }, ref
   }
 
   const selectHub = (hub) => {
-    console.log(hub)
     bottomSheetRef.current?.dismiss();
     setTimeout(() => {
       onSelectStation(hub)
@@ -93,7 +92,7 @@ const NearestHubs = forwardRef(({ userPosition, stations, onSelectStation }, ref
 
         <View style={styles.right}>
           <View>
-            <Text style={{ fontSize: 18 }}>{item.district}</Text>
+            <Text style={{ fontSize: 18, fontFamily: 'Roboto-Regular' }}>{item.district}</Text>
 
             {item.bicycles.some(bike => bike.status === 'Available') ? (
               <Text style={styles.info}>Cycle available</Text>
@@ -143,6 +142,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20
   },
   heading: {
+    fontFamily: 'Roboto-Bold',
     fontSize: 24
   },
   list: {
@@ -178,6 +178,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   info: {
+    fontFamily: 'Lora-SemiBold',
     fontSize: 14,
     color: colors.darkgrey
   },

@@ -58,21 +58,24 @@ const styles = StyleSheet.create({
     // borderWidth: 1,
   },
   heading: {
+    fontFamily: 'Roboto-Bold',
     fontSize: 18,
-    fontWeight: 'bold',
   },
   details: {
     marginTop: 10,
   },
   bikeAttr: {
     flexDirection: 'row',
+    alignItems: 'center',
     gap: 5
   },
   attrKey: {
-    color: colors.lightgrey
+    fontFamily: 'Lora-Medium',
+    color: colors.darkgrey
   },
   attrValue: {
-    color: colors.darkgrey
+    fontFamily: 'Lora-Bold',
+    // color: colors.darkgrey
   },
   closeBtn: {
     position: 'absolute',
