@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { StyleSheet, View, Text, Image, TextInput } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
-
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import CustomButton from '../../components/CustomButton';
 import { colors } from '../../../styles/styles'
 
@@ -63,7 +62,7 @@ const SignIn = ({ navigation }) => {
               />
 
               {values.email && !errors.email && (
-                <Icon name="check-circle" size={20} color="green" style={styles.inputIcon} />
+                <MaterialCommunityIcons name="check-circle-outline" size={20} color="green" style={styles.inputIcon} />
               )}
             </View>
             {errors.email && <Text style={styles.errorMessage}>{errors.email}</Text>}
@@ -76,8 +75,8 @@ const SignIn = ({ navigation }) => {
                 secureTextEntry={!passwordVisible}
                 style={[styles.input, { paddingRight: 40, overflow: 'hidden', }]}
               />
-              <Icon
-                name={passwordVisible ? 'eye' : 'eye-slash'}
+              <MaterialCommunityIcons
+                name={passwordVisible ? 'eye' : 'eye-off'}
                 size={20}
                 color="#888"
                 style={styles.inputIcon}
@@ -119,6 +118,7 @@ const styles = StyleSheet.create({
     gap: 10
   },
   input: {
+    fontFamily: 'Roboto-Regular',
     borderWidth: 1,
     borderColor: '#ccc',
     flexDirection: 'row',
@@ -140,6 +140,7 @@ const styles = StyleSheet.create({
     right: 16,
   },
   errorMessage: {
+    fontFamily: 'Roboto-Regular',
     color: colors.red
   }
 });

@@ -158,7 +158,7 @@ const Map = ({ navigation }) => {
 
 			<View style={styles.uppperBtnsWrapper}>
 				<CustomButton
-					icon="account"
+					icon="cog"
 					color="white"
 					onPress={() => handleOpenDrawer()}
 					magicNumber={0.12}

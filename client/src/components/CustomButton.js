@@ -39,9 +39,8 @@ const styles = StyleSheet.create({
         paddingVertical: 12,
     },
     title: {
-        color: 'black',
+        fontFamily: 'Roboto-Regular',
         fontSize: 16,
-        fontWeight: 'bold',
     },
     wrapper: {
         flexDirection: 'row',

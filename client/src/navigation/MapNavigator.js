@@ -1,26 +1,13 @@
 import React from "react"
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { Map, Profile, History } from '../screens'
-import { Ionicons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const Drawer = createDrawerNavigator();
 const MapNavigator = () => {
-
-  const screenOptions = {
-    drawerActiveTintColor: 'blue',
-    drawerInactiveTintColor: 'gray',
-    drawerLabelStyle: {
-      fontSize: 16,
-      fontWeight: 'bold',
-    },
-    drawerStyle: {
-      backgroundColor: '#f1f1f1',
-    },
-  };
-
   const drawerLabelStyle = {
+    fontFamily: 'Roboto-Bold',
     fontSize: 16,
-    fontWeight: 'bold',
     textAlign: 'center',
   }
 
@@ -32,16 +19,19 @@ const MapNavigator = () => {
         options={{
           headerShown: false,
           drawerIcon: ({ focused, color, size }) => (
-            <Ionicons name={focused ? 'map' : 'map-outline'} color={color} size={size} />
+            <MaterialCommunityIcons name={focused ? 'map-marker' : 'map-marker-outline'} color={color} size={size} />
           ),
-          drawerLabelStyle
+          drawerLabelStyle,
+          // drawerActiveTintColor: 'blue',
+          // drawerInactiveTintColor: 'red',
+
         }} />
       <Drawer.Screen
         name="Profile"
         component={Profile}
         options={{
           drawerIcon: ({ focused, color, size }) => (
-            <Ionicons name={focused ? 'person' : 'person-outline'} color={color} size={size} />
+            <MaterialCommunityIcons name={focused ? 'account' : 'account-outline'} color={color} size={size} />
           ),
           drawerLabelStyle
         }} />
@@ -51,7 +41,7 @@ const MapNavigator = () => {
         component={History}
         options={{
           drawerIcon: ({ focused, color, size }) => (
-            <Ionicons name={focused ? 'time' : 'time-outline'} size={size} color={color} />),
+            <MaterialCommunityIcons name={focused ? 'history' : 'history'} size={size} color={color} />),
           drawerLabelStyle
         }} />
     </Drawer.Navigator >

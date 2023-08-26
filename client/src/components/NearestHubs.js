@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20
   },
   heading: {
-    fontFamily: 'Roboto-Bold',
+    fontFamily: 'Roboto-Regular',
     fontSize: 24
   },
   list: {

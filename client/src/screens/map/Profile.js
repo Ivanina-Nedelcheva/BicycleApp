@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import { StyleSheet, View, TextInput, Text, Modal, Alert, Pressable, ScrollView } from 'react-native';
+import { StyleSheet, View, TextInput, Text, ScrollView } from 'react-native';
 import CustomButton from '../../components/CustomButton';
 import { colors } from '../../../styles/styles'
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import DeleteAccount from '../../components/DeleteAccount';
 
 
@@ -60,7 +60,7 @@ const Profile = ({ navigation }) => {
                 />
 
                 {values.firstName && !errors.firstName && (
-                  <Icon name="check-circle" size={20} color="green" style={styles.inputIcon} />
+                  <MaterialCommunityIcons name="check-circle" size={20} color="green" style={styles.inputIcon} />
                 )}
               </View>
               {errors.firstName && <Text style={styles.errorMessage}>{errors.firstName}</Text>}
@@ -73,7 +73,7 @@ const Profile = ({ navigation }) => {
                   style={styles.input}
                 />
                 {values.lastName && !errors.lastName && (
-                  <Icon name="check-circle" size={20} color="green" style={styles.inputIcon} />
+                  <MaterialCommunityIcons name="check-circle" size={20} color="green" style={styles.inputIcon} />
                 )}
               </View>
               {errors.lastName && <Text style={styles.errorMessage}>{errors.lastName}</Text>}
@@ -88,7 +88,7 @@ const Profile = ({ navigation }) => {
                 />
 
                 {values.phoneNumber && !errors.phoneNumber && (
-                  <Icon name="check-circle" size={20} color="green" style={styles.inputIcon} />
+                  <MaterialCommunityIcons name="check-circle" size={20} color="green" style={styles.inputIcon} />
                 )}
               </View>
               {errors.phoneNumber && <Text style={styles.errorMessage}>{errors.phoneNumber}</Text>}
@@ -103,7 +103,7 @@ const Profile = ({ navigation }) => {
                 />
 
                 {values.email && !errors.email && (
-                  <Icon name="check-circle" size={20} color="green" style={styles.inputIcon} />
+                  <MaterialCommunityIcons name="check-circle" size={20} color="green" style={styles.inputIcon} />
                 )}
               </View>
               {errors.email && <Text style={styles.errorMessage}>{errors.email}</Text>}
@@ -116,8 +116,8 @@ const Profile = ({ navigation }) => {
                   secureTextEntry={!passwordVisible}
                   style={[styles.input, { paddingRight: 40, overflow: 'hidden', }]}
                 />
-                <Icon
-                  name={passwordVisible ? 'eye' : 'eye-slash'}
+                <MaterialCommunityIcons
+                  name={passwordVisible ? 'eye' : 'eye-off'}
                   size={20}
                   color="#888"
                   style={styles.inputIcon}
@@ -179,6 +179,7 @@ const styles = StyleSheet.create({
     gap: 10
   },
   input: {
+    fontFamily: 'Roboto-Regular',
     borderWidth: 1,
     borderColor: '#ccc',
     flexDirection: 'row',
@@ -200,6 +201,7 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
   },
   errorMessage: {
+    fontFamily: 'Roboto-Regular',
     color: colors.red
   },
   btn: {

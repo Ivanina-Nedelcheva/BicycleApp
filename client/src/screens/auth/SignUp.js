@@ -5,8 +5,7 @@ import { StyleSheet, View, Image, TextInput, Text, ScrollView, TouchableWithoutF
 import Checkbox from 'expo-checkbox';
 import CustomButton from '../../components/CustomButton';
 import { colors } from '../../../styles/styles.js'
-import Icon from 'react-native-vector-icons/FontAwesome';
-import { AntDesign } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 
 const SignUp = ({ navigation }) => {
@@ -63,7 +62,7 @@ const SignUp = ({ navigation }) => {
                 />
 
                 {values.firstName && !errors.firstName && (
-                  <Icon name="check-circle" size={20} color="green" style={styles.inputIcon} />
+                  <MaterialCommunityIcons name="check-circle-outline" size={20} color="green" style={styles.inputIcon} />
                 )}
               </View>
               {errors.firstName && <Text style={styles.errorMessage}>{errors.firstName}</Text>}
@@ -76,7 +75,7 @@ const SignUp = ({ navigation }) => {
                   style={styles.input}
                 />
                 {values.lastName && !errors.lastName && (
-                  <Icon name="check-circle" size={20} color="green" style={styles.inputIcon} />
+                  <MaterialCommunityIcons name="check-circle" size={20} color="green" style={styles.inputIcon} />
                 )}
               </View>
               {errors.lastName && <Text style={styles.errorMessage}>{errors.lastName}</Text>}
@@ -91,7 +90,7 @@ const SignUp = ({ navigation }) => {
                 />
 
                 {values.phoneNumber && !errors.phoneNumber && (
-                  <Icon name="check-circle" size={20} color="green" style={styles.inputIcon} />
+                  <MaterialCommunityIcons name="check-circle" size={20} color="green" style={styles.inputIcon} />
                 )}
               </View>
               {errors.phoneNumber && <Text style={styles.errorMessage}>{errors.phoneNumber}</Text>}
@@ -106,7 +105,7 @@ const SignUp = ({ navigation }) => {
                 />
 
                 {values.email && !errors.email && (
-                  <Icon name="check-circle" size={20} color="green" style={styles.inputIcon} />
+                  <MaterialCommunityIcons name="check-circle" size={20} color="green" style={styles.inputIcon} />
                 )}
               </View>
               {errors.email && <Text style={styles.errorMessage}>{errors.email}</Text>}
@@ -119,8 +118,8 @@ const SignUp = ({ navigation }) => {
                   secureTextEntry={!passwordVisible}
                   style={[styles.input, { paddingRight: 40, overflow: 'hidden', }]}
                 />
-                <Icon
-                  name={passwordVisible ? 'eye' : 'eye-slash'}
+                <MaterialCommunityIcons
+                  name={passwordVisible ? 'eye' : 'eye-off'}
                   size={20}
                   color="#888"
                   style={styles.inputIcon}
@@ -129,13 +128,11 @@ const SignUp = ({ navigation }) => {
               </View>
               {errors.password && <Text style={styles.errorMessage}>{errors.password}</Text>}
 
-
               <View style={styles.terms}>
                 <TouchableWithoutFeedback onPress={() => navigation.navigate('TermsAndConditions')}>
                   <View style={styles.linkWrapper}>
                     <Text style={styles.linkText}>Read Terms and Conditions</Text>
-
-                    <AntDesign name="right" size={16} color="black" />
+                    <MaterialCommunityIcons name="chevron-right" size={24} color="black" />
                   </View>
                 </TouchableWithoutFeedback>
 
@@ -151,7 +148,7 @@ const SignUp = ({ navigation }) => {
                 <TouchableWithoutFeedback onPress={() => navigation.navigate('PrivacyPolicy')}>
                   <View style={styles.linkWrapper}>
                     <Text style={styles.linkText}>Read Privacy Policy</Text>
-                    <AntDesign name="right" size={16} color="black" />
+                    <MaterialCommunityIcons name="chevron-right" size={24} color="black" />
                   </View>
                 </TouchableWithoutFeedback>
 
@@ -197,6 +194,7 @@ const styles = StyleSheet.create({
     gap: 10
   },
   input: {
+    fontFamily: 'Roboto-Regular',
     borderWidth: 1,
     borderColor: '#ccc',
     flexDirection: 'row',
@@ -218,6 +216,7 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
   },
   errorMessage: {
+    fontFamily: 'Roboto-Regular',
     color: colors.red
   },
   terms: {
@@ -232,6 +231,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   linkText: {
+    fontFamily: 'Roboto-Regular',
     color: colors.primary,
     textDecorationLine: 'underline',
   },
@@ -242,6 +242,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   checkboxLabel: {
+    fontFamily: 'Roboto-Regular',
     marginLeft: 8,
   },
 });
