@@ -3,7 +3,6 @@ import { View, Text, FlatList, TouchableHighlight, ActivityIndicator, StyleSheet
 import { BottomSheetModal, BottomSheetModalProvider, } from '@gorhom/bottom-sheet';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import * as geolib from 'geolib';
-
 import { colors } from '../../styles/styles'
 
 const NearestHubs = forwardRef(({ userPosition, stations, onSelectStation }, ref) => {
@@ -102,7 +101,7 @@ const NearestHubs = forwardRef(({ userPosition, stations, onSelectStation }, ref
           </View>
 
           <View>
-            <MaterialCommunityIcons name="arrow-right" size={24} color="black" />
+            <MaterialCommunityIcons name="chevron-right" size={24} color="black" />
           </View>
         </View>
       </View>
@@ -150,7 +149,7 @@ const styles = StyleSheet.create({
   },
   hub: {
     marginTop: 10,
-    borderWidth: 2,
+    borderWidth: 3,
     borderRadius: 10,
   },
   hubContainer: {
@@ -178,7 +177,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   info: {
-    fontFamily: 'Lora-SemiBold',
+    fontFamily: 'Roboto-Regular',
     fontSize: 14,
     color: colors.darkgrey
   },

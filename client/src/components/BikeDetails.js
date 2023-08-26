@@ -6,9 +6,9 @@ import { colors } from '../../styles/styles'
 const BikeDetails = ({ bike, bottomSheetRef }) => {
   const snapPoints = useMemo(() => ['25%', '50%'], []);
 
-  const handleSheetChanges = useCallback((index) => {
-    console.log('handleSheetChanges', index);
-  }, []);
+  // const handleSheetChanges = useCallback((index) => {
+  //   console.log('handleSheetChanges', index);
+  // }, []);
 
   return (
     <BottomSheetModalProvider>
@@ -16,7 +16,7 @@ const BikeDetails = ({ bike, bottomSheetRef }) => {
         ref={bottomSheetRef}
         index={1}
         snapPoints={snapPoints}
-        onChange={handleSheetChanges}
+      // onChange={handleSheetChanges}
       >
         <View style={styles.contentContainer}>
           <Text style={styles.heading}>Bike Details</Text>
@@ -58,8 +58,8 @@ const styles = StyleSheet.create({
     // borderWidth: 1,
   },
   heading: {
-    fontFamily: 'Roboto-Bold',
-    fontSize: 18,
+    fontFamily: 'Roboto-Regular',
+    fontSize: 22,
   },
   details: {
     marginTop: 10,
@@ -70,12 +70,11 @@ const styles = StyleSheet.create({
     gap: 5
   },
   attrKey: {
-    fontFamily: 'Lora-Medium',
+    fontFamily: 'Roboto-Medium',
     color: colors.darkgrey
   },
   attrValue: {
-    fontFamily: 'Lora-Bold',
-    // color: colors.darkgrey
+    fontFamily: 'Roboto-Bold',
   },
   closeBtn: {
     position: 'absolute',

@@ -27,7 +27,7 @@ const BikeSelect = ({ route }) => {
         </View>
 
         <View>
-          <MaterialCommunityIcons name="arrow-right" size={24} color="black" />
+          <MaterialCommunityIcons name="chevron-right" size={24} color="black" />
         </View>
       </View>
     </TouchableHighlight>
@@ -63,8 +63,8 @@ const styles = StyleSheet.create({
     marginTop: 25,
   },
   heading: {
-    fontFamily: 'Roboto-Bold',
-    fontSize: 24,
+    fontFamily: 'Roboto-Regular',
+    fontSize: 28,
     marginTop: 24
   },
   itemContainer: {

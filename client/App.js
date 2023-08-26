@@ -18,15 +18,6 @@ const App = () => {
     'Roboto-MediumItalic': require('./assets/fonts/Roboto-MediumItalic.ttf'),
     'Roboto-Thin': require('./assets/fonts/Roboto-Thin.ttf'),
     'Roboto-ThinItalic': require('./assets/fonts/Roboto-ThinItalic.ttf'),
-    'Lora-Regular': require('./assets/fonts/Lora-Regular.ttf'),
-    'Lora-SemiBold': require('./assets/fonts/Lora-SemiBold.ttf'),
-    'Lora-SemiBoldItalic': require('./assets/fonts/Lora-SemiBoldItalic.ttf'),
-    'Lora-Bold': require('./assets/fonts/Lora-Bold.ttf'),
-    'Lora-BoldItalic': require('./assets/fonts/Lora-BoldItalic.ttf'),
-    'Lora-Italic': require('./assets/fonts/Lora-Italic.ttf'),
-    'Lora-Medium': require('./assets/fonts/Lora-Medium.ttf'),
-    'Lora-MediumItalic': require('./assets/fonts/Lora-MediumItalic.ttf'),
-    'Vidaloka-Regular': require('./assets/fonts/Vidaloka-Regular.ttf'),
   });
 
   return (
