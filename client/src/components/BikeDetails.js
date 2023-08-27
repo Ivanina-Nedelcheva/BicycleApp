@@ -2,49 +2,87 @@ import React, { useRef, useState, useCallback, useMemo } from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 import { BottomSheetModal, BottomSheetModalProvider, } from '@gorhom/bottom-sheet';
 import { colors } from '../../styles/styles'
+import CustomButton from '../components/CustomButton'
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+
 
 const BikeDetails = ({ bike, bottomSheetRef }) => {
-  const snapPoints = useMemo(() => ['25%', '50%'], []);
+  const snapPoints = useMemo(() => ['35%', '75%'], []);
 
-  // const handleSheetChanges = useCallback((index) => {
-  //   console.log('handleSheetChanges', index);
-  // }, []);
+  function handleRing() {
+
+  }
+
+  function handleReserveBike() {
+    bottomSheetRef.current?.close()
+  }
+
+  function handleReportIssue() {
+
+  }
 
   return (
     <BottomSheetModalProvider>
       <BottomSheetModal
         ref={bottomSheetRef}
-        index={1}
+        index={0}
         snapPoints={snapPoints}
-      // onChange={handleSheetChanges}
+        backgroundStyle={{ backgroundColor: 'aliceblue', borderWidth: 0.3, borderColor: colors.aliceblue2 }}
       >
-        <View style={styles.contentContainer}>
+        <View style={styles.bikeContent}>
           <Text style={styles.heading}>Bike Details</Text>
 
           <View style={styles.details}>
             <View style={styles.bikeAttr}>
-              <Text style={styles.attrKey}>ID:</Text>
+              <Text style={styles.attrKey}>Bike ID:</Text>
               <Text style={styles.attrValue}>{bike.id}</Text>
             </View>
 
             <View style={styles.bikeAttr}>
-              <Text style={styles.attrKey}>Status:</Text>
-              <Text style={styles.attrValue}>{bike.status}</Text>
+              <MaterialCommunityIcons style={{ transform: [{ rotate: '90deg' }] }} name="battery-medium" size={24} color="black" />
+              <Text style={styles.attrValue}>3 km range</Text>
             </View>
 
             <View style={styles.bikeAttr}>
-              <Text style={styles.attrKey}>State:</Text>
-              <Text style={styles.attrValue}>{bike.state}</Text>
+              <MaterialCommunityIcons name="wallet-outline" size={24} color="black" />
+              <Text style={styles.attrValue}>1.69лв. to start, then 0.33 лв./min</Text>
             </View>
           </View>
 
-          {/* <CustomButton
-            icon="close"
-            color="lightgrey"
-            onPress={() => bottomSheetRef.current?.close()}
-            magicNumber={0.12}
-            style={styles.closeBtn}
-          /> */}
+          <View style={styles.btnContainer}>
+            <CustomButton
+              title="Ring"
+              icon="bell-ring-outline"
+              color="white"
+              onPress={handleReserveBike}
+              magicNumber={0.3}
+              style={styles.btns}
+            />
+
+            <CustomButton
+              title="Report Issue"
+              icon="alert-outline"
+              color="white"
+              onPress={handleReportIssue}
+              magicNumber={0.4}
+              style={styles.btns}
+            />
+          </View>
+
+          <View style={styles.reservation}>
+            <View style={styles.reservationMsg}>
+              <MaterialCommunityIcons name="clock-alert-outline" size={24} color="black" />
+              <Text style={styles.msg}>Reservation is free for 15min</Text>
+            </View>
+
+            <CustomButton
+              title="Reserve"
+              color={colors.primary}
+              onPress={handleReserveBike}
+              magicNumber={0.8}
+              style={[styles.btns, { alignSelf: 'center' }]}
+            />
+          </View>
         </View>
       </BottomSheetModal>
     </BottomSheetModalProvider>
@@ -52,10 +90,8 @@ const BikeDetails = ({ bike, bottomSheetRef }) => {
 };
 
 const styles = StyleSheet.create({
-  contentContainer: {
-    flex: 1,
+  bikeContent: {
     padding: 20,
-    // borderWidth: 1,
   },
   heading: {
     fontFamily: 'Roboto-Regular',
@@ -70,17 +106,33 @@ const styles = StyleSheet.create({
     gap: 5
   },
   attrKey: {
-    fontFamily: 'Roboto-Medium',
-    color: colors.darkgrey
+    fontFamily: 'Roboto-Bold',
   },
   attrValue: {
     fontFamily: 'Roboto-Bold',
   },
-  closeBtn: {
-    position: 'absolute',
-    top: 0,
-    right: 20
-  }
+  btnContainer: {
+    alignSelf: 'center',
+    flexDirection: 'row',
+    gap: 20
+  },
+  btns: {
+    marginTop: 20,
+  },
+  reservation: {
+    marginTop: 40,
+    padding: 20
+  },
+  reservationMsg: {
+    flexDirection: 'row',
+    gap: 20,
+    alignItems: 'center',
+  },
+  msg: {
+    fontFamily: 'Roboto-Medium',
+    fontSize: 18
+  },
+
 });
 
 export default BikeDetails;
