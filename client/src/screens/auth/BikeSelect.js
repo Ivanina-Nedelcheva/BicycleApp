@@ -23,7 +23,7 @@ const BikeSelect = ({ route }) => {
         <View style={styles.textContainer}>
           <Text style={styles.itemText}>ID: {item.id}</Text>
           <Text style={styles.itemText}>Status: {item.status}</Text>
-          {/* <Text style={styles.itemText}>State: {item.state}</Text> */}
+          <Text style={styles.itemText}>State: {item.state}</Text>
         </View>
 
         <View>

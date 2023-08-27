@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import { StyleSheet, View, Image, TextInput, Text, ScrollView, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, View, TextInput, Text, ScrollView, TouchableWithoutFeedback } from 'react-native';
 import Checkbox from 'expo-checkbox';
 import CustomButton from '../../components/CustomButton';
 import { colors } from '../../../styles/styles.js'

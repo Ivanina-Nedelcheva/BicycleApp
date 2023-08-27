@@ -1,6 +1,7 @@
 import 'react-native-gesture-handler';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useFonts } from 'expo-font';
+import * as SplashScreen from 'expo-splash-screen';
 import { StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import AuthNavigator from './src/navigation/AuthNavigator'
@@ -20,8 +21,18 @@ const App = () => {
     'Roboto-ThinItalic': require('./assets/fonts/Roboto-ThinItalic.ttf'),
   });
 
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded) {
+      await SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded]);
+
+  if (!fontsLoaded) {
+    return null;
+  }
+
   return (
-    <NavigationContainer>
+    <NavigationContainer onLayout={onLayoutRootView}>
       <AuthNavigator></AuthNavigator>
     </NavigationContainer>
   );

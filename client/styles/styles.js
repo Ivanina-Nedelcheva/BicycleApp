@@ -7,4 +7,7 @@ export const colors = {
     lightgrey: 'hsl(0, 0%, 65%)',
     disabled: 'hsl(0, 0%, 60%)',
     darkgrey: 'hsl(0, 0%, 40%)',
+
+    aliceblue: 'hsl(208, 100%, 97%)',
+    aliceblue2: 'hsl(208, 100%, 80%)',
 };

@@ -1,6 +1,6 @@
 import React from "react"
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { Map, Profile, History } from '../screens'
+import { Map, Profile, History, Payment } from '../screens'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const Drawer = createDrawerNavigator();
@@ -42,6 +42,15 @@ const MapNavigator = () => {
         options={{
           drawerIcon: ({ focused, color, size }) => (
             <MaterialCommunityIcons name={focused ? 'history' : 'history'} size={size} color={color} />),
+          drawerLabelStyle
+        }} />
+
+      <Drawer.Screen
+        name="Payment"
+        component={Payment}
+        options={{
+          drawerIcon: ({ focused, color, size }) => (
+            <MaterialCommunityIcons name={focused ? 'wallet' : 'wallet-outline'} size={size} color={color} />),
           drawerLabelStyle
         }} />
     </Drawer.Navigator >

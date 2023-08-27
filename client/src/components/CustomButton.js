@@ -21,11 +21,11 @@ const CustomButton = ({ icon, title, color, onPress, style, magicNumber, disable
             activeOpacity={0.8}
             disabled={disabled}
         >
-            <View style={styles.wrapper}>
-                <MaterialCommunityIcons name={icon} size={24} color="black" />
-
-                <Text style={styles.title}>{title}</Text>
+            <View style={[styles.wrapper]}>
+                {icon && <MaterialCommunityIcons name={icon} size={24} color="black" />}
+                {title && <Text style={styles.title}>{title}</Text>}
             </View>
+
         </TouchableOpacity>
     );
 };
@@ -44,7 +44,8 @@ const styles = StyleSheet.create({
     },
     wrapper: {
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+        gap: 10
     }
 });
 

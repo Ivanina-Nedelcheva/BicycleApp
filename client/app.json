@@ -13,12 +13,6 @@
       "backgroundColor": "#ffffff"
     },
     "assetBundlePatterns": ["assets/*"],
-    "fonts": [
-      {
-        "asset": "assets/fonts/static/Kablammo-Regular.ttf",
-        "fontWeight": "400"
-      }
-    ],
     "ios": {
       "supportsTablet": true
     },

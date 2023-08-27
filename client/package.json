@@ -34,7 +34,9 @@
     "react-native-screens": "~3.20.0",
     "react-native-web": "~0.18.10",
     "yup": "^1.2.0",
-    "expo-font": "~11.1.1"
+    "expo-font": "~11.1.1",
+    "expo-splash-screen": "~0.18.2",
+    "@stripe/stripe-react-native": "0.23.3"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
