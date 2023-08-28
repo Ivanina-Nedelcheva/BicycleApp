@@ -18,14 +18,13 @@ const CustomButton = ({ icon, title, color, onPress, style, magicNumber, disable
                 }
             ]}
             underlayColor="color"
-            activeOpacity={0.8}
+            activeOpacity={0.2}
             disabled={disabled}
         >
             <View style={[styles.wrapper]}>
                 {icon && <MaterialCommunityIcons name={icon} size={24} color="black" />}
                 {title && <Text style={styles.title}>{title}</Text>}
             </View>
-
         </TouchableOpacity>
     );
 };

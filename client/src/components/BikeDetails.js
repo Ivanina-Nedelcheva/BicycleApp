@@ -2,20 +2,28 @@ import React, { useRef, useState, useCallback, useMemo } from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 import { BottomSheetModal, BottomSheetModalProvider, } from '@gorhom/bottom-sheet';
 import { colors } from '../../styles/styles'
-import CustomButton from '../components/CustomButton'
+import CustomButton from './CustomButton'
+import Timer from './Timer'
+import StartRideSlider from './StartRideSlider';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 
 const BikeDetails = ({ bike, bottomSheetRef }) => {
   const snapPoints = useMemo(() => ['35%', '75%'], []);
+  const [reservation, setReservation] = useState(false)
 
-  function handleRing() {
-
+  function cancelReservation() {
+    setReservation(false)
   }
 
   function handleReserveBike() {
-    bottomSheetRef.current?.close()
+    setReservation(true)
+    // bottomSheetRef.current?.close()
   }
+
+  function handleStartRide() {
+    alert('Ride Started!');
+  };
 
   function handleReportIssue() {
 
@@ -33,40 +41,54 @@ const BikeDetails = ({ bike, bottomSheetRef }) => {
           <Text style={styles.heading}>Bike Details</Text>
 
           <View style={styles.details}>
-            <View style={styles.bikeAttr}>
-              <Text style={styles.attrKey}>Bike ID:</Text>
-              <Text style={styles.attrValue}>{bike.id}</Text>
+            <View style={styles.bikeAttributes}>
+              <Text style={styles.attribute}>Bike ID:</Text>
+              <Text style={styles.attribute}>{bike.id}</Text>
             </View>
 
-            <View style={styles.bikeAttr}>
+            <View style={styles.bikeAttributes}>
               <MaterialCommunityIcons style={{ transform: [{ rotate: '90deg' }] }} name="battery-medium" size={24} color="black" />
-              <Text style={styles.attrValue}>3 km range</Text>
+              <Text style={styles.attribute}>3 km range</Text>
             </View>
 
-            <View style={styles.bikeAttr}>
+            <View style={styles.bikeAttributes}>
               <MaterialCommunityIcons name="wallet-outline" size={24} color="black" />
-              <Text style={styles.attrValue}>1.69лв. to start, then 0.33 лв./min</Text>
+              <Text style={styles.attribute}>1.69лв. to start, then 0.33 лв./min</Text>
             </View>
+
+            {reservation && <View style={styles.bikeAttributes}>
+              <MaterialCommunityIcons name="clock-outline" size={24} color="black" />
+              <Timer />
+            </View>}
           </View>
 
           <View style={styles.btnContainer}>
-            <CustomButton
+            {/* <CustomButton
               title="Ring"
               icon="bell-ring-outline"
-              color="white"
+              color={colors.aliceblue2}
               onPress={handleReserveBike}
               magicNumber={0.3}
               style={styles.btns}
-            />
+            /> */}
 
             <CustomButton
               title="Report Issue"
               icon="alert-outline"
-              color="white"
               onPress={handleReportIssue}
               magicNumber={0.4}
               style={styles.btns}
             />
+
+            {reservation &&
+              <CustomButton
+                title="Cancel"
+                icon="cancel"
+                onPress={cancelReservation}
+                magicNumber={0.3}
+                style={styles.btns}
+              />
+            }
           </View>
 
           <View style={styles.reservation}>
@@ -80,8 +102,10 @@ const BikeDetails = ({ bike, bottomSheetRef }) => {
               color={colors.primary}
               onPress={handleReserveBike}
               magicNumber={0.8}
-              style={[styles.btns, { alignSelf: 'center' }]}
+              style={{ alignSelf: 'center', marginTop: 20 }}
             />
+
+            <StartRideSlider onStartRide={handleStartRide} />
           </View>
         </View>
       </BottomSheetModal>
@@ -100,24 +124,22 @@ const styles = StyleSheet.create({
   details: {
     marginTop: 10,
   },
-  bikeAttr: {
+  bikeAttributes: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 5
   },
-  attrKey: {
-    fontFamily: 'Roboto-Bold',
-  },
-  attrValue: {
+  attribute: {
     fontFamily: 'Roboto-Bold',
   },
   btnContainer: {
-    alignSelf: 'center',
     flexDirection: 'row',
-    gap: 20
+    gap: 20,
   },
   btns: {
     marginTop: 20,
+    borderWidth: 0.3,
+    backgroundColor: 'white'
   },
   reservation: {
     marginTop: 40,

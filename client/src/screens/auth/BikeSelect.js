@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableHighlight } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import StartRideSlider from '../../components/StartRideSlider';
 import BikeDetails from '../../components/BikeDetails';
 
 const BikeSelect = ({ route }) => {
@@ -23,7 +24,7 @@ const BikeSelect = ({ route }) => {
         <View style={styles.textContainer}>
           <Text style={styles.itemText}>ID: {item.id}</Text>
           <Text style={styles.itemText}>Status: {item.status}</Text>
-          <Text style={styles.itemText}>State: {item.state}</Text>
+          {/* <Text style={styles.itemText}>State: {item.state}</Text> */}
         </View>
 
         <View>
@@ -48,6 +49,9 @@ const BikeSelect = ({ route }) => {
         bike={selectedBike}
         bottomSheetRef={bottomSheetRef}
       />
+
+      <StartRideSlider />
+
     </View>
   );
 };

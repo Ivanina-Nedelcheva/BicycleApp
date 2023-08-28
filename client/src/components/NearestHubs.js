@@ -115,6 +115,7 @@ const NearestHubs = forwardRef(({ userPosition, stations, onSelectStation }, ref
         index={0}
         snapPoints={snapPoints}
         style={styles.modal}
+        backgroundStyle={{ backgroundColor: colors.aliceblue, borderWidth: 0.3, borderColor: colors.aliceblue2 }}
       >
         <Text style={styles.heading}>Nearest Hubs</Text>
         <View>
@@ -148,8 +149,9 @@ const styles = StyleSheet.create({
     marginTop: 10
   },
   hub: {
+    backgroundColor: 'white',
     marginTop: 10,
-    borderWidth: 3,
+    borderWidth: 1,
     borderRadius: 10,
   },
   hubContainer: {
