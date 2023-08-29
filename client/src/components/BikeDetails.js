@@ -4,8 +4,9 @@ import { BottomSheetModal, BottomSheetModalProvider, } from '@gorhom/bottom-shee
 import { colors } from '../../styles/styles'
 import CustomButton from './CustomButton'
 import Timer from './Timer'
-import StartRideSlider from './StartRideSlider';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import HoldToAction from './HoldToAction';
+import Test from './Test'
 
 
 const BikeDetails = ({ bike, bottomSheetRef }) => {
@@ -39,6 +40,7 @@ const BikeDetails = ({ bike, bottomSheetRef }) => {
       >
         <View style={styles.bikeContent}>
           <Text style={styles.heading}>Bike Details</Text>
+
 
           <View style={styles.details}>
             <View style={styles.bikeAttributes}>
@@ -104,10 +106,11 @@ const BikeDetails = ({ bike, bottomSheetRef }) => {
               magicNumber={0.8}
               style={{ alignSelf: 'center', marginTop: 20 }}
             />
-
-            <StartRideSlider onStartRide={handleStartRide} />
           </View>
         </View>
+        {/* <HoldToAction /> */}
+
+        <Test />
       </BottomSheetModal>
     </BottomSheetModalProvider>
   );
