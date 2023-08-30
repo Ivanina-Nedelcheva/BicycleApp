@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { StyleSheet, View, TextInput, Text, ScrollView, TouchableWithoutFeedback } from 'react-native';
+import _ from 'lodash'
 import Checkbox from 'expo-checkbox';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import CustomButton from '../../components/CustomButton';
 import { colors } from '../../../styles/styles.js'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -13,6 +15,10 @@ const SignUp = ({ navigation }) => {
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [privacyAccepted, setPrivacyAccepted] = useState(false);
 
+  const [datePickerVisible, setDatePickerVisible] = useState(false);
+  const [dateOfBirth, setDateOfBirth] = useState(new Date()); // Initialize with current date
+
+  console.log('new', dateOfBirth);
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
@@ -23,14 +29,21 @@ const SignUp = ({ navigation }) => {
     lastName: Yup.string().required('Last name is required'),
     phoneNumber: Yup.string().required('Phone number is required').matches(
       /^(((\+|00)359[- ]?)|(0))(8[- ]?[789]([- ]?\d){7})$/gm,
-      "Plese enter valid phone number"
+      "Please enter valid phone number"
     ),
-    email: Yup.string().email('Invalid email').required('Email is required'),
-    // password: Yup.string().required('Password is required').matches(
-    //     /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
-    //     "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"
-    // ),
-    password: Yup.string().required('Password is required'),
+    email: Yup.string().required('Email is required').email('Invalid email'),
+    password: Yup.string().min(8).required('Password is required').matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
+      "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"
+    ),
+    confirmPassword: Yup.string().required('Confirm password is required').min(8).oneOf([Yup.ref('password')], 'Your password do not match'),
+    dateOfBirth: Yup.date()
+      .required('Date of birth is required')
+      .test('is-at-least-16', 'You must be at least 16 years old.', function (value) {
+        const cutoffDate = new Date();
+        cutoffDate.setFullYear(cutoffDate.getFullYear() - 16); // Subtract 16 years from current year
+        return value <= cutoffDate;
+      }),
   });
 
   const handleSubmit = values => {
@@ -41,24 +54,21 @@ const SignUp = ({ navigation }) => {
   return (
     <ScrollView contentContainerStyle={styles.scroll}>
       <View style={styles.container}>
-        {/* <Image
-          style={styles.image}
-          source={require('../../../assets/images/bike3.jpg')}
-        /> */}
-
         <Formik
-          initialValues={{ firstName: '', lastName: '', id: '', phoneNumber: '', email: '', password: '' }}
+          initialValues={{ firstName: '', lastName: '', id: '', phoneNumber: '', email: '', password: '', confirmPassword: '', dateOfBirth: '' }}
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
+          initialErrors={true}
         >
-          {({ handleChange, handleSubmit, values, errors, isValid }) => (
+          {({ handleChange, handleBlur, handleSubmit, values, errors, isValid, dirty, setFieldValue }) => (
             <View style={styles.form}>
               <View>
                 <TextInput
                   value={values.firstName}
-                  onChangeText={handleChange('firstName')}
                   placeholder="First name"
                   style={styles.input}
+                  onChangeText={handleChange('firstName')}
+                  onBlur={handleBlur('firstName')}
                 />
 
                 {values.firstName && !errors.firstName && (
@@ -70,12 +80,13 @@ const SignUp = ({ navigation }) => {
               <View>
                 <TextInput
                   value={values.lastName}
-                  onChangeText={handleChange('lastName')}
                   placeholder="Last name"
                   style={styles.input}
+                  onChangeText={handleChange('lastName')}
+                  onBlur={handleBlur('lastName')}
                 />
                 {values.lastName && !errors.lastName && (
-                  <MaterialCommunityIcons name="check-circle" size={20} color="green" style={styles.inputIcon} />
+                  <MaterialCommunityIcons name="check-circle-outline" size={20} color="green" style={styles.inputIcon} />
                 )}
               </View>
               {errors.lastName && <Text style={styles.errorMessage}>{errors.lastName}</Text>}
@@ -83,14 +94,15 @@ const SignUp = ({ navigation }) => {
               <View>
                 <TextInput
                   value={values.phoneNumber}
-                  onChangeText={handleChange('phoneNumber')}
                   placeholder="Phone number"
                   keyboardType="phone-pad"
                   style={styles.input}
+                  onChangeText={handleChange('phoneNumber')}
+                  onBlur={handleBlur('phoneNumber')}
                 />
 
                 {values.phoneNumber && !errors.phoneNumber && (
-                  <MaterialCommunityIcons name="check-circle" size={20} color="green" style={styles.inputIcon} />
+                  <MaterialCommunityIcons name="check-circle-outline" size={20} color="green" style={styles.inputIcon} />
                 )}
               </View>
               {errors.phoneNumber && <Text style={styles.errorMessage}>{errors.phoneNumber}</Text>}
@@ -98,14 +110,15 @@ const SignUp = ({ navigation }) => {
               <View>
                 <TextInput
                   value={values.email}
-                  onChangeText={handleChange('email')}
                   placeholder="Email"
                   keyboardType="email-address"
                   style={styles.input}
+                  onChangeText={handleChange('email')}
+                  onBlur={handleBlur('email')}
                 />
 
                 {values.email && !errors.email && (
-                  <MaterialCommunityIcons name="check-circle" size={20} color="green" style={styles.inputIcon} />
+                  <MaterialCommunityIcons name="check-circle-outline" size={20} color="green" style={styles.inputIcon} />
                 )}
               </View>
               {errors.email && <Text style={styles.errorMessage}>{errors.email}</Text>}
@@ -113,10 +126,11 @@ const SignUp = ({ navigation }) => {
               <View>
                 <TextInput
                   value={values.password}
-                  onChangeText={handleChange('password')}
                   placeholder="Password"
                   secureTextEntry={!passwordVisible}
                   style={[styles.input, { paddingRight: 40, overflow: 'hidden', }]}
+                  onChangeText={handleChange('password')}
+                  onBlur={handleBlur('password')}
                 />
                 <MaterialCommunityIcons
                   name={passwordVisible ? 'eye' : 'eye-off'}
@@ -128,6 +142,49 @@ const SignUp = ({ navigation }) => {
               </View>
               {errors.password && <Text style={styles.errorMessage}>{errors.password}</Text>}
 
+              <View>
+                <TextInput
+                  value={values.confirmPassword}
+                  placeholder="Confirm Password"
+                  secureTextEntry={true}
+                  style={[styles.input, { paddingRight: 40, overflow: 'hidden', }]}
+                  onChangeText={handleChange('confirmPassword')}
+                  onBlur={handleBlur('confirmPassword')}
+                />
+                {values.confirmPassword && !errors.confirmPassword && (
+                  <MaterialCommunityIcons name="check-circle-outline" size={20} color="green" style={styles.inputIcon} />
+                )}
+              </View>
+              {errors.confirmPassword && <Text style={styles.errorMessage}>{errors.confirmPassword}</Text>}
+
+
+              <View>
+                <TouchableWithoutFeedback onPress={() => setDatePickerVisible(true)}>
+                  <View style={styles.input}>
+                    <Text>Date of Birth: {dateOfBirth.toDateString()}</Text>
+                  </View>
+                </TouchableWithoutFeedback>
+                {datePickerVisible && (
+                  <DateTimePicker
+                    value={dateOfBirth}
+                    mode="date"
+                    display="spinner"
+                    onChange={(event, date) => {
+                      setDatePickerVisible(false);
+                      if (date) {
+                        setDateOfBirth(date)
+                        setFieldValue('dateOfBirth', date)
+                      }
+                    }}
+                  />
+                )}
+                {values.dateOfBirth && !errors.dateOfBirth && (
+                  <MaterialCommunityIcons name="check-circle-outline" size={20} color="green" style={styles.inputIcon} />
+                )}
+              </View>
+              {errors.dateOfBirth && <Text style={styles.errorMessage}>{errors.dateOfBirth}</Text>}
+
+
               <View style={styles.terms}>
                 <TouchableWithoutFeedback onPress={() => navigation.navigate('TermsAndConditions')}>
                   <View style={styles.linkWrapper}>
@@ -136,7 +193,7 @@ const SignUp = ({ navigation }) => {
                   </View>
                 </TouchableWithoutFeedback>
 
-                <View style={styles.checkboxContainer}>
+                {/* <View style={styles.checkboxContainer}>
                   <Checkbox
                     value={termsAccepted}
                     onValueChange={() => setTermsAccepted(!termsAccepted)}
@@ -150,7 +207,7 @@ const SignUp = ({ navigation }) => {
                     <Text style={styles.linkText}>Read Privacy Policy</Text>
                     <MaterialCommunityIcons name="chevron-right" size={24} color="black" />
                   </View>
-                </TouchableWithoutFeedback>
+                </TouchableWithoutFeedback> */}
 
                 <View style={styles.checkboxContainer}>
                   <Checkbox
@@ -167,13 +224,13 @@ const SignUp = ({ navigation }) => {
                 color={colors.primary}
                 onPress={handleSubmit}
                 magicNumber={0.8}
-                disabled={!isValid}
+                disabled={!dirty || !isValid || !privacyAccepted || !_.isEmpty(errors)}
               />
             </View>
           )}
         </Formik>
       </View>
-    </ScrollView>
+    </ScrollView >
   );
 }
 
