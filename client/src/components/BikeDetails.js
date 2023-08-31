@@ -1,12 +1,11 @@
 import React, { useRef, useState, useCallback, useMemo } from 'react';
-import { View, Text, Button, StyleSheet, Alert } from 'react-native';
+import { View, Text, StyleSheet, Alert } from 'react-native';
 import { BottomSheetModal, BottomSheetModalProvider, } from '@gorhom/bottom-sheet';
 import { colors } from '../../styles/styles'
 import CustomButton from './CustomButton'
 import Timer from './Timer'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import HoldToAction from './HoldToAction';
-import Test from './Test'
+import StartRideButton from './StartRideButton'
 
 
 const BikeDetails = ({ bike, bottomSheetRef }) => {
@@ -24,7 +23,7 @@ const BikeDetails = ({ bike, bottomSheetRef }) => {
   }
 
   function handleStartRide() {
-    Alert.alert('Ride Started!');
+    // Alert.alert('Ride Started!');
   };
 
   function handleReportIssue() {
@@ -47,11 +46,6 @@ const BikeDetails = ({ bike, bottomSheetRef }) => {
             <View style={styles.bikeAttributes}>
               <Text style={styles.attribute}>Bike ID:</Text>
               <Text style={styles.attribute}>{bike.id}</Text>
-            </View>
-
-            <View style={styles.bikeAttributes}>
-              <MaterialCommunityIcons style={{ transform: [{ rotate: '90deg' }] }} name="battery-medium" size={24} color="black" />
-              <Text style={styles.attribute}>3 km range</Text>
             </View>
 
             <View style={styles.bikeAttributes}>
@@ -100,18 +94,22 @@ const BikeDetails = ({ bike, bottomSheetRef }) => {
               <Text style={styles.msg}>Reservation is free for 15min</Text>
             </View>
 
-            <CustomButton
-              title="Reserve"
-              color={colors.primary}
-              onPress={handleReserveBike}
-              magicNumber={0.8}
-              style={{ alignSelf: 'center', marginTop: 20 }}
-            />
+            {!reservation ? (
+              <CustomButton
+                title="Reserve"
+                color={colors.primary}
+                onPress={handleReserveBike}
+                magicNumber={0.8}
+                style={{ alignSelf: 'center', marginTop: 20 }}
+              />
+            ) : (
+              <StartRideButton />
+            )}
           </View>
         </View>
         {/* <HoldToAction /> */}
 
-        <Test />
+        {/* <Test /> */}
       </BottomSheetModal>
     </BottomSheetModalProvider>
   );
@@ -146,7 +144,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'white'
   },
   reservation: {
-    marginTop: 40,
+    height: 200,
+    marginTop: 20,
     padding: 20
   },
   reservationMsg: {

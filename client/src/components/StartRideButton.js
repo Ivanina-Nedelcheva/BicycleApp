@@ -7,12 +7,12 @@ import {
   Text,
   TouchableWithoutFeedback,
 } from "react-native";
+import { colors } from "../../styles/styles";
 
-const ACTION_TIMER = 400;
-const COLORS = ["rgb(255,255,255)", "rgb(111,235,62)"];
+const ACTION_TIMER = 300;
+const COLORS = [colors.secondary, colors.primary];
 
-const AnimatedButtonPress = () => {
-  const [textComplete, setTextComplete] = useState("");
+const StartRideButton = () => {
   const [buttonWidth, setButtonWidth] = useState(0);
   const [buttonHeight, setButtonHeight] = useState(0);
   const pressAction = useRef(new Animated.Value(0)).current;
@@ -33,21 +33,18 @@ const AnimatedButtonPress = () => {
       duration: _value * ACTION_TIMER,
       toValue: 0,
       useNativeDriver: false,
-
     }).start();
   };
 
   const animationActionComplete = () => {
-    let message = "";
     if (_value === 1) {
-      message = "You held it long enough to fire the action!";
+      console.log("You held it long enough to fire the action!");
     }
-    setTextComplete(message);
   };
 
   const getButtonWidthLayout = (e) => {
-    setButtonWidth(e.nativeEvent.layout.width - 6);
-    setButtonHeight(e.nativeEvent.layout.height - 6);
+    setButtonWidth(e.nativeEvent.layout.width);
+    setButtonHeight(e.nativeEvent.layout.height);
   };
 
   const getProgressStyles = () => {
@@ -74,12 +71,9 @@ const AnimatedButtonPress = () => {
       >
         <View style={styles.button} onLayout={getButtonWidthLayout}>
           <Animated.View style={[styles.bgFill, getProgressStyles()]} />
-          <Text style={styles.text}>Press And Hold Me</Text>
+          <Text style={styles.text}>Hold to start ride</Text>
         </View>
       </TouchableWithoutFeedback>
-      <View>
-        <Text>{textComplete}</Text>
-      </View>
     </View>
   );
 };
@@ -87,18 +81,19 @@ const AnimatedButtonPress = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
   },
   button: {
-    padding: 10,
-    borderWidth: 3,
-    borderColor: "#111",
+    paddingVertical: 20,
+    paddingHorizontal: 30,
+    borderWidth: 1,
+    borderColor: colors.primary,
+    borderRadius: 100,
+    overflow: "hidden"
   },
   text: {
-    backgroundColor: "transparent",
-    color: "#111",
+    fontFamily: 'Roboto-Bold'
   },
   bgFill: {
     position: "absolute",
@@ -107,6 +102,6 @@ const styles = StyleSheet.create({
   },
 });
 
-AppRegistry.registerComponent("SampleApp", () => AnimatedButtonPress);
+AppRegistry.registerComponent("SampleApp", () => StartRideButton);
 
-export default AnimatedButtonPress;
+export default StartRideButton;
