@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, Modal, FlatList } from 'react-native';
 import CustomButton from '../components/CustomButton';
 import { colors } from '../../styles/styles'
 
-const DeleteAccount = ({ modalVisible, setModalVisible }) => {
+const DeleteAccount = ({ modalVisible, setModalVisible, navigation }) => {
   const data = [
     { id: 1, text: 'You do not have any legal holds on your account due to pending litigation or other legal action related to your account' },
     { id: 2, text: 'You do not have negative cash balance' },
@@ -27,7 +27,7 @@ const DeleteAccount = ({ modalVisible, setModalVisible }) => {
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
           <CustomButton
-            icon="arrowleft"
+            icon="arrow-left"
             color="white"
             onPress={() => setModalVisible(!modalVisible)}
             magicNumber={0.12}
@@ -46,11 +46,10 @@ const DeleteAccount = ({ modalVisible, setModalVisible }) => {
             />
           </View>
 
-
           <CustomButton
             title='Delete'
             color={colors.lightred}
-            onPress={() => setModalVisible(!modalVisible)}
+            onPress={() => navigation.navigate('Auth')}
             magicNumber={0.45}
             style={styles.deleteBtn}
           />

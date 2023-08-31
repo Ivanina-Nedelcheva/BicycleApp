@@ -1,5 +1,5 @@
 import React, { useRef, useState, useCallback, useMemo } from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
+import { View, Text, Button, StyleSheet, Alert } from 'react-native';
 import { BottomSheetModal, BottomSheetModalProvider, } from '@gorhom/bottom-sheet';
 import { colors } from '../../styles/styles'
 import CustomButton from './CustomButton'
@@ -10,7 +10,7 @@ import Test from './Test'
 
 
 const BikeDetails = ({ bike, bottomSheetRef }) => {
-  const snapPoints = useMemo(() => ['35%', '75%'], []);
+  const snapPoints = useMemo(() => ['75%'], []);
   const [reservation, setReservation] = useState(false)
 
   function cancelReservation() {
@@ -19,11 +19,12 @@ const BikeDetails = ({ bike, bottomSheetRef }) => {
 
   function handleReserveBike() {
     setReservation(true)
+    handleStartRide()
     // bottomSheetRef.current?.close()
   }
 
   function handleStartRide() {
-    alert('Ride Started!');
+    Alert.alert('Ride Started!');
   };
 
   function handleReportIssue() {

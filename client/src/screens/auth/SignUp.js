@@ -14,11 +14,8 @@ const SignUp = ({ navigation }) => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [privacyAccepted, setPrivacyAccepted] = useState(false);
-
   const [datePickerVisible, setDatePickerVisible] = useState(false);
   const [dateOfBirth, setDateOfBirth] = useState(new Date()); // Initialize with current date
-
-  console.log('new', dateOfBirth);
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
@@ -47,7 +44,6 @@ const SignUp = ({ navigation }) => {
   });
 
   const handleSubmit = values => {
-    console.log(values);
     navigation.navigate('MapNavigator')
   };
 
@@ -68,7 +64,7 @@ const SignUp = ({ navigation }) => {
                   placeholder="First name"
                   style={styles.input}
                   onChangeText={handleChange('firstName')}
-                  onBlur={handleBlur('firstName')}
+                // onBlur={handleBlur('firstName')}
                 />
 
                 {values.firstName && !errors.firstName && (
@@ -83,7 +79,7 @@ const SignUp = ({ navigation }) => {
                   placeholder="Last name"
                   style={styles.input}
                   onChangeText={handleChange('lastName')}
-                  onBlur={handleBlur('lastName')}
+                // onBlur={handleBlur('lastName')}
                 />
                 {values.lastName && !errors.lastName && (
                   <MaterialCommunityIcons name="check-circle-outline" size={20} color="green" style={styles.inputIcon} />
@@ -98,7 +94,7 @@ const SignUp = ({ navigation }) => {
                   keyboardType="phone-pad"
                   style={styles.input}
                   onChangeText={handleChange('phoneNumber')}
-                  onBlur={handleBlur('phoneNumber')}
+                // onBlur={handleBlur('phoneNumber')}
                 />
 
                 {values.phoneNumber && !errors.phoneNumber && (
@@ -114,7 +110,7 @@ const SignUp = ({ navigation }) => {
                   keyboardType="email-address"
                   style={styles.input}
                   onChangeText={handleChange('email')}
-                  onBlur={handleBlur('email')}
+                // onBlur={handleBlur('email')}
                 />
 
                 {values.email && !errors.email && (
@@ -130,7 +126,7 @@ const SignUp = ({ navigation }) => {
                   secureTextEntry={!passwordVisible}
                   style={[styles.input, { paddingRight: 40, overflow: 'hidden', }]}
                   onChangeText={handleChange('password')}
-                  onBlur={handleBlur('password')}
+                // onBlur={handleBlur('password')}
                 />
                 <MaterialCommunityIcons
                   name={passwordVisible ? 'eye' : 'eye-off'}
@@ -149,7 +145,7 @@ const SignUp = ({ navigation }) => {
                   secureTextEntry={true}
                   style={[styles.input, { paddingRight: 40, overflow: 'hidden', }]}
                   onChangeText={handleChange('confirmPassword')}
-                  onBlur={handleBlur('confirmPassword')}
+                // onBlur={handleBlur('confirmPassword')}
                 />
                 {values.confirmPassword && !errors.confirmPassword && (
                   <MaterialCommunityIcons name="check-circle-outline" size={20} color="green" style={styles.inputIcon} />

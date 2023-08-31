@@ -9,7 +9,6 @@ import { colors } from '../../../styles/styles'
 const SignIn = ({ navigation }) => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [err, setErr] = useState(false)
-
   const password = 'asd'
 
   const togglePasswordVisibility = () => {
@@ -35,7 +34,6 @@ const SignIn = ({ navigation }) => {
     //         setErr(false)
     //     }, 1000);
     // }
-
   };
 
   return (
@@ -86,13 +84,6 @@ const SignIn = ({ navigation }) => {
             {errors.password && <Text style={styles.errorMessage}>{errors.password}</Text>}
 
             {err && <Text style={styles.errorMessage}>Wrong password!</Text>}
-
-            {/* <CustomButton
-              title="Log in"
-              color={colors.primary}
-              onPress={handleSubmit}
-              magicNumber={0.8}
-            /> */}
             <CustomButton
               title="Log in"
               color={colors.primary}

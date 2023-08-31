@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import { StyleSheet, View, TextInput, Text, ScrollView } from 'react-native';
+import { StyleSheet, View, TextInput, Text, ScrollView, Alert } from 'react-native';
 import CustomButton from '../../components/CustomButton';
 import { colors } from '../../../styles/styles'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -17,11 +17,12 @@ const Profile = ({ navigation }) => {
       "Plese enter valid phone number"
     ),
     email: Yup.string().email('Invalid email').required('Email is required'),
-    // password: Yup.string().required('Password is required').matches(
-    //     /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
-    //     "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"
-    // ),
-    password: Yup.string().required('Password is required'),
+    password: Yup.string().min(8).required('Password is required').matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
+      "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"
+    ),
+    confirmPassword: Yup.string().required('Confirm password is required').min(8).oneOf([Yup.ref('password')], 'Your password do not match'),
+
   });
 
   const [modalVisible, setModalVisible] = useState(false);
@@ -32,8 +33,16 @@ const Profile = ({ navigation }) => {
   };
 
   const handleSubmit = values => {
-    console.log(values);
-    navigation.navigate('Map')
+    Alert.alert(
+      'Changes saved!',
+      null,
+      [
+        {
+          text: 'OK',
+          onPress: () => navigation.navigate("Map"), // Call the function when "OK" is pressed
+        },
+      ],
+    );
   };
 
   return (
@@ -49,7 +58,7 @@ const Profile = ({ navigation }) => {
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
         >
-          {({ handleChange, handleSubmit, values, errors, isValid }) => (
+          {({ handleChange, handleSubmit, values, errors, isValid, handleBlur }) => (
             <View style={styles.form}>
               <View>
                 <TextInput
@@ -111,10 +120,10 @@ const Profile = ({ navigation }) => {
               <View>
                 <TextInput
                   value={values.password}
-                  onChangeText={handleChange('password')}
                   placeholder="Password"
                   secureTextEntry={!passwordVisible}
                   style={[styles.input, { paddingRight: 40, overflow: 'hidden', }]}
+                  onChangeText={handleChange('password')}
                 />
                 <MaterialCommunityIcons
                   name={passwordVisible ? 'eye' : 'eye-off'}
@@ -127,12 +136,27 @@ const Profile = ({ navigation }) => {
               {errors.password && <Text style={styles.errorMessage}>{errors.password}</Text>}
 
               <View>
+                <TextInput
+                  value={values.confirmPassword}
+                  placeholder="Confirm Password"
+                  secureTextEntry={true}
+                  style={[styles.input, { paddingRight: 40, overflow: 'hidden', }]}
+                  onChangeText={handleChange('confirmPassword')}
+                // onBlur={handleBlur('confirmPassword')}
+                />
+                {values.confirmPassword && !errors.confirmPassword && (
+                  <MaterialCommunityIcons name="check-circle-outline" size={20} color="green" style={styles.inputIcon} />
+                )}
+              </View>
+              {errors.confirmPassword && <Text style={styles.errorMessage}>{errors.confirmPassword}</Text>}
+
+              <View>
                 <CustomButton
                   title="Save Changes"
                   color={colors.primary}
                   onPress={handleSubmit}
                   magicNumber={0.8}
-                  disabled={!isValid}
+                  // disabled={!isValid}
                   style={styles.btn}
                 />
 
@@ -140,7 +164,7 @@ const Profile = ({ navigation }) => {
                   title="Log out"
                   color={colors.secondary}
                   magicNumber={0.8}
-                  onPress={() => navigation.navigate('Home')}
+                  onPress={() => navigation.navigate('Auth')}
                   style={styles.btn}
                 />
 
@@ -156,7 +180,7 @@ const Profile = ({ navigation }) => {
           )}
         </Formik>
 
-        <DeleteAccount modalVisible={modalVisible} setModalVisible={setModalVisible} />
+        <DeleteAccount modalVisible={modalVisible} setModalVisible={setModalVisible} navigation={navigation} />
       </View>
     </ScrollView>
   );
