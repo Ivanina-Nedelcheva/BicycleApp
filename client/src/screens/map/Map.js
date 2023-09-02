@@ -6,6 +6,7 @@ import { throttle } from 'lodash';
 
 import NearestHubs from '../../components/NearestHubs';
 import CustomButton from '../../components/CustomButton'
+import Scanner from '../../components/Scanner'
 import stationsData from '../../stations.json'
 import { colors } from '../../../styles/styles'
 
@@ -30,6 +31,7 @@ const Map = ({ navigation }) => {
 	const [region, setRegion] = useState({})
 	const [currentUserPosition, setCurrentUserPosition] = useState({});
 	const [errorMsg, setErrorMsg] = useState('');
+	const [isScannerOpen, setScannerOpen] = useState(false);
 
 	const hubsRef = useRef();
 	const mapRef = useRef()
@@ -88,6 +90,10 @@ const Map = ({ navigation }) => {
 			latitudeDelta: 0.006,
 			longitudeDelta: 0.008,
 		}, 1000);
+	};
+
+	const toggleScanner = () => {
+		setScannerOpen(!isScannerOpen); // Toggle the scanner state
 	};
 
 	useEffect(() => {
@@ -156,12 +162,14 @@ const Map = ({ navigation }) => {
 				))}
 			</MapView>
 
+			<Scanner isOpen={isScannerOpen} onToggle={setScannerOpen} />
+
 			<View style={styles.uppperBtnsWrapper}>
 				<CustomButton
 					icon="cog"
 					color="white"
 					onPress={() => handleOpenDrawer()}
-					magicNumber={0.12}
+					magicNumber={0.125}
 				/>
 
 				{errorMsg && <Text style={styles.errorMessage}>{errorMsg}</Text>}
@@ -170,7 +178,7 @@ const Map = ({ navigation }) => {
 					icon="navigation-variant"
 					color="white"
 					onPress={() => centerCamera()}
-					magicNumber={0.12}
+					magicNumber={0.125}
 				/>
 			</View>
 
@@ -178,8 +186,14 @@ const Map = ({ navigation }) => {
 				<CustomButton
 					icon="hubspot"
 					color="white"
-					magicNumber={0.12}
+					magicNumber={0.125}
 					onPress={() => hubsRef.current.presentBottomSheet()}
+				/>
+				<CustomButton
+					icon="qrcode-scan"
+					color="white"
+					magicNumber={0.125}
+					onPress={toggleScanner}
 				/>
 			</View>
 

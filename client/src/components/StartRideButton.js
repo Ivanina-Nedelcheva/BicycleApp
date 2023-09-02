@@ -12,11 +12,12 @@ import { colors } from "../../styles/styles";
 const ACTION_TIMER = 300;
 const COLORS = [colors.secondary, colors.primary];
 
-const StartRideButton = () => {
+const StartRideButton = ({ navigation }) => {
   const [buttonWidth, setButtonWidth] = useState(0);
   const [buttonHeight, setButtonHeight] = useState(0);
   const pressAction = useRef(new Animated.Value(0)).current;
   let _value = 0;
+  const [card, setCard] = useState(false)
 
   pressAction.addListener((v) => (_value = v.value));
 
@@ -37,8 +38,10 @@ const StartRideButton = () => {
   };
 
   const animationActionComplete = () => {
-    if (_value === 1) {
-      console.log("You held it long enough to fire the action!");
+    if (_value === 1 && card) {
+      console.log("Scan");
+    } else {
+      navigation.navigate("Payment")
     }
   };
 
@@ -102,6 +105,6 @@ const styles = StyleSheet.create({
   },
 });
 
-AppRegistry.registerComponent("SampleApp", () => StartRideButton);
+// AppRegistry.registerComponent("SampleApp", () => StartRideButton);
 
 export default StartRideButton;

@@ -6,11 +6,11 @@ import MapNavigator from "./MapNavigator"
 
 const Stack = createStackNavigator();
 const screenOptionStyle = {
-	// headerStyle: {
-	// 	backgroundColor: "#9AC4F8",
-	// },
-	// headerTintColor: "white",
-	// headerBackTitle: "Back",
+	headerStyle: {
+		backgroundColor: "#9AC4F8",
+	},
+	headerTintColor: "black",
+	headerBackTitle: "Back",
 };
 const AuthNavigator = () => {
 	return (

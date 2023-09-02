@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
 const ReservationTimer = () => {
-  const countdownDuration = 15 * 60 * 1000; // 15 minutes in milliseconds
+  const countdownDuration = 15 * 60 * 1000
+  // const countdownDuration = .1 * 60 * 1000
   const endTime = Date.now() + countdownDuration;
   const [remainingTime, setRemainingTime] = useState(countdownDuration);
 
@@ -15,6 +16,7 @@ const ReservationTimer = () => {
         setRemainingTime(newRemainingTime);
       } else {
         clearInterval(timerInterval);
+        console.log('timeout');
       }
     }, 100);
 

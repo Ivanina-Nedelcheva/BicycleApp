@@ -8,7 +8,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import StartRideButton from './StartRideButton'
 
 
-const BikeDetails = ({ bike, bottomSheetRef }) => {
+const BikeDetails = ({ bike, bottomSheetRef, navigation }) => {
   const snapPoints = useMemo(() => ['75%'], []);
   const [reservation, setReservation] = useState(false)
 
@@ -103,7 +103,7 @@ const BikeDetails = ({ bike, bottomSheetRef }) => {
                 style={{ alignSelf: 'center', marginTop: 20 }}
               />
             ) : (
-              <StartRideButton />
+              <StartRideButton navigation={navigation} />
             )}
           </View>
         </View>

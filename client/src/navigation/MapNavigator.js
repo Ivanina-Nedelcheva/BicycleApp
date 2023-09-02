@@ -12,7 +12,7 @@ const MapNavigator = () => {
   }
 
   return (
-    <Drawer.Navigator backBehavior={'order'}>
+    <Drawer.Navigator backBehavior={'history'}>
       <Drawer.Screen
         name="Map"
         component={Map}

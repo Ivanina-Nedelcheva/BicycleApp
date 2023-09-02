@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, FlatList, TouchableHighlight } from 'react-nati
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import BikeDetails from '../../components/BikeDetails';
 
-const BikeSelect = ({ route }) => {
+const BikeSelect = ({ route, navigation }) => {
   const { station } = route.params
   const [selectedBike, setSelectedBike] = useState({})
   const bottomSheetRef = useRef(null)
@@ -47,6 +47,7 @@ const BikeSelect = ({ route }) => {
       <BikeDetails
         bike={selectedBike}
         bottomSheetRef={bottomSheetRef}
+        navigation={navigation}
       />
     </View>
   );
