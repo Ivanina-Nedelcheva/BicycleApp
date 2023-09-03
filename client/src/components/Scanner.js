@@ -1,22 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, StatusBar, Button, Modal, TextInput } from 'react-native';
+import { Text, View, StyleSheet, StatusBar, Button, Modal, TextInput, Alert } from 'react-native';
 import { Camera } from 'expo-camera';
-import { BarCodeScanner } from 'expo-barcode-scanner';
 import { colors } from '../../styles/styles';
 import CustomButton from './CustomButton';
 
-const Scanner = ({ isOpen, onToggle }) => {
+const Scanner = ({ isOpen, onToggle, navigation }) => {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
   const isModalVisible = isOpen;
   const [isFlashlightOn, setIsFlashlightOn] = useState(false);
   const [isInputVisible, setInputVisible] = useState(false);
   const [vehicleCode, setVehicleCode] = useState('');
-
+  const [card, setCard] = useState(true);
 
   useEffect(() => {
     const getBarCodeScannerPermissions = async () => {
-      const { status } = await Camera.requestCameraPermissionsAsync(); // Request camera permissions
+      const { status } = await Camera.requestCameraPermissionsAsync();
       setHasPermission(status === 'granted');
     };
 
@@ -25,8 +24,14 @@ const Scanner = ({ isOpen, onToggle }) => {
 
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
-    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
-    onToggle(false); // Close the modal when a barcode is scanned
+    // alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+
+    if (card) {
+      Alert.alert('Ride Started!', `${data}`, [{ onPress: () => navigation.navigate('Map', { center: true }) }])
+    } else {
+      navigation.navigate('Payment', { map: true })
+    }
+    onToggle(false);
   };
 
   const toggleFlashlight = () => {
@@ -75,7 +80,6 @@ const Scanner = ({ isOpen, onToggle }) => {
             onPress={() => onToggle(false)}
           />
         </View>
-
 
         {isInputVisible ? (
           <View style={styles.inputContainer}>

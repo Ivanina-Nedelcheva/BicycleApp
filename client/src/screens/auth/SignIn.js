@@ -38,10 +38,10 @@ const SignIn = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Image
+      {/* <Image
         style={styles.image}
         source={require('../../../assets/images/bike3.jpg')}
-      />
+      /> */}
 
       <Formik
         initialValues={{ email: '', password: '' }}

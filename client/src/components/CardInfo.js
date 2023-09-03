@@ -1,19 +1,24 @@
-import React, { useState, useMemo } from 'react';
-import { View, ScrollView, Text, StyleSheet, TextInput, Alert } from 'react-native';
-import { BottomSheetModal, BottomSheetModalProvider, } from '@gorhom/bottom-sheet';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, Alert } from 'react-native';
 import { StripeProvider } from '@stripe/stripe-react-native'
-import { CardField, CardForm, useConfirmPayment } from '@stripe/stripe-react-native'
+import { CardForm, useConfirmPayment } from '@stripe/stripe-react-native'
 import { colors } from '../../styles/styles'
 import CustomButton from './CustomButton'
+import Scanner from './Scanner';
 
-const CardInformation = ({ bottomSheetRef }) => {
-  const snapPoints = useMemo(() => ['100%'], []);
+const CardInformation = ({ navigation, route }) => {
   const [cardInfo, setCardInfo] = useState({
     number: '',
     expiry: '',
     cvc: '',
   });
 
+  const [isScannerOpen, setScannerOpen] = useState(false);
+  const [card, setCard] = useState(true)
+
+  const toggleScanner = () => {
+    setScannerOpen(!isScannerOpen); // Toggle the scanner state
+  };
   const handleCardFieldChange = (event) => {
     if (event.complete) {
       setCardInfo({
@@ -45,65 +50,69 @@ const CardInformation = ({ bottomSheetRef }) => {
     return clientSecret
   }
 
-  async function addCardInfo() {
-    if (!cardInfo?.complete) {
-      Alert.alert('Please enter complete information')
-      return
+  function addCardInfo() {
+    if (card) {
+      Alert.alert('Payment successful!', null, [{ onPress: () => toggleScanner() }])
     }
-
-    try {
-      const { clientSecret, error } = await fetchPaymentIntentClientSecret()
-      if (error) {
-        console.log("Unable to process payment");
-      } else {
-        const { paymentIntent, error } = await confirmPayment(clientSecret, {
-          type: "Card",
-          billingDetails,
-        })
-
-        if (error) {
-          Alert.alert(`Payment Confirmation Error ${error.message}`)
-        } else if (paymentIntent) {
-          Alert.alert("Payment Successful")
-          console.log("Payment Successful", paymentIntent);
-          bottomSheetRef.current?.close()
-        }
-      }
-
-    } catch (err) {
-      console.log(err);
+    if (route.params?.rent && card) {
+      Alert.alert('Payment successful!', null, [{ onPress: () => toggleScanner() }])
+    }
+    if (route.params?.map && card) {
+      Alert.alert('Payment successful!', null, [{ onPress: () => navigation.navigate('Map', { center: true }) }])
     }
   }
 
+  // async function addCardInfo() {
+  //   if (!cardInfo?.complete) {
+  //     Alert.alert('Please enter complete information')
+  //     return
+  //   }
+
+  //   try {
+  //     const { clientSecret, error } = await fetchPaymentIntentClientSecret()
+  //     if (error) {
+  //       console.log("Unable to process payment");
+  //     } else {
+  //       const { paymentIntent, error } = await confirmPayment(clientSecret, {
+  //         type: "Card",
+  //         billingDetails,
+  //       })
+
+  //       if (error) {
+  //         Alert.alert(`Payment Confirmation Error ${error.message}`)
+  //       } else if (paymentIntent) {
+  //         Alert.alert("Payment Successful")
+  //         console.log("Payment Successful", paymentIntent);
+  //         bottomSheetRef.current?.close()
+  //       }
+  //     }
+
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // }
+
   return (
     <StripeProvider publishableKey='asdasdas'>
-      <BottomSheetModalProvider>
-        <BottomSheetModal
-          ref={bottomSheetRef}
-          index={0}
-          snapPoints={snapPoints}
-          backgroundStyle={{ backgroundColor: 'aliceblue', borderWidth: 0.3, borderColor: colors.aliceblue2 }}
-        >
-          <ScrollView style={styles.container}>
-            <Text style={styles.heading}>Add card information</Text>
+      <View style={styles.container}>
+        <CardForm
+          style={styles.cardForm}
+          cardStyle={{ borderRadius: 5, fontFamily: 'Roboto-Regular' }}
+          postalCodeEnabled={false}
+        />
 
-            <CardForm
-              style={styles.cardForm}
-              cardStyle={{ borderRadius: 5, fontFamily: 'Roboto-Regular' }}
-              postalCodeEnabled={false}
-            />
+        <CustomButton
+          title="Confirm"
+          color={colors.primary}
+          onPress={addCardInfo}
+          magicNumber={0.4}
+          style={styles.btn}
+          disabled={loading}
+        />
 
-            <CustomButton
-              title="Confirm"
-              color={colors.aliceblue2}
-              onPress={addCardInfo}
-              magicNumber={0.4}
-              style={styles.btn}
-              disabled={loading}
-            />
-          </ScrollView>
-        </BottomSheetModal>
-      </BottomSheetModalProvider>
+        <Scanner isOpen={isScannerOpen} onToggle={setScannerOpen} navigation={navigation} />
+
+      </View>
     </StripeProvider>
   );
 };
@@ -128,7 +137,7 @@ const styles = StyleSheet.create({
     maxWidth: '100%',
   },
   cardForm: {
-    height: 240,
+    height: 200,
     marginTop: 40,
   },
   btnContainer: {

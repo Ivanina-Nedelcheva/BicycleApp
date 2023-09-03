@@ -12,7 +12,7 @@ import { colors } from '../../../styles/styles'
 
 import axios from 'axios'
 
-const Map = ({ navigation }) => {
+const Map = ({ route, navigation }) => {
 	// const url = 'http://192.168.1.168:8080/app/stations/getAllStations'
 
 	// useEffect(() => {
@@ -122,6 +122,11 @@ const Map = ({ navigation }) => {
 		return () => clearInterval(interval)
 	}, [])
 
+
+	useEffect(() => {
+		if (route.params?.center) centerCamera()
+	}, [route.params])
+
 	return (
 		<View style={styles.container}>
 			<MapView
@@ -162,7 +167,7 @@ const Map = ({ navigation }) => {
 				))}
 			</MapView>
 
-			<Scanner isOpen={isScannerOpen} onToggle={setScannerOpen} />
+			<Scanner isOpen={isScannerOpen} onToggle={setScannerOpen} navigation={navigation} />
 
 			<View style={styles.uppperBtnsWrapper}>
 				<CustomButton

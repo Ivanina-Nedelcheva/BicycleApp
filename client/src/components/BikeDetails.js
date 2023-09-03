@@ -23,7 +23,7 @@ const BikeDetails = ({ bike, bottomSheetRef, navigation }) => {
   }
 
   function handleStartRide() {
-    // Alert.alert('Ride Started!');
+
   };
 
   function handleReportIssue() {
@@ -93,13 +93,14 @@ const BikeDetails = ({ bike, bottomSheetRef, navigation }) => {
               <MaterialCommunityIcons name="clock-alert-outline" size={24} color="black" />
               <Text style={styles.msg}>Reservation is free for 15min</Text>
             </View>
+            {reservation && <Text style={styles.subMsg}>Hold to start ride</Text>}
 
             {!reservation ? (
               <CustomButton
                 title="Reserve"
                 color={colors.primary}
                 onPress={handleReserveBike}
-                magicNumber={0.8}
+                magicNumber={0.4}
                 style={{ alignSelf: 'center', marginTop: 20 }}
               />
             ) : (
@@ -107,9 +108,6 @@ const BikeDetails = ({ bike, bottomSheetRef, navigation }) => {
             )}
           </View>
         </View>
-        {/* <HoldToAction /> */}
-
-        {/* <Test /> */}
       </BottomSheetModal>
     </BottomSheetModalProvider>
   );
@@ -157,6 +155,10 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto-Medium',
     fontSize: 18
   },
+  subMsg: {
+    fontSize: 16,
+    textAlign: 'center'
+  }
 
 });
 

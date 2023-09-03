@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import IconList from '../../components/IconList';
 
 
-const rides = [1]
+const rides = []
 
 const History = ({ navigation }) => {
   return (
@@ -45,9 +45,11 @@ const styles = StyleSheet.create({
     marginBottom: 160
   },
   heading: {
+    fontFamily: 'Roboto-Regular',
     fontSize: 32,
   },
   text: {
+    fontFamily: 'Roboto-Regular',
     marginTop: 16
   }
 
