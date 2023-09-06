@@ -1,7 +1,7 @@
 package com.app.bicycle.entities;
 
+import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
 
 @Entity
 @Table(name = "Station_Bicycle", uniqueConstraints = @UniqueConstraint(columnNames = "bike_id"))
