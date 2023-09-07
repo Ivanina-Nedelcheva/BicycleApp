@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Alert } from 'react-native';
+import { View, StyleSheet, Alert } from 'react-native';
 import { StripeProvider } from '@stripe/stripe-react-native'
 import { CardForm, useConfirmPayment } from '@stripe/stripe-react-native'
 import { colors } from '../../styles/styles'
 import CustomButton from './CustomButton'
 import Scanner from './Scanner';
+import { useCard } from '../context/CardContext'
 
 const CardInformation = ({ navigation, route }) => {
+  const { card, setCard } = useCard()
   const [cardInfo, setCardInfo] = useState({
     number: '',
     expiry: '',
@@ -14,10 +16,9 @@ const CardInformation = ({ navigation, route }) => {
   });
 
   const [isScannerOpen, setScannerOpen] = useState(false);
-  const [card, setCard] = useState(true)
 
   const toggleScanner = () => {
-    setScannerOpen(!isScannerOpen); // Toggle the scanner state
+    setScannerOpen(!isScannerOpen);
   };
   const handleCardFieldChange = (event) => {
     if (event.complete) {
@@ -51,14 +52,20 @@ const CardInformation = ({ navigation, route }) => {
   }
 
   function addCardInfo() {
-    if (card) {
-      Alert.alert('Payment successful!', null, [{ onPress: () => toggleScanner() }])
+    const areAllFieldsValid = Object.keys(cardInfo).every(key => cardInfo[key]);
+    if (!route.params) {
+      setCard(true)
+      Alert.alert('Success!')
     }
-    if (route.params?.rent && card) {
-      Alert.alert('Payment successful!', null, [{ onPress: () => toggleScanner() }])
+
+    if (route.params?.rent && !card) {
+      setCard(true)
+      Alert.alert('Success Reserve!', null, [{ onPress: () => toggleScanner() }])
     }
-    if (route.params?.map && card) {
-      Alert.alert('Payment successful!', null, [{ onPress: () => navigation.navigate('Map', { center: true }) }])
+
+    if (route.params?.scanned) {
+      setCard(true)
+      Alert.alert('Ride Started! Scanner', null, [{ onPress: () => navigation.navigate('Map', { center: true }) }])
     }
   }
 

@@ -1,7 +1,6 @@
 import React from "react"
 import { createStackNavigator } from "@react-navigation/stack"
 import { Auth, SignIn, SignUp, BikeSelect } from '../screens'
-
 import MapNavigator from "./MapNavigator"
 
 const Stack = createStackNavigator();
@@ -16,7 +15,6 @@ const AuthNavigator = () => {
 	return (
 		<Stack.Navigator screenOptions={screenOptionStyle}>
 			{/* options={{ headerTransparent: true }} */}
-
 			<Stack.Screen name="Auth" component={Auth} />
 			<Stack.Screen name="Sign In" component={SignIn} />
 			<Stack.Screen name="Sign Up" component={SignUp} />

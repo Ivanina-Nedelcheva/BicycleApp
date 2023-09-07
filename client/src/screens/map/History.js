@@ -3,8 +3,7 @@ import { StyleSheet, Text, View, StatusBar, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import IconList from '../../components/IconList';
 
-
-const rides = []
+const rides = [1]
 
 const History = ({ navigation }) => {
   return (

@@ -3,6 +3,7 @@ import { Text, View, StyleSheet, StatusBar, Button, Modal, TextInput, Alert } fr
 import { Camera } from 'expo-camera';
 import { colors } from '../../styles/styles';
 import CustomButton from './CustomButton';
+import { useCard } from '../context/CardContext';
 
 const Scanner = ({ isOpen, onToggle, navigation }) => {
   const [hasPermission, setHasPermission] = useState(null);
@@ -11,7 +12,7 @@ const Scanner = ({ isOpen, onToggle, navigation }) => {
   const [isFlashlightOn, setIsFlashlightOn] = useState(false);
   const [isInputVisible, setInputVisible] = useState(false);
   const [vehicleCode, setVehicleCode] = useState('');
-  const [card, setCard] = useState(true);
+  const { card } = useCard();
 
   useEffect(() => {
     const getBarCodeScannerPermissions = async () => {
@@ -29,7 +30,7 @@ const Scanner = ({ isOpen, onToggle, navigation }) => {
     if (card) {
       Alert.alert('Ride Started!', `${data}`, [{ onPress: () => navigation.navigate('Map', { center: true }) }])
     } else {
-      navigation.navigate('Payment', { map: true })
+      navigation.navigate('Payment', { scanned: true })
     }
     onToggle(false);
   };

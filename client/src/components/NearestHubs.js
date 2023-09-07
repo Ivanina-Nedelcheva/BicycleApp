@@ -61,7 +61,7 @@ const NearestHubs = forwardRef(({ userPosition, stations, onSelectStation }, ref
     });
 
     setOrderedStations(orderedStationsData)
-    console.log(orderedStationsData);
+    // console.log(orderedStationsData);
   }
 
   const selectHub = (hub) => {
