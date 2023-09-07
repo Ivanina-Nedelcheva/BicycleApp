@@ -17,7 +17,7 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @RequestMapping(method = RequestMethod.GET, value = "/registerUser", produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.POST, value = "/registerUser", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> getAllBicycles(@RequestParam User inputUser) throws Exception {
 
         User response;
