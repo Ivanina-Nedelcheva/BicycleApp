@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class BicycleServiceImpl implements BicycleService {
+public class BicycleServiceImpl extends BaseService implements BicycleService {
     private final BicycleRepository bicycleRepository;
 
     private final StationRepository stationRepository;

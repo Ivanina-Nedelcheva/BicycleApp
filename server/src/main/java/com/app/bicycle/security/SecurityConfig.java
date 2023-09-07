@@ -43,8 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private ModelMapper modelMapper;
 
 
-    public static final String[] PUBLIC_URLS = {"/login", "/users/register", "/users/all", "/foodCategory/allFoods", "/foodCategory/all",
-            "/food/image", "/food/delete", "/foodCategory/allImages", "/order/create", "/order/all", "/order/delete", "/users/delete", "/food/create", "/food/edit"};
+    public static final String[] PUBLIC_URLS = {"/login", "/stations/getAllStations"};
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -54,12 +53,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManagerBean(), jwtTokenProvider, modelMapper);
-        jwtAuthenticationFilter.setFilterProcessesUrl("/login");
+//        jwtAuthenticationFilter.setFilterProcessesUrl("/login");
         http
                 .cors().and().
                 csrf().disable().
                 sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().
-//                authorizeRequests().dispatcherTypeMatchers(PUBLIC_URLS).permitAll().and().
+                authorizeRequests().antMatchers(PUBLIC_URLS).permitAll().and().
         authorizeRequests().anyRequest().authenticated().and().
                 addFilter(jwtAuthenticationFilter).
                 addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);

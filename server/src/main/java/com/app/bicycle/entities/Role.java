@@ -13,6 +13,14 @@ public class Role extends BaseEntity {
     @Column(name = "name")
     private UserRole roleName;
 
+    public Role(UserRole userRole) {
+        super();
+    }
+
+    public Role() {
+
+    }
+
     public UserRole getRoleName() {
         return roleName;
     }

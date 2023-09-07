@@ -2,10 +2,7 @@ package com.app.bicycle.dto;
 
 import com.app.bicycle.entities.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class UserServiceDTO {
+public class UserDTO {
     private Role role;
 
     private String firstName;
@@ -30,7 +27,7 @@ public class UserServiceDTO {
 //
 //    private List<Payment> payments = new ArrayList<>();
 
-    public UserServiceDTO(){
+    public UserDTO(){
 
     }
 

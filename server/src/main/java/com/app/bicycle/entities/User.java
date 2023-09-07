@@ -1,6 +1,5 @@
 package com.app.bicycle.entities;
 
-import com.app.bicycle.enums.UserRole;
 import javax.persistence.*;
 
 import javax.persistence.Entity;
