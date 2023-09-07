@@ -6,7 +6,6 @@ import com.app.bicycle.service.StationService;
 import com.app.bicycle.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -45,7 +44,7 @@ public class StationController {
         if (beResponse == Constants.SUCCESSFUL_OPERATION) {
             result = stationService.findStationById(stationId);
         } else if (beResponse == Constants.STATION_ALREADY_DEACTIVATED) {
-            return new ResponseEntity<>(null, HttpStatusCode.valueOf(Constants.STATION_ALREADY_DEACTIVATED));
+            return new ResponseEntity<>(null, HttpStatus.valueOf(Constants.STATION_ALREADY_DEACTIVATED));
         }
 
         return new ResponseEntity<>(result, HttpStatus.OK);
@@ -60,7 +59,7 @@ public class StationController {
         if (beResponse == Constants.SUCCESSFUL_OPERATION) {
             result = stationService.findStationById(stationId);
         } else if (beResponse == Constants.STATION_ALREADY_ACTIVATED) {
-            return new ResponseEntity<>(null, HttpStatusCode.valueOf(Constants.STATION_ALREADY_ACTIVATED));
+            return new ResponseEntity<>(null, HttpStatus.valueOf(Constants.STATION_ALREADY_ACTIVATED));
         }
 
         return new ResponseEntity<>(result, HttpStatus.OK);
@@ -90,11 +89,11 @@ public class StationController {
         if (beResponse == Constants.SUCCESSFUL_OPERATION) {
             result = stationService.findSBConnection(bikeId, stationId);
         } else if (beResponse == Constants.CONNECTION_ALREADY_EXISTS) {
-            return new ResponseEntity<>(null, HttpStatusCode.valueOf(Constants.CONNECTION_ALREADY_EXISTS));
+            return new ResponseEntity<>(null, HttpStatus.valueOf(Constants.CONNECTION_ALREADY_EXISTS));
         } else if (beResponse == Constants.BICYCLE_ALREADY_ADDED_TO_A_STATION) {
-            return new ResponseEntity<>(null, HttpStatusCode.valueOf(Constants.BICYCLE_ALREADY_ADDED_TO_A_STATION));
+            return new ResponseEntity<>(null, HttpStatus.valueOf(Constants.BICYCLE_ALREADY_ADDED_TO_A_STATION));
         } else if (beResponse == Constants.STATION_AT_FULL_CAPACITY) {
-            return new ResponseEntity<>(null, HttpStatusCode.valueOf(Constants.STATION_AT_FULL_CAPACITY));
+            return new ResponseEntity<>(null, HttpStatus.valueOf(Constants.STATION_AT_FULL_CAPACITY));
         }
 
         return new ResponseEntity<>(result, HttpStatus.OK);

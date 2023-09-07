@@ -1,7 +1,9 @@
 package com.app.bicycle.entities;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 
+import javax.persistence.Entity;
+import javax.persistence.Enumerated;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,16 +29,22 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private String age;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @Column(nullable = false)
+    private String username;
+
+    @Column(nullable = false)
+    private String password;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<Reservation> reservations = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<FaultReport> faultReports = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<Rental> rentals = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<Payment> payments = new ArrayList<>();
 
     public Role getRole() {
@@ -85,6 +93,22 @@ public class User extends BaseEntity {
 
     public void setAge(String age) {
         this.age = age;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public List<Reservation> getReservations() {

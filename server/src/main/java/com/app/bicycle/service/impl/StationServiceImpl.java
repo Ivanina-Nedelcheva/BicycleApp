@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class StationServiceImpl implements StationService {
+public class StationServiceImpl extends BaseService implements StationService {
     private final StationRepository stationRepository;
     private final BicycleRepository bicycleRepository;
     private final StationBicycleRepository sbRepository;
