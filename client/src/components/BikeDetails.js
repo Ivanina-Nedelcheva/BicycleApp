@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Alert } from 'react-native';
 import { BottomSheetModal, BottomSheetModalProvider, } from '@gorhom/bottom-sheet';
 import { colors } from '../../styles/styles'
 import CustomButton from './CustomButton'
-import Timer from './Timer'
+import ReservationTimer from './ReservationTimer'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import StartRideButton from './StartRideButton'
 
@@ -55,7 +55,7 @@ const BikeDetails = ({ bike, bottomSheetRef, navigation }) => {
 
             {reservation && <View style={styles.bikeAttributes}>
               <MaterialCommunityIcons name="clock-outline" size={24} color="black" />
-              <Timer />
+              <ReservationTimer />
             </View>}
           </View>
 

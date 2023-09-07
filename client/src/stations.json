@@ -79,7 +79,7 @@
           "id": 105,
           "state": "Needs Repair",
           "damage_flag": true,
-          "status": "In Use"
+          "status": "Available"
         }
       ],
       "district": "Studentski grad"

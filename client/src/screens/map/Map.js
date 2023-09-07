@@ -125,6 +125,7 @@ const Map = ({ route, navigation }) => {
 
 	useEffect(() => {
 		if (route.params?.center) centerCamera()
+		if (route.params?.openScanner) setScannerOpen(true)
 	}, [route.params])
 
 	return (

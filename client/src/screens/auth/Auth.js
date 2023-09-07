@@ -10,7 +10,7 @@ const Auth = ({ navigation }) => {
     <SafeAreaView style={styles.container}>
       <Image
         style={styles.image}
-        source={require('../../../assets/images/1.jpg')}
+        source={require('../../../assets/images/bike.jpg')}
       />
 
       <View style={styles.buttonWrapper}>

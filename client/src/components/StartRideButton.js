@@ -1,6 +1,5 @@
 import React, { useState, useRef } from "react";
 import {
-  AppRegistry,
   StyleSheet,
   Animated,
   View,
@@ -8,6 +7,7 @@ import {
   TouchableWithoutFeedback,
   Alert,
 } from "react-native";
+import { useCard } from "../context/CardContext";
 import { colors } from "../../styles/styles";
 
 const ACTION_TIMER = 300;
@@ -18,7 +18,7 @@ const StartRideButton = ({ navigation }) => {
   const [buttonHeight, setButtonHeight] = useState(0);
   const pressAction = useRef(new Animated.Value(0)).current;
   let _value = 0;
-  const [card, setCard] = useState(true)
+  const { card } = useCard()
 
   pressAction.addListener((v) => (_value = v.value));
 
@@ -43,7 +43,7 @@ const StartRideButton = ({ navigation }) => {
       navigation.navigate('Payment', { rent: true })
     }
     if (_value === 1 && card) {
-      Alert.alert('Ride Started!', null, [{ onPress: () => navigation.navigate('Map', { center: true }) }])
+      navigation.navigate('Map', { openScanner: true })
     }
   };
 
@@ -107,7 +107,5 @@ const styles = StyleSheet.create({
     left: 0,
   },
 });
-
-// AppRegistry.registerComponent("SampleApp", () => StartRideButton);
 
 export default StartRideButton;
