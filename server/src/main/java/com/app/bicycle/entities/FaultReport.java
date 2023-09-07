@@ -6,6 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 
 @Entity
@@ -22,7 +23,7 @@ public class FaultReport extends BaseEntity {
     private String faultText;
 
     @Column
-    private Timestamp date;
+    private Date date;
 
     public Bicycle getBicycle() {
         return bicycle;
@@ -48,11 +49,11 @@ public class FaultReport extends BaseEntity {
         this.faultText = faultText;
     }
 
-    public Timestamp getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(Timestamp date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 }

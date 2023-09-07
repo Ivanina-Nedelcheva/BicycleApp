@@ -36,6 +36,20 @@ public class StationController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/getStationsWithBicycles", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Station>> getStationsWithBicycles() throws Exception {
+
+        List<Station> result;
+        try {
+            result = stationService.getAllActiveStations();
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+
     @RequestMapping(method = RequestMethod.POST, value = "/deactivateStation", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).TECH_SUPPORT_MEMBER, T(com.app.bicycle.enums.UserRole).SYSTEM_ADMIN, T(com.app.bicycle.enums.UserRole).OBSERVER)")
     public ResponseEntity<Station> deactivateStation(@RequestParam Long stationId) throws Exception {
