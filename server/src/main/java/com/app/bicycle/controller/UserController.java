@@ -1,6 +1,5 @@
 package com.app.bicycle.controller;
 
-import com.app.bicycle.entities.Bicycle;
 import com.app.bicycle.entities.User;
 import com.app.bicycle.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
