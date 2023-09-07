@@ -11,7 +11,7 @@ import java.util.List;
 public class User extends BaseEntity {
     @Enumerated(value = EnumType.STRING)
     @OneToOne
-    @JoinColumn(name = "role_id")
+    @JoinColumn(name = "role_id", nullable = true)
     private Role role;
 
     @Column(name = "first_name", nullable = false)
