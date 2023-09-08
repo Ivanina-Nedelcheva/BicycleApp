@@ -1,5 +1,7 @@
 package com.app.bicycle.entities;
 
+import com.app.bicycle.enums.UserRole;
+
 import javax.persistence.*;
 
 import javax.persistence.Entity;
@@ -9,11 +11,6 @@ import java.util.List;
 
 @Entity
 public class User extends BaseEntity {
-    @Enumerated(value = EnumType.STRING)
-    @OneToOne
-    @JoinColumn(name = "role_id", nullable = true)
-    private Role role;
-
     @Column(name = "first_name", nullable = false)
     private String firstName;
 
@@ -35,6 +32,10 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private String password;
 
+    @Enumerated(value = EnumType.STRING)
+    @Column
+    private UserRole role;
+
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<Reservation> reservations = new ArrayList<>();
 
@@ -47,11 +48,11 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<Payment> payments = new ArrayList<>();
 
-    public Role getRole() {
+    public UserRole getRole() {
         return role;
     }
 
-    public void setRole(Role role) {
+    public void setRole(UserRole role) {
         this.role = role;
     }
 

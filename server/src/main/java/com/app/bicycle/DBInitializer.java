@@ -1,5 +1,4 @@
 package com.app.bicycle;
-import com.app.bicycle.entities.Role;
 import com.app.bicycle.entities.User;
 import com.app.bicycle.enums.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +28,7 @@ public class DBInitializer implements CommandLineRunner {
             user1.setFirstName("Nik");
             user1.setLastName("Nik");
             user1.setEmail("iva@k.com");
-//            user1.setRole(1);
+            user1.setRole(UserRole.ORDINARY_USER);
             user1.setPhoneNumber("08946");
             user1.setUsername("Nik");
             user1.setAge(String.valueOf(19));

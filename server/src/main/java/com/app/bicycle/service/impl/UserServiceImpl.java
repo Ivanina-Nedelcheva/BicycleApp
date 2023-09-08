@@ -1,6 +1,5 @@
 package com.app.bicycle.service.impl;
 
-import com.app.bicycle.entities.Role;
 import com.app.bicycle.entities.User;
 import com.app.bicycle.enums.UserRole;
 import com.app.bicycle.repositories.UserRepository;
@@ -32,7 +31,7 @@ public class UserServiceImpl extends BaseService implements UserService {
         registerUser.setPhoneNumber(input.getPhoneNumber());
         registerUser.setUsername(input.getFirstName().substring(0,2) + input.getLastName().substring(0,2));
         registerUser.setPassword(passwordEncoder.encode(registerUser.getPassword()));
-        registerUser.setRole(new Role(UserRole.ORDINARY_USER));
+        registerUser.setRole(UserRole.ORDINARY_USER);
 
         userRepository.save(registerUser);
         User responseUser = modelMapper.map(registerUser, User.class);

@@ -1,9 +1,7 @@
 package com.app.bicycle.dto;
 
-import com.app.bicycle.entities.*;
 
 public class UserDTO {
-    private Role role;
 
     private String firstName;
 
@@ -19,24 +17,10 @@ public class UserDTO {
 
     private String password;
 
-//    private List<Reservation> reservations = new ArrayList<>();
-//
-//    private List<FaultReport> faultReports = new ArrayList<>();
-//
-//    private List<Rental> rentals = new ArrayList<>();
-//
-//    private List<Payment> payments = new ArrayList<>();
+    private String role;
 
     public UserDTO(){
 
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
     }
 
     public String getFirstName() {
