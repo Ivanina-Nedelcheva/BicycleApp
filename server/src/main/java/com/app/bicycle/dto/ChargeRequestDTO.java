@@ -7,6 +7,7 @@ public class ChargeRequestDTO {
     public enum Currency {
         BGN
     }
+
     private String description;
     private int amount;
     private Currency currency;

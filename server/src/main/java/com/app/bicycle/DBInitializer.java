@@ -1,4 +1,5 @@
 package com.app.bicycle;
+
 import com.app.bicycle.entities.User;
 import com.app.bicycle.enums.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,7 @@
 package com.app.bicycle.entities;
 
 import com.app.bicycle.enums.BicycleState;
+
 import javax.persistence.*;
 
 import java.util.ArrayList;

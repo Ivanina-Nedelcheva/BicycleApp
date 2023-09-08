@@ -1,6 +1,5 @@
 package com.app.bicycle.entities;
 
-
 import javax.persistence.*;
 
 @Entity

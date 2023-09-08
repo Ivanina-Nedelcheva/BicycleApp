@@ -3,7 +3,7 @@ package com.app.bicycle.entities;
 import javax.persistence.*;
 
 @Entity
-public class Card extends BaseEntity{
+public class Card extends BaseEntity {
 
     @OneToOne
     @JoinColumn(name = "user_id")
