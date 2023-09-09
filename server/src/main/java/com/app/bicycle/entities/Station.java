@@ -5,7 +5,6 @@ import javax.persistence.Entity;
 
 @Entity
 public class Station extends BaseEntity {
-
     @Column(name = "station_name")
     private String stationName;
 
