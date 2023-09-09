@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Modal, StyleSheet } from 'react-native';
+import { View, ScrollView, Text, TouchableOpacity, Modal, StyleSheet } from 'react-native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { colors } from '../../styles/styles';
 
 const IconList = () => {
   const [selectedIcon, setSelectedIcon] = useState(null);
@@ -29,20 +31,37 @@ const IconList = () => {
     { date: formattedDate, distance: '2km', cost: '2.50', time: 5 },
     { date: formattedDate, distance: '1km', cost: '3.50', time: 2.5 },
     { date: formattedDate, distance: '10km', cost: '5.50', time: 25 },
+    { date: formattedDate, distance: '10km', cost: '5.50', time: 25 },
+    { date: formattedDate, distance: '10km', cost: '5.50', time: 25 },
   ];
 
   return (
-    <View style={styles.container}>
-      {trips.map((icon, index) => (
-        <TouchableOpacity style={styles.ride} key={index} onPress={() => handleIconClick(icon)}>
+    <ScrollView style={styles.container}>
+      {trips.map((ride, index) => (
+        <TouchableOpacity style={styles.ride} key={index} onPress={() => handleIconClick(ride)}>
           <View style={styles.dateAndCost}>
-            <Text style={styles.date}>{`${dayName}, ${icon.date}`}</Text>
-            <Text>BGN: {icon.cost}lv</Text>
+            <Text style={styles.date}>{`${dayName}, ${ride.date}`}</Text>
+            <Text style={styles.cost}>BGN: {ride.cost}lv</Text>
           </View>
 
           <View style={styles.statistics}>
-            <Text>Distance: {icon.distance}</Text>
-            <Text>Time: {icon.time}min</Text>
+            <View style={styles.wrapper}>
+              <MaterialCommunityIcons name="map-marker-distance" size={24} color={colors.darkgrey} />
+              <Text style={styles.text}>{ride.distance}</Text>
+              <Text style={styles.label}>Distance</Text>
+            </View>
+
+            <View style={styles.wrapper}>
+              <MaterialCommunityIcons name="clock" size={24} color={colors.darkgrey} />
+              <Text style={styles.text}>{ride.time}min</Text>
+              <Text style={styles.label}>Time</Text>
+            </View>
+
+            <View style={styles.wrapper}>
+              <MaterialCommunityIcons name="leaf" size={24} color={colors.darkgrey} />
+              <Text style={styles.text}>714cal</Text>
+              <Text style={styles.label}>Calories</Text>
+            </View>
           </View>
         </TouchableOpacity>
       ))}
@@ -57,7 +76,7 @@ const IconList = () => {
           </View>
         </View>
       </Modal> */}
-    </View>
+    </ScrollView>
   );
 };
 
@@ -68,28 +87,48 @@ const styles = StyleSheet.create({
   },
   ride: {
     width: '100%',
-    borderWidth: 1,
+    backgroundColor: 'white',
     marginTop: 10,
     gap: 5,
-    backgroundColor: 'white',
     borderRadius: 10,
-    overflow: 'hidden'
+    borderWidth: 1,
+    borderColor: colors.primary,
+    overflow: 'hidden',
   },
   dateAndCost: {
     flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'space-between',
-    fontFamily: 'Roboto-Regular',
     padding: 20
+  },
+  date: {
+    fontFamily: 'Roboto-Regular',
+    fontSize: 18,
+  },
+  cost: {
+    fontFamily: 'Roboto-Bold',
   },
   statistics: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
     backgroundColor: 'aliceblue',
     fontFamily: 'Roboto-Regular',
-    justifyContent: 'space-between',
-
-    padding: 20
-  }
-
+    padding: 20,
+  },
+  wrapper: {
+    alignItems: 'center',
+    gap: 5,
+  },
+  text: {
+    fontSize: 16,
+    fontFamily: 'Roboto-Bold',
+    marginTop: 4,
+  },
+  label: {
+    fontSize: 12,
+    fontFamily: 'Roboto-Bold',
+    color: colors.lightgrey,
+  },
 });
 
 export default IconList;

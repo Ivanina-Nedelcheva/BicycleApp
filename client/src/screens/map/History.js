@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, StatusBar, Image } from 'react-native';
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import RideHistory from '../../components/RideHistory';
 
@@ -16,9 +16,7 @@ const History = ({ navigation }) => {
           <Text style={styles.text}>Once you take a ride or make a purchase, you'll see it here.</Text>
         </View>
       ) : (
-        <View style={styles.informationWrapper}>
-          <Text style={styles.heading}>Ride History</Text>
-
+        <View>
           <RideHistory></RideHistory>
         </View>
       )
