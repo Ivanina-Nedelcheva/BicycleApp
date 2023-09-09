@@ -9,7 +9,7 @@ import java.util.Date;
 @Entity
 public class UserHistory extends BaseEntity {
     @ManyToOne
-    @JoinColumn(name = "bicycle_id")
+    @JoinColumn(name = "bike_id")
     private Bicycle bicycle;
 
     @ManyToOne
