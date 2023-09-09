@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, StatusBar, Image } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import IconList from '../../components/IconList';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import RideHistory from '../../components/RideHistory';
 
 const rides = [1]
 
@@ -9,19 +9,17 @@ const History = ({ navigation }) => {
   return (
     <View style={styles.container}>
       {!rides.length ? (
-        <View style={styles.centeredWrapper}>
-          <Ionicons name="information-circle-outline" size={128} color="black" />
+        <View style={styles.informationWrapper}>
+          <MaterialCommunityIcons name="information-outline" size={128} color="black" />
           <Text style={styles.heading}>No rides yet</Text>
 
           <Text style={styles.text}>Once you take a ride or make a purchase, you'll see it here.</Text>
         </View>
       ) : (
-        <View style={styles.centeredWrapper}>
-          <Image></Image>
+        <View style={styles.informationWrapper}>
+          <Text style={styles.heading}>Ride History</Text>
 
-          <Text>Rides</Text>
-
-          <IconList></IconList>
+          <RideHistory></RideHistory>
         </View>
       )
       }
@@ -32,16 +30,10 @@ const History = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    padding: 20
   },
-  centeredWrapper: {
-    width: '80%',
+  informationWrapper: {
     alignItems: 'center',
-    justifyContent: 'center',
-    textAlign: 'center',
-    // borderWidth: 1,
-    marginBottom: 160
   },
   heading: {
     fontFamily: 'Roboto-Regular',
@@ -49,9 +41,9 @@ const styles = StyleSheet.create({
   },
   text: {
     fontFamily: 'Roboto-Regular',
+    fontSize: 18,
     marginTop: 16
-  }
-
+  },
 });
 
 export default History
