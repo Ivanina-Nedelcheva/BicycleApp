@@ -17,8 +17,8 @@ import java.util.List;
 public class DBInitializer implements CommandLineRunner {
     @PersistenceContext
     EntityManager em;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+//    @Autowired
+//    private PasswordEncoder passwordEncoder;
 
     @Override
     public void run(String... args) throws Exception {
@@ -34,7 +34,7 @@ public class DBInitializer implements CommandLineRunner {
             user1.setUsername("Nik");
             user1.setAge(String.valueOf(19));
 
-            user1.setPassword(passwordEncoder.encode("123456"));
+//            user1.setPassword(passwordEncoder.encode("123456"));
             em.persist(user1);
 
         }
