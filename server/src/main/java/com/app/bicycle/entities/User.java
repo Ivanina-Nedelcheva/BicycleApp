@@ -1,17 +1,16 @@
 package com.app.bicycle.entities;
 
-import jakarta.persistence.*;
+import com.app.bicycle.enums.UserRole;
 
+import javax.persistence.*;
+
+import javax.persistence.Entity;
+import javax.persistence.Enumerated;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 public class User extends BaseEntity {
-    @Enumerated(value = EnumType.STRING)
-    @OneToOne
-    @JoinColumn(name = "role_id")
-    private Role role;
-
     @Column(name = "first_name", nullable = false)
     private String firstName;
 
@@ -27,25 +26,29 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private String age;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @Column(nullable = false)
+    private String username;
+
+    @Column(nullable = false)
+    private String password;
+
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    @Enumerated(value = EnumType.STRING)
+    private Role role;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<Reservation> reservations = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<FaultReport> faultReports = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<Rental> rentals = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<Payment> payments = new ArrayList<>();
 
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
 
     public String getFirstName() {
         return firstName;
@@ -87,6 +90,22 @@ public class User extends BaseEntity {
         this.age = age;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     public List<Reservation> getReservations() {
         return reservations;
     }
@@ -117,5 +136,13 @@ public class User extends BaseEntity {
 
     public void setPayments(List<Payment> payments) {
         this.payments = payments;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }

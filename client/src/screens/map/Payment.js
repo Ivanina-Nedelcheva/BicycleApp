@@ -8,7 +8,6 @@ const Payment = ({ route, navigation }) => {
     <View style={styles.container}>
       <Text style={styles.heading}>Please insert information for the payment</Text>
       <Text style={styles.text}>We will charge you after the ride</Text>
-
       <CardInfo navigation={navigation} route={route} />
     </View>
   );

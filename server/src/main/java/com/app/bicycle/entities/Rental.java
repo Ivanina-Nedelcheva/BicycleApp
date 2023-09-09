@@ -1,12 +1,13 @@
 package com.app.bicycle.entities;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import java.sql.Timestamp;
+import java.util.Date;
 
 @Entity
 public class Rental extends BaseEntity {
@@ -19,10 +20,19 @@ public class Rental extends BaseEntity {
     private Bicycle bicycle;
 
     @Column
+    Date date;
+
+    @Column
     private Timestamp startTime;
 
     @Column
     private Timestamp endTime;
+
+    @Column
+    Double distance;
+
+    @Column
+    Double price;
 
     public User getUser() {
         return user;
@@ -40,6 +50,14 @@ public class Rental extends BaseEntity {
         this.bicycle = bicycle;
     }
 
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
     public Timestamp getStartTime() {
         return startTime;
     }
@@ -54,5 +72,21 @@ public class Rental extends BaseEntity {
 
     public void setEndTime(Timestamp endTime) {
         this.endTime = endTime;
+    }
+
+    public Double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(Double distance) {
+        this.distance = distance;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
     }
 }

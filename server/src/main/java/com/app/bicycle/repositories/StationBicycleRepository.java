@@ -11,6 +11,8 @@ import java.util.List;
 @Repository
 public interface StationBicycleRepository extends JpaRepository<StationBicycle, Long> {
     StationBicycle findByBicycleAndStation(Bicycle bicycle, Station station);
+
     StationBicycle findByBicycle(Bicycle bicycle);
+
     List<StationBicycle> findAllBicyclesByStation(Station station);
 }

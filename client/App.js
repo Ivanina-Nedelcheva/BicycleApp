@@ -5,6 +5,8 @@ import * as SplashScreen from 'expo-splash-screen';
 import { StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import AuthNavigator from './src/navigation/AuthNavigator'
+import { CardProvider } from './src/context/CardContext';
+
 
 const App = () => {
   const [fontsLoaded] = useFonts({
@@ -32,9 +34,11 @@ const App = () => {
   }
 
   return (
-    <NavigationContainer onLayout={onLayoutRootView}>
-      <AuthNavigator></AuthNavigator>
-    </NavigationContainer>
+    <CardProvider>
+      <NavigationContainer onLayout={onLayoutRootView}>
+        <AuthNavigator></AuthNavigator>
+      </NavigationContainer>
+    </CardProvider>
   );
 }
 

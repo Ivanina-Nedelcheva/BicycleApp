@@ -1,7 +1,8 @@
 package com.app.bicycle.entities;
 
 import com.app.bicycle.enums.BicycleState;
-import jakarta.persistence.*;
+
+import javax.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,10 +25,10 @@ public class Bicycle extends BaseEntity {
     @OneToMany(mappedBy = "bicycle")
     private List<StationBicycle> stationBicycles = new ArrayList<>();
 
-    @OneToMany(mappedBy = "bicycle", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "bicycle", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<FaultReport> faultReports = new ArrayList<>();
 
-    @OneToMany(mappedBy = "bicycle", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "bicycle", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<Rental> rentals = new ArrayList<>();
 
     public BicycleState getState() {

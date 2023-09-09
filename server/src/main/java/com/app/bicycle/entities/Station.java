@@ -1,11 +1,10 @@
 package com.app.bicycle.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
+import javax.persistence.Column;
+import javax.persistence.Entity;
 
 @Entity
 public class Station extends BaseEntity {
-
     @Column(name = "station_name")
     private String stationName;
 

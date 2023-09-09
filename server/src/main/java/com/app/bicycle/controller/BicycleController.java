@@ -5,7 +5,6 @@ import com.app.bicycle.service.BicycleService;
 import com.app.bicycle.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -15,7 +14,7 @@ import java.util.List;
 
 
 @RestController
-@CrossOrigin(origins="*")
+@CrossOrigin(origins = "*")
 @RequestMapping("app/bicycles")
 public class BicycleController {
     @Autowired
@@ -52,7 +51,7 @@ public class BicycleController {
         if (beResponse == Constants.SUCCESSFUL_OPERATION) {
             result = bicycleService.findBicycleById(bicycleService.getBicycleNextId());
         } else if (beResponse == Constants.STATION_AT_FULL_CAPACITY) {
-            return new ResponseEntity<>(null, HttpStatusCode.valueOf(Constants.STATION_AT_FULL_CAPACITY));
+            return new ResponseEntity<>(null, HttpStatus.valueOf(Constants.STATION_AT_FULL_CAPACITY));
         }
 
         return new ResponseEntity<>(result, HttpStatus.OK); //it stays null
@@ -67,7 +66,7 @@ public class BicycleController {
         if (beResponse == Constants.SUCCESSFUL_OPERATION) {
             result = bicycleService.findBicycleById(bikeId);
         } else if (beResponse == Constants.BICYCLE_ALREADY_DEACTIVATED) {
-            return new ResponseEntity<>(null, HttpStatusCode.valueOf(Constants.BICYCLE_ALREADY_DEACTIVATED));
+            return new ResponseEntity<>(null, HttpStatus.valueOf(Constants.BICYCLE_ALREADY_DEACTIVATED));
         }
 
         return new ResponseEntity<>(result, HttpStatus.OK);
@@ -82,7 +81,7 @@ public class BicycleController {
         if (beResponse == Constants.SUCCESSFUL_OPERATION) {
             result = bicycleService.findBicycleById(bikeId);
         } else if (beResponse == Constants.BICYCLE_ALREADY_ACTIVATED) {
-            return new ResponseEntity<>(null, HttpStatusCode.valueOf(Constants.BICYCLE_ALREADY_ACTIVATED));
+            return new ResponseEntity<>(null, HttpStatus.valueOf(Constants.BICYCLE_ALREADY_ACTIVATED));
         }
 
         return new ResponseEntity<>(result, HttpStatus.OK);
