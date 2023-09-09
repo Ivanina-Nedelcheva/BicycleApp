@@ -17,18 +17,16 @@ public class UserHistory extends BaseEntity {
     private User user;
 
     @Column
-    Long distance;
+    Double distance;
+
+    @Column
+    Double price;
+
+    @Column
+    Integer duration;
 
     @Column
     Date date;
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
 
     public Bicycle getBicycle() {
         return bicycle;
@@ -38,12 +36,36 @@ public class UserHistory extends BaseEntity {
         this.bicycle = bicycle;
     }
 
-    public Long getDistance() {
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Double getDistance() {
         return distance;
     }
 
-    public void setDistance(Long distance) {
+    public void setDistance(Double distance) {
         this.distance = distance;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public Integer getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Integer duration) {
+        this.duration = duration;
     }
 
     public Date getDate() {

@@ -17,12 +17,8 @@ public class Payment extends BaseEntity {
     @Column
     private BigDecimal amount;
 
-    //could be made with Enum, depending on what direction we go with the payments
     @Column
-    private String method;
-
-    @Column
-    private Date date; //could also be timestamp type
+    private Date date;
 
     public User getUser() {
         return user;
@@ -38,14 +34,6 @@ public class Payment extends BaseEntity {
 
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
-    }
-
-    public String getMethod() {
-        return method;
-    }
-
-    public void setMethod(String method) {
-        this.method = method;
     }
 
     public Date getDate() {
