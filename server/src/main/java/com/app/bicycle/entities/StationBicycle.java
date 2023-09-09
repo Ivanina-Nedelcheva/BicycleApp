@@ -3,14 +3,14 @@ package com.app.bicycle.entities;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "Station_Bicycle", uniqueConstraints = @UniqueConstraint(columnNames = "bicycle_id"))
+@Table(name = "Station_Bicycle", uniqueConstraints = @UniqueConstraint(columnNames = "bike_id"))
 public class StationBicycle extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "station_id")
     private Station station;
 
     @ManyToOne
-    @JoinColumn(name = "bicycle_id")
+    @JoinColumn(name = "bike_id")
     private Bicycle bicycle;
     @Id
     private Long id;

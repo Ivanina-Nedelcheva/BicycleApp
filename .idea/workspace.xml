@@ -4,12 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b74b31e3-175f-4f78-a143-ac85b1f8b236" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/server/src/main/java/com/app/bicycle/entities/Prices.java" afterDir="false" />
+    <list default="true" id="b74b31e3-175f-4f78-a143-ac85b1f8b236" name="Changes" comment="prices">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/app/bicycle/entities/Payment.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/app/bicycle/entities/Payment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/app/bicycle/entities/Station.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/app/bicycle/entities/Station.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/app/bicycle/entities/UserHistory.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/app/bicycle/entities/UserHistory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/app/bicycle/entities/Rental.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/app/bicycle/entities/Rental.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/app/bicycle/entities/UserHistory.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,6 +75,15 @@
       <updated>1694081630458</updated>
       <workItem from="1694081631405" duration="4047000" />
     </task>
+    <task id="LOCAL-00001" summary="prices">
+      <option name="closed" value="true" />
+      <created>1694268761107</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1694268761107</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -104,6 +111,10 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="prices" />
+    <option name="LAST_COMMIT_MESSAGE" value="prices" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
