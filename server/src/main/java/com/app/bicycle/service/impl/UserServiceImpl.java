@@ -13,29 +13,27 @@ public class UserServiceImpl extends BaseService implements UserService {
 
     private final UserRepository userRepository;
 
-    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public User registerUser(User input) {
-        User registerUser = modelMapper.map(input, User.class);
-        registerUser.setFirstName(input.getFirstName());
-        registerUser.setLastName(input.getLastName());
-        registerUser.setAge(input.getAge());
-        registerUser.setEmail(input.getEmail());
-        registerUser.setPhoneNumber(input.getPhoneNumber());
-        registerUser.setUsername(input.getFirstName().substring(0,2) + input.getLastName().substring(0,2));
-        registerUser.setPassword(passwordEncoder.encode(registerUser.getPassword()));
-        registerUser.setRole(UserRole.ORDINARY_USER);
-
-        userRepository.save(registerUser);
-        User responseUser = modelMapper.map(registerUser, User.class);
-        return responseUser;
+//        User registerUser = modelMapper.map(input, User.class);
+//        registerUser.setFirstName(input.getFirstName());
+//        registerUser.setLastName(input.getLastName());
+//        registerUser.setAge(input.getAge());
+//        registerUser.setEmail(input.getEmail());
+//        registerUser.setPhoneNumber(input.getPhoneNumber());
+//        registerUser.setUsername(input.getFirstName().substring(0,2) + input.getLastName().substring(0,2));
+//        registerUser.setPassword(passwordEncoder.encode(registerUser.getPassword()));
+//        registerUser.setRole(UserRole.ORDINARY_USER);
+//
+//        userRepository.save(registerUser);
+//        User responseUser = modelMapper.map(registerUser, User.class);
+        return input;
     }
 
     @Override

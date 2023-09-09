@@ -8,8 +8,8 @@ import java.util.Objects;
 
 @Service
 public class BaseService {
-    @Autowired
-    protected ModelMapper modelMapper;
+//    @Autowired
+//    protected ModelMapper modelMapper;
 
     public BaseService() {
     }
