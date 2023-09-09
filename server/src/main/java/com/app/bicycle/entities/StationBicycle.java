@@ -1,6 +1,6 @@
 package com.app.bicycle.entities;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "Station_Bicycle", uniqueConstraints = @UniqueConstraint(columnNames = "bike_id"))

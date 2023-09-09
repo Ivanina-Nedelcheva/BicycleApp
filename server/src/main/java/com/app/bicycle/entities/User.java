@@ -2,10 +2,10 @@ package com.app.bicycle.entities;
 
 import com.app.bicycle.enums.UserRole;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Enumerated;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Enumerated;
 import java.util.ArrayList;
 import java.util.List;
 
