@@ -1,5 +1,6 @@
 package com.app.bicycle.service;
 
+import com.app.bicycle.entities.FaultReport;
 import com.app.bicycle.entities.User;
 
 public interface UserService {
@@ -9,4 +10,6 @@ public interface UserService {
     User deleteUser (User input);
 
     User editUser(User input);
+
+    FaultReport reportFault(Long userId, Long bikeId, String faultText);
 }

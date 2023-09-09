@@ -1,9 +1,9 @@
 package com.app.bicycle.entities;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
-public class Card extends BaseEntity {
+public class Card extends BaseEntity{
 
     @OneToOne
     @JoinColumn(name = "user_id")
