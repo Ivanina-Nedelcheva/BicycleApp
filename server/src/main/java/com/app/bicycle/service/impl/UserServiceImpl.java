@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public FaultReport reportingFaults(Long userId, Long bikeId, String faultText) {
+    public FaultReport reportFault(Long userId, Long bikeId, String faultText) {
         FaultReport report = new FaultReport();
         report.setUser(userRepository.getReferenceById(userId));
         report.setBicycle(bicycleRepository.getBicycleById(bikeId));

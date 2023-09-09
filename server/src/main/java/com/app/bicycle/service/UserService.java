@@ -11,5 +11,5 @@ public interface UserService {
 
     User editUser(User input);
 
-    FaultReport reportingFaults(Long userId, Long bikeId, String faultText);
+    FaultReport reportFault(Long userId, Long bikeId, String faultText);
 }
