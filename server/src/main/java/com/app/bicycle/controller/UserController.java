@@ -5,7 +5,6 @@ import com.app.bicycle.entities.FaultReport;
 import com.app.bicycle.entities.User;
 import com.app.bicycle.service.UserService;
 import com.app.bicycle.utils.CustomError;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,13 +15,17 @@ import org.springframework.security.access.prepost.PreAuthorize;
 
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping("app/users")
+@RequestMapping("app/user")
 public class UserController {
-    @Autowired
-    UserService userService;
 
-    @Autowired
-    SimpMessagingTemplate messagingTemplate;
+    private final UserService userService;
+
+    private final SimpMessagingTemplate messagingTemplate;
+
+    public UserController(UserService userService, SimpMessagingTemplate messagingTemplate) {
+        this.userService = userService;
+        this.messagingTemplate = messagingTemplate;
+    }
 
     @RequestMapping(method = RequestMethod.POST, value = "/registerUser", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> getAllBicycles(@RequestParam User inputUser) throws Exception {

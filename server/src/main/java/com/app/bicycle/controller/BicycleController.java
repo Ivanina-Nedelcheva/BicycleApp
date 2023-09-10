@@ -22,7 +22,7 @@ import java.util.List;
 @RequestMapping("app/bicycles")
 public class BicycleController {
 
-    private BicycleService bicycleService;
+    private final BicycleService bicycleService;
 
     public BicycleController(BicycleService bicycleService) {
         this.bicycleService = bicycleService;

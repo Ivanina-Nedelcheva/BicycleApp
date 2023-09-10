@@ -6,7 +6,6 @@ import com.app.bicycle.service.StationService;
 import com.app.bicycle.utils.Constants;
 import com.app.bicycle.utils.CustomError;
 import com.app.bicycle.utils.CustomResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -19,10 +18,14 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 @RequestMapping("app/stations")
 public class StationController {
-    @Autowired
-    StationService stationService;
 
-    //Available for all users
+    private final StationService stationService;
+
+    public StationController(StationService stationService) {
+        this.stationService = stationService;
+    }
+
+
     @RequestMapping(method = RequestMethod.GET, value = "/getAllStations", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Station>> getStations() throws Exception {
 

@@ -1,6 +1,7 @@
 package com.app.bicycle.controller;
 
 import com.app.bicycle.dto.ChargeRequestDTO;
+import com.app.bicycle.service.BicycleService;
 import com.app.bicycle.service.StripeService;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Charge;
@@ -16,11 +17,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping("app/payment")
 public class CardController {
 
-    @Autowired
-    private StripeService paymentsService;
-
     @Value("${STRIPE_PUBLIC_KEY}")
     private String stripePublicKey;
+
+    private final StripeService paymentsService;
+
+    public CardController(StripeService paymentsService) {
+        this.paymentsService = paymentsService;
+    }
 
     @RequestMapping(method = RequestMethod.GET, value = "/checkout", produces = MediaType.APPLICATION_JSON_VALUE)
     public Model checkout(Model model, Double price) {
