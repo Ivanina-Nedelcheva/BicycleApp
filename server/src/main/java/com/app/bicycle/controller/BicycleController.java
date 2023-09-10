@@ -2,13 +2,15 @@ package com.app.bicycle.controller;
 
 import com.app.bicycle.entities.Bicycle;
 import com.app.bicycle.service.BicycleService;
+import com.app.bicycle.service.UserService;
 import com.app.bicycle.utils.Constants;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import com.app.bicycle.enums.UserRole;
 
 import java.util.List;
 
@@ -17,8 +19,14 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 @RequestMapping("app/bicycles")
 public class BicycleController {
-    @Autowired
-    BicycleService bicycleService;
+
+    private BicycleService bicycleService;
+    private UserService userService;
+
+    public BicycleController(BicycleService bicycleService, UserService userService) {
+        this.bicycleService = bicycleService;
+        this.userService = userService;
+    }
 
     @RequestMapping(method = RequestMethod.GET, value = "/getAllBicycles", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Bicycle>> getAllBicycles() throws Exception {
@@ -33,12 +41,20 @@ public class BicycleController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/rent", produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.POST, value = "/rent", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).ORDINARY_USER)")
-    public ResponseEntity<Bicycle> findClients(@RequestParam String query,
-                                               @RequestHeader("X-Auth-Token") String token) throws Exception {
+    public ResponseEntity<Bicycle> findClients(@RequestParam Long userId) throws Exception {
 
-        Bicycle response = null;
+        Bicycle response = new Bicycle();
+        if (userService.checkUserRentedBicycles(userId)) {
+            return new ResponseEntity<>(null, HttpStatus.valueOf(Constants.CANNOT_RENT_MORE_THAN_ONE_BICYCLE));
+        } else if (bicycleService.getAllBicycles().isEmpty()) {
+            return new ResponseEntity<>(null, HttpStatus.valueOf(Constants.NO_BICYCLES_AVAILABLE));
+        }
+
+        //if okay give away and change status
+
+
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

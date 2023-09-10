@@ -13,5 +13,7 @@ public class Constants {
     public static final int STATION_ALREADY_ACTIVATED = 106;
     public static final int BICYCLE_ALREADY_DEACTIVATED = 107;
     public static final int BICYCLE_ALREADY_ACTIVATED = 108;
+    public static final int CANNOT_RENT_MORE_THAN_ONE_BICYCLE = 109;
+    public static final int NO_BICYCLES_AVAILABLE = 110;
 
 }

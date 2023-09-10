@@ -1,7 +1,5 @@
 package com.app.bicycle.entities;
 
-import com.app.bicycle.enums.UserRole;
-
 import jakarta.persistence.*;
 
 import jakarta.persistence.Entity;

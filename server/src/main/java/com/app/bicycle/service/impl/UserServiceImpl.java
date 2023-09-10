@@ -3,19 +3,16 @@ package com.app.bicycle.service.impl;
 import com.app.bicycle.entities.Bicycle;
 import com.app.bicycle.entities.FaultReport;
 import com.app.bicycle.entities.User;
-import com.app.bicycle.enums.UserRole;
 import com.app.bicycle.repositories.BicycleRepository;
 import com.app.bicycle.repositories.FaultReportRepository;
+import com.app.bicycle.repositories.RentalRepository;
 import com.app.bicycle.repositories.UserRepository;
+import com.app.bicycle.service.BicycleService;
 import com.app.bicycle.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Calendar;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -23,15 +20,21 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final FaultReportRepository faultReportRepository;
     private final BicycleRepository bicycleRepository;
+    private final RentalRepository rentalRepository;
+    private final BicycleService bicycleService;
 
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository,
                            FaultReportRepository faultReportRepository,
-                           BicycleRepository bicycleRepository) {
+                           BicycleRepository bicycleRepository,
+                           RentalRepository rentalRepository,
+                           BicycleService bicycleService) {
         this.userRepository = userRepository;
         this.faultReportRepository = faultReportRepository;
         this.bicycleRepository = bicycleRepository;
+        this.rentalRepository = rentalRepository;
+        this.bicycleService = bicycleService;
     }
 
     @Override
@@ -69,6 +72,14 @@ public class UserServiceImpl implements UserService {
         report.setFaultText(faultText);
         report.setDate(new Date(System.currentTimeMillis()));
 
+        bicycleService.changeDamageFlag(bikeId);
         return faultReportRepository.save(report);
+    }
+
+    @Override
+    public boolean checkUserRentedBicycles(Long userId) {
+        User user = userRepository.getReferenceById(userId);
+        Long result = rentalRepository.checkUserRentals(user);
+        return result >= 1;
     }
 }

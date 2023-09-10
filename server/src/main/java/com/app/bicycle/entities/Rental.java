@@ -34,6 +34,9 @@ public class Rental extends BaseEntity {
     @Column
     Double price;
 
+    @Column
+    Boolean finished;
+
     public User getUser() {
         return user;
     }
@@ -88,5 +91,13 @@ public class Rental extends BaseEntity {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public Boolean getFinished() {
+        return finished;
+    }
+
+    public void setFinished(Boolean finished) {
+        this.finished = finished;
     }
 }

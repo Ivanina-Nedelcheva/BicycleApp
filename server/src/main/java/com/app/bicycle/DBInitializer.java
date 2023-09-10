@@ -3,7 +3,6 @@ package com.app.bicycle;
 import com.app.bicycle.entities.Role;
 import com.app.bicycle.entities.User;
 import com.app.bicycle.enums.UserRole;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 //import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;

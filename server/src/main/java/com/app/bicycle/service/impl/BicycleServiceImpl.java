@@ -88,7 +88,6 @@ public class BicycleServiceImpl extends BaseService implements BicycleService {
         if (!bicycle.getDamageFlag()) {
             bicycle.setDamageFlag(true);
             bicycle.setActiveFlag(false);
-            //TODO: notify TECHNICAL SUPPORT GROUP
         } else {
             bicycle.setDamageFlag(false);
             bicycle.setActiveFlag(true);
@@ -97,12 +96,13 @@ public class BicycleServiceImpl extends BaseService implements BicycleService {
         return bicycle;
     }
 
-    private void notifyTechnicalSupport(){
-
-    }
-
     @Override
     public List<Bicycle> getAllBicycles() {
         return bicycleRepository.getAllFreeActiveBicyclesWithFullCharge();
+    }
+
+    @Override
+    public void changeBicycleState(Long bikeId) {
+
     }
 }
