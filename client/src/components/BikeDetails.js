@@ -27,7 +27,7 @@ const BikeDetails = ({ bike, bottomSheetRef, navigation }) => {
   };
 
   function handleReportIssue() {
-
+    navigation.navigate('ReportIssue')
   }
 
   return (
