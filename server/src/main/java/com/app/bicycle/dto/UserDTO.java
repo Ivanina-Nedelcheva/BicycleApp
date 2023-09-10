@@ -1,7 +1,22 @@
 package com.app.bicycle.dto;
 
 
+import com.app.bicycle.entities.FaultReport;
+import com.app.bicycle.entities.Payment;
+import com.app.bicycle.entities.Rental;
+import com.app.bicycle.entities.Reservation;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class UserDTO {
+    //maybe delete later!
+
+    public UserDTO() {
+
+    }
+
+    private Long id;
 
     private String firstName;
 
@@ -19,8 +34,22 @@ public class UserDTO {
 
     private String role;
 
-    public UserDTO() {
+    private Integer userRentedBicycles = 0;
 
+    private List<Reservation> reservations = new ArrayList<>();
+
+    private List<FaultReport> faultReports = new ArrayList<>();
+
+    private List<Rental> rentals = new ArrayList<>();
+
+    private List<Payment> payments = new ArrayList<>();
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getFirstName() {
@@ -79,35 +108,51 @@ public class UserDTO {
         this.password = password;
     }
 
-//    public List<Reservation> getReservations() {
-//        return reservations;
-//    }
-//
-//    public void setReservations(List<Reservation> reservations) {
-//        this.reservations = reservations;
-//    }
-//
-//    public List<FaultReport> getFaultReports() {
-//        return faultReports;
-//    }
-//
-//    public void setFaultReports(List<FaultReport> faultReports) {
-//        this.faultReports = faultReports;
-//    }
-//
-//    public List<Rental> getRentals() {
-//        return rentals;
-//    }
-//
-//    public void setRentals(List<Rental> rentals) {
-//        this.rentals = rentals;
-//    }
-//
-//    public List<Payment> getPayments() {
-//        return payments;
-//    }
-//
-//    public void setPayments(List<Payment> payments) {
-//        this.payments = payments;
-//    }
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public Integer getUserRentedBicycles() {
+        return userRentedBicycles;
+    }
+
+    public void setUserRentedBicycles(Integer userRentedBicycles) {
+        this.userRentedBicycles = userRentedBicycles;
+    }
+
+    public List<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(List<Reservation> reservations) {
+        this.reservations = reservations;
+    }
+
+    public List<FaultReport> getFaultReports() {
+        return faultReports;
+    }
+
+    public void setFaultReports(List<FaultReport> faultReports) {
+        this.faultReports = faultReports;
+    }
+
+    public List<Rental> getRentals() {
+        return rentals;
+    }
+
+    public void setRentals(List<Rental> rentals) {
+        this.rentals = rentals;
+    }
+
+    public List<Payment> getPayments() {
+        return payments;
+    }
+
+    public void setPayments(List<Payment> payments) {
+        this.payments = payments;
+    }
 }

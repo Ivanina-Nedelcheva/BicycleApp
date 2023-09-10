@@ -1,7 +1,9 @@
 package com.app.bicycle.service.impl;
 
+import com.app.bicycle.dto.UserDTO;
 import com.app.bicycle.entities.Bicycle;
 import com.app.bicycle.entities.FaultReport;
+import com.app.bicycle.entities.Rental;
 import com.app.bicycle.entities.User;
 import com.app.bicycle.repositories.BicycleRepository;
 import com.app.bicycle.repositories.FaultReportRepository;
@@ -13,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -81,5 +84,22 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.getReferenceById(userId);
         Long result = rentalRepository.checkUserRentals(user);
         return result >= 1;
+    }
+
+    @Override
+    public void addUserRentalRecord(Long userId, Long bikeId) {
+        Rental newRental = new Rental();
+        newRental.setUser(userRepository.getReferenceById(userId));
+        newRental.setBicycle(bicycleRepository.getBicycleById(bikeId));
+        newRental.setDate(new Date(System.currentTimeMillis()));
+        newRental.setStartTime(new Timestamp(System.currentTimeMillis()));
+        newRental.setFinished(false);
+        rentalRepository.save(newRental);
+    }
+
+    @Override
+    public void increaseUserRentedBicycles(Long userId) {
+        User user = userRepository.getUserById(userId);
+        user.setUserRentedBicycles(1);
     }
 }

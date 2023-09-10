@@ -14,4 +14,8 @@ public interface UserService {
     FaultReport reportFault(Long userId, Long bikeId, String faultText);
 
     boolean checkUserRentedBicycles(Long userId);
+
+    void addUserRentalRecord(Long userId, Long bikeId);
+
+    void increaseUserRentedBicycles(Long userId);
 }

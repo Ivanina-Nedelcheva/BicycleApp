@@ -8,6 +8,7 @@ import com.app.bicycle.repositories.StationBicycleRepository;
 import com.app.bicycle.repositories.StationRepository;
 import com.app.bicycle.service.StationService;
 import com.app.bicycle.utils.Constants;
+import com.app.bicycle.utils.CustomResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,7 +31,7 @@ public class StationServiceImpl extends BaseService implements StationService {
     }
 
     @Override
-    public int deactivateStation(Long stationId) {
+    public CustomResponse deactivateStation(Long stationId) {
         Station station = stationRepository.getStationByIdAndActiveFlagTrue(stationId);
         if (station != null) {
             station.setActiveFlag(false);
@@ -41,7 +42,7 @@ public class StationServiceImpl extends BaseService implements StationService {
     }
 
     @Override
-    public int activateStation(Long stationId) {
+    public CustomResponse activateStation(Long stationId) {
         Station station = stationRepository.getStationByIdAndActiveFlagFalse(stationId);
         if (station != null) {
             station.setActiveFlag(true);
@@ -72,7 +73,7 @@ public class StationServiceImpl extends BaseService implements StationService {
     }
 
     @Override
-    public int addBikeToStation(Long bikeId, Long stationId) {
+    public CustomResponse addBikeToStation(Long bikeId, Long stationId) {
         Bicycle bicycle = bicycleRepository.getBicycleById(bikeId);
         Station station = stationRepository.getStationById(stationId);
 

@@ -47,6 +47,8 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<Payment> payments = new ArrayList<>();
 
+    @Transient
+    private Integer userRentedBicycles = 0;
 
     public String getFirstName() {
         return firstName;
@@ -142,5 +144,13 @@ public class User extends BaseEntity {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public Integer getUserRentedBicycles() {
+        return userRentedBicycles;
+    }
+
+    public void setUserRentedBicycles(Integer userRentedBicycles) {
+        this.userRentedBicycles = userRentedBicycles;
     }
 }

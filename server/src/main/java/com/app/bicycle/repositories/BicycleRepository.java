@@ -1,6 +1,7 @@
 package com.app.bicycle.repositories;
 
 import com.app.bicycle.entities.Bicycle;
+import com.app.bicycle.enums.BicycleState;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -20,4 +21,8 @@ public interface BicycleRepository extends JpaRepository<Bicycle, Long> {
 
     @Query("SELECT MAX(b.id) FROM Bicycle b")
     Long getMaxBicycleId();
+
+    @Query("SELECT b.state FROM Bicycle b WHERE b.id = :bikeId")
+    BicycleState getBicycleState(Long bikeId);
 }
+

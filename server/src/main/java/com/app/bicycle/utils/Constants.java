@@ -1,19 +1,19 @@
 package com.app.bicycle.utils;
 
 public class Constants {
-    public static final int SUCCESSFUL_OPERATION = 99;
+    public static final CustomResponse SUCCESSFUL_OPERATION = new CustomResponse(99, "Successful operation!");
 
-    //ERROR CODES
-    public static final int CONNECTION_ALREADY_EXISTS = 100;
-    public static final int BICYCLE_ALREADY_ADDED_TO_A_STATION = 101;
-    public static final int STATION_AT_FULL_CAPACITY = 102;
-    public static final int BICYCLE_DOESNT_EXIST = 103;
-    public static final int STATION_DOESNT_EXIST = 104;
-    public static final int STATION_ALREADY_DEACTIVATED = 105;
-    public static final int STATION_ALREADY_ACTIVATED = 106;
-    public static final int BICYCLE_ALREADY_DEACTIVATED = 107;
-    public static final int BICYCLE_ALREADY_ACTIVATED = 108;
-    public static final int CANNOT_RENT_MORE_THAN_ONE_BICYCLE = 109;
-    public static final int NO_BICYCLES_AVAILABLE = 110;
-
+    //ErrorCodes
+    public static final CustomResponse CONNECTION_ALREADY_EXISTS = new CustomResponse(100, "Connection already exists!");
+    public static final CustomResponse BICYCLE_ALREADY_ADDED_TO_A_STATION = new CustomResponse(101, "Bicycle already added to a station!");
+    public static final CustomResponse STATION_AT_FULL_CAPACITY = new CustomResponse(102, "Station at full capacity!");
+    public static final CustomResponse BICYCLE_DOESNT_EXIST = new CustomResponse(103, "Bicycle doesn't exist!");
+    public static final CustomResponse STATION_DOESNT_EXIST = new CustomResponse(104, "Station doesn't exist!");
+    public static final CustomResponse STATION_ALREADY_DEACTIVATED = new CustomResponse(105, "Station already deactivated!");
+    public static final CustomResponse STATION_ALREADY_ACTIVATED = new CustomResponse(106, "Station already activated!");
+    public static final CustomResponse BICYCLE_ALREADY_DEACTIVATED = new CustomResponse(107, "Bicycle already deactivated!");
+    public static final CustomResponse BICYCLE_ALREADY_ACTIVATED = new CustomResponse(108, "Bicycle already activated!");
+    public static final CustomResponse CANNOT_RENT_MORE_THAN_ONE_BICYCLE = new CustomResponse(109, "Cannot rent more than one bicycle!");
+    public static final CustomResponse NO_BICYCLES_AVAILABLE = new CustomResponse(110, "No bicycles available!");
+    public static final CustomResponse BICYCLE_IS_NOT_FREE = new CustomResponse(111, "Bicycle is not free!");
 }

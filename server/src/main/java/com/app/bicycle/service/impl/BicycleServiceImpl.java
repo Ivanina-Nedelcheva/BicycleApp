@@ -9,10 +9,13 @@ import com.app.bicycle.repositories.StationBicycleRepository;
 import com.app.bicycle.repositories.StationRepository;
 import com.app.bicycle.service.BicycleService;
 import com.app.bicycle.utils.Constants;
+import com.app.bicycle.utils.CustomResponse;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Transactional
 @Service
 public class BicycleServiceImpl extends BaseService implements BicycleService {
     private final BicycleRepository bicycleRepository;
@@ -28,7 +31,7 @@ public class BicycleServiceImpl extends BaseService implements BicycleService {
     }
 
     @Override
-    public int addBicycle(Long stationId) {
+    public CustomResponse addBicycle(Long stationId) {
         Bicycle newBike = new Bicycle();
         newBike.setBatteryLevel(100); //maybe add battery level manually
         newBike.setDamageFlag(false);
@@ -61,7 +64,7 @@ public class BicycleServiceImpl extends BaseService implements BicycleService {
     }
 
     @Override
-    public int deactivateBicycle(Long bikeId) {
+    public CustomResponse deactivateBicycle(Long bikeId) {
         Bicycle bicycle = bicycleRepository.getBicycleByIdAndActiveFlagTrue(bikeId);
         if (bicycle != null) {
             bicycle.setActiveFlag(false);
@@ -72,7 +75,7 @@ public class BicycleServiceImpl extends BaseService implements BicycleService {
     }
 
     @Override
-    public int activateBicycle(Long bikeId) {
+    public CustomResponse activateBicycle(Long bikeId) {
         Bicycle bicycle = bicycleRepository.getBicycleByIdAndActiveFlagFalse(bikeId);
         if (bicycle != null) {
             bicycle.setActiveFlag(true);
@@ -97,12 +100,40 @@ public class BicycleServiceImpl extends BaseService implements BicycleService {
     }
 
     @Override
-    public List<Bicycle> getAllBicycles() {
+    public List<Bicycle> getAvailableBicycles() {
         return bicycleRepository.getAllFreeActiveBicyclesWithFullCharge();
     }
 
     @Override
-    public void changeBicycleState(Long bikeId) {
-
+    public boolean changeBicycleState(Long bikeId, BicycleState newState) {
+        BicycleState currentState = bicycleRepository.getBicycleState(bikeId);
+        if (isValidStateTransition(currentState, newState)) {
+            Bicycle bicycle = bicycleRepository.getBicycleById(bikeId);
+            bicycle.setState(newState);
+            bicycleRepository.save(bicycle);
+        }
+        return false;
     }
+
+    @Override
+    public boolean isBicycleInState(Long bikeId, BicycleState desiredState) {
+        BicycleState currentState = bicycleRepository.getBicycleState(bikeId);
+        return currentState == desiredState;
+    }
+
+    private Boolean isValidStateTransition(BicycleState currentState, BicycleState newState) {
+        switch (currentState) {
+            case FREE:
+                return newState == BicycleState.RESERVED || newState == BicycleState.RENTED;
+            case RENTED:
+                return newState == BicycleState.CHARGING;
+            case RESERVED:
+                return newState == BicycleState.FREE || newState == BicycleState.RENTED;
+            case CHARGING:
+                return newState == BicycleState.FREE;
+            default:
+                return false;
+        }
+    }
+
 }
