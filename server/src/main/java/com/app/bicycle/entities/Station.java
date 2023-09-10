@@ -1,7 +1,9 @@
 package com.app.bicycle.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Station extends BaseEntity {
@@ -16,6 +18,9 @@ public class Station extends BaseEntity {
 
     @Column(name = "active_flag", columnDefinition = "BIT(1) default 1")
     private Boolean activeFlag;
+
+    @OneToMany(mappedBy = "station", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    private List<StationBicycle> stationBicycles = new ArrayList<>();
 
     public String getStationName() {
         return stationName;
@@ -47,5 +52,13 @@ public class Station extends BaseEntity {
 
     public void setActiveFlag(Boolean activeFlag) {
         this.activeFlag = activeFlag;
+    }
+
+    public List<StationBicycle> getStationBicycles() {
+        return stationBicycles;
+    }
+
+    public void setStationBicycles(List<StationBicycle> stationBicycles) {
+        this.stationBicycles = stationBicycles;
     }
 }
