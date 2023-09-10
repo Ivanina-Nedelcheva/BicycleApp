@@ -49,7 +49,6 @@ public class BicycleController {
         } else if (beResponse == Constants.STATION_AT_FULL_CAPACITY) {
             throw new CustomError(Constants.STATION_AT_FULL_CAPACITY);
         }
-
         return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 

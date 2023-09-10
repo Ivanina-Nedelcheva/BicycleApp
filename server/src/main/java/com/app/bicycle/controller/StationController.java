@@ -1,5 +1,6 @@
 package com.app.bicycle.controller;
 
+import com.app.bicycle.dto.StationDTO;
 import com.app.bicycle.entities.Station;
 import com.app.bicycle.entities.StationBicycle;
 import com.app.bicycle.service.StationService;
@@ -40,12 +41,42 @@ public class StationController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+
+    @RequestMapping(method = RequestMethod.GET, value = "/getStationWithBicycles", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<StationDTO>> getStationWithBicycles() throws Exception {
+
+        List<StationDTO> result;
+
+        try {
+            result = stationService.getAllStationsWithBicycles();
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+
     @RequestMapping(method = RequestMethod.GET, value = "/getStationsWithBicycles", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Station>> getStationsWithBicycles() throws Exception {
 
-        List<Station> result;
+        List<Station> result = null;
         try {
-            result = stationService.getAllActiveStations();
+//            result = stationService.getAllActiveStations();
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/newStation", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).TECH_SUPPORT_MEMBER, T(com.app.bicycle.enums.UserRole).SYSTEM_ADMIN, T(com.app.bicycle.enums.UserRole).OBSERVER)")
+    public ResponseEntity<Station> addStation(@RequestParam double latitude, @RequestParam double longitude, @RequestParam String name) throws Exception {
+
+        Station result;
+        try {
+            result = stationService.addStation(latitude, longitude, name);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -84,20 +115,6 @@ public class StationController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/newStation", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).TECH_SUPPORT_MEMBER, T(com.app.bicycle.enums.UserRole).SYSTEM_ADMIN, T(com.app.bicycle.enums.UserRole).OBSERVER)")
-    public ResponseEntity<Station> addStation(@RequestParam double latitude, @RequestParam double longitude,
-                                              @RequestParam String name) throws Exception {
-
-        Station result;
-        try {
-            result = stationService.addStation(latitude, longitude, name);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
 
     @RequestMapping(method = RequestMethod.POST, value = "/addBicycleToStation", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).TECH_SUPPORT_MEMBER, T(com.app.bicycle.enums.UserRole).SYSTEM_ADMIN,  T(com.app.bicycle.enums.UserRole).OBSERVER)")

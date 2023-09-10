@@ -40,7 +40,7 @@ public class UserController {
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/faultReport", produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.POST, value = "/reportFault", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).ORDINARY_USER)")
     public ResponseEntity<FaultReport> faultReport(@RequestParam Long userId, @RequestParam Long bikeId, @RequestParam String faultText) throws Exception {
 

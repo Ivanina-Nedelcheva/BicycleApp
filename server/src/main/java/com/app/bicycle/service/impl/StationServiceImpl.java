@@ -1,5 +1,7 @@
 package com.app.bicycle.service.impl;
 
+import com.app.bicycle.dto.BicycleDTO;
+import com.app.bicycle.dto.StationDTO;
 import com.app.bicycle.entities.Bicycle;
 import com.app.bicycle.entities.Station;
 import com.app.bicycle.entities.StationBicycle;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -30,6 +33,36 @@ public class StationServiceImpl extends BaseService implements StationService {
     @Override
     public List<Station> getAllActiveStations() {
         return stationRepository.findByActiveFlagTrue();
+    }
+
+    @Override
+    public List<StationDTO> getAllStationsWithBicycles() {
+        List<Station> stations = stationRepository.findAll(); // Fetch stations from the database
+
+        return stations.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+    private StationDTO convertToDTO(Station station) {
+        StationDTO dto = new StationDTO();
+        dto.setId(station.getId());
+        dto.setStationName(station.getStationName());
+        dto.setLatitude(station.getLatitude());
+        dto.setLongitude(station.getLongitude());
+
+        List<BicycleDTO> bicycleDTOs = station.getStationBicycles().stream()
+                .map(stationBicycle -> {
+                    Bicycle bicycle = stationBicycle.getBicycle();
+                    BicycleDTO bicycleDTO = new BicycleDTO();
+                    bicycleDTO.setId(bicycle.getId());
+                    bicycleDTO.setState(bicycle.getState().toString());
+                    bicycleDTO.setBatteryLevel(bicycle.getBatteryLevel());
+                    return bicycleDTO;
+                })
+                .collect(Collectors.toList());
+        dto.setBicycles(bicycleDTOs);
+        return dto;
     }
 
     @Override
