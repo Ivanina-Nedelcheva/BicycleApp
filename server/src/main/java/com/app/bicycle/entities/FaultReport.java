@@ -1,10 +1,7 @@
 package com.app.bicycle.entities;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 
 import java.sql.Date;
 
@@ -23,6 +20,9 @@ public class FaultReport extends BaseEntity {
 
     @Column
     private Date date;
+
+    @Lob
+    private byte[] imageData;
 
     public Bicycle getBicycle() {
         return bicycle;
@@ -54,5 +54,13 @@ public class FaultReport extends BaseEntity {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public byte[] getImageData() {
+        return imageData;
+    }
+
+    public void setImageData(byte[] imageData) {
+        this.imageData = imageData;
     }
 }

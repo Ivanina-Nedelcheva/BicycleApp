@@ -74,12 +74,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public FaultReport reportFault(Long userId, Long bikeId, String faultText) {
+    public FaultReport reportFault(Long userId, Long bikeId, String faultText, byte[] imageData) {
         FaultReport report = new FaultReport();
         report.setUser(userRepository.getReferenceById(userId));
         report.setBicycle(bicycleRepository.getBicycleById(bikeId));
         report.setFaultText(faultText);
         report.setDate(new Date(System.currentTimeMillis()));
+        report.setImageData(imageData);
 
         bicycleService.deactivateBicycle(bikeId);
         return faultReportRepository.save(report);
