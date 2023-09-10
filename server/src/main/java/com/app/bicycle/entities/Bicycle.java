@@ -16,9 +16,6 @@ public class Bicycle extends BaseEntity {
     @Column(name = "battery_level")
     private Integer batteryLevel;
 
-    @Column(name = "damage_flag", columnDefinition = "BIT(1) default 0")
-    private Boolean damageFlag;
-
     @Column(name = "active_flag", columnDefinition = "BIT(1) default 1")
     private Boolean activeFlag;
 
@@ -45,14 +42,6 @@ public class Bicycle extends BaseEntity {
 
     public void setBatteryLevel(Integer batteryLevel) {
         this.batteryLevel = batteryLevel;
-    }
-
-    public Boolean getDamageFlag() {
-        return damageFlag;
-    }
-
-    public void setDamageFlag(Boolean damageFlag) {
-        this.damageFlag = damageFlag;
     }
 
     public Boolean getActiveFlag() {

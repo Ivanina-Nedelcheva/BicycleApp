@@ -85,16 +85,4 @@ public class BicycleController {
 
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
-
-    @RequestMapping(method = RequestMethod.POST, value = "/switchDamageFlag", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).TECH_SUPPORT_MEMBER, T(com.app.bicycle.enums.UserRole).SYSTEM_ADMIN, T(com.app.bicycle.enums.UserRole).OBSERVER)")
-    public ResponseEntity<Bicycle> addStation(@RequestParam Long bikeId) {
-
-        try {
-            bicycleService.changeDamageFlag(bikeId);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        return new ResponseEntity<>(null, HttpStatus.OK);
-    }
 }

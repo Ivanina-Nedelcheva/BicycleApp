@@ -18,8 +18,6 @@ public interface BicycleService {
 
     CustomResponse activateBicycle(Long bikeId);
 
-    void changeDamageFlag(Long bikeId);
-
     List<Bicycle> getAvailableBicycles();
 
     boolean changeBicycleState(Long bikeId, BicycleState newState);

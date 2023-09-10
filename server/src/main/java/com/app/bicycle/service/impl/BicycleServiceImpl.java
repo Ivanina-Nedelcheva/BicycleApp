@@ -8,10 +8,7 @@ import com.app.bicycle.repositories.BicycleRepository;
 import com.app.bicycle.repositories.StationBicycleRepository;
 import com.app.bicycle.repositories.StationRepository;
 import com.app.bicycle.service.BicycleService;
-import com.app.bicycle.service.StationService;
-import com.app.bicycle.service.UserService;
 import com.app.bicycle.utils.Constants;
-import com.app.bicycle.utils.CustomError;
 import com.app.bicycle.utils.CustomResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,8 +27,7 @@ public class BicycleServiceImpl extends BaseService implements BicycleService {
 
     public BicycleServiceImpl(BicycleRepository bicycleRepository,
                               StationRepository stationRepository,
-                              StationBicycleRepository sbRepository)
-    {
+                              StationBicycleRepository sbRepository) {
         this.bicycleRepository = bicycleRepository;
         this.stationRepository = stationRepository;
         this.sbRepository = sbRepository;
@@ -40,8 +36,7 @@ public class BicycleServiceImpl extends BaseService implements BicycleService {
     @Override
     public CustomResponse addBicycle(Long stationId) {
         Bicycle newBike = new Bicycle();
-        newBike.setBatteryLevel(100); //maybe add battery level manually
-        newBike.setDamageFlag(false);
+        newBike.setBatteryLevel(100);
         newBike.setActiveFlag(true);
         newBike.setState(BicycleState.FREE);
         bicycleRepository.save(newBike);
@@ -90,19 +85,6 @@ public class BicycleServiceImpl extends BaseService implements BicycleService {
             return Constants.SUCCESSFUL_OPERATION;
         }
         return Constants.BICYCLE_ALREADY_ACTIVATED;
-    }
-
-    @Override
-    public void changeDamageFlag(Long bikeId) {
-        Bicycle bicycle = bicycleRepository.getBicycleById(bikeId);
-        if (!bicycle.getDamageFlag()) {
-            bicycle.setDamageFlag(true);
-            bicycle.setActiveFlag(false);
-        } else {
-            bicycle.setDamageFlag(false);
-            bicycle.setActiveFlag(true);
-        }
-        bicycleRepository.save(bicycle);
     }
 
     @Override

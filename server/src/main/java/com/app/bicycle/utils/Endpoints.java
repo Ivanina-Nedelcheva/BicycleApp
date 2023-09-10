@@ -14,5 +14,4 @@ public class Endpoints {
     public final String ADD_BICYCLE = "app/bicycles/newBicycle";
     public final String DEACTIVATE_BICYCLE = "app/bicycles/deactivateBicycle";
     public final String ACTIVATE_BICYCLE = "app/bicycles/activateBicycle";
-    public final String SWITCH_DAMAGE_FLAG = "app/bicycles/switchDamageFlag";
 }

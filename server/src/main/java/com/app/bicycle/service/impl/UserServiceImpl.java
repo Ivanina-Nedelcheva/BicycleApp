@@ -78,7 +78,7 @@ public class UserServiceImpl implements UserService {
         report.setFaultText(faultText);
         report.setDate(new Date(System.currentTimeMillis()));
 
-        bicycleService.changeDamageFlag(bikeId);
+        bicycleService.deactivateBicycle(bikeId);
         return faultReportRepository.save(report);
     }
 
