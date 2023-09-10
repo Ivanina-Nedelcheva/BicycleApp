@@ -22,6 +22,7 @@
         "backgroundColor": "#ffffff"
       }
     },
+    "plugins": ["expo-image-picker"],
     "web": {
       "favicon": "./assets/images/favicon.png"
     }

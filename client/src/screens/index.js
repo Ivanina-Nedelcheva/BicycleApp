@@ -2,6 +2,7 @@ export { default as Auth } from './auth/Auth'
 export { default as SignIn } from './auth/SignIn'
 export { default as SignUp } from './auth/SignUp'
 export { default as BikeSelect } from './auth/BikeSelect'
+export { default as ReportIssue } from './auth/ReportIssue'
 
 export { default as Map } from './map/Map'
 export { default as Profile } from './map/Profile'
