@@ -7,7 +7,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 import java.sql.Date;
-import java.sql.Timestamp;
 
 @Entity
 public class FaultReport extends BaseEntity {

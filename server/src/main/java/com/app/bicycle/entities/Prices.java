@@ -2,6 +2,7 @@ package com.app.bicycle.entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+
 import java.util.Date;
 
 @Entity

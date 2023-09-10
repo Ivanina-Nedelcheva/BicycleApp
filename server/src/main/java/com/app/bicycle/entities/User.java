@@ -2,8 +2,6 @@ package com.app.bicycle.entities;
 
 import jakarta.persistence.*;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Enumerated;
 import java.util.ArrayList;
 import java.util.List;
 

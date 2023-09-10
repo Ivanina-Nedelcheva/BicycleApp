@@ -3,13 +3,12 @@ package com.app.bicycle;
 import com.app.bicycle.entities.Role;
 import com.app.bicycle.entities.User;
 import com.app.bicycle.enums.UserRole;
-import org.springframework.boot.CommandLineRunner;
-//import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
-
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
+
 import java.util.List;
 
 @Component

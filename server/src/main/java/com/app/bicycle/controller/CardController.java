@@ -1,11 +1,9 @@
 package com.app.bicycle.controller;
 
 import com.app.bicycle.dto.ChargeRequestDTO;
-import com.app.bicycle.service.BicycleService;
 import com.app.bicycle.service.StripeService;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Charge;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;

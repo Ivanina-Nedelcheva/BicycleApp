@@ -1,10 +1,7 @@
 package com.app.bicycle.controller;
 
 import com.app.bicycle.entities.Bicycle;
-import com.app.bicycle.enums.BicycleState;
 import com.app.bicycle.service.BicycleService;
-import com.app.bicycle.service.StationService;
-import com.app.bicycle.service.UserService;
 import com.app.bicycle.utils.Constants;
 import com.app.bicycle.utils.CustomError;
 import com.app.bicycle.utils.CustomResponse;
