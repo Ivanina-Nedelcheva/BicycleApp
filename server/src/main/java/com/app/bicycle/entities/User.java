@@ -23,9 +23,6 @@ public class User extends BaseEntity {
     private String age;
 
     @Column(nullable = false)
-    private String username;
-
-    @Column(nullable = false)
     private String password;
 
     @ManyToOne
@@ -88,20 +85,12 @@ public class User extends BaseEntity {
         this.age = age;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
     public String getPassword() {
         return password;
     }
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public List<Reservation> getReservations() {
