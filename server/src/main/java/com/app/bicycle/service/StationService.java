@@ -17,6 +17,8 @@ public interface StationService {
 
     StationBicycle findSBConnection(Long bikeId, Long stationId);
 
+    void deleteSBConnection(Long bikeId);
+
     CustomResponse addBikeToStation(Long bikeId, Long stationId);
 
     Station findStationById(Long stationId);

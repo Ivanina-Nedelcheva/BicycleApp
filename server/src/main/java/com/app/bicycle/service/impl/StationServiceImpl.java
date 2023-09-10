@@ -69,9 +69,14 @@ public class StationServiceImpl extends BaseService implements StationService {
     public StationBicycle findSBConnection(Long bikeId, Long stationId) {
         Bicycle bicycle = bicycleRepository.getBicycleById(bikeId);
         Station station = stationRepository.getStationById(stationId);
-        StationBicycle existingStationBicycle = sbRepository.findByBicycleAndStation(bicycle, station);
+        return sbRepository.findByBicycleAndStation(bicycle, station);
+    }
 
-        return existingStationBicycle;
+    @Override
+    public void deleteSBConnection(Long bikeId) {
+        Bicycle bicycle = bicycleRepository.getBicycleById(bikeId);
+        StationBicycle connection = sbRepository.findByBicycle(bicycle);
+        sbRepository.delete(connection);
     }
 
     @Override

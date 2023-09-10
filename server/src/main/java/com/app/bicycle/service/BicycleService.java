@@ -3,6 +3,7 @@ package com.app.bicycle.service;
 import com.app.bicycle.entities.Bicycle;
 import com.app.bicycle.enums.BicycleState;
 import com.app.bicycle.utils.CustomResponse;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ public interface BicycleService {
 
     CustomResponse activateBicycle(Long bikeId);
 
-    Bicycle changeDamageFlag(Long bikeId);
+    void changeDamageFlag(Long bikeId);
 
     List<Bicycle> getAvailableBicycles();
 

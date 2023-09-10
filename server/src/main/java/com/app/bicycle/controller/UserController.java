@@ -1,8 +1,10 @@
 package com.app.bicycle.controller;
 
+import com.app.bicycle.entities.Bicycle;
 import com.app.bicycle.entities.FaultReport;
 import com.app.bicycle.entities.User;
 import com.app.bicycle.service.UserService;
+import com.app.bicycle.utils.CustomError;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -49,5 +51,18 @@ public class UserController {
         }
 
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/rent", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).ORDINARY_USER)")
+    public ResponseEntity<Bicycle> rentBicycle(@RequestParam Long userId, @RequestParam Long bikeId) throws CustomError {
+
+        Bicycle result;
+        try {
+            userService.rentBicycle(userId, bikeId);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(null, HttpStatus.OK);
     }
 }

@@ -18,4 +18,6 @@ public interface UserService {
     void addUserRentalRecord(Long userId, Long bikeId);
 
     void increaseUserRentedBicycles(Long userId);
+
+    void rentBicycle(Long userId, Long bikeId);
 }

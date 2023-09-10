@@ -1,10 +1,13 @@
 package com.app.bicycle.utils;
 
-public class CustomError extends Throwable {
+public class CustomError extends RuntimeException  {
     private CustomResponse customResponse;
 
     public CustomError(CustomResponse customResponse) {
         this.customResponse = customResponse;
+    }
+
+    public CustomError() {
     }
 
     public CustomResponse getCustomResponse() {

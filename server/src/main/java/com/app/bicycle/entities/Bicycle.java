@@ -22,13 +22,13 @@ public class Bicycle extends BaseEntity {
     @Column(name = "active_flag", columnDefinition = "BIT(1) default 1")
     private Boolean activeFlag;
 
-    @OneToMany(mappedBy = "bicycle", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "bicycle", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     private List<FaultReport> faultReports = new ArrayList<>();
 
-    @OneToMany(mappedBy = "bicycle", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "bicycle", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     private List<Rental> rentals = new ArrayList<>();
 
-    @OneToMany(mappedBy = "bicycle", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "bicycle", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     private List<Reservation> reservations = new ArrayList<>();
 
     public BicycleState getState() {
@@ -62,7 +62,6 @@ public class Bicycle extends BaseEntity {
     public void setActiveFlag(Boolean activeFlag) {
         this.activeFlag = activeFlag;
     }
-
 
     public List<Rental> getRentals() {
         return rentals;
