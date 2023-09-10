@@ -10,10 +10,12 @@ import com.app.bicycle.service.StationService;
 import com.app.bicycle.utils.Constants;
 import com.app.bicycle.utils.CustomResponse;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class StationServiceImpl extends BaseService implements StationService {
     private final StationRepository stationRepository;
     private final BicycleRepository bicycleRepository;

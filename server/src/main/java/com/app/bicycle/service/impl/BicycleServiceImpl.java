@@ -15,8 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Transactional
 @Service
+@Transactional
 public class BicycleServiceImpl extends BaseService implements BicycleService {
     private final BicycleRepository bicycleRepository;
 

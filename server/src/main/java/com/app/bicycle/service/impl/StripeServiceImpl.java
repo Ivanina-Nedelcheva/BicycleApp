@@ -5,6 +5,7 @@ import com.app.bicycle.service.StripeService;
 import com.stripe.exception.*;
 import com.stripe.model.Charge;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
@@ -13,6 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
+@Transactional
 public class StripeServiceImpl implements StripeService {
 
     @Override
