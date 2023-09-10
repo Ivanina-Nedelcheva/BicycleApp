@@ -4,6 +4,8 @@ public class BicycleDTO {
     private Long id;
     private String state;
     private Integer batteryLevel;
+    private Boolean activeFlag;
+
 
     public Long getId() {
         return id;
@@ -27,5 +29,13 @@ public class BicycleDTO {
 
     public void setBatteryLevel(Integer batteryLevel) {
         this.batteryLevel = batteryLevel;
+    }
+
+    public Boolean getActiveFlag() {
+        return activeFlag;
+    }
+
+    public void setActiveFlag(Boolean activeFlag) {
+        this.activeFlag = activeFlag;
     }
 }

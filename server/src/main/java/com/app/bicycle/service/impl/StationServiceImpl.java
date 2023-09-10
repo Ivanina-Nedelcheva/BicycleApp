@@ -52,12 +52,17 @@ public class StationServiceImpl extends BaseService implements StationService {
         dto.setLongitude(station.getLongitude());
 
         List<BicycleDTO> bicycleDTOs = station.getStationBicycles().stream()
+                .filter(stationBicycle -> {
+                    Bicycle bicycle = stationBicycle.getBicycle();
+                    return bicycle.getActiveFlag() != null && bicycle.getActiveFlag();
+                })
                 .map(stationBicycle -> {
                     Bicycle bicycle = stationBicycle.getBicycle();
                     BicycleDTO bicycleDTO = new BicycleDTO();
                     bicycleDTO.setId(bicycle.getId());
                     bicycleDTO.setState(bicycle.getState().toString());
                     bicycleDTO.setBatteryLevel(bicycle.getBatteryLevel());
+                    bicycleDTO.setActiveFlag(bicycle.getActiveFlag());
                     return bicycleDTO;
                 })
                 .collect(Collectors.toList());
