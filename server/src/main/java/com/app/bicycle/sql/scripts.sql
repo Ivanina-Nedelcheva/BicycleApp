@@ -1,3 +1,7 @@
+INSERT INTO `bicycleapp`.`fault_report` (`date`, `fault_text`, `bike_id`, `user_id`, image_data)
+VALUES ('2023-09-16', 'spukana guma', '1', '1', '(byte) 0xFF, (byte) 0xD8, 0x00, 0x10, 0x41, 0x42, 0x43, 0x44, (byte) 0xFF, (byte) 0xD9');
+
+
 INSERT INTO `bicycleapp`.`station` (`active_flag`, `longitude`, `latitude`, `station_name`)
 VALUES (1, 23.321, 42.698, 'Serdika'),
        (1, 23.343, 42.655, 'Studentski grad'),
