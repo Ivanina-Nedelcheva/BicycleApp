@@ -49,8 +49,13 @@ const BikeDetails = ({ bike, bottomSheetRef, navigation }) => {
             </View>
 
             <View style={styles.bikeAttributes}>
+              <Text style={styles.attribute}>Battery:</Text>
+              <Text style={styles.attribute}>{bike.batteryLevel}%</Text>
+            </View>
+
+            <View style={styles.bikeAttributes}>
               <MaterialCommunityIcons name="wallet-outline" size={24} color="black" />
-              <Text style={styles.attribute}>1.69лв. to start, then 0.33 лв./min</Text>
+              <Text style={styles.attribute}>1.50лв. to start, then 0.20 лв./min</Text>
             </View>
 
             {reservation && <View style={styles.bikeAttributes}>

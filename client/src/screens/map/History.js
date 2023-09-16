@@ -1,9 +1,9 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, FlatList } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import RideHistory from '../../components/RideHistory';
 
-const rides = [1]
+const rides = ['fuck', 'muck']
 
 const History = ({ navigation }) => {
   return (

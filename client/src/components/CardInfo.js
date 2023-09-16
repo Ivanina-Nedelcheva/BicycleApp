@@ -20,42 +20,49 @@ const CardInformation = ({ navigation, route }) => {
   const toggleScanner = () => {
     setScannerOpen(!isScannerOpen);
   };
-  const handleCardFieldChange = (event) => {
-    if (event.complete) {
-      setCardInfo({
-        number: event.values.number,
-        expiry: event.values.expiry,
-        cvc: event.values.cvc,
-      });
-    } else {
-      setCardInfo({
-        number: '',
-        expiry: '',
-        cvc: '',
-      });
-    }
-  };
 
+
+
+
+
+
+  // const handleCardFieldChange = (event) => {
+  //   console.log(event);
+  //   if (event.complete) {
+  //     setCardInfo({
+  //       number: event.values.number,
+  //       expiry: event.values.expiry,
+  //       cvc: event.values.cvc,
+  //     });
+  //   } else {
+  //     setCardInfo({
+  //       number: '',
+  //       expiry: '',
+  //       cvc: '',
+  //     });
+  //   }
+  // };
+
+
+  // const API_URL = "http://192.168.1.168:8080/app/payment/charge"
   const { confirmPayment, loading } = useConfirmPayment()
-  const API_URL = "http://192.168.1.168:8080"
+  // async function fetchPaymentIntentClientSecret() {
+  //   const response = await fetch(`${API_URL}/create-payment-intent`, {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     }
+  //   })
 
-  async function fetchPaymentIntentClientSecret() {
-    const response = await fetch(`${API_URL}/create-payment-intent`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      }
-    })
-
-    const { clientSecret } = await response.json()
-    return clientSecret
-  }
+  //   const { clientSecret } = await response.json()
+  //   return clientSecret
+  // }
 
   function addCardInfo() {
     const areAllFieldsValid = Object.keys(cardInfo).every(key => cardInfo[key]);
     if (!route.params) {
       setCard(true)
-      Alert.alert('Success!')
+      Alert.alert('Success!', null, [{ onPress: () => toggleScanner() }])
     }
 
     if (route.params?.rent && !card) {
@@ -70,6 +77,7 @@ const CardInformation = ({ navigation, route }) => {
   }
 
   // async function addCardInfo() {
+  //   console.log(cardInfo);
   //   if (!cardInfo?.complete) {
   //     Alert.alert('Please enter complete information')
   //     return
@@ -90,7 +98,6 @@ const CardInformation = ({ navigation, route }) => {
   //       } else if (paymentIntent) {
   //         Alert.alert("Payment Successful")
   //         console.log("Payment Successful", paymentIntent);
-  //         bottomSheetRef.current?.close()
   //       }
   //     }
 
@@ -100,7 +107,9 @@ const CardInformation = ({ navigation, route }) => {
   // }
 
   return (
-    <StripeProvider publishableKey='asdasdas'>
+    <StripeProvider
+      publishableKey='pk_test_51NnnXsAuLrQ7LW7PtEYUeu7x05TD1SVKR6UFBw5CN6hVhiaVQgdIuvK64dh5gGCJZYqzP2xVS2VrpSxc3OUD0B4P00JW4PHKD1'
+    >
       <View style={styles.container}>
         <CardForm
           style={styles.cardForm}

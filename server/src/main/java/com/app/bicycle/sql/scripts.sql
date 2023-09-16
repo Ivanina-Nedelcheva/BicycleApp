@@ -1,4 +1,4 @@
-INSERT INTO `bicycleapp`.`station` (`active_flag`, `latitude`, `longitude`, `station_name`)
+INSERT INTO `bicycleapp`.`station` (`active_flag`, `longitude`, `latitude`, `station_name`)
 VALUES (1, 23.321, 42.698, 'Serdika'),
        (1, 23.343, 42.655, 'Studentski grad'),
        (1, 23.274, 42.678, 'Slavia'),

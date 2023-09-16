@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, Text, View, StatusBar, Image } from 'react-native';
+import { StyleSheet, Text, View, StatusBar, Image, FlatList } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { throttle } from 'lodash';
@@ -13,25 +13,11 @@ import { colors } from '../../../styles/styles'
 import axios from 'axios'
 
 const Map = ({ route, navigation }) => {
-	// const url = 'http://192.168.1.168:8080/app/stations/getAllStations'
-
-	// useEffect(() => {
-	// 	axios.get(url)
-	// 		.then(function (response) {
-	// 			// handle success
-	// 			// console.log(response.data);
-	// 			setStations(response.data)
-
-	// 		})
-	// 		.catch(function (error) {
-	// 			// handle error
-	// 			console.log(error);
-	// 		})
-	// }, [])
 	const [region, setRegion] = useState({})
 	const [currentUserPosition, setCurrentUserPosition] = useState({});
 	const [errorMsg, setErrorMsg] = useState('');
 	const [isScannerOpen, setScannerOpen] = useState(false);
+	const [stations, setStations] = useState([])
 
 	const hubsRef = useRef();
 	const mapRef = useRef()
@@ -48,7 +34,22 @@ const Map = ({ route, navigation }) => {
 		left: 0,
 	}
 
-	const { stations } = stationsData
+	const android = 'http://192.168.1.102:8080/app/stations/getStationWithBicycles'
+	const iOS = 'http://localhost:8080/app/stations/getStationWithBicycles'
+	const test = 'https://jsonplaceholder.typicode.com/todos/1'
+
+	useEffect(() => {
+		const getStations = async () => {
+			try {
+				const response = await axios.get(android)
+				console.log(response.data);
+				setStations(response.data)
+			} catch (error) {
+				console.error('Error fetching data:', error);
+			}
+		}
+		getStations()
+	}, [])
 
 	const handleOpenDrawer = () => {
 		navigation.openDrawer();
@@ -93,7 +94,7 @@ const Map = ({ route, navigation }) => {
 	};
 
 	const toggleScanner = () => {
-		setScannerOpen(!isScannerOpen); // Toggle the scanner state
+		setScannerOpen(!isScannerOpen);
 	};
 
 	useEffect(() => {
@@ -150,8 +151,6 @@ const Map = ({ route, navigation }) => {
 							longitude: station.longitude,
 						}}
 						key={index}
-						onCalloutPress={() => console.log("Callout pressed")}
-
 						onPress={() => navigation.navigate('BikeSelect', { station })}
 					>
 						{region.longitudeDelta > 0.2 || region.latitudeDelta > 0.2 ? (
@@ -168,6 +167,17 @@ const Map = ({ route, navigation }) => {
 				))}
 			</MapView>
 
+
+			{/* <FlatList
+				data={stations}
+				renderItem={({ item, index }) => (
+					<View>
+						<Text>{item.stationName}</Text>
+					</View>
+				)}
+				keyExtractor={(item, index) => index.toString()}
+			/> */}
+
 			<Scanner isOpen={isScannerOpen} onToggle={setScannerOpen} navigation={navigation} />
 
 			<View style={styles.uppperBtnsWrapper}>
@@ -177,7 +187,6 @@ const Map = ({ route, navigation }) => {
 					onPress={() => handleOpenDrawer()}
 					magicNumber={0.125}
 				/>
-
 				{errorMsg && <Text style={styles.errorMessage}>{errorMsg}</Text>}
 
 				<CustomButton
@@ -256,7 +265,7 @@ const styles = StyleSheet.create({
 		fontSize: 22,
 		color: colors.red,
 		textAlign: 'center'
-	}
+	},
 });
 
 export default Map

@@ -1,11 +1,14 @@
 import 'react-native-gesture-handler';
 import React, { useCallback } from 'react';
+import * as Notifications from 'expo-notifications';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Linking, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
+import Constants from "expo-constants";
 import AuthNavigator from './src/navigation/AuthNavigator'
 import { CardProvider } from './src/context/CardContext';
+import { Auth } from './src/screens';
 
 
 const App = () => {
@@ -35,7 +38,54 @@ const App = () => {
 
   return (
     <CardProvider>
-      <NavigationContainer onLayout={onLayoutRootView}>
+      <NavigationContainer
+        onLayout={onLayoutRootView}
+        fallback={<Text>Loading...</Text>}
+        linking={{
+          config: {
+            screens: {
+              Auth
+            },
+          },
+          async getInitialURL() {
+            // First, you may want to do the default deep link handling
+            // Check if app was opened from a deep link
+            const url = await Linking.getInitialURL();
+
+            if (url != null) {
+              return url;
+            }
+
+            // Handle URL from expo push notifications
+            const response = await Notifications.getLastNotificationResponseAsync();
+
+            return response?.notification.request.content.data.url;
+          },
+          subscribe(listener) {
+            const onReceiveURL = ({ url }) => listener(url);
+
+            // Listen to incoming links from deep linking
+            const eventListenerSubscription = Linking.addEventListener('url', onReceiveURL);
+
+            // Listen to expo push notifications
+            const subscription = Notifications.addNotificationResponseReceivedListener(response => {
+              const url = response.notification.request.content.data.url;
+
+              // Any custom logic to see whether the URL needs to be handled
+              //...
+
+              // Let React Navigation handle the URL
+              listener(url);
+            });
+
+            return () => {
+              // Clean up the event listeners
+              eventListenerSubscription.remove();
+              subscription.remove();
+            };
+          },
+        }}>
+
         <AuthNavigator></AuthNavigator>
       </NavigationContainer>
     </CardProvider>

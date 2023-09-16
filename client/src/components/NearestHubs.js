@@ -1,4 +1,4 @@
-import React, { useRef, useState, useCallback, useMemo, useEffect, useImperativeHandle, forwardRef } from 'react';
+import React, { useRef, useState, useMemo, useEffect, useImperativeHandle, forwardRef } from 'react';
 import { View, Text, FlatList, TouchableHighlight, ActivityIndicator, StyleSheet } from 'react-native';
 import { BottomSheetModal, BottomSheetModalProvider, } from '@gorhom/bottom-sheet';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -9,7 +9,6 @@ const NearestHubs = forwardRef(({ userPosition, stations, onSelectStation }, ref
   const bottomSheetRef = useRef(null);
   const [bottomSheetPresented, setBottomSheetPresented] = useState(false);
 
-
   useImperativeHandle(ref, () => ({
     presentBottomSheet() {
       bottomSheetRef.current.present();
@@ -17,7 +16,6 @@ const NearestHubs = forwardRef(({ userPosition, stations, onSelectStation }, ref
   }));
 
   const snapPoints = useMemo(() => ['35%', '95%'], []);
-
   const [orderedStations, setOrderedStations] = useState([])
 
   useEffect(() => {
@@ -31,7 +29,6 @@ const NearestHubs = forwardRef(({ userPosition, stations, onSelectStation }, ref
 
     fetchData();
   }, [userPosition.latitude, bottomSheetPresented]);
-
 
   async function orderLocations() {
     const ordered = geolib.orderByDistance(
@@ -50,8 +47,6 @@ const NearestHubs = forwardRef(({ userPosition, stations, onSelectStation }, ref
       return timeMinutes;
     }
 
-
-    // Map the ordered stations back to the original stations data
     const orderedStationsData = ordered.map(orderedStation => {
       const station = stations[orderedStation.key];
       const meters = geolib.getDistance(userPosition, { latitude: orderedStation.latitude, longitude: orderedStation.longitude })
@@ -91,9 +86,9 @@ const NearestHubs = forwardRef(({ userPosition, stations, onSelectStation }, ref
 
         <View style={styles.right}>
           <View>
-            <Text style={{ fontSize: 18, fontFamily: 'Roboto-Regular' }}>{item.district}</Text>
+            <Text style={{ fontSize: 18, fontFamily: 'Roboto-Regular' }}>{item.stationName}</Text>
 
-            {item.bicycles.some(bike => bike.status === 'Available') ? (
+            {item.bicycles.some(bike => bike.state === 'FREE') ? (
               <Text style={styles.info}>Cycle available</Text>
             ) : (
               <Text style={styles.info}>Not available bicycles</Text>

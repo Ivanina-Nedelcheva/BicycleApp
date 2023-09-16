@@ -22,7 +22,7 @@ const BikeSelect = ({ route, navigation }) => {
 
         <View style={styles.textContainer}>
           <Text style={styles.itemText}>ID: {item.id}</Text>
-          <Text style={styles.itemText}>Status: {item.status}</Text>
+          <Text style={styles.itemText}>Status: {item.state}</Text>
           {/* <Text style={styles.itemText}>State: {item.state}</Text> */}
         </View>
 
@@ -35,7 +35,7 @@ const BikeSelect = ({ route, navigation }) => {
 
   return (
     <View style={styles.contentContainer}>
-      <Text style={styles.heading}>{station.district}</Text>
+      <Text style={styles.heading}>{station.stationName}</Text>
 
       <FlatList
         data={station.bicycles}

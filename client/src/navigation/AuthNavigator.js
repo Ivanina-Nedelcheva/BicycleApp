@@ -15,7 +15,7 @@ const AuthNavigator = () => {
 	return (
 		<Stack.Navigator screenOptions={screenOptionStyle}>
 			{/* options={{ headerTransparent: true }} */}
-			<Stack.Screen name="Auth" component={Auth} />
+			<Stack.Screen name="Auth" component={Auth} options={{ headerShown: false }} />
 			<Stack.Screen name="Sign In" component={SignIn} />
 			<Stack.Screen name="Sign Up" component={SignUp} />
 			<Stack.Screen name="MapNavigator" component={MapNavigator} options={{ headerShown: false }} />
