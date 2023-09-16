@@ -5,7 +5,7 @@ VALUES (1, 23.321, 42.698, 'Serdika'),
        (1, 23.413, 42.707, 'Vrazhdebna'),
        (1, 23.343, 42.696, 'Serdika2'),
        (1, 23.313, 42.625, 'Vitosha'),
-       (1, 23.313, 42.625, 'Krastova vada'),
+       (1, 23.314, 42.65, 'Krastova vada'),
        (1, 23.277, 42.656, 'Manastirski livadi');
 
 
