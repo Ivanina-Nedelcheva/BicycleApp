@@ -1,6 +1,8 @@
 package com.app.bicycle.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -11,6 +13,7 @@ import java.util.Date;
 
 @Entity
 public class Payment extends BaseEntity {
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

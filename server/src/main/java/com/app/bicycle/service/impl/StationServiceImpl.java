@@ -37,7 +37,7 @@ public class StationServiceImpl extends BaseService implements StationService {
 
     @Override
     public List<StationDTO> getAllStationsWithBicycles() {
-        List<Station> stations = stationRepository.findAll(); // Fetch stations from the database
+        List<Station> stations = stationRepository.findAll();
 
         return stations.stream()
                 .map(this::convertToDTO)

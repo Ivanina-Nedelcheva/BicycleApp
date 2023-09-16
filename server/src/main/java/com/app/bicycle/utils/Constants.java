@@ -15,5 +15,5 @@ public class Constants {
     public static final CustomResponse BICYCLE_ALREADY_ACTIVATED = new CustomResponse(108, "Bicycle already activated!");
     public static final CustomResponse CANNOT_RENT_MORE_THAN_ONE_BICYCLE = new CustomResponse(109, "Cannot rent more than one bicycle!");
     public static final CustomResponse NO_BICYCLES_AVAILABLE = new CustomResponse(110, "No bicycles available!");
-    public static final CustomResponse BICYCLE_IS_NOT_FREE = new CustomResponse(111, "Bicycle is not free!");
+    public static final CustomResponse BICYCLE_IS_NOT_FREE_OR_RESERVED = new CustomResponse(111, "Bicycle is not free or reserved!");
 }

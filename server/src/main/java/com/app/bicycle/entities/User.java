@@ -1,5 +1,7 @@
 package com.app.bicycle.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -25,6 +27,7 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private String password;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "role_id")
     @Enumerated(value = EnumType.STRING)
@@ -44,6 +47,9 @@ public class User extends BaseEntity {
 
     @Transient
     private Integer userRentedBicycles = 0;
+
+    @Transient
+    private Integer userReservedBicycles = 0;
 
     public String getFirstName() {
         return firstName;
@@ -139,5 +145,13 @@ public class User extends BaseEntity {
 
     public void setUserRentedBicycles(Integer userRentedBicycles) {
         this.userRentedBicycles = userRentedBicycles;
+    }
+
+    public Integer getUserReservedBicycles() {
+        return userReservedBicycles;
+    }
+
+    public void setUserReservedBicycles(Integer userReservedBicycles) {
+        this.userReservedBicycles = userReservedBicycles;
     }
 }

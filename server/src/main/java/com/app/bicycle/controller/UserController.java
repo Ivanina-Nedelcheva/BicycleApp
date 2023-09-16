@@ -1,5 +1,6 @@
 package com.app.bicycle.controller;
 
+import com.app.bicycle.dto.FaultReportDTO;
 import com.app.bicycle.entities.Bicycle;
 import com.app.bicycle.entities.FaultReport;
 import com.app.bicycle.entities.User;
@@ -11,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -40,8 +43,25 @@ public class UserController {
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/reportFault", produces = MediaType.APPLICATION_JSON_VALUE)
+
+    @RequestMapping(method = RequestMethod.GET, value = "/getFaultReports", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).ORDINARY_USER)")
+    public ResponseEntity<List<FaultReportDTO>> getFaultReports() throws Exception {
+
+        List<FaultReportDTO> response;
+        try {
+            response = userService.getReports();
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+
+
+    @RequestMapping(method = RequestMethod.POST, value = "/reportFault", produces = MediaType.APPLICATION_JSON_VALUE)
+//    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).ORDINARY_USER)")
     public ResponseEntity<FaultReport> faultReport(@RequestParam Long userId, @RequestParam Long bikeId,
                                                    @RequestParam String faultText, @RequestParam byte[] imageData) throws Exception {
 
@@ -69,4 +89,18 @@ public class UserController {
         }
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/reserve", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).ORDINARY_USER)")
+    public ResponseEntity<Bicycle> reserveBicycle(@RequestParam Long userId, @RequestParam Long bikeId) throws CustomError {
+
+        Bicycle result = new Bicycle();
+        try {
+            userService.reserveBicycle(userId, bikeId);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
 }

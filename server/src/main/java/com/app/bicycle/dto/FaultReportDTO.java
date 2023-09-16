@@ -1,31 +1,20 @@
-package com.app.bicycle.entities;
+package com.app.bicycle.dto;
 
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
+import com.app.bicycle.entities.Bicycle;
+import com.app.bicycle.entities.User;
 
 import java.sql.Date;
 
-@Entity
-public class FaultReport extends BaseEntity {
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "bike_id")
+public class FaultReportDTO {
+
     private Bicycle bicycle;
 
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "user_id")
     private User user;
 
-    @Column
     private String faultText;
 
-    @Column
     private Date date;
 
-    @Lob
     private byte[] imageData;
 
     public Bicycle getBicycle() {
@@ -68,3 +57,4 @@ public class FaultReport extends BaseEntity {
         this.imageData = imageData;
     }
 }
+
