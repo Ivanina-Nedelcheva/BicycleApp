@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, TextInput, Text, Button, Image, Alert, StyleSheet } from 'react-native';
+import { View, TextInput, Text, Button, Image, Alert, StyleSheet, Platform } from 'react-native';
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import { Picker } from '@react-native-picker/picker';
@@ -7,6 +7,7 @@ import * as ImagePicker from 'expo-image-picker';
 import Constants from "expo-constants";
 import { colors } from '../../../styles/styles'
 import CustomButton from '../../components/CustomButton';
+import axios from 'axios';
 
 // $ npm i react-native-picker-select --legacy-peer-deps 
 
@@ -20,7 +21,7 @@ Notifications.setNotificationHandler({
 
 
 const ReportIssue = () => {
-  const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedOption, setSelectedOption] = useState('');
   const [otherText, setOtherText] = useState('');
   const [imageUri, setImageUri] = useState(null);
   const [expoPushToken, setExpoPushToken] = useState('');
@@ -52,7 +53,6 @@ const ReportIssue = () => {
         title: "You've got shadow notification! 🐱‍👤",
         body: 'I want to be ninja 🐱‍👤',
         data: { data: 'Im almost a ninjaaaa!' },
-        // sound: 'i-want-to-be-ninja.wav'
       },
       trigger: { seconds: 1 },
     });
@@ -88,7 +88,7 @@ const ReportIssue = () => {
         projectId: Constants.expoConfig.extra.eas.projectId,
       });
 
-      console.log(token);
+      // console.log(token);
     } else {
       alert('Must use physical device for Push Notifications');
     }
@@ -116,7 +116,9 @@ const ReportIssue = () => {
       return;
     }
 
-    const result = await ImagePicker.launchCameraAsync();
+    const result = await ImagePicker.launchCameraAsync({
+      base64: true
+    });
 
     if (!result.canceled) {
       setImageUri(result.assets[0].uri);
@@ -128,18 +130,41 @@ const ReportIssue = () => {
       Alert.alert('Please enter a description for "Other" option');
       return;
     }
-    await schedulePushNotification();
-    // You can send the selection, otherText, and imageUri to your API or perform any other necessary processing here.
+    if (!imageUri) {
+      Alert.alert('Please upload an image');
+      return;
+    }
+
+    try {
+      const url = 'http://192.168.1.102:8080/app/user/reportFault'
+
+      const formData = new FormData();
+      formData.append('userId', 1);
+      formData.append('bikeId', 1);
+      formData.append('faultText', selectedOption === 'Other' ? otherText : selectedOption);
+      formData.append('imageData', imageUri);
+
+      const response = await axios.post(url, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data', // Use 'multipart/form-data' for form parameters
+        },
+      });
+
+      console.log('Response from the server:', response.data);
+    } catch (error) {
+      console.error('Error uploading data:', error);
+    }
+    // await schedulePushNotification();
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.selectContainer}>
         <Picker
-          placeholder={{ label: 'Select Option...', value: null, }}
+          selectedValue={selectedOption}
           onValueChange={(value) => setSelectedOption(value)}
         >
-          {options.map((item) => {
+          {options.map((item, idx) => {
             return <Picker.Item label={item.label} value={item.value} key={item.value} />
           })}
         </Picker>
@@ -153,6 +178,7 @@ const ReportIssue = () => {
             multiline={true}
             maxLength={255}
             style={styles.input}
+            autoFocus={true}
           />
         </View>
 
@@ -181,7 +207,7 @@ const ReportIssue = () => {
         style={styles.btn}
       />
 
-      <View style={{ marginTop: 40 }}>
+      {/* <View style={{ marginTop: 40 }}>
         <View style={{ alignItems: 'center', justifyContent: 'center' }}>
           <Text>Title: {notification && notification.request.content.title} </Text>
           <Text>Body: {notification && notification.request.content.body}</Text>
@@ -193,7 +219,7 @@ const ReportIssue = () => {
             await schedulePushNotification();
           }}
         />
-      </View>
+      </View> */}
     </View>
   );
 };

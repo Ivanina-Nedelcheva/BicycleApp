@@ -19,7 +19,6 @@ const BikeDetails = ({ bike, bottomSheetRef, navigation }) => {
   function handleReserveBike() {
     setReservation(true)
     handleStartRide()
-    // bottomSheetRef.current?.close()
   }
 
   function handleStartRide() {
