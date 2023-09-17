@@ -83,7 +83,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public FaultReport reportFault(Long userId, Long bikeId, String faultText, byte[] imageData) {
+    public FaultReportDTO reportFault(Long userId, Long bikeId, String faultText, byte[] imageData) {
         FaultReport report = new FaultReport();
         report.setUser(userRepository.getReferenceById(userId));
         report.setBicycle(bicycleRepository.getBicycleById(bikeId));
@@ -92,7 +92,8 @@ public class UserServiceImpl implements UserService {
         report.setImageData(imageData);
 
         bicycleService.deactivateBicycle(bikeId);
-        return faultReportRepository.save(report);
+        FaultReport savedReport =  faultReportRepository.save(report);
+        return mapToDTO(savedReport);
     }
 
     @Override
