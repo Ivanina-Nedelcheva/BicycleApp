@@ -26,6 +26,7 @@ public class FaultReport extends BaseEntity {
     private Date date;
 
     @Lob
+    @Column(name = "image_data", columnDefinition = "LONGBLOB")
     private byte[] imageData;
 
     public Bicycle getBicycle() {
