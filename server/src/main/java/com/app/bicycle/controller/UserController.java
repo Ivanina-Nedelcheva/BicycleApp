@@ -63,7 +63,7 @@ public class UserController {
     @RequestMapping(method = RequestMethod.POST, value = "/reportFault", produces = MediaType.APPLICATION_JSON_VALUE)
 //    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).ORDINARY_USER)")
     public ResponseEntity<FaultReport> faultReport(@RequestParam Long userId, @RequestParam Long bikeId,
-                                                   @RequestParam String faultText, @RequestParam byte[] imageData) throws Exception {
+                                                   @RequestParam String faultText, @RequestParam(required = false) byte[] imageData) throws Exception {
 
         FaultReport response;
         try {
@@ -81,13 +81,13 @@ public class UserController {
     @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).ORDINARY_USER)")
     public ResponseEntity<Bicycle> rentBicycle(@RequestParam Long userId, @RequestParam Long bikeId) throws CustomError {
 
-        Bicycle result;
+        Bicycle result = new Bicycle();
         try {
             userService.rentBicycle(userId, bikeId);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<>(null, HttpStatus.OK);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/reserve", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -103,4 +103,16 @@ public class UserController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    @RequestMapping(method = RequestMethod.POST, value = "/return", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).ORDINARY_USER)")
+    public ResponseEntity<Bicycle> returnBicycle(@RequestParam Long userId, @RequestParam Long bikeId) throws CustomError {
+
+        Bicycle result = new Bicycle();
+        try {
+            userService.returnBicycle(userId, bikeId);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
 }

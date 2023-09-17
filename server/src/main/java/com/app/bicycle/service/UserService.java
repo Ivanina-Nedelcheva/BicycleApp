@@ -29,4 +29,6 @@ public interface UserService {
     void rentBicycle(Long userId, Long bikeId);
 
     void reserveBicycle(Long userId, Long bikeId);
+
+    void returnBicycle(Long userId, Long bikeId);
 }

@@ -14,13 +14,15 @@ import com.app.bicycle.service.StationService;
 import com.app.bicycle.service.UserService;
 import com.app.bicycle.utils.Constants;
 import com.app.bicycle.utils.CustomError;
-import com.app.bicycle.utils.ReservationTimer;
+import com.app.bicycle.utils.ScheduledTimer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Blob;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,7 +36,7 @@ public class UserServiceImpl implements UserService {
     private final RentalRepository rentalRepository;
     private final BicycleService bicycleService;
     private final StationService stationService;
-    private ReservationTimer timer;
+    private ScheduledTimer timer;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository,
@@ -43,7 +45,7 @@ public class UserServiceImpl implements UserService {
                            RentalRepository rentalRepository,
                            BicycleService bicycleService,
                            StationService stationService,
-                           ReservationTimer timer) {
+                           ScheduledTimer timer) {
         this.userRepository = userRepository;
         this.faultReportRepository = faultReportRepository;
         this.bicycleRepository = bicycleRepository;
@@ -107,8 +109,11 @@ public class UserServiceImpl implements UserService {
         dto.setUser(faultReport.getUser());
         dto.setFaultText(faultReport.getFaultText());
         dto.setDate(faultReport.getDate());
-        dto.setImageData(faultReport.getImageData());
-
+        byte[] imageData = faultReport.getImageData();
+        if (imageData != null) {
+            String imageDataBase64 = Base64.getEncoder().encodeToString(imageData);
+            dto.setImageData(imageDataBase64);
+        }
         return dto;
     }
 
@@ -177,5 +182,12 @@ public class UserServiceImpl implements UserService {
         bicycleService.changeBicycleState(bikeId, BicycleState.RESERVED);
         increaseUserReservedBicycles(userId);
         timer.startReservation(user);
+    }
+
+    @Override
+    public void returnBicycle(Long userId, Long bikeId) {
+        User user = userRepository.getUserById(userId);
+
+
     }
 }

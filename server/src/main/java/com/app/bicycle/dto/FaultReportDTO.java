@@ -15,7 +15,7 @@ public class FaultReportDTO {
 
     private Date date;
 
-    private byte[] imageData;
+    private String imageData;
 
     public Bicycle getBicycle() {
         return bicycle;
@@ -49,11 +49,11 @@ public class FaultReportDTO {
         this.date = date;
     }
 
-    public byte[] getImageData() {
+    public String getImageData() {
         return imageData;
     }
 
-    public void setImageData(byte[] imageData) {
+    public void setImageData(String imageData) {
         this.imageData = imageData;
     }
 }
