@@ -3,7 +3,7 @@ export { default as SignIn } from './home/SignIn'
 export { default as SignUp } from './home/SignUp'
 export { default as BikeSelect } from './home/BikeSelect'
 export { default as ReportIssue } from './home/ReportIssue'
-export { default as BikeProblemReport } from './home/BikeProblemReport'
+export { default as BikeReport } from './home/BikeReport'
 
 export { default as Map } from './map/Map'
 export { default as Profile } from './map/Profile'

@@ -32,7 +32,7 @@ const Auth = ({ navigation }) => {
         <CustomButton
           title="Report"
           color={colors.primary}
-          onPress={() => navigation.navigate('BikeProblemReport')}
+          onPress={() => navigation.navigate('BikeReport')}
           magicNumber={0.8}
         />
       </View>
