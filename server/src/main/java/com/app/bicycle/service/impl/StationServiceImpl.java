@@ -113,8 +113,10 @@ public class StationServiceImpl extends BaseService implements StationService {
     @Override
     public void deleteSBConnection(Long bikeId) {
         Bicycle bicycle = bicycleRepository.getBicycleById(bikeId);
-        StationBicycle connection = sbRepository.findByBicycle(bicycle);
-        sbRepository.delete(connection);
+        if (bicycle != null) {
+            StationBicycle connection = sbRepository.findByBicycle(bicycle);
+            sbRepository.deleteById(connection.getId());
+        }
     }
 
     @Override

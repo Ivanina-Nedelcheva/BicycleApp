@@ -15,8 +15,8 @@ import java.util.List;
 public interface StationBicycleRepository extends JpaRepository<StationBicycle, Long> {
     @Transactional
     @Modifying
-    @Query("DELETE FROM StationBicycle s")
-    int deleteFirstBy();
+//    @Query("DELETE FROM StationBicycle s WHERE s.id = :idToDelete")
+    void deleteById(Long id);
 
     StationBicycle findByBicycleAndStation(Bicycle bicycle, Station station);
 

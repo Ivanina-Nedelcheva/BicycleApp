@@ -13,7 +13,6 @@ import com.app.bicycle.utils.Constants;
 import com.app.bicycle.utils.CustomError;
 import com.app.bicycle.utils.ScheduledTimer;
 import com.stripe.exception.*;
-import com.stripe.model.Charge;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +31,7 @@ public class UserServiceImpl implements UserService {
     private final FaultReportRepository faultReportRepository;
     private final BicycleRepository bicycleRepository;
     private final RentalRepository rentalRepository;
+    private final StationBicycleRepository sbRepository;
     private final BicycleService bicycleService;
     private final StationService stationService;
     private final PriceRepository priceRepository;
@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService {
                            FaultReportRepository faultReportRepository,
                            BicycleRepository bicycleRepository,
                            RentalRepository rentalRepository,
-                           BicycleService bicycleService,
+                           StationBicycleRepository sbRepository, BicycleService bicycleService,
                            StationService stationService,
                            PriceRepository priceRepository,
                            StripeService stripeService, ScheduledTimer timer) {
@@ -51,6 +51,7 @@ public class UserServiceImpl implements UserService {
         this.faultReportRepository = faultReportRepository;
         this.bicycleRepository = bicycleRepository;
         this.rentalRepository = rentalRepository;
+        this.sbRepository = sbRepository;
         this.bicycleService = bicycleService;
         this.stationService = stationService;
         this.priceRepository = priceRepository;
@@ -188,15 +189,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void returnBicycle(Long userId, Long bikeId) throws AuthenticationException, InvalidRequestException, CardException, APIConnectionException, APIException {
+    @Transactional
+    public void returnBicycle(Long userId, Long bikeId, Long stationId) throws AuthenticationException, InvalidRequestException, CardException, APIConnectionException, APIException {
         Prices prices = priceRepository.findTopByOrderByIdDesc();
         User user = userRepository.getUserById(userId);
         Bicycle bicycle = bicycleRepository.getBicycleById(bikeId);
         Rental userRent = rentalRepository.findRentalByUserAndBicycleAndFinishedFalse(user, bicycle);
 
+        timer.completeRent(user);
         userRent.setFinished(true);
         userRent.setDistance(bicycle.getDistance());
-
         Timestamp endTime = new Timestamp(System.currentTimeMillis());
         userRent.setEndTime(endTime);
         Timestamp startTime = userRent.getStartTime();
@@ -206,14 +208,21 @@ public class UserServiceImpl implements UserService {
         rentalRepository.save(userRent);
 
         chargeUser(price, user);
+
+        stationService.addBikeToStation(bikeId, stationId); //here is the check if the station has more room and save is here
+
+        if (bicycleService.isBicycleInState(bikeId, BicycleState.RENTED)) {
+            bicycleService.changeBicycleState(bikeId, BicycleState.CHARGING); //save is here
+        }
+
     }
 
     private void chargeUser(Double price, User user) throws AuthenticationException, InvalidRequestException, CardException, APIConnectionException, APIException {
         //stripe
         //saveToDB
-        ChargeRequestDTO chargeRequest = new ChargeRequestDTO();
+         ChargeRequestDTO chargeRequest = new ChargeRequestDTO();
         chargeRequest.setAmount(price);
-        stripeService.charge(chargeRequest);
+//        stripeService.charge(chargeRequest);
 
         if (true
             // successful
@@ -222,6 +231,7 @@ public class UserServiceImpl implements UserService {
             newPayment.setUser(user);
             newPayment.setAmount(price);
             newPayment.setDate(new Date(System.currentTimeMillis()));
+            //saveNewPayment
         } else {
         }
         //try again and save

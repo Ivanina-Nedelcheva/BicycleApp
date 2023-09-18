@@ -19,7 +19,7 @@ public class Station extends BaseEntity {
     @Column(name = "active_flag", columnDefinition = "BIT(1) default 1")
     private Boolean activeFlag;
 
-    @OneToMany(mappedBy = "station", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "station", fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<StationBicycle> stationBicycles = new ArrayList<>();
 
     public String getStationName() {
