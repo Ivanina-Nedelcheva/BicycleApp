@@ -188,7 +188,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void returnBicycle(Long userId, Long bikeId) throws AuthenticationException, InvalidRequestException, CardException {
+    public void returnBicycle(Long userId, Long bikeId) throws AuthenticationException, InvalidRequestException, CardException, APIConnectionException, APIException {
         Prices prices = priceRepository.findTopByOrderByIdDesc();
         User user = userRepository.getUserById(userId);
         Bicycle bicycle = bicycleRepository.getBicycleById(bikeId);
@@ -208,7 +208,7 @@ public class UserServiceImpl implements UserService {
         chargeUser(price, user);
     }
 
-    private void chargeUser(Double price, User user) throws AuthenticationException, InvalidRequestException, CardException {
+    private void chargeUser(Double price, User user) throws AuthenticationException, InvalidRequestException, CardException, APIConnectionException, APIException {
         //stripe
         //saveToDB
         ChargeRequestDTO chargeRequest = new ChargeRequestDTO();
