@@ -1,14 +1,9 @@
 package com.app.bicycle.service.impl;
 
 import com.app.bicycle.dto.FaultReportDTO;
-import com.app.bicycle.entities.FaultReport;
-import com.app.bicycle.entities.Rental;
-import com.app.bicycle.entities.User;
+import com.app.bicycle.entities.*;
 import com.app.bicycle.enums.BicycleState;
-import com.app.bicycle.repositories.BicycleRepository;
-import com.app.bicycle.repositories.FaultReportRepository;
-import com.app.bicycle.repositories.RentalRepository;
-import com.app.bicycle.repositories.UserRepository;
+import com.app.bicycle.repositories.*;
 import com.app.bicycle.service.BicycleService;
 import com.app.bicycle.service.StationService;
 import com.app.bicycle.service.UserService;
@@ -19,9 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Blob;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.time.Duration;
 import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,6 +31,7 @@ public class UserServiceImpl implements UserService {
     private final RentalRepository rentalRepository;
     private final BicycleService bicycleService;
     private final StationService stationService;
+    private final PriceRepository priceRepository;
     private ScheduledTimer timer;
 
     @Autowired
@@ -45,6 +41,7 @@ public class UserServiceImpl implements UserService {
                            RentalRepository rentalRepository,
                            BicycleService bicycleService,
                            StationService stationService,
+                           PriceRepository priceRepository,
                            ScheduledTimer timer) {
         this.userRepository = userRepository;
         this.faultReportRepository = faultReportRepository;
@@ -52,6 +49,7 @@ public class UserServiceImpl implements UserService {
         this.rentalRepository = rentalRepository;
         this.bicycleService = bicycleService;
         this.stationService = stationService;
+        this.priceRepository = priceRepository;
         this.timer = timer;
     }
 
@@ -103,7 +101,7 @@ public class UserServiceImpl implements UserService {
                 .collect(Collectors.toList());
     }
 
-    private FaultReportDTO mapToDTO(FaultReport faultReport){
+    private FaultReportDTO mapToDTO(FaultReport faultReport) {
         FaultReportDTO dto = new FaultReportDTO();
         dto.setBicycle(faultReport.getBicycle());
         dto.setUser(faultReport.getUser());
@@ -186,8 +184,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void returnBicycle(Long userId, Long bikeId) {
+        Prices prices = priceRepository.findTopByOrderByIdDesc();
         User user = userRepository.getUserById(userId);
+        Bicycle bicycle = bicycleRepository.getBicycleById(bikeId);
+        Rental userRent = rentalRepository.findRentalByUserAndBicycleAndFinishedFalse(user, bicycle);
 
+        userRent.setFinished(true);
+        userRent.setDistance(bicycle.getDistance());
+        Timestamp endTime = new Timestamp(System.currentTimeMillis());
+        userRent.setEndTime(endTime);
 
+        Timestamp startTime = userRent.getStartTime();
+
+        Long minutes = (endTime.getTime() - startTime.getTime()) / (60 * 1000);
+        Double price = minutes * prices.getMinutePrice() + prices.getUnlockPrice();
+        userRent.setPrice(price);
+        rentalRepository.save(userRent);
     }
 }

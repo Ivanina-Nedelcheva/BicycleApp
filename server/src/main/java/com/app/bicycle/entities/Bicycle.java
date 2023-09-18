@@ -27,6 +27,9 @@ public class Bicycle extends BaseEntity {
     @OneToMany(mappedBy = "bicycle", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     private List<Reservation> reservations = new ArrayList<>();
 
+    @Transient
+    private Double distance = 5.0;
+
     public BicycleState getState() {
         return state;
     }
@@ -73,5 +76,13 @@ public class Bicycle extends BaseEntity {
 
     public void setFaultReports(List<FaultReport> faultReports) {
         this.faultReports = faultReports;
+    }
+
+    public Double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(Double distance) {
+        this.distance = distance;
     }
 }
