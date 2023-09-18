@@ -3,6 +3,7 @@ package com.app.bicycle.service;
 import com.app.bicycle.dto.FaultReportDTO;
 import com.app.bicycle.entities.FaultReport;
 import com.app.bicycle.entities.User;
+import com.stripe.exception.*;
 
 import java.util.List;
 
@@ -30,5 +31,5 @@ public interface UserService {
 
     void reserveBicycle(Long userId, Long bikeId);
 
-    void returnBicycle(Long userId, Long bikeId);
+    void returnBicycle(Long userId, Long bikeId) throws APIConnectionException, APIException, AuthenticationException, InvalidRequestException, CardException;
 }

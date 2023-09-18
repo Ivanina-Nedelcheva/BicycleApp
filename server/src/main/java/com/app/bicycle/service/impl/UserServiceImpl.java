@@ -1,22 +1,25 @@
 package com.app.bicycle.service.impl;
 
+import com.app.bicycle.dto.ChargeRequestDTO;
 import com.app.bicycle.dto.FaultReportDTO;
 import com.app.bicycle.entities.*;
 import com.app.bicycle.enums.BicycleState;
 import com.app.bicycle.repositories.*;
 import com.app.bicycle.service.BicycleService;
 import com.app.bicycle.service.StationService;
+import com.app.bicycle.service.StripeService;
 import com.app.bicycle.service.UserService;
 import com.app.bicycle.utils.Constants;
 import com.app.bicycle.utils.CustomError;
 import com.app.bicycle.utils.ScheduledTimer;
+import com.stripe.exception.*;
+import com.stripe.model.Charge;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
 import java.sql.Timestamp;
-import java.time.Duration;
 import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,6 +35,7 @@ public class UserServiceImpl implements UserService {
     private final BicycleService bicycleService;
     private final StationService stationService;
     private final PriceRepository priceRepository;
+    private final StripeService stripeService;
     private ScheduledTimer timer;
 
     @Autowired
@@ -42,7 +46,7 @@ public class UserServiceImpl implements UserService {
                            BicycleService bicycleService,
                            StationService stationService,
                            PriceRepository priceRepository,
-                           ScheduledTimer timer) {
+                           StripeService stripeService, ScheduledTimer timer) {
         this.userRepository = userRepository;
         this.faultReportRepository = faultReportRepository;
         this.bicycleRepository = bicycleRepository;
@@ -50,6 +54,7 @@ public class UserServiceImpl implements UserService {
         this.bicycleService = bicycleService;
         this.stationService = stationService;
         this.priceRepository = priceRepository;
+        this.stripeService = stripeService;
         this.timer = timer;
     }
 
@@ -183,7 +188,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void returnBicycle(Long userId, Long bikeId) {
+    public void returnBicycle(Long userId, Long bikeId) throws AuthenticationException, InvalidRequestException, CardException {
         Prices prices = priceRepository.findTopByOrderByIdDesc();
         User user = userRepository.getUserById(userId);
         Bicycle bicycle = bicycleRepository.getBicycleById(bikeId);
@@ -191,14 +196,34 @@ public class UserServiceImpl implements UserService {
 
         userRent.setFinished(true);
         userRent.setDistance(bicycle.getDistance());
+
         Timestamp endTime = new Timestamp(System.currentTimeMillis());
         userRent.setEndTime(endTime);
-
         Timestamp startTime = userRent.getStartTime();
-
         Long minutes = (endTime.getTime() - startTime.getTime()) / (60 * 1000);
         Double price = minutes * prices.getMinutePrice() + prices.getUnlockPrice();
         userRent.setPrice(price);
         rentalRepository.save(userRent);
+
+        chargeUser(price, user);
+    }
+
+    private void chargeUser(Double price, User user) throws AuthenticationException, InvalidRequestException, CardException {
+        //stripe
+        //saveToDB
+        ChargeRequestDTO chargeRequest = new ChargeRequestDTO();
+        chargeRequest.setAmount(price);
+        stripeService.charge(chargeRequest);
+
+        if (true
+            // successful
+        ) {
+            Payment newPayment = new Payment();
+            newPayment.setUser(user);
+            newPayment.setAmount(price);
+            newPayment.setDate(new Date(System.currentTimeMillis()));
+        } else {
+        }
+        //try again and save
     }
 }

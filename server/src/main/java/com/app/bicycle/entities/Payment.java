@@ -19,7 +19,7 @@ public class Payment extends BaseEntity {
     private User user;
 
     @Column
-    private BigDecimal amount;
+    private Double amount;
 
     @Column
     private Date date;
@@ -32,11 +32,11 @@ public class Payment extends BaseEntity {
         this.user = user;
     }
 
-    public BigDecimal getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(BigDecimal amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
 

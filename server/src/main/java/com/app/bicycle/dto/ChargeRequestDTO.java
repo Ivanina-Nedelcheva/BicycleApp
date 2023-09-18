@@ -8,7 +8,7 @@ public class ChargeRequestDTO {
         BGN
     }
     private String description;
-    private int amount;
+    private double amount;
     private Currency currency;
     private String stripeEmail;
     private String stripeToken;
