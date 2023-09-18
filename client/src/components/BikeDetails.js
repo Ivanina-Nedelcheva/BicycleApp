@@ -48,7 +48,7 @@ const BikeDetails = ({ bike, bottomSheetRef, navigation }) => {
             </View>
 
             <View style={styles.bikeAttributes}>
-              <Text style={styles.attribute}>Battery:</Text>
+              <MaterialCommunityIcons name="battery" size={24} color="black" />
               <Text style={styles.attribute}>{bike.batteryLevel}%</Text>
             </View>
 

@@ -1,6 +1,6 @@
 import React from "react"
 import { createStackNavigator } from "@react-navigation/stack"
-import { Auth, SignIn, SignUp, BikeSelect, ReportIssue } from '../screens'
+import { Auth, SignIn, SignUp, BikeSelect, ReportIssue, BikeReport } from '../screens'
 import MapNavigator from "./MapNavigator"
 
 const Stack = createStackNavigator();
@@ -11,7 +11,7 @@ const screenOptionStyle = {
 	// headerTintColor: "black",
 	// headerBackTitle: "Back",
 };
-const AuthNavigator = () => {
+const HomeNavigator = () => {
 	return (
 		<Stack.Navigator screenOptions={screenOptionStyle}>
 			{/* options={{ headerTransparent: true }} */}
@@ -21,11 +21,12 @@ const AuthNavigator = () => {
 			<Stack.Screen name="MapNavigator" component={MapNavigator} options={{ headerShown: false }} />
 			<Stack.Screen name="BikeSelect" component={BikeSelect} options={{ headerTitle: 'Select a bike' }} />
 			<Stack.Screen name="ReportIssue" component={ReportIssue} options={{ headerTitle: 'Report issue' }} />
+			<Stack.Screen name="BikeReport" component={BikeReport} options={{ headerTitle: 'Bike reports' }} />
 		</Stack.Navigator>
 	)
 }
 
-export default AuthNavigator
+export default HomeNavigator
 
 
 

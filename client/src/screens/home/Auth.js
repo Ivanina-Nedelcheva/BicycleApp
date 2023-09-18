@@ -27,6 +27,14 @@ const Auth = ({ navigation }) => {
           onPress={() => navigation.navigate('Sign In')}
           magicNumber={0.8}
         />
+
+
+        <CustomButton
+          title="Report"
+          color={colors.primary}
+          onPress={() => navigation.navigate('BikeReport')}
+          magicNumber={0.8}
+        />
       </View>
     </SafeAreaView >
   );

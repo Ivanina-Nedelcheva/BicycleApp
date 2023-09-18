@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, TextInput, Text, Button, Image, Alert, StyleSheet, Platform } from 'react-native';
+import { View, TextInput, Image, Alert, StyleSheet, Platform } from 'react-native';
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import { Picker } from '@react-native-picker/picker';
@@ -7,9 +7,7 @@ import * as ImagePicker from 'expo-image-picker';
 import Constants from "expo-constants";
 import { colors } from '../../../styles/styles'
 import CustomButton from '../../components/CustomButton';
-import axios from 'axios';
-
-// $ npm i react-native-picker-select --legacy-peer-deps 
+import { addReport } from '../../api/reports';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -24,6 +22,7 @@ const ReportIssue = () => {
   const [selectedOption, setSelectedOption] = useState('');
   const [otherText, setOtherText] = useState('');
   const [imageUri, setImageUri] = useState(null);
+  const [imageBase64, setImageBase64] = useState(null);
   const [expoPushToken, setExpoPushToken] = useState('');
   const [notification, setNotification] = useState(false);
   const notificationListener = useRef();
@@ -58,7 +57,6 @@ const ReportIssue = () => {
     });
   }
 
-
   async function registerForPushNotificationsAsync() {
     let token;
 
@@ -82,13 +80,11 @@ const ReportIssue = () => {
         alert('Failed to get push token for push notification!');
         return;
       }
-      // Learn more about projectId:
-      // https://docs.expo.dev/push-notifications/push-notifications-setup/#configure-projectid
+
       token = await Notifications.getExpoPushTokenAsync({
         projectId: Constants.expoConfig.extra.eas.projectId,
       });
 
-      // console.log(token);
     } else {
       alert('Must use physical device for Push Notifications');
     }
@@ -97,6 +93,7 @@ const ReportIssue = () => {
   }
 
   const options = [
+    // { label: 'Select a option...', value: '' },
     { label: 'Flat Tire', value: 'Flat Tire' },
     { label: 'Brake Issues', value: 'Brake Issues' },
     { label: 'Gear Shifting Problems', value: 'Gear Shifting Problems' },
@@ -110,50 +107,61 @@ const ReportIssue = () => {
 
   const handleImageUpload = async () => {
     const { status } = await ImagePicker.getCameraPermissionsAsync();
+    // const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
     if (status !== 'granted') {
       Alert.alert('Camera Roll permission is required to upload an image.');
       return;
     }
 
+    // if (status !== 'granted') {
+    //   alert('Permission to access media library required!');
+    //   return;
+    // }
+
     const result = await ImagePicker.launchCameraAsync({
-      base64: true
+      base64: true,
+      quality: 1,
     });
 
+    // const result = await ImagePicker.launchImageLibraryAsync({
+    //   mediaTypes: ImagePicker.MediaTypeOptions.All,
+    //   allowsEditing: true,
+    //   aspect: [4, 3],
+    //   quality: 1,
+    //   base64: true
+    // })
+
+    console.log(result.assets);
     if (!result.canceled) {
       setImageUri(result.assets[0].uri);
+      setImageBase64(result.assets[0].base64);
+      console.log(imageBase64);
     }
   };
 
   const handleSubmit = async () => {
+    if (!selectedOption) {
+      Alert.alert('Please select an option to address the damage.');
+      return;
+    }
+
     if (selectedOption === 'Other' && !otherText) {
-      Alert.alert('Please enter a description for "Other" option');
+      Alert.alert('Please enter a description for "Other" option.');
       return;
     }
-    if (!imageUri) {
-      Alert.alert('Please upload an image');
-      return;
-    }
+    // if (!imageUri) {
+    //   Alert.alert('Please upload an image.');
+    //   return;
+    // }
 
-    try {
-      const url = 'http://192.168.1.102:8080/app/user/reportFault'
+    const formData = new FormData();
+    formData.append('userId', 1);
+    formData.append('bikeId', 1);
+    formData.append('faultText', selectedOption === 'Other' ? otherText : selectedOption);
+    formData.append('imageData', imageBase64);
 
-      const formData = new FormData();
-      formData.append('userId', 1);
-      formData.append('bikeId', 1);
-      formData.append('faultText', selectedOption === 'Other' ? otherText : selectedOption);
-      formData.append('imageData', imageUri);
-
-      const response = await axios.post(url, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data', // Use 'multipart/form-data' for form parameters
-        },
-      });
-
-      console.log('Response from the server:', response.data);
-    } catch (error) {
-      console.error('Error uploading data:', error);
-    }
+    addReport(formData)
     // await schedulePushNotification();
   };
 
@@ -164,7 +172,8 @@ const ReportIssue = () => {
           selectedValue={selectedOption}
           onValueChange={(value) => setSelectedOption(value)}
         >
-          {options.map((item, idx) => {
+          <Picker.Item label="Select a option..." value="" style={{ color: colors.lightgrey }} />
+          {options.map((item) => {
             return <Picker.Item label={item.label} value={item.value} key={item.value} />
           })}
         </Picker>
@@ -196,6 +205,11 @@ const ReportIssue = () => {
       {imageUri && (
         <View style={styles.imageWrapper}>
           <Image source={{ uri: imageUri }} style={styles.image} />
+
+          {/* <Image
+            source={{ uri: `data:image/jpeg;base64, ${imageBase64}` }}
+            style={{ width: 200, height: 200 }}
+          /> */}
         </View>
       )}
 
@@ -206,20 +220,6 @@ const ReportIssue = () => {
         magicNumber={0.4}
         style={styles.btn}
       />
-
-      {/* <View style={{ marginTop: 40 }}>
-        <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-          <Text>Title: {notification && notification.request.content.title} </Text>
-          <Text>Body: {notification && notification.request.content.body}</Text>
-          <Text>Data: {notification && JSON.stringify(notification.request.content.data)}</Text>
-        </View>
-        <Button
-          title="Press to schedule a notification"
-          onPress={async () => {
-            await schedulePushNotification();
-          }}
-        />
-      </View> */}
     </View>
   );
 };

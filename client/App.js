@@ -6,7 +6,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { StyleSheet, Linking, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import Constants from "expo-constants";
-import AuthNavigator from './src/navigation/AuthNavigator'
+import HomeNavigator from './src/navigation/HomeNavigator'
 import { CardProvider } from './src/context/CardContext';
 import { Auth } from './src/screens';
 
@@ -86,7 +86,7 @@ const App = () => {
           },
         }}>
 
-        <AuthNavigator></AuthNavigator>
+        <HomeNavigator></HomeNavigator>
       </NavigationContainer>
     </CardProvider>
   );
