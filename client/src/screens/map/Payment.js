@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React from 'react';
 import { StyleSheet, Text, View, StatusBar, Image } from 'react-native';
 import { colors } from '../../../styles/styles';
 import CardInfo from '../../components/CardInfo'
@@ -17,6 +17,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+    backgroundColor: colors.lightYellow
   },
 
   heading: {

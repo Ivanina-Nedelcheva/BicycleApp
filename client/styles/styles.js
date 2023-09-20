@@ -1,13 +1,15 @@
 export const colors = {
-    primary: 'hsl(160, 80%, 45%)',
-    secondary: 'hsl(160, 50%, 75%)',
-    background: 'hsl(0, 0%, 94%)',
-    lightred: 'hsl(1, 100%, 72%)',
-    red: 'hsl(0, 93%, 35%)',
-    lightgrey: 'hsl(0, 0%, 65%)',
-    disabled: 'hsl(0, 0%, 60%)',
-    darkgrey: 'hsl(0, 0%, 40%)',
+    ultraViolet: '#4E4187',
+    bleuDeFrance: '#3083DC',
+    columbiaBlue: '#CBE0F6',
+    lightYellow: '#F8FFE5',
+    cream: '#EFFFC2',
+    lightGreen: '#7DDE92',
+    keppel: '#2EBFA5',
+    lapisLazuli: '#1C589C',
 
-    aliceblue: 'hsl(208, 100%, 97%)',
-    aliceblue2: 'hsl(208, 100%, 80%)',
+
+    red: '#e63946',
+    lightred: 'hsl(1, 100%, 72%)',
+    disabled: 'hsl(0, 0%, 60%)',
 };

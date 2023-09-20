@@ -153,7 +153,7 @@ const Profile = ({ navigation }) => {
               <View>
                 <CustomButton
                   title="Save Changes"
-                  color={colors.primary}
+                  color={colors.bleuDeFrance}
                   onPress={handleSubmit}
                   magicNumber={0.8}
                   // disabled={!isValid}
@@ -162,7 +162,7 @@ const Profile = ({ navigation }) => {
 
                 <CustomButton
                   title="Log out"
-                  color={colors.secondary}
+                  color={colors.keppel}
                   magicNumber={0.8}
                   onPress={() => navigation.navigate('Auth')}
                   style={styles.btn}
@@ -170,7 +170,7 @@ const Profile = ({ navigation }) => {
 
                 <CustomButton
                   title="Delete Account"
-                  color={colors.lightred}
+                  color={colors.ultraViolet}
                   magicNumber={0.8}
                   onPress={() => setModalVisible(!modalVisible)}
                   style={styles.btn}
@@ -192,6 +192,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingVertical: 20,
+    backgroundColor: colors.lightYellow
   },
   container: {
     flex: 1,
@@ -226,7 +227,7 @@ const styles = StyleSheet.create({
   },
   errorMessage: {
     fontFamily: 'Roboto-Regular',
-    color: colors.red
+    color: colors.ultraViolet
   },
   btn: {
     marginTop: 12

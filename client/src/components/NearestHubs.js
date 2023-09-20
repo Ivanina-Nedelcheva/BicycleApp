@@ -68,8 +68,8 @@ const NearestHubs = forwardRef(({ userPosition, stations, onSelectStation }, ref
 
   const hub = ({ item, index }) => (
     <TouchableHighlight
-      style={[styles.hub, { borderColor: index === 0 ? colors.primary : colors.lightgrey }]}
-      underlayColor="transparent"
+      style={[styles.hub, { borderColor: index === 0 ? colors.lightGreen : colors.lapisLazuli }]}
+      underlayColor={colors.columbiaBlue}
       onPress={() => selectHub(item)}
     >
       <View style={styles.hubContainer}>
@@ -110,7 +110,7 @@ const NearestHubs = forwardRef(({ userPosition, stations, onSelectStation }, ref
         index={0}
         snapPoints={snapPoints}
         style={styles.modal}
-        backgroundStyle={{ backgroundColor: colors.aliceblue, borderWidth: 0.3, borderColor: colors.aliceblue2 }}
+        backgroundStyle={{ backgroundColor: colors.lightYellow, borderWidth: 0.3, borderColor: colors.aliceblue2 }}
       >
         <Text style={styles.heading}>Nearest Hubs</Text>
         <View>

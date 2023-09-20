@@ -11,7 +11,6 @@ Notifications.setNotificationHandler({
   }),
 });
 
-const expoID = '9a3eb7c9-1251-4389-8294-c674ba99e6d5'
 
 export default function App() {
   const [expoPushToken, setExpoPushToken] = useState('');
@@ -93,10 +92,10 @@ async function registerForPushNotificationsAsync() {
       alert('Failed to get push token for push notification!');
       return;
     }
-    // Learn more about projectId:
-    // https://docs.expo.dev/push-notifications/push-notifications-setup/#configure-projectid
-    token = (await Notifications.getExpoPushTokenAsync({ projectId: expoID })).data;
-    console.log(token);
+
+    token = await Notifications.getExpoPushTokenAsync({
+      projectId: Constants.expoConfig.extra.eas.projectId,
+    });
   } else {
     alert('Must use physical device for Push Notifications');
   }

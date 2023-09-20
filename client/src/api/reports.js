@@ -1,11 +1,11 @@
 import axios from './axiosConfig';
 
-const reportURL = 'user/reportFault'
-const getReportsURL = 'user/getFaultReports'
+const getReportsURI = 'user/getFaultReports'
+const reportURI = 'user/reportFault'
 
 export async function getReports() {
   try {
-    const response = await axios.get(getReportsURL);
+    const response = await axios.get(getReportsURI);
     return response.data;
   } catch (error) {
     console.error('Error getting data:', error);
@@ -14,7 +14,7 @@ export async function getReports() {
 
 export async function addReport(reportData) {
   try {
-    const response = await axios.post(reportURL, reportData, {
+    const response = await axios.post(reportURI, reportData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },

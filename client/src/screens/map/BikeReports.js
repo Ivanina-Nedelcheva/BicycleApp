@@ -13,23 +13,18 @@ import {
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { getReports } from '../../api/reports';
 import { colors } from '../../../styles/styles';
+import CustomButton from '../../components/CustomButton';
 
-const BikeReport = ({ navigation }) => {
+const BikeReports = () => {
   const [userReports, setUserReports] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await getReports();
-        setUserReports(data);
-      } catch (error) {
-        console.error('Error in useEffect:', error);
-      }
-    };
-
-    fetchData();
+    (async () => {
+      const data = await getReports();
+      setUserReports(data);
+    })()
   }, []);
 
   const formatDate = (dateStr) => {
@@ -77,14 +72,29 @@ const BikeReport = ({ navigation }) => {
         </View>
       ) : (
         <ScrollView>
-          <Text style={styles.heading}>Ivanina Nedelcheva</Text>
           {userReports.map((report, idx) => {
             return (
               <View style={styles.report} key={idx}>
                 <Text style={styles.date}>{formatDate(report.date)}</Text>
-                <Text style={styles.attribute}>Bike ID: {report.bicycle.id}</Text>
-                <Text style={styles.attribute}>Damage: {report.faultText}</Text>
-                <TouchableOpacity onPress={() => openImageModal(report.imageData)}>
+
+                <View style={styles.attribute}>
+                  <Text style={styles.label}>User:</Text>
+                  <Text style={styles.description}>{` ${report.user.firstName} ${report.user.lastName}`}</Text>
+                </View>
+
+                <View style={styles.attribute}>
+                  <Text style={styles.label}>Bike ID:</Text>
+                  <Text style={styles.description}>{report.bicycle.id}</Text>
+                </View>
+
+                <View style={styles.attribute}>
+                  <Text style={styles.label}>Damage desription:</Text>
+                  <Text style={styles.description}>
+                    {`${report.faultText}`}
+                  </Text>
+                </View>
+
+                {/* <TouchableOpacity onPress={() => openImageModal(report.imageData)}>
                   <View style={styles.imageWrapper}>
                     <Image
                       source={require('../../../assets/images/b1.jpg')}
@@ -92,22 +102,23 @@ const BikeReport = ({ navigation }) => {
                       resizeMode="cover"
                     />
                   </View>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
               </View>
             );
           })}
         </ScrollView>
       )}
 
-      {/* Modal */}
-      <Modal visible={modalVisible} transparent animationType="slide">
+      {/* <Modal visible={modalVisible} transparent animationType="slide">
         <View style={styles.modalContainer}>
-          <TouchableOpacity
+          <CustomButton
+            icon="close"
+            color="white"
+            magicNumber={0.125}
+            onPress={() => closeImageModal()}
             style={styles.closeButton}
-            onPress={closeImageModal}
-          >
-            <MaterialCommunityIcons name="close" size={30} color="white" />
-          </TouchableOpacity>
+          />
+
           {selectedImage && (
             <Image
               // source={{ uri: `data:image/jpeg;base64,${selectedImage}` }}
@@ -118,7 +129,7 @@ const BikeReport = ({ navigation }) => {
             />
           )}
         </View>
-      </Modal>
+      </Modal> */}
     </View>
   );
 };
@@ -127,7 +138,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: colors.aliceblue,
+    backgroundColor: colors.lightYellow,
   },
   indicator: {
     flex: 1,
@@ -141,7 +152,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10,
     backgroundColor: 'white',
-    borderColor: colors.primary,
+    borderColor: colors.lapisLazuli,
   },
   date: {
     fontFamily: 'Roboto-Regular',
@@ -152,7 +163,18 @@ const styles = StyleSheet.create({
     fontSize: 28,
   },
   attribute: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
+    overflow: 'hidden',
+    flexWrap: 'wrap'
+  },
+  label: {
     fontFamily: 'Roboto-Bold',
+  },
+  description: {
+    fontFamily: 'Roboto-Regular',
+    fontSize: 16,
   },
   imageWrapper: {
     // alignSelf: 'center',
@@ -169,7 +191,6 @@ const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,
     backgroundColor: 'black',
-    opacity: 0.8,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -189,4 +210,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default BikeReport;
+export default BikeReports;
