@@ -8,33 +8,47 @@ const Auth = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Image
+      {/* <Image
         style={styles.image}
         source={require('../../../assets/images/bike.jpg')}
-      />
+      /> */}
 
       <View style={styles.buttonWrapper}>
         <CustomButton
           title="Sign up"
-          color={colors.primary}
+          color={colors.bleuDeFrance}
           onPress={() => navigation.navigate('Sign Up')}
           magicNumber={0.8}
         />
 
         <CustomButton
           title="Sign in"
-          color={colors.primary}
+          color={colors.bleuDeFrance}
           onPress={() => navigation.navigate('Sign In')}
           magicNumber={0.8}
         />
 
 
-        <CustomButton
+        {/* <CustomButton
           title="Report"
-          color={colors.primary}
-          onPress={() => navigation.navigate('BikeReport')}
+          color={colors.lightYellow}
+          onPress={() => navigation.navigate('MapNavigator')}
           magicNumber={0.8}
         />
+
+        <CustomButton
+          title="Report"
+          color={colors.lightGreen}
+          onPress={() => navigation.navigate('MapNavigator')}
+          magicNumber={0.8}
+        />
+
+        <CustomButton
+          title="Report"
+          color={colors.keppel}
+          onPress={() => navigation.navigate('MapNavigator')}
+          magicNumber={0.8}
+        /> */}
       </View>
     </SafeAreaView >
   );
@@ -44,7 +58,8 @@ const styles = StyleSheet.create({
   container: {
     position: 'relative',
     flex: 1,
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor: colors.lightYellow
   },
   buttonWrapper: {
     position: 'absolute',

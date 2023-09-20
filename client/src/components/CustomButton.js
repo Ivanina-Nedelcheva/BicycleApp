@@ -18,7 +18,7 @@ const CustomButton = ({ icon, title, color, onPress, style, magicNumber, disable
                 }
             ]}
             underlayColor="color"
-            activeOpacity={0.2}
+            activeOpacity={0.5}
             disabled={disabled}
         >
             <View style={[styles.wrapper]}>
@@ -34,12 +34,13 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        borderRadius: 100,
         paddingVertical: 12,
+        borderRadius: 100,
     },
     title: {
         fontFamily: 'Roboto-Regular',
         fontSize: 16,
+        color: 'white'
     },
     wrapper: {
         flexDirection: 'row',

@@ -209,7 +209,7 @@ const SignUp = ({ navigation }) => {
                   <Checkbox
                     value={privacyAccepted}
                     onValueChange={() => setPrivacyAccepted(!privacyAccepted)}
-                    color={privacyAccepted ? colors.primary : undefined}
+                    color={privacyAccepted ? colors.lightGreen : undefined}
                   />
                   <Text style={styles.checkboxLabel}>I accept the privacy policy</Text>
                 </View>
@@ -217,7 +217,7 @@ const SignUp = ({ navigation }) => {
 
               <CustomButton
                 title="Register"
-                color={colors.primary}
+                color={colors.bleuDeFrance}
                 onPress={handleSubmit}
                 magicNumber={0.8}
                 disabled={!dirty || !isValid || !privacyAccepted || !_.isEmpty(errors)}
@@ -236,6 +236,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingVertical: 20,
+    backgroundColor: colors.lightYellow
   },
   container: {
     flex: 1,
@@ -270,7 +271,7 @@ const styles = StyleSheet.create({
   },
   errorMessage: {
     fontFamily: 'Roboto-Regular',
-    color: colors.red
+    color: colors.ultraViolet
   },
   terms: {
     marginTop: 20,
@@ -285,7 +286,7 @@ const styles = StyleSheet.create({
   },
   linkText: {
     fontFamily: 'Roboto-Regular',
-    color: colors.primary,
+    color: colors.ultraViolet,
     textDecorationLine: 'underline',
   },
   checkboxContainer: {

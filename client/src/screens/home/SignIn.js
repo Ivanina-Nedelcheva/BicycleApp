@@ -48,7 +48,7 @@ const SignIn = ({ navigation }) => {
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
-        {({ handleChange, handleSubmit, values, errors, touched }) => (
+        {({ handleChange, handleSubmit, values, errors, touched, dirty }) => (
           <View style={styles.form}>
             <View>
               <TextInput
@@ -86,9 +86,10 @@ const SignIn = ({ navigation }) => {
             {err && <Text style={styles.errorMessage}>Wrong password!</Text>}
             <CustomButton
               title="Log in"
-              color={colors.primary}
+              color={colors.bleuDeFrance}
               onPress={() => navigation.navigate('MapNavigator')}
               magicNumber={0.8}
+            // disabled={!dirty || !isValid}
             />
           </View>
         )}
@@ -102,7 +103,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    position: 'relative'
+    position: 'relative',
+    backgroundColor: colors.lightYellow
   },
   form: {
     width: '80%',
@@ -132,7 +134,7 @@ const styles = StyleSheet.create({
   },
   errorMessage: {
     fontFamily: 'Roboto-Regular',
-    color: colors.red
+    color: colors.ultraViolet
   }
 });
 

@@ -38,7 +38,12 @@ const IconList = () => {
   return (
     <ScrollView style={styles.container}>
       {trips.map((ride, index) => (
-        <TouchableOpacity style={styles.ride} key={index} onPress={() => handleIconClick(ride)}>
+        <TouchableOpacity
+          style={styles.ride}
+          key={index}
+          onPress={() => handleIconClick(ride)}
+          activeOpacity={0.5}
+        >
           <View style={styles.dateAndCost}>
             <Text style={styles.date}>{`${dayName}, ${ride.date}`}</Text>
             <Text style={styles.cost}>BGN: {ride.cost}lv</Text>
@@ -92,7 +97,7 @@ const styles = StyleSheet.create({
     gap: 5,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: colors.primary,
+    borderColor: colors.lapisLazuli,
     overflow: 'hidden',
   },
   dateAndCost: {
@@ -103,7 +108,7 @@ const styles = StyleSheet.create({
   },
   date: {
     fontFamily: 'Roboto-Regular',
-    fontSize: 18,
+    fontSize: 16,
   },
   cost: {
     fontFamily: 'Roboto-Bold',
@@ -111,7 +116,7 @@ const styles = StyleSheet.create({
   statistics: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    backgroundColor: 'aliceblue',
+    backgroundColor: colors.columbiaBlue,
     fontFamily: 'Roboto-Regular',
     padding: 20,
   },
@@ -127,7 +132,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 12,
     fontFamily: 'Roboto-Bold',
-    color: colors.lightgrey,
+    color: colors.ultraViolet,
   },
 });
 

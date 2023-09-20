@@ -93,7 +93,6 @@ const ReportIssue = () => {
   }
 
   const options = [
-    // { label: 'Select a option...', value: '' },
     { label: 'Flat Tire', value: 'Flat Tire' },
     { label: 'Brake Issues', value: 'Brake Issues' },
     { label: 'Gear Shifting Problems', value: 'Gear Shifting Problems' },

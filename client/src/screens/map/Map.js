@@ -3,14 +3,13 @@ import { StyleSheet, Text, View, StatusBar, Image, FlatList } from 'react-native
 import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { throttle } from 'lodash';
-
 import NearestHubs from '../../components/NearestHubs';
 import CustomButton from '../../components/CustomButton'
 import Scanner from '../../components/Scanner'
-import stationsData from '../../stations.json'
 import { colors } from '../../../styles/styles'
 
 import axios from 'axios'
+import { getStations } from '../../api/stations';
 
 const Map = ({ route, navigation }) => {
 	const [region, setRegion] = useState({})
@@ -34,21 +33,11 @@ const Map = ({ route, navigation }) => {
 		left: 0,
 	}
 
-	const android = 'http://192.168.1.102:8080/app/stations/getStationWithBicycles'
-	const iOS = 'http://localhost:8080/app/stations/getStationWithBicycles'
-	const test = 'https://jsonplaceholder.typicode.com/todos/1'
-
 	useEffect(() => {
-		const getStations = async () => {
-			try {
-				const response = await axios.get(android)
-				console.log(response.data);
-				setStations(response.data)
-			} catch (error) {
-				console.error('Error fetching data:', error);
-			}
-		}
-		getStations()
+		(async () => {
+			const data = await getStations();
+			setStations(data)
+		})()
 	}, [])
 
 	const handleOpenDrawer = () => {

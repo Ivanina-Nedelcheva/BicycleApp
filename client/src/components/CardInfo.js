@@ -119,7 +119,7 @@ const CardInformation = ({ navigation, route }) => {
 
         <CustomButton
           title="Confirm"
-          color={colors.primary}
+          color={colors.bleuDeFrance}
           onPress={addCardInfo}
           magicNumber={0.4}
           style={styles.btn}
