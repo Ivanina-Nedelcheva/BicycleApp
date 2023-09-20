@@ -93,7 +93,6 @@ public class UserServiceImpl implements UserService {
         report.setBicycle(bicycleRepository.getBicycleById(bikeId));
         report.setFaultText(faultText);
         report.setDate(new Date(System.currentTimeMillis()));
-        report.setImageData(imageData);
 
         bicycleService.deactivateBicycle(bikeId);
         return faultReportRepository.save(report);
@@ -113,11 +112,7 @@ public class UserServiceImpl implements UserService {
         dto.setUser(faultReport.getUser());
         dto.setFaultText(faultReport.getFaultText());
         dto.setDate(faultReport.getDate());
-        byte[] imageData = faultReport.getImageData();
-        if (imageData != null) {
-            String imageDataBase64 = Base64.getEncoder().encodeToString(imageData);
-            dto.setImageData(imageDataBase64);
-        }
+
         return dto;
     }
 
