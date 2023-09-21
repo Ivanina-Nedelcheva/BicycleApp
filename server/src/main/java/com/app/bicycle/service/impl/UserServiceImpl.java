@@ -31,7 +31,9 @@ public class UserServiceImpl implements UserService {
     private final FaultReportRepository faultReportRepository;
     private final BicycleRepository bicycleRepository;
     private final RentalRepository rentalRepository;
+    private final PaymentRepository paymentRepository;
     private final StationBicycleRepository sbRepository;
+
     private final BicycleService bicycleService;
     private final StationService stationService;
     private final PriceRepository priceRepository;
@@ -43,7 +45,9 @@ public class UserServiceImpl implements UserService {
                            FaultReportRepository faultReportRepository,
                            BicycleRepository bicycleRepository,
                            RentalRepository rentalRepository,
-                           StationBicycleRepository sbRepository, BicycleService bicycleService,
+                           PaymentRepository paymentRepository,
+                           StationBicycleRepository sbRepository,
+                           BicycleService bicycleService,
                            StationService stationService,
                            PriceRepository priceRepository,
                            StripeService stripeService, ScheduledTimer timer) {
@@ -51,6 +55,7 @@ public class UserServiceImpl implements UserService {
         this.faultReportRepository = faultReportRepository;
         this.bicycleRepository = bicycleRepository;
         this.rentalRepository = rentalRepository;
+        this.paymentRepository = paymentRepository;
         this.sbRepository = sbRepository;
         this.bicycleService = bicycleService;
         this.stationService = stationService;
@@ -215,7 +220,7 @@ public class UserServiceImpl implements UserService {
     private void chargeUser(BigDecimal price, User user) throws AuthenticationException, InvalidRequestException, CardException, APIConnectionException, APIException {
         //stripe
         //saveToDB
-         ChargeRequestDTO chargeRequest = new ChargeRequestDTO();
+        ChargeRequestDTO chargeRequest = new ChargeRequestDTO();
         chargeRequest.setAmount(price);
 //        stripeService.charge(chargeRequest);
 
@@ -226,7 +231,8 @@ public class UserServiceImpl implements UserService {
             newPayment.setUser(user);
             newPayment.setAmount(price);
             newPayment.setDate(new Date(System.currentTimeMillis()));
-            //saveNewPayment
+
+            paymentRepository.save(newPayment);
         } else {
         }
         //try again and save
