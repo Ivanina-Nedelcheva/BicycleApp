@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
@@ -197,7 +198,7 @@ public class UserServiceImpl implements UserService {
         userRent.setEndTime(endTime);
         Timestamp startTime = userRent.getStartTime();
         Long minutes = (endTime.getTime() - startTime.getTime()) / (60 * 1000);
-        Double price = minutes * prices.getMinutePrice() + prices.getUnlockPrice();
+        BigDecimal price = BigDecimal.valueOf(minutes * prices.getMinutePrice() + prices.getUnlockPrice());
         userRent.setPrice(price);
         rentalRepository.save(userRent);
 
@@ -211,7 +212,7 @@ public class UserServiceImpl implements UserService {
 
     }
 
-    private void chargeUser(Double price, User user) throws AuthenticationException, InvalidRequestException, CardException, APIConnectionException, APIException {
+    private void chargeUser(BigDecimal price, User user) throws AuthenticationException, InvalidRequestException, CardException, APIConnectionException, APIException {
         //stripe
         //saveToDB
          ChargeRequestDTO chargeRequest = new ChargeRequestDTO();

@@ -8,6 +8,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;
 
@@ -36,7 +37,7 @@ public class Rental extends BaseEntity {
     Double distance;
 
     @Column
-    Double price;
+    BigDecimal price;
 
     @Column
     Boolean finished;
@@ -89,11 +90,11 @@ public class Rental extends BaseEntity {
         this.distance = distance;
     }
 
-    public Double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
