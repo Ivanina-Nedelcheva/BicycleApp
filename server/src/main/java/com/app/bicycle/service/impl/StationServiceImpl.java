@@ -114,7 +114,7 @@ public class StationServiceImpl extends BaseService implements StationService {
     public void deleteSBConnection(Long bikeId) {
         Bicycle bicycle = bicycleRepository.getBicycleById(bikeId);
         if (bicycle != null) {
-            StationBicycle connection = sbRepository.findByBicycle(bicycle);
+            StationBicycle connection = sbRepository.findStationBicycleByBicycle(bicycle);
             sbRepository.deleteById(connection.getId());
         }
     }
@@ -134,7 +134,7 @@ public class StationServiceImpl extends BaseService implements StationService {
             return Constants.CONNECTION_ALREADY_EXISTS;
         }
 
-        StationBicycle existingBicycleAssociation = sbRepository.findByBicycle(bicycle);
+        StationBicycle existingBicycleAssociation = sbRepository.findStationBicycleByBicycle(bicycle);
         if (existingBicycleAssociation != null) {
             return Constants.BICYCLE_ALREADY_ADDED_TO_A_STATION;
         }

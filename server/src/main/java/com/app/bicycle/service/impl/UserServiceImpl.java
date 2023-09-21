@@ -19,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
 

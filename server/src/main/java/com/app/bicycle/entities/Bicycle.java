@@ -18,13 +18,15 @@ public class Bicycle extends BaseEntity {
     @Column(name = "active_flag", columnDefinition = "BIT(1) default 1")
     private Boolean activeFlag;
 
-    @OneToMany(mappedBy = "bicycle", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "bicycle", fetch = FetchType.EAGER)
+//            , cascade  = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<FaultReport> faultReports = new ArrayList<>();
 
-    @OneToMany(mappedBy = "bicycle", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "bicycle", fetch = FetchType.EAGER)
+//            , cascade  = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Rental> rentals = new ArrayList<>();
 
-    @OneToMany(mappedBy = "bicycle", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "bicycle", fetch = FetchType.EAGER, cascade  = CascadeType.PERSIST)
     private List<Reservation> reservations = new ArrayList<>();
 
     @Transient
