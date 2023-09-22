@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
   },
   errorMessage: {
     fontFamily: 'Roboto-Regular',
-    color: colors.ultraViolet
+    color: colors.red
   }
 });
 

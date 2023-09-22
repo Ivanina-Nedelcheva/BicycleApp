@@ -106,7 +106,7 @@ const Scanner = ({ isOpen, onToggle, navigation }) => {
               <Camera
                 onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
                 style={styles.scanner}
-                autoFocus={Camera.Constants.AutoFocus.on} // Specify autofocus settings
+                autoFocus={Camera.Constants.AutoFocus.on}
                 flashMode={isFlashlightOn ? Camera.Constants.FlashMode.torch : Camera.Constants.FlashMode.off}
               />
             </View>
