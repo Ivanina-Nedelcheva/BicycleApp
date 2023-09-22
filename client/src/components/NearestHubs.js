@@ -68,8 +68,8 @@ const NearestHubs = forwardRef(({ userPosition, stations, onSelectStation }, ref
 
   const hub = ({ item, index }) => (
     <TouchableHighlight
-      style={[styles.hub, { borderColor: index === 0 ? colors.lightGreen : colors.lapisLazuli }]}
-      underlayColor={colors.columbiaBlue}
+      style={[styles.hub, { borderColor: index === 0 ? colors.lightGreen : colors.darkFrenchGray }]}
+      underlayColor={colors.antiFlashWhite}
       onPress={() => selectHub(item)}
     >
       <View style={styles.hubContainer}>
@@ -110,7 +110,7 @@ const NearestHubs = forwardRef(({ userPosition, stations, onSelectStation }, ref
         index={0}
         snapPoints={snapPoints}
         style={styles.modal}
-        backgroundStyle={{ backgroundColor: colors.lightYellow, borderWidth: 0.3, borderColor: colors.aliceblue2 }}
+        backgroundStyle={{ backgroundColor: colors.seasalt, borderWidth: 1, borderColor: colors.darkFrenchGray }}
       >
         <Text style={styles.heading}>Nearest Hubs</Text>
         <View>
@@ -123,7 +123,7 @@ const NearestHubs = forwardRef(({ userPosition, stations, onSelectStation }, ref
                 style={styles.list}
               />
             ) : (
-              <ActivityIndicator style={styles.spinner} size={60} color={colors.primary} />
+              <ActivityIndicator style={styles.spinner} size={60} color={colors.bleuDeFrance} />
             )
           }
         </View>
@@ -134,7 +134,7 @@ const NearestHubs = forwardRef(({ userPosition, stations, onSelectStation }, ref
 
 const styles = StyleSheet.create({
   modal: {
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
   },
   heading: {
     fontFamily: 'Roboto-Regular',
@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
     paddingVertical: 18,
     gap: 8,
     borderRightWidth: 0.2,
-    borderColor: colors.lightgrey,
+    borderColor: colors.disabled,
   },
   right: {
     flexDirection: 'row',
@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
   info: {
     fontFamily: 'Roboto-Regular',
     fontSize: 14,
-    color: colors.darkgrey
+    color: colors.slateGray
   },
   spinner: {
     marginTop: 60

@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableHighlight } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import BikeDetails from '../../components/BikeDetails';
+import { colors } from '../../../styles/styles';
 
 const BikeSelect = ({ route, navigation }) => {
   const { station } = route.params
@@ -58,6 +59,7 @@ const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
     alignItems: 'center',
+    backgroundColor: colors.platinum
   },
   list: {
     width: '90%',
@@ -75,7 +77,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     paddingVertical: 10,
     paddingHorizontal: 15,
-    backgroundColor: 'white',
+    backgroundColor: colors.seasalt,
     borderRadius: 10,
   },
   textContainer: {

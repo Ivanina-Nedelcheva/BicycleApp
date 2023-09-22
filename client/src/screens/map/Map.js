@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, Text, View, StatusBar, Image, FlatList } from 'react-native';
+import { StyleSheet, Text, View, StatusBar, Image } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { throttle } from 'lodash';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import NearestHubs from '../../components/NearestHubs';
 import CustomButton from '../../components/CustomButton'
 import Scanner from '../../components/Scanner'

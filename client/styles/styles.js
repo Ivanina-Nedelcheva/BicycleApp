@@ -3,10 +3,15 @@ export const colors = {
     bleuDeFrance: '#3083DC',
     columbiaBlue: '#CBE0F6',
     lightYellow: '#F8FFE5',
-    cream: '#EFFFC2',
     lightGreen: '#7DDE92',
     keppel: '#2EBFA5',
     lapisLazuli: '#1C589C',
+    seasalt: '#F8F9FA',
+    antiFlashWhite: '#E9ECEF',
+    platinum: '#DEE2E6',
+    frenchGray: '#CED4DA',
+    darkFrenchGray: '#ADB5BD',
+    slateGray: '#6C757D',
 
 
     red: '#e63946',

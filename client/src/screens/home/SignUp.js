@@ -68,7 +68,7 @@ const SignUp = ({ navigation }) => {
                 />
 
                 {values.firstName && !errors.firstName && (
-                  <MaterialCommunityIcons name="check-circle-outline" size={20} color="green" style={styles.inputIcon} />
+                  <MaterialCommunityIcons name="check-circle-outline" size={20} color={colors.keppel} style={styles.inputIcon} />
                 )}
               </View>
               {errors.firstName && <Text style={styles.errorMessage}>{errors.firstName}</Text>}
@@ -82,7 +82,7 @@ const SignUp = ({ navigation }) => {
                 // onBlur={handleBlur('lastName')}
                 />
                 {values.lastName && !errors.lastName && (
-                  <MaterialCommunityIcons name="check-circle-outline" size={20} color="green" style={styles.inputIcon} />
+                  <MaterialCommunityIcons name="check-circle-outline" size={20} color={colors.keppel} style={styles.inputIcon} />
                 )}
               </View>
               {errors.lastName && <Text style={styles.errorMessage}>{errors.lastName}</Text>}
@@ -98,7 +98,7 @@ const SignUp = ({ navigation }) => {
                 />
 
                 {values.phoneNumber && !errors.phoneNumber && (
-                  <MaterialCommunityIcons name="check-circle-outline" size={20} color="green" style={styles.inputIcon} />
+                  <MaterialCommunityIcons name="check-circle-outline" size={20} color={colors.keppel} style={styles.inputIcon} />
                 )}
               </View>
               {errors.phoneNumber && <Text style={styles.errorMessage}>{errors.phoneNumber}</Text>}
@@ -114,7 +114,7 @@ const SignUp = ({ navigation }) => {
                 />
 
                 {values.email && !errors.email && (
-                  <MaterialCommunityIcons name="check-circle-outline" size={20} color="green" style={styles.inputIcon} />
+                  <MaterialCommunityIcons name="check-circle-outline" size={20} color={colors.keppel} style={styles.inputIcon} />
                 )}
               </View>
               {errors.email && <Text style={styles.errorMessage}>{errors.email}</Text>}
@@ -148,7 +148,7 @@ const SignUp = ({ navigation }) => {
                 // onBlur={handleBlur('confirmPassword')}
                 />
                 {values.confirmPassword && !errors.confirmPassword && (
-                  <MaterialCommunityIcons name="check-circle-outline" size={20} color="green" style={styles.inputIcon} />
+                  <MaterialCommunityIcons name="check-circle-outline" size={20} color={colors.keppel} style={styles.inputIcon} />
                 )}
               </View>
               {errors.confirmPassword && <Text style={styles.errorMessage}>{errors.confirmPassword}</Text>}
@@ -175,7 +175,7 @@ const SignUp = ({ navigation }) => {
                   />
                 )}
                 {values.dateOfBirth && !errors.dateOfBirth && (
-                  <MaterialCommunityIcons name="check-circle-outline" size={20} color="green" style={styles.inputIcon} />
+                  <MaterialCommunityIcons name="check-circle-outline" size={20} color={colors.keppel} style={styles.inputIcon} />
                 )}
               </View>
               {errors.dateOfBirth && <Text style={styles.errorMessage}>{errors.dateOfBirth}</Text>}
@@ -209,7 +209,7 @@ const SignUp = ({ navigation }) => {
                   <Checkbox
                     value={privacyAccepted}
                     onValueChange={() => setPrivacyAccepted(!privacyAccepted)}
-                    color={privacyAccepted ? colors.lightGreen : undefined}
+                    color={privacyAccepted ? colors.keppel : undefined}
                   />
                   <Text style={styles.checkboxLabel}>I accept the privacy policy</Text>
                 </View>
@@ -236,7 +236,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingVertical: 20,
-    backgroundColor: colors.lightYellow
+    backgroundColor: colors.seasalt
   },
   container: {
     flex: 1,
@@ -250,13 +250,13 @@ const styles = StyleSheet.create({
   input: {
     fontFamily: 'Roboto-Regular',
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: colors.slateGray,
     flexDirection: 'row',
     paddingHorizontal: 20,
     borderRadius: 100,
     paddingVertical: 12,
-    backgroundColor: 'white',
-    maxWidth: '100%'
+    backgroundColor: colors.antiFlashWhite,
+    maxWidth: '100%',
   },
   inputIcon: {
     position: 'absolute',

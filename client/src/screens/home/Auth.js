@@ -8,10 +8,7 @@ const Auth = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* <Image
-        style={styles.image}
-        source={require('../../../assets/images/bike.jpg')}
-      /> */}
+      <Image source={require('../../../assets/images/bike.jpg')} />
 
       <View style={styles.buttonWrapper}>
         <CustomButton
@@ -59,7 +56,7 @@ const styles = StyleSheet.create({
     position: 'relative',
     flex: 1,
     alignItems: 'center',
-    backgroundColor: colors.lightYellow
+    backgroundColor: colors.silver
   },
   buttonWrapper: {
     position: 'absolute',
@@ -68,8 +65,7 @@ const styles = StyleSheet.create({
     top: 120,
   },
   image: {
-    position: 'absolute',
-    resizeMode: 'cover',
+    // resizeMode: 'cover',
   }
 });
 

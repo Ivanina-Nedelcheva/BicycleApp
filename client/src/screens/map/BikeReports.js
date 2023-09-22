@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: colors.lightYellow,
+    backgroundColor: colors.seasalt,
   },
   indicator: {
     flex: 1,
@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
     padding: 20,
     borderWidth: 1,
     borderRadius: 10,
-    backgroundColor: 'white',
+    backgroundColor: colors.columbiaBlue,
     borderColor: colors.lapisLazuli,
   },
   date: {

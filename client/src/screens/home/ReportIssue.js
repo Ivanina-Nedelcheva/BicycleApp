@@ -171,7 +171,7 @@ const ReportIssue = () => {
           selectedValue={selectedOption}
           onValueChange={(value) => setSelectedOption(value)}
         >
-          <Picker.Item label="Select a option..." value="" style={{ color: colors.lightgrey }} />
+          <Picker.Item label="Select a option..." value="" style={{ color: colors.darkFrenchGray }} />
           {options.map((item) => {
             return <Picker.Item label={item.label} value={item.value} key={item.value} />
           })}
@@ -194,7 +194,7 @@ const ReportIssue = () => {
 
       <CustomButton
         title={imageUri ? "Upload New Image" : "Upload Image"}
-        color={colors.secondary}
+        color={colors.lightGreen}
         onPress={handleImageUpload}
         icon="image-outline"
         magicNumber={0.6}
@@ -214,7 +214,7 @@ const ReportIssue = () => {
 
       <CustomButton
         title="Submit"
-        color={colors.primary}
+        color={colors.bleuDeFrance}
         onPress={handleSubmit}
         magicNumber={0.4}
         style={styles.btn}
@@ -229,11 +229,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 20,
+    backgroundColor: colors.seasalt
   },
   selectContainer: {
     width: '100%',
     borderWidth: 1,
-    borderColor: colors.primary,
+    borderColor: colors.keppel,
     borderRadius: 10,
     paddingHorizontal: 10,
   },
@@ -257,6 +258,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     borderWidth: 1,
     borderRadius: 10,
+    borderColor: colors.keppel,
     paddingHorizontal: 20,
     paddingVertical: 6,
   },

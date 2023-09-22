@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingVertical: 20,
-    backgroundColor: colors.lightYellow
+    backgroundColor: colors.seasalt
   },
   container: {
     flex: 1,
@@ -206,13 +206,13 @@ const styles = StyleSheet.create({
   input: {
     fontFamily: 'Roboto-Regular',
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: colors.slateGray,
     flexDirection: 'row',
     paddingHorizontal: 20,
     borderRadius: 100,
     paddingVertical: 12,
-    backgroundColor: 'white',
-    maxWidth: '100%'
+    backgroundColor: colors.antiFlashWhite,
+    maxWidth: '100%',
   },
   inputIcon: {
     position: 'absolute',

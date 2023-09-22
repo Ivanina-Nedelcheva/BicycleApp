@@ -60,7 +60,7 @@ const SignIn = ({ navigation }) => {
               />
 
               {values.email && !errors.email && (
-                <MaterialCommunityIcons name="check-circle-outline" size={20} color="green" style={styles.inputIcon} />
+                <MaterialCommunityIcons name="check-circle-outline" size={20} color={colors.keppel} style={styles.inputIcon} />
               )}
             </View>
             {errors.email && <Text style={styles.errorMessage}>{errors.email}</Text>}
@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     position: 'relative',
-    backgroundColor: colors.lightYellow
+    backgroundColor: colors.seasalt
   },
   form: {
     width: '80%',
@@ -113,19 +113,18 @@ const styles = StyleSheet.create({
   input: {
     fontFamily: 'Roboto-Regular',
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: colors.slateGray,
     flexDirection: 'row',
     paddingHorizontal: 20,
     borderRadius: 100,
     paddingVertical: 12,
-    backgroundColor: 'white',
+    backgroundColor: colors.antiFlashWhite,
     maxWidth: '100%',
   },
   image: {
     position: 'absolute',
     width: '100%',
     height: '100%',
-    resizeMode: 'cover',
   },
   inputIcon: {
     position: 'absolute',

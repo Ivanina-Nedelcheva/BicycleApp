@@ -35,7 +35,7 @@ const BikeDetails = ({ bike, bottomSheetRef, navigation }) => {
         ref={bottomSheetRef}
         index={0}
         snapPoints={snapPoints}
-        backgroundStyle={{ backgroundColor: 'aliceblue', borderWidth: 0.3, borderColor: colors.aliceblue2 }}
+        backgroundStyle={{ backgroundColor: colors.seasalt, borderWidth: 0.3, borderColor: colors.slateGray }}
       >
         <View style={styles.bikeContent}>
           <Text style={styles.heading}>Bike Details</Text>
@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
   btns: {
     marginTop: 20,
     borderWidth: 0.3,
-    backgroundColor: 'white'
+    backgroundColor: colors.lightGreen,
   },
   reservation: {
     height: 200,
