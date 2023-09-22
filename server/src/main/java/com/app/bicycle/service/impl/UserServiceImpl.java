@@ -17,9 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -93,7 +93,6 @@ public class UserServiceImpl implements UserService {
         report.setBicycle(bicycleRepository.getBicycleById(bikeId));
         report.setFaultText(faultText);
         report.setDate(new Date(System.currentTimeMillis()));
-        report.setImageData(imageData);
 
         bicycleService.deactivateBicycle(bikeId);
         return faultReportRepository.save(report);
@@ -113,11 +112,7 @@ public class UserServiceImpl implements UserService {
         dto.setUser(faultReport.getUser());
         dto.setFaultText(faultReport.getFaultText());
         dto.setDate(faultReport.getDate());
-        byte[] imageData = faultReport.getImageData();
-        if (imageData != null) {
-            String imageDataBase64 = Base64.getEncoder().encodeToString(imageData);
-            dto.setImageData(imageDataBase64);
-        }
+
         return dto;
     }
 
@@ -203,7 +198,7 @@ public class UserServiceImpl implements UserService {
         userRent.setEndTime(endTime);
         Timestamp startTime = userRent.getStartTime();
         Long minutes = (endTime.getTime() - startTime.getTime()) / (60 * 1000);
-        Double price = minutes * prices.getMinutePrice() + prices.getUnlockPrice();
+        BigDecimal price = BigDecimal.valueOf(minutes * prices.getMinutePrice() + prices.getUnlockPrice());
         userRent.setPrice(price);
         rentalRepository.save(userRent);
 
@@ -217,7 +212,7 @@ public class UserServiceImpl implements UserService {
 
     }
 
-    private void chargeUser(Double price, User user) throws AuthenticationException, InvalidRequestException, CardException, APIConnectionException, APIException {
+    private void chargeUser(BigDecimal price, User user) throws AuthenticationException, InvalidRequestException, CardException, APIConnectionException, APIException {
         //stripe
         //saveToDB
          ChargeRequestDTO chargeRequest = new ChargeRequestDTO();

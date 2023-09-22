@@ -20,7 +20,7 @@ public interface StationBicycleRepository extends JpaRepository<StationBicycle, 
 
     StationBicycle findByBicycleAndStation(Bicycle bicycle, Station station);
 
-    StationBicycle findByBicycle(Bicycle bicycle);
+    StationBicycle findStationBicycleByBicycle(Bicycle bicycle);
 
     List<StationBicycle> findAllBicyclesByStation(Station station);
 }

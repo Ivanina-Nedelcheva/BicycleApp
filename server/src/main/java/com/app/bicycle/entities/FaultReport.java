@@ -24,10 +24,6 @@ public class FaultReport extends BaseEntity {
     @Column
     private Date date;
 
-    @Lob
-    @Column(name = "image_data", columnDefinition = "LONGBLOB")
-    private byte[] imageData;
-
     public Bicycle getBicycle() {
         return bicycle;
     }
@@ -58,13 +54,5 @@ public class FaultReport extends BaseEntity {
 
     public void setDate(Date date) {
         this.date = date;
-    }
-
-    public byte[] getImageData() {
-        return imageData;
-    }
-
-    public void setImageData(byte[] imageData) {
-        this.imageData = imageData;
     }
 }

@@ -1,7 +1,6 @@
 package com.app.bicycle.entities;
 
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -19,7 +18,7 @@ public class Payment extends BaseEntity {
     private User user;
 
     @Column
-    private Double amount;
+    private BigDecimal amount;
 
     @Column
     private Date date;
@@ -32,11 +31,11 @@ public class Payment extends BaseEntity {
         this.user = user;
     }
 
-    public Double getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(Double amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 
