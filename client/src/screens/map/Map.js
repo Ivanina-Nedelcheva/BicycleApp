@@ -238,7 +238,7 @@ const styles = StyleSheet.create({
 		width: 16,
 		height: 16,
 		borderRadius: 50,
-		backgroundColor: colors.primary,
+		backgroundColor: colors.ultraViolet,
 		borderWidth: 2,
 		borderColor: 'white',
 	},
@@ -248,7 +248,7 @@ const styles = StyleSheet.create({
 		borderRadius: 50,
 		borderWidth: 2,
 		borderColor: 'white',
-		backgroundColor: colors.primary,
+		backgroundColor: colors.columbiaBlue,
 	},
 	errorMessage: {
 		maxWidth: 26 * 8,
