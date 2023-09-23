@@ -6,7 +6,6 @@ import com.stripe.exception.StripeException;
 import com.stripe.model.Charge;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,17 +15,16 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("app/payment")
 public class CardController {
 
-    private final StripeService paymentsService;
-
     @Value("${STRIPE_PUBLIC_KEY}")
     private String stripePublicKey;
+
+    private final StripeService paymentsService;
 
     public CardController(StripeService paymentsService) {
         this.paymentsService = paymentsService;
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/checkout", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).ORDINARY_USER)")
     public Model checkout(Model model, Double price) {
         model.addAttribute("amount", price);
         model.addAttribute("stripePublicKey", stripePublicKey);
@@ -35,7 +33,6 @@ public class CardController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/charge", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).ORDINARY_USER)")
     public Model charge(ChargeRequestDTO chargeRequest, Model model)
             throws StripeException {
         chargeRequest.setDescription("Example charge");
