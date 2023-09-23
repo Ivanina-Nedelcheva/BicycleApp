@@ -15,7 +15,7 @@ import java.util.List;
 
 
 @RestController
-@CrossOrigin(origins="*")
+@CrossOrigin(origins = "*")
 @RequestMapping("app/bicycles")
 public class BicycleController {
 
@@ -39,7 +39,7 @@ public class BicycleController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/newBicycle", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).TECH_SUPPORT_MEMBER, T(com.app.bicycle.enums.UserRole).SYSTEM_ADMIN, T(com.app.bicycle.enums.UserRole).OBSERVER)")
+    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).SYSTEM_ADMIN)")
     public ResponseEntity<Bicycle> addBicycle(@RequestParam Long stationId) throws CustomError {
 
         Bicycle result = new Bicycle();
@@ -53,7 +53,7 @@ public class BicycleController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/deactivateBicycle", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).TECH_SUPPORT_MEMBER, T(com.app.bicycle.enums.UserRole).SYSTEM_ADMIN, T(com.app.bicycle.enums.UserRole).OBSERVER)")
+    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).TECH_SUPPORT_MEMBER, T(com.app.bicycle.enums.UserRole).SYSTEM_ADMIN)")
     public ResponseEntity<Bicycle> deactivateBicycle(@RequestParam Long bikeId) throws CustomError {
 
         Bicycle result = new Bicycle();
@@ -68,7 +68,7 @@ public class BicycleController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/activateBicycle", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).TECH_SUPPORT_MEMBER, T(com.app.bicycle.enums.UserRole).SYSTEM_ADMIN, T(com.app.bicycle.enums.UserRole).OBSERVER)")
+    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).TECH_SUPPORT_MEMBER, T(com.app.bicycle.enums.UserRole).SYSTEM_ADMIN)")
     public ResponseEntity<Bicycle> activateBicycle(@RequestParam Long bikeId) throws CustomError {
 
         Bicycle result = new Bicycle();
