@@ -46,7 +46,6 @@ public class UserController {
 
 
     @RequestMapping(method = RequestMethod.GET, value = "/getFaultReports", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).TECH_SUPPORT_MEMBER)")
     public ResponseEntity<List<FaultReportDTO>> getFaultReports() throws Exception {
 
         List<FaultReportDTO> response;
