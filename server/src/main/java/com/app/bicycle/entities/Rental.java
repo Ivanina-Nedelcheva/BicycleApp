@@ -15,13 +15,13 @@ import java.util.Date;
 @Entity
 public class Rental extends BaseEntity {
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     @JsonBackReference
     private User user;
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "bike_id")
+    @JoinColumn(name = "bike_id", nullable = false)
     private Bicycle bicycle;
 
     @Column
