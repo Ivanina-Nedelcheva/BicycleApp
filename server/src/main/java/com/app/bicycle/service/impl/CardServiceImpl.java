@@ -1,7 +1,9 @@
 package com.app.bicycle.service.impl;
 
 import com.app.bicycle.dto.ChargeRequestDTO;
-import com.app.bicycle.service.StripeService;
+import com.app.bicycle.entities.Price;
+import com.app.bicycle.repositories.PriceRepository;
+import com.app.bicycle.service.CardService;
 import com.stripe.exception.*;
 import com.stripe.model.Charge;
 import org.springframework.stereotype.Service;
@@ -15,7 +17,13 @@ import java.util.Map;
 
 @Service
 @Transactional
-public class StripeServiceImpl implements StripeService {
+public class CardServiceImpl implements CardService {
+
+    private final PriceRepository priceRepository;
+
+    public CardServiceImpl(PriceRepository priceRepository) {
+        this.priceRepository = priceRepository;
+    }
 
     @Override
     public Charge charge(ChargeRequestDTO chargeRequest)
@@ -39,5 +47,10 @@ public class StripeServiceImpl implements StripeService {
 
         byte[] encryptedBytes = cipher.doFinal(input.getBytes());
         return Base64.getEncoder().encodeToString(encryptedBytes);
+    }
+
+    @Override
+    public Price getCurrentPrices() {
+        return priceRepository.findTopByOrderByIdDesc();
     }
 }

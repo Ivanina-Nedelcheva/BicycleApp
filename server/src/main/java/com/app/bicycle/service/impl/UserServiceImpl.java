@@ -7,7 +7,7 @@ import com.app.bicycle.enums.BicycleState;
 import com.app.bicycle.repositories.*;
 import com.app.bicycle.service.BicycleService;
 import com.app.bicycle.service.StationService;
-import com.app.bicycle.service.StripeService;
+import com.app.bicycle.service.CardService;
 import com.app.bicycle.service.UserService;
 import com.app.bicycle.utils.Constants;
 import com.app.bicycle.utils.CustomError;
@@ -35,7 +35,7 @@ public class UserServiceImpl implements UserService {
     private final BicycleService bicycleService;
     private final StationService stationService;
     private final PriceRepository priceRepository;
-    private final StripeService stripeService;
+    private final CardService stripeService;
     private ScheduledTimer timer;
 
     @Autowired
@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
                            StationBicycleRepository sbRepository, BicycleService bicycleService,
                            StationService stationService,
                            PriceRepository priceRepository,
-                           StripeService stripeService, ScheduledTimer timer) {
+                           CardService stripeService, ScheduledTimer timer) {
         this.userRepository = userRepository;
         this.faultReportRepository = faultReportRepository;
         this.bicycleRepository = bicycleRepository;
@@ -188,7 +188,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void returnBicycle(Long userId, Long bikeId, Long stationId) throws AuthenticationException, InvalidRequestException, CardException, APIConnectionException, APIException {
-        Prices prices = priceRepository.findTopByOrderByIdDesc();
+        Price prices = priceRepository.findTopByOrderByIdDesc();
         User user = userRepository.getUserById(userId);
         Bicycle bicycle = bicycleRepository.getBicycleById(bikeId);
         Rental userRent = rentalRepository.findRentalByUserAndBicycleAndFinishedFalse(user, bicycle);

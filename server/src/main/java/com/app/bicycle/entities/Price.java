@@ -6,7 +6,7 @@ import jakarta.persistence.Entity;
 import java.util.Date;
 
 @Entity
-public class Prices extends BaseEntity {
+public class Price extends BaseEntity {
     @Column(name = "unlock_price")
     Double unlockPrice;
 
