@@ -9,7 +9,7 @@ import java.util.List;
 @Entity
 public class Bicycle extends BaseEntity {
     @Enumerated(value = EnumType.STRING)
-    @Column
+    @Column(nullable = false)
     private BicycleState state;
 
     @Column(name = "battery_level")

@@ -8,12 +8,12 @@ import jakarta.persistence.*;
 public class StationBicycle extends BaseEntity {
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "station_id")
+    @JoinColumn(name = "station_id", nullable = false)
     private Station station;
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "bike_id")
+    @JoinColumn(name = "bike_id", nullable = false)
     private Bicycle bicycle;
 
     public Station getStation() {

@@ -9,13 +9,13 @@ import jakarta.persistence.OneToOne;
 public class Card extends BaseEntity{
 
     @OneToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(name = "card_number")
+    @Column(name = "card_number", nullable = false)
     private String cardNumber;
 
-    @Column(name = "expirationDate")
+    @Column(name = "expirationDate", nullable = false)
     private String expirationDate;
 
     public User getUser() {

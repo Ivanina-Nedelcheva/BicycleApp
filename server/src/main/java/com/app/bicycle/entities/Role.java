@@ -10,7 +10,7 @@ import jakarta.persistence.Enumerated;
 @Entity
 public class Role extends BaseEntity {
     @Enumerated(value = EnumType.STRING)
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private UserRole roleName;
 
     public UserRole getRoleName() {

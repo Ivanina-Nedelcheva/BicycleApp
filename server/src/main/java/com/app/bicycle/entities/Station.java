@@ -7,13 +7,13 @@ import java.util.List;
 
 @Entity
 public class Station extends BaseEntity {
-    @Column(name = "station_name")
+    @Column(name = "station_name", nullable = false)
     private String stationName;
 
-    @Column
+    @Column(nullable = false)
     private Double latitude;
 
-    @Column
+    @Column(nullable = false)
     private Double longitude;
 
     @Column(name = "active_flag", columnDefinition = "BIT(1) default 1")

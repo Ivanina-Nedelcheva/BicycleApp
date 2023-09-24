@@ -29,7 +29,7 @@ public class User extends BaseEntity {
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "role_id")
+    @JoinColumn(name = "role_id", nullable = false)
     @Enumerated(value = EnumType.STRING)
     private Role role;
 

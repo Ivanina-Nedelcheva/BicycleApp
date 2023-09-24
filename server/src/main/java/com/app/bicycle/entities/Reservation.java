@@ -1,7 +1,6 @@
 package com.app.bicycle.entities;
 
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,12 +13,12 @@ import java.sql.Timestamp;
 public class Reservation extends BaseEntity {
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "bike_id")
+    @JoinColumn(name = "bike_id", nullable = false)
     private Bicycle bicycle;
 
     @Column

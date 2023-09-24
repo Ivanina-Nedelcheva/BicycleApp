@@ -7,13 +7,13 @@ import java.util.Date;
 
 @Entity
 public class Price extends BaseEntity {
-    @Column(name = "unlock_price")
+    @Column(name = "unlock_price", nullable = false)
     Double unlockPrice;
 
-    @Column(name = "minute_price")
+    @Column(name = "minute_price", nullable = false)
     Double minutePrice;
 
-    @Column(name = "start_date")
+    @Column(name = "start_date", nullable = false)
     Date startDate;
 
     public Double getUnlockPrice() {

@@ -14,13 +14,13 @@ import java.util.Date;
 public class Payment extends BaseEntity {
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column
+    @Column(nullable = false)
     private BigDecimal amount;
 
-    @Column
+    @Column(nullable = false)
     private Date date;
 
     public User getUser() {

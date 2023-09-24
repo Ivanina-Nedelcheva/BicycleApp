@@ -10,18 +10,18 @@ import java.sql.Date;
 public class FaultReport extends BaseEntity {
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "bike_id")
+    @JoinColumn(name = "bike_id", nullable = false)
     private Bicycle bicycle;
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column
+    @Column(nullable = false)
     private String faultText;
 
-    @Column
+    @Column(nullable = false)
     private Date date;
 
     public Bicycle getBicycle() {
