@@ -18,7 +18,7 @@ Notifications.setNotificationHandler({
 });
 
 
-const ReportIssue = () => {
+const ReportIssue = ({ route, navigation }) => {
   const [selectedOption, setSelectedOption] = useState('');
   const [otherText, setOtherText] = useState('');
   const [imageUri, setImageUri] = useState(null);
@@ -27,6 +27,8 @@ const ReportIssue = () => {
   const [notification, setNotification] = useState(false);
   const notificationListener = useRef();
   const responseListener = useRef();
+
+  const bikeId = route.params.id
 
   useEffect(() => {
     registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
@@ -49,7 +51,7 @@ const ReportIssue = () => {
   async function schedulePushNotification() {
     await Notifications.scheduleNotificationAsync({
       content: {
-        title: "You've got shadow notification! 🐱‍👤",
+        title: "You've got notification! 🐱‍👤",
         body: 'I want to be ninja 🐱‍👤',
         data: { data: 'Im almost a ninjaaaa!' },
       },
@@ -156,11 +158,12 @@ const ReportIssue = () => {
 
     const formData = new FormData();
     formData.append('userId', 1);
-    formData.append('bikeId', 1);
+    formData.append('bikeId', bikeId);
     formData.append('faultText', selectedOption === 'Other' ? otherText : selectedOption);
-    formData.append('imageData', imageBase64);
+    // formData.append('imageData', imageBase64);
 
     addReport(formData)
+    navigation.navigate('Map', { update: true })
     // await schedulePushNotification();
   };
 
@@ -192,14 +195,14 @@ const ReportIssue = () => {
 
       )}
 
-      <CustomButton
+      {/* <CustomButton
         title={imageUri ? "Upload New Image" : "Upload Image"}
         color={colors.lightGreen}
         onPress={handleImageUpload}
         icon="image-outline"
         magicNumber={0.6}
         style={styles.btn}
-      />
+      /> */}
 
       {imageUri && (
         <View style={styles.imageWrapper}>

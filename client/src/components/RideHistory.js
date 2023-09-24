@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
-import { View, ScrollView, Text, TouchableOpacity, Modal, StyleSheet } from 'react-native';
+import { View, ScrollView, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import RideReceipt from './RideReceipt';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { colors } from '../../styles/styles';
 
-const IconList = () => {
-  const [selectedIcon, setSelectedIcon] = useState(null);
+const RideHistory = () => {
+  const [selectedRideRecord, setSelectedRideRide] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
 
-  const handleIconClick = (icon) => {
-    setSelectedIcon(icon);
+  const openRecord = (rideRecord) => {
+    setSelectedRideRide(rideRecord);
     setModalVisible(true);
   };
 
@@ -25,9 +26,9 @@ const IconList = () => {
   const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
   const dayName = daysOfWeek[dayOfWeek];
   const year = currentDate.getFullYear();
-  const formattedDate = `${day} ${month}`;
+  const formattedDate = `${day} ${month} ${year}`;
 
-  const trips = [
+  const rideHistory = [
     { date: formattedDate, distance: '2km', cost: '2.50', time: 5 },
     { date: formattedDate, distance: '1km', cost: '3.50', time: 2.5 },
     { date: formattedDate, distance: '10km', cost: '5.50', time: 25 },
@@ -37,28 +38,28 @@ const IconList = () => {
 
   return (
     <ScrollView style={styles.container}>
-      {trips.map((ride, index) => (
+      {rideHistory.map((rideRecord, index) => (
         <TouchableOpacity
-          style={styles.ride}
+          style={styles.rideRecord}
           key={index}
-          onPress={() => handleIconClick(ride)}
+          onPress={() => openRecord(rideRecord)}
           activeOpacity={0.5}
         >
           <View style={styles.dateAndCost}>
-            <Text style={styles.date}>{`${dayName}, ${ride.date}`}</Text>
-            <Text style={styles.cost}>BGN: {ride.cost}lv</Text>
+            <Text style={styles.date}>{`${dayName}, ${rideRecord.date}`}</Text>
+            <Text style={styles.cost}>BGN: {rideRecord.cost}lv</Text>
           </View>
 
           <View style={styles.statistics}>
             <View style={styles.wrapper}>
               <MaterialCommunityIcons name="map-marker-distance" size={24} color={colors.darkgrey} />
-              <Text style={styles.text}>{ride.distance}</Text>
+              <Text style={styles.text}>{rideRecord.distance}</Text>
               <Text style={styles.label}>Distance</Text>
             </View>
 
             <View style={styles.wrapper}>
               <MaterialCommunityIcons name="clock" size={24} color={colors.darkgrey} />
-              <Text style={styles.text}>{ride.time}min</Text>
+              <Text style={styles.text}>{rideRecord.time}min</Text>
               <Text style={styles.label}>Time</Text>
             </View>
 
@@ -71,16 +72,7 @@ const IconList = () => {
         </TouchableOpacity>
       ))}
 
-      {/* <Modal visible={modalVisible} animationType="slide" transparent={true}>
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <View style={{ backgroundColor: 'white', padding: 20 }}>
-            <Text>{selectedIcon?.description}</Text>
-            <TouchableOpacity onPress={closeModal}>
-              <Text>Close</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal> */}
+      {modalVisible && selectedRideRecord && <RideReceipt rideRecord={selectedRideRecord} onClose={closeModal} />}
     </ScrollView>
   );
 };
@@ -90,7 +82,7 @@ const styles = StyleSheet.create({
     width: '100%',
     marginTop: 40,
   },
-  ride: {
+  rideRecord: {
     width: '100%',
     backgroundColor: 'white',
     marginTop: 10,
@@ -136,4 +128,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default IconList;
+export default RideHistory;

@@ -3,13 +3,10 @@ import { StyleSheet, Text, View, StatusBar, Image } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { throttle } from 'lodash';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import NearestHubs from '../../components/NearestHubs';
 import CustomButton from '../../components/CustomButton'
 import Scanner from '../../components/Scanner'
 import { colors } from '../../../styles/styles'
-
-import axios from 'axios'
 import { getStations } from '../../api/stations';
 
 const Map = ({ route, navigation }) => {
@@ -18,6 +15,8 @@ const Map = ({ route, navigation }) => {
 	const [errorMsg, setErrorMsg] = useState('');
 	const [isScannerOpen, setScannerOpen] = useState(false);
 	const [stations, setStations] = useState([])
+	const [navigationComplete, setNavigationComplete] = useState(false);
+
 
 	const hubsRef = useRef();
 	const mapRef = useRef()
@@ -33,6 +32,17 @@ const Map = ({ route, navigation }) => {
 		bottom: 70,
 		left: 0,
 	}
+
+	useEffect(() => {
+		if (route.params?.center) centerCamera()
+		if (route.params?.openScanner) setScannerOpen(true)
+		if (route.params?.update) {
+			(async () => {
+				const data = await getStations();
+				setStations(data)
+			})()
+		}
+	}, [route.params])
 
 	useEffect(() => {
 		(async () => {
@@ -97,11 +107,6 @@ const Map = ({ route, navigation }) => {
 					latitudeDelta: 0.03,
 					longitudeDelta: 0.04,
 				})
-
-				// console.log('Updated user position:', {
-				// 	latitude: position.coords.latitude.toFixed(3),
-				// 	longitude: position.coords.longitude.toFixed(3),
-				// });
 			} catch (error) {
 				console.error('Error fetching data:', error);
 			}
@@ -112,12 +117,6 @@ const Map = ({ route, navigation }) => {
 		}, 3000);
 		return () => clearInterval(interval)
 	}, [])
-
-
-	useEffect(() => {
-		if (route.params?.center) centerCamera()
-		if (route.params?.openScanner) setScannerOpen(true)
-	}, [route.params])
 
 	return (
 		<View style={styles.container}>

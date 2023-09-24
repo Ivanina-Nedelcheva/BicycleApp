@@ -10,8 +10,8 @@ import {
 import { useCard } from "../context/CardContext";
 import { colors } from "../../styles/styles";
 
-const ACTION_TIMER = 300;
-const COLORS = [colors.secondary, colors.primary];
+const ACTION_TIMER = 500;
+const COLORS = [colors.columbiaBlue, colors.bleuDeFrance];
 
 const StartRideButton = ({ navigation }) => {
   const [buttonWidth, setButtonWidth] = useState(0);
@@ -27,7 +27,11 @@ const StartRideButton = ({ navigation }) => {
       duration: ACTION_TIMER,
       toValue: 1,
       useNativeDriver: false,
-    }).start(animationActionComplete);
+    }).start(() => {
+      if (_value === 1) {
+        animationActionComplete();
+      }
+    });
   };
 
   const handlePressOut = () => {
@@ -69,31 +73,24 @@ const StartRideButton = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <TouchableWithoutFeedback
-        onPressIn={handlePressIn}
-        onPressOut={handlePressOut}
-      >
-        <View style={styles.button} onLayout={getButtonWidthLayout}>
-          <Animated.View style={[styles.bgFill, getProgressStyles()]} />
-          <Text style={styles.text}>Rent</Text>
-        </View>
-      </TouchableWithoutFeedback>
-    </View>
+    <TouchableWithoutFeedback
+      onPressIn={handlePressIn}
+      onPressOut={handlePressOut}
+    >
+      <View style={styles.button} onLayout={getButtonWidthLayout}>
+        <Animated.View style={[styles.bgFill, getProgressStyles()]} />
+        <Text style={styles.text}>Rent</Text>
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
   button: {
     paddingVertical: 12,
-    paddingHorizontal: 50,
+    paddingHorizontal: 60,
     borderWidth: 1,
-    borderColor: colors.primary,
+    borderColor: colors.bleuDeFrance,
     borderRadius: 100,
     overflow: "hidden"
   },

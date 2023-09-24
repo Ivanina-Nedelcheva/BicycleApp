@@ -1,4 +1,4 @@
-import React, { useRef, useState, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { View, Text, StyleSheet, Alert } from 'react-native';
 import { BottomSheetModal, BottomSheetModalProvider, } from '@gorhom/bottom-sheet';
 import { colors } from '../../styles/styles'
@@ -6,11 +6,21 @@ import CustomButton from './CustomButton'
 import ReservationTimer from './ReservationTimer'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import StartRideButton from './StartRideButton'
+import { getPrices } from '../api/payment';
 
 
 const BikeDetails = ({ bike, bottomSheetRef, navigation }) => {
   const snapPoints = useMemo(() => ['75%'], []);
   const [reservation, setReservation] = useState(false)
+  const [prices, setPrices] = useState({})
+
+  useEffect(() => {
+    (async () => {
+      const data = await getPrices()
+      console.log(data);
+      setPrices(data)
+    })()
+  }, [])
 
   function cancelReservation() {
     setReservation(false)
@@ -26,7 +36,8 @@ const BikeDetails = ({ bike, bottomSheetRef, navigation }) => {
   };
 
   function handleReportIssue() {
-    navigation.navigate('ReportIssue')
+    console.log(bike);
+    navigation.navigate('ReportIssue', { id: bike.id })
   }
 
   return (
@@ -54,7 +65,7 @@ const BikeDetails = ({ bike, bottomSheetRef, navigation }) => {
 
             <View style={styles.bikeAttributes}>
               <MaterialCommunityIcons name="wallet-outline" size={24} color="black" />
-              <Text style={styles.attribute}>1.50лв. to start, then 0.20 лв./min</Text>
+              <Text style={styles.attribute}>{`${prices.unlockPrice.toFixed(2)}lv. to start, then ${prices.minutePrice.toFixed(2)} lv./min`} </Text>
             </View>
 
             {reservation && <View style={styles.bikeAttributes}>
@@ -63,16 +74,7 @@ const BikeDetails = ({ bike, bottomSheetRef, navigation }) => {
             </View>}
           </View>
 
-          <View style={styles.btnContainer}>
-            {/* <CustomButton
-              title="Ring"
-              icon="bell-ring-outline"
-              color={colors.aliceblue2}
-              onPress={handleReserveBike}
-              magicNumber={0.3}
-              style={styles.btns}
-            /> */}
-
+          <View style={styles.btnsContainer}>
             <CustomButton
               title="Report Issue"
               icon="alert-outline"
@@ -97,19 +99,22 @@ const BikeDetails = ({ bike, bottomSheetRef, navigation }) => {
               <MaterialCommunityIcons name="clock-alert-outline" size={24} color="black" />
               <Text style={styles.msg}>Reservation is free for 15min</Text>
             </View>
-            {reservation && <Text style={styles.subMsg}>Hold to start ride</Text>}
+            <Text style={styles.subMsg}>Hold to start ride</Text>
 
-            {!reservation ? (
-              <CustomButton
-                title="Reserve"
-                color={colors.primary}
-                onPress={handleReserveBike}
-                magicNumber={0.4}
-                style={{ alignSelf: 'center', marginTop: 20 }}
-              />
-            ) : (
-              <StartRideButton navigation={navigation} />
-            )}
+            <View style={styles.bottomBtns}>
+              {!reservation ? (
+                <CustomButton
+                  title="Reserve"
+                  color={colors.bleuDeFrance}
+                  onPress={handleReserveBike}
+                  magicNumber={0.4}
+                />
+              ) : (
+                <StartRideButton navigation={navigation} />
+              )}
+
+              {!reservation && <StartRideButton navigation={navigation} />}
+            </View>
           </View>
         </View>
       </BottomSheetModal>
@@ -126,6 +131,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
   },
   details: {
+    minHeight: 100,
     marginTop: 10,
   },
   bikeAttributes: {
@@ -136,9 +142,15 @@ const styles = StyleSheet.create({
   attribute: {
     fontFamily: 'Roboto-Bold',
   },
-  btnContainer: {
+  btnsContainer: {
     flexDirection: 'row',
     gap: 20,
+  },
+  bottomBtns: {
+    flexDirection: 'row',
+    gap: 20,
+    marginTop: 20,
+    justifyContent: 'center'
   },
   btns: {
     marginTop: 20,

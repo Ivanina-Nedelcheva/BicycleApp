@@ -24,28 +24,6 @@ const Auth = ({ navigation }) => {
           onPress={() => navigation.navigate('Sign In')}
           magicNumber={0.8}
         />
-
-
-        {/* <CustomButton
-          title="Report"
-          color={colors.lightYellow}
-          onPress={() => navigation.navigate('MapNavigator')}
-          magicNumber={0.8}
-        />
-
-        <CustomButton
-          title="Report"
-          color={colors.lightGreen}
-          onPress={() => navigation.navigate('MapNavigator')}
-          magicNumber={0.8}
-        />
-
-        <CustomButton
-          title="Report"
-          color={colors.keppel}
-          onPress={() => navigation.navigate('MapNavigator')}
-          magicNumber={0.8}
-        /> */}
       </View>
     </SafeAreaView >
   );

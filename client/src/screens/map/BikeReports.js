@@ -14,6 +14,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { getReports } from '../../api/reports';
 import { colors } from '../../../styles/styles';
 import CustomButton from '../../components/CustomButton';
+import { activateBicycle } from '../../api/bicycles';
 
 const BikeReports = () => {
   const [userReports, setUserReports] = useState([]);
@@ -62,19 +63,21 @@ const BikeReports = () => {
     setModalVisible(false);
   };
 
-  console.log(userReports);
-
   return (
     <View style={styles.container}>
       {!userReports.length ? (
         <View style={styles.indicator}>
-          <ActivityIndicator size={100} color={colors.primary} />
+          <ActivityIndicator size={100} color={colors.bleuDeFrance} />
         </View>
       ) : (
         <ScrollView>
           {userReports.map((report, idx) => {
             return (
-              <View style={styles.report} key={idx}>
+              <TouchableOpacity
+                style={styles.report}
+                key={idx}
+                onPress={() => activateBicycle(report.bicycle.id)}
+              >
                 <Text style={styles.date}>{formatDate(report.date)}</Text>
 
                 <View style={styles.attribute}>
@@ -103,7 +106,7 @@ const BikeReports = () => {
                     />
                   </View>
                 </TouchableOpacity> */}
-              </View>
+              </TouchableOpacity>
             );
           })}
         </ScrollView>

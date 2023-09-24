@@ -20,7 +20,6 @@ const DeleteAccount = ({ modalVisible, setModalVisible, navigation }) => {
   return (
     <Modal
       animationType="fade"
-      transparent={true}
       visible={modalVisible}
       onRequestClose={() => setModalVisible(!modalVisible)}
     >
