@@ -1,10 +1,12 @@
 package com.app.bicycle.service.impl;
 
 import com.app.bicycle.entities.Bicycle;
+import com.app.bicycle.entities.FaultReport;
 import com.app.bicycle.entities.Station;
 import com.app.bicycle.entities.StationBicycle;
 import com.app.bicycle.enums.BicycleState;
 import com.app.bicycle.repositories.BicycleRepository;
+import com.app.bicycle.repositories.FaultReportRepository;
 import com.app.bicycle.repositories.StationBicycleRepository;
 import com.app.bicycle.repositories.StationRepository;
 import com.app.bicycle.service.BicycleService;
@@ -19,18 +21,19 @@ import java.util.List;
 @Transactional
 public class BicycleServiceImpl extends BaseService implements BicycleService {
     private final BicycleRepository bicycleRepository;
-
     private final StationRepository stationRepository;
-
     private final StationBicycleRepository sbRepository;
+    private final FaultReportRepository faultReportRepository;
 
 
     public BicycleServiceImpl(BicycleRepository bicycleRepository,
                               StationRepository stationRepository,
-                              StationBicycleRepository sbRepository) {
+                              StationBicycleRepository sbRepository,
+                              FaultReportRepository faultReportRepository) {
         this.bicycleRepository = bicycleRepository;
         this.stationRepository = stationRepository;
         this.sbRepository = sbRepository;
+        this.faultReportRepository = faultReportRepository;
     }
 
     @Override
@@ -82,6 +85,7 @@ public class BicycleServiceImpl extends BaseService implements BicycleService {
         if (bicycle != null) {
             bicycle.setActiveFlag(true);
             bicycleRepository.save(bicycle);
+            deleteFaultReport(bikeId);
             return Constants.SUCCESSFUL_OPERATION;
         }
         return Constants.BICYCLE_ALREADY_ACTIVATED;
@@ -107,6 +111,14 @@ public class BicycleServiceImpl extends BaseService implements BicycleService {
     public boolean isBicycleInState(Long bikeId, BicycleState desiredState) {
         BicycleState currentState = bicycleRepository.getBicycleState(bikeId);
         return currentState == desiredState;
+    }
+
+    @Override
+    public void deleteFaultReport(Long bikeId) {
+        if (faultReportRepository.reportExists(bikeId) > 0) {
+            FaultReport faultReportForDelete = faultReportRepository.getFaultReportByBicycle(bikeId);
+            faultReportRepository.delete(faultReportForDelete);
+        }
     }
 
     private Boolean isValidStateTransition(BicycleState currentState, BicycleState newState) {

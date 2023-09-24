@@ -106,6 +106,8 @@ public class UserServiceImpl implements UserService {
                 .collect(Collectors.toList());
     }
 
+
+
     private FaultReportDTO mapToDTO(FaultReport faultReport) {
         FaultReportDTO dto = new FaultReportDTO();
         dto.setBicycle(faultReport.getBicycle());

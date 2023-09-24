@@ -60,8 +60,8 @@ public class UserController {
 
 
     @RequestMapping(method = RequestMethod.POST, value = "/reportFault", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).TECH_SUPPORT_MEMBER, T(com.app.bicycle.enums.UserRole).SYSTEM_ADMIN, " +
-            "T(com.app.bicycle.enums.UserRole).ORDINARY_USER, T(com.app.bicycle.enums.UserRole).OBSERVER)")
+//    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).TECH_SUPPORT_MEMBER, T(com.app.bicycle.enums.UserRole).SYSTEM_ADMIN, " +
+//            "T(com.app.bicycle.enums.UserRole).ORDINARY_USER, T(com.app.bicycle.enums.UserRole).OBSERVER)")
     public ResponseEntity<FaultReport> faultReport(@RequestParam Long userId, @RequestParam Long bikeId,
                                                    @RequestParam String faultText) throws Exception {
 

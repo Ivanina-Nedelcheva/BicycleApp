@@ -18,7 +18,7 @@ public class Bicycle extends BaseEntity {
     @Column(name = "active_flag", columnDefinition = "BIT(1) default 1")
     private Boolean activeFlag;
 
-    @OneToMany(mappedBy = "bicycle", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @OneToMany(mappedBy = "bicycle", fetch = FetchType.EAGER)
     private List<FaultReport> faultReports = new ArrayList<>();
 
     @OneToMany(mappedBy = "bicycle", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)

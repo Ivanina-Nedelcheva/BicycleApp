@@ -76,4 +76,4 @@ INSERT INTO `bicycleapp`.`station_bicycle` (`bike_id`, `station_id`) VALUES ('1'
 INSERT INTO `bicycleapp`.`fault_report` (`date`, `fault_text`, `bike_id`, `user_id`)
 VALUES ('2023-09-16', 'spukana guma', '1', '1');
 
-INSERT INTO `bicycleapp`.`prices` (`minute_price`, `start_date`, `unlock_price`) VALUES ('0.40', '15.09.2023', '1.50');
+INSERT INTO `bicycleapp`.`prices` (`minute_price`, `start_date`, `unlock_price`) VALUES ('0.40', '2023-09-16', '1.50');

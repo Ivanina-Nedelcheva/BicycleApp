@@ -22,4 +22,6 @@ public interface BicycleService {
     boolean changeBicycleState(Long bikeId, BicycleState newState);
 
     boolean isBicycleInState(Long bikeId, BicycleState desiredState);
+
+    void deleteFaultReport(Long bikeId);
 }

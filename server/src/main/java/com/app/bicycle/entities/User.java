@@ -36,7 +36,7 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     private List<Reservation> reservations = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<FaultReport> faultReports = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
