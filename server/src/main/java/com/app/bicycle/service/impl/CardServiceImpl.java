@@ -6,6 +6,7 @@ import com.app.bicycle.repositories.PriceRepository;
 import com.app.bicycle.service.CardService;
 import com.stripe.exception.*;
 import com.stripe.model.Charge;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +19,10 @@ import java.util.Map;
 @Service
 @Transactional
 public class CardServiceImpl implements CardService {
+
+
+    @Value("${ENCODE_KEY}")
+    private String encodeKey;
 
     private final PriceRepository priceRepository;
 
@@ -39,7 +44,7 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public String encrypt(String input) throws Exception {
-        String secretKey = "t1f0pfC2ecwShifm7Jue4N3IguGRg7hjPzBlgfoYNCPQnW";
+        String secretKey = encodeKey;
         SecretKeySpec keySpec = new SecretKeySpec(secretKey.getBytes(), "AES");
 
         Cipher cipher = Cipher.getInstance("AES");
