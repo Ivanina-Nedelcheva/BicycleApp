@@ -1,4 +1,4 @@
-import axios from './axiosConfig';
+import { API } from './axiosConfig';
 
 const getBicyclesURI = 'bicycles/getAllBicycles'
 const activateBicycleURI = 'bicycles/activateBicycle'
@@ -7,7 +7,7 @@ const newBicycleURI = 'bicycle/newBicycle'
 
 export async function getBicycle() {
   try {
-    const response = await axios.get(getBicyclesURI);
+    const response = await API.get(getBicyclesURI);
     return response.data;
   } catch (error) {
     console.error('Error getting data:', error);
@@ -15,9 +15,8 @@ export async function getBicycle() {
 }
 
 export async function activateBicycle(id) {
-  console.log(typeof id);
   try {
-    const response = await axios.post(activateBicycleURI, id);
+    const response = await API.post(activateBicycleURI, id);
     console.log('Response from the server:', response.data);
   } catch (error) {
     console.error('Error uploading data:', error);
@@ -26,7 +25,7 @@ export async function activateBicycle(id) {
 
 export async function deactivateBicycle(id) {
   try {
-    const response = await axios.post(deactivateBicycleURI, id);
+    const response = await API.post(deactivateBicycleURI, id);
     console.log('Response from the server:', response.data);
   } catch (error) {
     console.error('Error uploading data:', error);
@@ -35,7 +34,7 @@ export async function deactivateBicycle(id) {
 
 export async function newBicycle(stationId) {
   try {
-    const response = await axios.post(newBicycleURI, stationId);
+    const response = await API.post(newBicycleURI, stationId);
     console.log('Response from the server:', response.data);
   } catch (error) {
     console.error('Error uploading data:', error);

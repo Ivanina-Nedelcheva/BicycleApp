@@ -6,7 +6,7 @@ import { colors } from '../../../styles/styles';
 
 const rides = [1, 2]
 
-const History = ({ navigation }) => {
+const History = () => {
   return (
     <View style={styles.container}>
       {!rides.length ? (

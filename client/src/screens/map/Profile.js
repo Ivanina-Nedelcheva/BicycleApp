@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { StyleSheet, View, TextInput, Text, ScrollView, Alert } from 'react-native';
@@ -6,9 +6,11 @@ import CustomButton from '../../components/CustomButton';
 import { colors } from '../../../styles/styles'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import DeleteAccount from '../../components/DeleteAccount';
-
+import { AuthContext } from '../../context/AuthContext';
 
 const Profile = ({ navigation }) => {
+  const { logout } = useContext(AuthContext)
+
   const validationSchema = Yup.object().shape({
     firstName: Yup.string().required('First name is required'),
     lastName: Yup.string().required('Last name is required'),
@@ -164,7 +166,7 @@ const Profile = ({ navigation }) => {
                   title="Log out"
                   color={colors.keppel}
                   magicNumber={0.8}
-                  onPress={() => navigation.navigate('Auth')}
+                  onPress={() => logout()}
                   style={styles.btn}
                 />
 

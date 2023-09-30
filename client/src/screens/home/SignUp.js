@@ -56,7 +56,7 @@ const SignUp = ({ navigation }) => {
           onSubmit={handleSubmit}
           initialErrors={true}
         >
-          {({ handleChange, handleBlur, handleSubmit, values, errors, isValid, dirty, setFieldValue }) => (
+          {({ handleChange, handleSubmit, values, errors, isValid, dirty, setFieldValue }) => (
             <View style={styles.form}>
               <View>
                 <TextInput

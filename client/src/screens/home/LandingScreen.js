@@ -3,7 +3,7 @@ import { StyleSheet, SafeAreaView, View, Image } from 'react-native';
 import CustomButton from '../../components/CustomButton';
 import { colors } from '../../../styles/styles.js'
 
-const Auth = ({ navigation }) => {
+const LandingScreen = ({ navigation }) => {
   navigation.canGoBack(false)
 
   return (
@@ -42,9 +42,6 @@ const styles = StyleSheet.create({
     gap: 10,
     top: 120,
   },
-  image: {
-    // resizeMode: 'cover',
-  }
 });
 
-export default Auth
+export default LandingScreen

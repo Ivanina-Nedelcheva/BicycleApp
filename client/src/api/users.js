@@ -1,8 +1,8 @@
-import axios from './axiosConfig';
+import { authAPI } from './axiosConfig';
 
 export async function getUser(userId) {
   try {
-    const response = await axios.get(`/users/${userId}`);
+    const response = await authAPI.get(`/users/${userId}`);
     return response.data;
   } catch (error) {
     // Handle errors here
@@ -12,7 +12,7 @@ export async function getUser(userId) {
 
 export async function addUser(userId, userData) {
   try {
-    const response = await axios.post(`/users/${userId}`, userData);
+    const response = await authAPI.post(`/users/${userId}`, userData);
     return response.data;
   } catch (error) {
     // Handle errors here
@@ -22,7 +22,7 @@ export async function addUser(userId, userData) {
 
 export async function updateUser(userId, userData) {
   try {
-    const response = await axios.patch(`/users/${userId}`, userData);
+    const response = await authAPI.patch(`/users/${userId}`, userData);
     return response.data;
   } catch (error) {
     // Handle errors here
@@ -31,7 +31,7 @@ export async function updateUser(userId, userData) {
 }
 export async function deleteUser(userId) {
   try {
-    const response = await axios.delete(`/users/${userId}`);
+    const response = await authAPI.delete(`/users/${userId}`);
     return response.data;
   } catch (error) {
     // Handle errors here

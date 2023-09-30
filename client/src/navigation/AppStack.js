@@ -2,10 +2,9 @@ import React from "react"
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { Map, Profile, History, Payment, BikeReports } from '../screens'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { colors } from "../../styles/styles";
 
 const Drawer = createDrawerNavigator();
-const MapNavigator = () => {
+const AppStack = () => {
   const drawerLabelStyle = {
     fontFamily: 'Roboto-Bold',
     fontSize: 16,
@@ -66,4 +65,4 @@ const MapNavigator = () => {
   );
 };
 
-export default MapNavigator
+export default AppStack

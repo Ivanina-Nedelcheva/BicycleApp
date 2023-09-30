@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { StyleSheet, View, Text, Image, TextInput } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import CustomButton from '../../components/CustomButton';
 import { colors } from '../../../styles/styles'
+import { AuthContext } from '../../context/AuthContext';
 
 const SignIn = ({ navigation }) => {
+  const { login } = useContext(AuthContext)
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [err, setErr] = useState(false)
   const password = 'asd'
@@ -23,7 +25,6 @@ const SignIn = ({ navigation }) => {
   const handleSubmit = (values, { resetForm }) => {
     console.log(values)
 
-    navigation.navigate('MapNavigator')
     // if (values.password == password) {
     //     setTimeout(() => {
     //         resetForm()
@@ -87,7 +88,7 @@ const SignIn = ({ navigation }) => {
             <CustomButton
               title="Log in"
               color={colors.bleuDeFrance}
-              onPress={() => navigation.navigate('MapNavigator')}
+              onPress={() => login()}
               magicNumber={0.8}
             // disabled={!dirty || !isValid}
             />

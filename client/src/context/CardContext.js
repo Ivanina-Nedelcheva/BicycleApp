@@ -12,7 +12,6 @@ export const CardProvider = ({ children }) => {
   );
 };
 
-// Create a custom hook to use the context
 export const useCard = () => {
   const context = useContext(CardContext);
   if (!context) {

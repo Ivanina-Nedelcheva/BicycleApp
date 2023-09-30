@@ -1,4 +1,4 @@
-export { default as Auth } from './home/Auth'
+export { default as LandingScreen } from './home/LandingScreen'
 export { default as SignIn } from './home/SignIn'
 export { default as SignUp } from './home/SignUp'
 export { default as BikeSelect } from './home/BikeSelect'

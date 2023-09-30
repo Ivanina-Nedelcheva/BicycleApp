@@ -8,7 +8,6 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import StartRideButton from './StartRideButton'
 import { getPrices } from '../api/payment';
 
-
 const BikeDetails = ({ bike, bottomSheetRef, navigation }) => {
   const snapPoints = useMemo(() => ['75%'], []);
   const [reservation, setReservation] = useState(false)
@@ -28,12 +27,7 @@ const BikeDetails = ({ bike, bottomSheetRef, navigation }) => {
 
   function handleReserveBike() {
     setReservation(true)
-    handleStartRide()
   }
-
-  function handleStartRide() {
-
-  };
 
   function handleReportIssue() {
     console.log(bike);
@@ -50,7 +44,6 @@ const BikeDetails = ({ bike, bottomSheetRef, navigation }) => {
       >
         <View style={styles.bikeContent}>
           <Text style={styles.heading}>Bike Details</Text>
-
 
           <View style={styles.details}>
             <View style={styles.bikeAttributes}>
