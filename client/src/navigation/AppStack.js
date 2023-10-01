@@ -1,6 +1,6 @@
 import React from "react"
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { Map, Profile, History, Payment, BikeReports } from '../screens'
+import { Map, Profile, History, Payment, BikeReports, BikeSelect } from '../screens'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const Drawer = createDrawerNavigator();
@@ -56,6 +56,15 @@ const AppStack = () => {
       <Drawer.Screen
         name="Bike Reports"
         component={BikeReports}
+        options={{
+          drawerIcon: ({ focused, color, size }) => (
+            <MaterialCommunityIcons name={focused ? 'alert' : 'alert-outline'} size={size} color={color} />),
+          drawerLabelStyle
+        }} />
+
+      <Drawer.Screen
+        name="BikeSelect"
+        component={BikeSelect}
         options={{
           drawerIcon: ({ focused, color, size }) => (
             <MaterialCommunityIcons name={focused ? 'alert' : 'alert-outline'} size={size} color={color} />),

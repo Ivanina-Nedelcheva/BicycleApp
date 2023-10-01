@@ -25,6 +25,9 @@ const SignIn = ({ navigation }) => {
   const handleSubmit = (values, { resetForm }) => {
     console.log(values)
 
+    login(values)
+
+
     // if (values.password == password) {
     //     setTimeout(() => {
     //         resetForm()
@@ -88,7 +91,7 @@ const SignIn = ({ navigation }) => {
             <CustomButton
               title="Log in"
               color={colors.bleuDeFrance}
-              onPress={() => login()}
+              onPress={handleSubmit}
               magicNumber={0.8}
             // disabled={!dirty || !isValid}
             />

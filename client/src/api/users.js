@@ -2,7 +2,7 @@ import { authAPI } from './axiosConfig';
 
 export async function getUser(userId) {
   try {
-    const response = await authAPI.get(`/users/${userId}`);
+    const response = await authAPI.get(`/users`);
     return response.data;
   } catch (error) {
     // Handle errors here
@@ -10,9 +10,9 @@ export async function getUser(userId) {
   }
 }
 
-export async function addUser(userId, userData) {
+export async function addUser(userData) {
   try {
-    const response = await authAPI.post(`/users/${userId}`, userData);
+    const response = await authAPI.post(`/users/registerUser`, userData);
     return response.data;
   } catch (error) {
     // Handle errors here
