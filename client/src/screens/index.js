@@ -1,11 +1,11 @@
 export { default as LandingScreen } from './home/LandingScreen'
 export { default as SignIn } from './home/SignIn'
 export { default as SignUp } from './home/SignUp'
-export { default as ReportIssue } from './home/ReportIssue'
 
 export { default as Map } from './map/Map'
-export { default as BikeSelect } from './map/BikeSelect'
 export { default as Profile } from './map/Profile'
 export { default as History } from './map/History'
 export { default as Payment } from './map/Payment'
+export { default as BikeSelect } from './map/BikeSelect'
+export { default as ReportIssue } from './map/ReportIssue'
 export { default as BikeReports } from './map/BikeReports'

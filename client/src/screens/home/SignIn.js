@@ -91,7 +91,7 @@ const SignIn = ({ navigation }) => {
             <CustomButton
               title="Log in"
               color={colors.bleuDeFrance}
-              onPress={handleSubmit}
+              onPress={login}
               magicNumber={0.8}
             // disabled={!dirty || !isValid}
             />

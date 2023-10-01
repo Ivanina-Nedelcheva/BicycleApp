@@ -44,7 +44,9 @@ const BikeReports = () => {
       'November',
       'December',
     ];
-    const dayName = dateObj.toLocaleString('en-US', { weekday: 'long' });
+    const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const dayIndex = dateObj.getDay();
+    const dayName = days[dayIndex];
     const day = dateObj.getDate();
     const month = monthNames[dateObj.getMonth()];
     const year = dateObj.getFullYear();

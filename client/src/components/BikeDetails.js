@@ -31,7 +31,7 @@ const BikeDetails = ({ bike, bottomSheetRef, navigation }) => {
 
   function handleReportIssue() {
     console.log(bike);
-    navigation.navigate('ReportIssue', { id: bike.id })
+    navigation.navigate('Report Issue', { id: bike.id })
   }
 
   return (
@@ -58,7 +58,7 @@ const BikeDetails = ({ bike, bottomSheetRef, navigation }) => {
 
             <View style={styles.bikeAttributes}>
               <MaterialCommunityIcons name="wallet-outline" size={24} color="black" />
-              <Text style={styles.attribute}>{`${prices?.unlockPrice.toFixed(2)}lv. to start, then ${prices?.minutePrice.toFixed(2)} lv./min`} </Text>
+              <Text style={styles.attribute}>{`${prices.unlockPrice?.toFixed(2)}lv. to start, then ${prices.minutePrice?.toFixed(2)} lv./min`} </Text>
             </View>
 
             {reservation && <View style={styles.bikeAttributes}>

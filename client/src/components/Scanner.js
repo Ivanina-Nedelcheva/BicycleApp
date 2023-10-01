@@ -8,7 +8,6 @@ import { useCard } from '../context/CardContext';
 const Scanner = ({ isOpen, onToggle, navigation }) => {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
-  const isModalVisible = isOpen;
   const [isFlashlightOn, setIsFlashlightOn] = useState(false);
   const [isInputVisible, setInputVisible] = useState(false);
   const [vehicleCode, setVehicleCode] = useState('');
@@ -62,7 +61,7 @@ const Scanner = ({ isOpen, onToggle, navigation }) => {
   }
 
   return (
-    <Modal visible={isModalVisible} transparent={true} animationType="slide">
+    <Modal visible={isOpen} transparent={true} animationType="slide">
       <View style={styles.modalContainer}>
         <View style={styles.topContainer}>
           {isInputVisible ? (

@@ -37,8 +37,8 @@ const RideReceipt = ({ rideRecord, onClose }) => {
         </View>
 
         <View style={styles.paymentDetails}>
-          <DetailRow label="Unlock Fee:" value={`${prices.unlockPrice.toFixed(2)}lv`} />
-          <DetailRow label={`Riding - ${prices.minutePrice.toFixed(2)} lv./min`} value={`${(rideRecord.time * prices.minutePrice).toFixed(2)}lv`} />
+          <DetailRow label="Unlock Fee:" value={`${prices.unlockPrice?.toFixed(2)}lv`} />
+          <DetailRow label={`Riding - ${prices.minutePrice?.toFixed(2)} lv./min`} value={`${(rideRecord.time * prices.minutePrice)?.toFixed(2)}lv`} />
           <DetailRow label="Total (excl. VAT):" value={`${rideRecord.cost}lv`} />
           <DetailRow label="VAT - 20%:" value={`${(rideRecord.cost * 0.2).toFixed(2)}lv`} />
         </View>

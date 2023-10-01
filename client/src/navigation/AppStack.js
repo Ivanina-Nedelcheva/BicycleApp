@@ -1,7 +1,8 @@
 import React from "react"
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { Map, Profile, History, Payment, BikeReports, BikeSelect } from '../screens'
+import { Map, Profile, History, Payment, BikeReports, BikeSelect, ReportIssue } from '../screens'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import CustomButton from "../components/CustomButton";
 
 const Drawer = createDrawerNavigator();
 const AppStack = () => {
@@ -10,6 +11,9 @@ const AppStack = () => {
     fontSize: 16,
     textAlign: 'center',
   }
+
+  const isAdmin = false
+
 
   return (
     <Drawer.Navigator
@@ -63,13 +67,40 @@ const AppStack = () => {
         }} />
 
       <Drawer.Screen
-        name="BikeSelect"
+        name="Bike Select"
         component={BikeSelect}
-        options={{
-          drawerIcon: ({ focused, color, size }) => (
-            <MaterialCommunityIcons name={focused ? 'alert' : 'alert-outline'} size={size} color={color} />),
-          drawerLabelStyle
-        }} />
+        options={({ navigation }) => (
+          {
+            drawerLabel: () => null,
+            drawerIcon: () => null,
+            headerLeft: () => (
+              <CustomButton
+                icon="arrow-left"
+                color="white"
+                magicNumber={0.12}
+                onPress={() => navigation.goBack()}
+              />
+            ),
+          }
+        )} />
+
+      <Drawer.Screen
+        name="Report Issue"
+        component={ReportIssue}
+        options={({ navigation }) => (
+          {
+            drawerLabel: () => null,
+            drawerIcon: () => null,
+            headerLeft: () => (
+              <CustomButton
+                icon="arrow-left"
+                color="white"
+                magicNumber={0.12}
+                onPress={() => navigation.goBack()}
+              />
+            ),
+          }
+        )} />
     </Drawer.Navigator >
   );
 };
