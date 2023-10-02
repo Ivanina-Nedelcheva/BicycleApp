@@ -146,6 +146,10 @@ public class User extends BaseEntity {
         this.role = role;
     }
 
+    public String getRoleName() {
+        return this.role != null && this.role.getRoleName() != null ? this.role.getRoleName().name() : null;
+    }
+
     public Integer getUserRentedBicycles() {
         return userRentedBicycles;
     }
