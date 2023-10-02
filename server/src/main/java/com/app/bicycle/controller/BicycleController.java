@@ -69,7 +69,7 @@ public class BicycleController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/activateBicycle", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).TECH_SUPPORT_MEMBER, T(com.app.bicycle.enums.UserRole).SYSTEM_ADMIN)")
-    public ResponseEntity<Bicycle> activateBicycle(@RequestParam Long bikeId) throws CustomError {
+    public ResponseEntity<Bicycle> activateBicycle(@RequestBody Long bikeId) throws CustomError {
 
         Bicycle result = new Bicycle();
         CustomResponse beResponse = bicycleService.activateBicycle(bikeId);
