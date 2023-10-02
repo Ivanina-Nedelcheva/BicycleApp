@@ -2,8 +2,7 @@ package com.app.bicycle.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,35 +27,29 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private String password;
 
-    @Column
-    private String username;
-
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "role_id", nullable = false)
     @Enumerated(value = EnumType.STRING)
     private Role role;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     private List<Reservation> reservations = new ArrayList<>();
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<FaultReport> faultReports = new ArrayList<>();
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     private List<Rental> rentals = new ArrayList<>();
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     private List<Payment> payments = new ArrayList<>();
+
     @Transient
     private Integer userRentedBicycles = 0;
+
     @Transient
     private Integer userReservedBicycles = 0;
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
 
     public String getFirstName() {
         return firstName;

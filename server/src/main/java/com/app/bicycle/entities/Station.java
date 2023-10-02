@@ -1,6 +1,6 @@
 package com.app.bicycle.entities;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,7 @@ public class Station extends BaseEntity {
     @Column(name = "active_flag", columnDefinition = "BIT(1) default 1")
     private Boolean activeFlag;
 
-    @OneToMany(mappedBy = "station", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "station", fetch = FetchType.EAGER)
     private List<StationBicycle> stationBicycles = new ArrayList<>();
 
     public String getStationName() {
