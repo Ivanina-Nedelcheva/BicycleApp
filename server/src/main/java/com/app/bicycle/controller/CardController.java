@@ -2,7 +2,6 @@ package com.app.bicycle.controller;
 
 import com.app.bicycle.dto.ChargeRequestDTO;
 import com.app.bicycle.entities.Price;
-import com.app.bicycle.entities.Station;
 import com.app.bicycle.service.CardService;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Charge;
@@ -14,8 +13,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Controller
 @CrossOrigin(origins = "*")
