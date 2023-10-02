@@ -57,7 +57,6 @@ public class DBInitializer implements CommandLineRunner {
                 user1.setPhoneNumber("08946");
                 user1.setAge(String.valueOf(25));
                 user1.setPassword(passwordEncoder.encode("123456"));
-                user1.getRoleName();
                 em.persist(user1);
 
 
