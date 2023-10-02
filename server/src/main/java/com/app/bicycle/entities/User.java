@@ -2,7 +2,8 @@ package com.app.bicycle.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import jakarta.persistence.*;
+
+import javax.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,8 +28,8 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private String password;
 
-    @Column(name = "stripe_id")
-    private String stripeId;
+    @Column
+    private String username;
 
     @JsonIgnore
     @ManyToOne
@@ -36,23 +37,26 @@ public class User extends BaseEntity {
     @Enumerated(value = EnumType.STRING)
     private Role role;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<Reservation> reservations = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<FaultReport> faultReports = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<Rental> rentals = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<Payment> payments = new ArrayList<>();
-
     @Transient
     private Integer userRentedBicycles = 0;
-
     @Transient
     private Integer userReservedBicycles = 0;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
     public String getFirstName() {
         return firstName;
@@ -156,13 +160,5 @@ public class User extends BaseEntity {
 
     public void setUserReservedBicycles(Integer userReservedBicycles) {
         this.userReservedBicycles = userReservedBicycles;
-    }
-
-    public String getStripeId() {
-        return stripeId;
-    }
-
-    public void setStripeId(String stripeId) {
-        this.stripeId = stripeId;
     }
 }

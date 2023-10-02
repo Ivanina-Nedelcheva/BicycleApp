@@ -2,18 +2,17 @@ package com.app.bicycle.service.impl;
 
 import com.app.bicycle.dto.ChargeRequestDTO;
 import com.app.bicycle.dto.FaultReportDTO;
-import com.app.bicycle.dto.RentalDTO;
-import com.app.bicycle.dto.UserDTO;
 import com.app.bicycle.entities.*;
 import com.app.bicycle.enums.BicycleState;
 import com.app.bicycle.repositories.*;
-import com.app.bicycle.service.BicycleService;
+import com.app.bicycle.service.CardService;
 import com.app.bicycle.service.StationService;
-import com.app.bicycle.service.PaymentService;
 import com.app.bicycle.service.UserService;
+import com.app.bicycle.service.BicycleService;
 import com.app.bicycle.utils.Constants;
 import com.app.bicycle.utils.CustomError;
 import com.app.bicycle.utils.ScheduledTimer;
+import com.stripe.exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,7 +35,7 @@ public class UserServiceImpl implements UserService {
     private final BicycleService bicycleService;
     private final StationService stationService;
     private final PriceRepository priceRepository;
-    private final PaymentService stripeService;
+    private final CardService stripeService;
     private ScheduledTimer timer;
 
     @Autowired
@@ -48,8 +46,7 @@ public class UserServiceImpl implements UserService {
                            StationBicycleRepository sbRepository, BicycleService bicycleService,
                            StationService stationService,
                            PriceRepository priceRepository,
-                           PaymentService stripeService,
-                           ScheduledTimer timer) {
+                           CardService stripeService, ScheduledTimer timer) {
         this.userRepository = userRepository;
         this.faultReportRepository = faultReportRepository;
         this.bicycleRepository = bicycleRepository;
@@ -63,7 +60,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO registerUser(UserDTO input) {
+    public User registerUser(User input) {
 //        User registerUser = modelMapper.map(input, User.class);
 //        registerUser.setFirstName(input.getFirstName());
 //        registerUser.setLastName(input.getLastName());
@@ -80,14 +77,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO deleteUser(UserDTO input) {
-        //TODO
+    public User deleteUser(User input) {
         return null;
     }
 
     @Override
-    public UserDTO editUser(UserDTO input) {
-        //TODO
+    public User editUser(User input) {
         return null;
     }
 
@@ -105,11 +100,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<FaultReportDTO> getReports() {
-        List<FaultReport> faultReports = faultReportRepository.findAllByOrderByDateDesc();
+        List<FaultReport> faultReports = faultReportRepository.findAll();
         return faultReports.stream()
                 .map(this::mapToDTO)
                 .collect(Collectors.toList());
     }
+
 
 
     private FaultReportDTO mapToDTO(FaultReport faultReport) {
@@ -177,18 +173,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void reserveBicycle(Long userId, Long bikeId) {
+        User user = userRepository.getUserById(userId);
+
         if (!bicycleService.isBicycleInState(bikeId, BicycleState.FREE)) {
             throw new CustomError(Constants.BICYCLE_IS_NOT_FREE_OR_RESERVED);
         }
 
-//        stationService.deleteSBConnection(bikeId);
+        stationService.deleteSBConnection(bikeId);
         bicycleService.changeBicycleState(bikeId, BicycleState.RESERVED);
         increaseUserReservedBicycles(userId);
+        timer.startReservation(user);
     }
 
     @Override
     @Transactional
-    public void returnBicycle(Long userId, Long bikeId, Long stationId) {
+    public void returnBicycle(Long userId, Long bikeId, Long stationId) throws AuthenticationException, InvalidRequestException, CardException, APIConnectionException, APIException {
         Price prices = priceRepository.findTopByOrderByIdDesc();
         User user = userRepository.getUserById(userId);
         Bicycle bicycle = bicycleRepository.getBicycleById(bikeId);
@@ -203,7 +202,6 @@ public class UserServiceImpl implements UserService {
         Long minutes = (endTime.getTime() - startTime.getTime()) / (60 * 1000);
         BigDecimal price = BigDecimal.valueOf(minutes * prices.getMinutePrice() + prices.getUnlockPrice());
         userRent.setPrice(price);
-        userRent.setDistance((double) (minutes / 4));
         rentalRepository.save(userRent);
 
         chargeUser(price, user);
@@ -216,55 +214,10 @@ public class UserServiceImpl implements UserService {
 
     }
 
-    @Override
-    public List<RentalDTO> getUserHistory(Long userId) {
-        List<Rental> history = rentalRepository.findRentalByUserAndFinishedTrue(userRepository.getUserById(userId));
-        List<RentalDTO> historyDTOList = new ArrayList<>();
-
-        if (history != null) {
-            for (Rental rental : history) {
-                RentalDTO rentalDTO = new RentalDTO();
-
-                rentalDTO.setDate(rental.getDate());
-                rentalDTO.setDistance(rental.getDistance());
-                rentalDTO.setPrice(rental.getPrice());
-                Double minutes = (double) ((rental.getEndTime().getTime() - rental.getStartTime().getTime()) / (60 * 1000));
-                rentalDTO.setMinutes(minutes);
-
-                historyDTOList.add(rentalDTO);
-            }
-        }
-        return historyDTOList;
-    }
-
-    @Override
-    public List<RentalDTO> getAllHistory() {
-        List<Rental> history = rentalRepository.findRentalByFinishedTrue();
-        List<RentalDTO> historyDTOList = new ArrayList<>();
-
-        if (history != null) {
-            for (Rental rental : history) {
-                RentalDTO rentalDTO = new RentalDTO();
-
-                rentalDTO.setDate(rental.getDate());
-                rentalDTO.setDistance(rental.getDistance());
-                rentalDTO.setPrice(rental.getPrice());
-                rentalDTO.setFinished(rental.isFinished());
-                rentalDTO.setUser(rental.getUser());
-                Double minutes = (double) ((rental.getEndTime().getTime() - rental.getStartTime().getTime()) / (60 * 1000));
-                rentalDTO.setMinutes(minutes);
-
-                historyDTOList.add(rentalDTO);
-            }
-        }
-        return historyDTOList;
-    }
-
-
-    private void chargeUser(BigDecimal price, User user) {
+    private void chargeUser(BigDecimal price, User user) throws AuthenticationException, InvalidRequestException, CardException, APIConnectionException, APIException {
         //stripe
         //saveToDB
-        ChargeRequestDTO chargeRequest = new ChargeRequestDTO();
+         ChargeRequestDTO chargeRequest = new ChargeRequestDTO();
         chargeRequest.setAmount(price);
 //        stripeService.charge(chargeRequest);
 

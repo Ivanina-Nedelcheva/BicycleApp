@@ -2,7 +2,7 @@ package com.app.bicycle.entities;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 import java.sql.Date;
 

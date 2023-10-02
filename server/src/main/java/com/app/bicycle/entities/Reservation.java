@@ -1,13 +1,13 @@
 package com.app.bicycle.entities;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-
-import java.util.Date;
+import java.sql.Timestamp;
 
 @Entity
 public class Reservation extends BaseEntity {
@@ -21,8 +21,11 @@ public class Reservation extends BaseEntity {
     @JoinColumn(name = "bike_id", nullable = false)
     private Bicycle bicycle;
 
-    @Column(nullable = false)
-    private Date date;
+    @Column
+    private Timestamp startTime;
+
+    @Column
+    private Timestamp endTime;
 
     public User getUser() {
         return user;
@@ -40,11 +43,19 @@ public class Reservation extends BaseEntity {
         this.bicycle = bicycle;
     }
 
-    public Date getDate() {
-        return date;
+    public Timestamp getStartTime() {
+        return startTime;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setStartTime(Timestamp startTime) {
+        this.startTime = startTime;
+    }
+
+    public Timestamp getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Timestamp endTime) {
+        this.endTime = endTime;
     }
 }
