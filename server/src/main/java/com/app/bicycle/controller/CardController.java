@@ -4,6 +4,7 @@ import com.app.bicycle.dto.ChargeRequestDTO;
 import com.app.bicycle.entities.Price;
 import com.app.bicycle.entities.Station;
 import com.app.bicycle.service.CardService;
+import com.app.bicycle.stripe.StripeClient;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Charge;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,11 +25,14 @@ public class CardController {
 
     private final CardService paymentsService;
 
+    private StripeClient stripeClient;
+
     @Value("${STRIPE_PUBLIC_KEY}")
     private String stripePublicKey;
 
-    public CardController(CardService paymentsService) {
+    public CardController(CardService paymentsService, StripeClient stripeClient) {
         this.paymentsService = paymentsService;
+        this.stripeClient = stripeClient;
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/checkout", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -42,16 +46,16 @@ public class CardController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/charge", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).ORDINARY_USER)")
-    public Model charge(ChargeRequestDTO chargeRequest, Model model)
+    public ResponseEntity<ChargeRequestDTO> charge(@RequestParam ChargeRequestDTO chargeRequest, Model model)
             throws StripeException {
-        chargeRequest.setDescription("Example charge");
+        chargeRequest.setDescription("Charge for ride is " + chargeRequest.getAmount());
         chargeRequest.setCurrency(ChargeRequestDTO.Currency.BGN);
         Charge charge = paymentsService.charge(chargeRequest);
         model.addAttribute("id", charge.getId());
         model.addAttribute("status", charge.getStatus());
         model.addAttribute("chargeId", charge.getId());
         model.addAttribute("balance_transaction", charge.getBalanceTransaction());
-        return model;
+        return new ResponseEntity<>(chargeRequest, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/getPrices", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -64,4 +68,10 @@ public class CardController {
         }
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
+
+    @PostMapping("/charge")
+    public Charge chargeCard(@RequestHeader(value="token") String token, @RequestHeader(value="amount") Double amount) throws Exception {
+        return this.stripeClient.chargeNewCard(token, amount);
+    }
+
 }
