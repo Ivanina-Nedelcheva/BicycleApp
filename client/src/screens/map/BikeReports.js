@@ -9,6 +9,7 @@ import {
   Image,
   ScrollView,
   Modal,
+  Alert,
   TouchableOpacity,
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
@@ -35,9 +36,28 @@ const BikeReports = () => {
     setUserReports(data);
   }
 
-  const handleReport = async (id) => {
-    await activateBicycle(id)
-    await fetchReports()
+  const handleReport = (id) => {
+    Alert.alert(
+      'Activate',
+      'Do you want to activate the bicycle?',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+        {
+          text: 'OK',
+          onPress: async () => {
+            await activateBicycle(id)
+            await fetchReports()
+          },
+        },
+      ],
+      { cancelable: true }
+    );
+
+
   }
 
   const formatDate = (dateStr) => {
