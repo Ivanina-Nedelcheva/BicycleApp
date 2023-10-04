@@ -1,8 +1,10 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useCallback, useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableHighlight } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import BikeDetails from '../../components/BikeDetails';
 import { colors } from '../../../styles/styles';
+import { useFocusEffect } from '@react-navigation/native';
+
 
 const BikeSelect = ({ route, navigation }) => {
   const { station } = route.params
