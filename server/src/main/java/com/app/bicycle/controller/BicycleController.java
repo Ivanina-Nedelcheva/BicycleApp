@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping("app/bicycles")
+@RequestMapping("bicycles")
 public class BicycleController {
 
     private final BicycleService bicycleService;

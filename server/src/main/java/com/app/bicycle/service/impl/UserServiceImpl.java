@@ -7,12 +7,11 @@ import com.app.bicycle.enums.BicycleState;
 import com.app.bicycle.repositories.*;
 import com.app.bicycle.service.BicycleService;
 import com.app.bicycle.service.StationService;
-import com.app.bicycle.service.CardService;
+import com.app.bicycle.service.PaymentService;
 import com.app.bicycle.service.UserService;
 import com.app.bicycle.utils.Constants;
 import com.app.bicycle.utils.CustomError;
 import com.app.bicycle.utils.ScheduledTimer;
-import com.stripe.exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,7 +34,7 @@ public class UserServiceImpl implements UserService {
     private final BicycleService bicycleService;
     private final StationService stationService;
     private final PriceRepository priceRepository;
-    private final CardService stripeService;
+    private final PaymentService stripeService;
     private ScheduledTimer timer;
 
     @Autowired
@@ -46,7 +45,7 @@ public class UserServiceImpl implements UserService {
                            StationBicycleRepository sbRepository, BicycleService bicycleService,
                            StationService stationService,
                            PriceRepository priceRepository,
-                           CardService stripeService, ScheduledTimer timer) {
+                           PaymentService stripeService, ScheduledTimer timer) {
         this.userRepository = userRepository;
         this.faultReportRepository = faultReportRepository;
         this.bicycleRepository = bicycleRepository;
@@ -187,7 +186,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void returnBicycle(Long userId, Long bikeId, Long stationId) throws AuthenticationException, InvalidRequestException, CardException, APIConnectionException, APIException {
+    public void returnBicycle(Long userId, Long bikeId, Long stationId) {
         Price prices = priceRepository.findTopByOrderByIdDesc();
         User user = userRepository.getUserById(userId);
         Bicycle bicycle = bicycleRepository.getBicycleById(bikeId);
@@ -214,7 +213,7 @@ public class UserServiceImpl implements UserService {
 
     }
 
-    private void chargeUser(BigDecimal price, User user) throws AuthenticationException, InvalidRequestException, CardException, APIConnectionException, APIException {
+    private void chargeUser(BigDecimal price, User user) {
         //stripe
         //saveToDB
          ChargeRequestDTO chargeRequest = new ChargeRequestDTO();
