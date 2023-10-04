@@ -91,14 +91,6 @@ const AppStack = () => {
             drawerIcon: ({ color, size }) => (
               <MaterialCommunityIcons name="hubspot" size={size} color={color} />),
             drawerLabelStyle,
-            headerLeft: () => (
-              <CustomButton
-                icon="arrow-left"
-                color="white"
-                magicNumber={0.12}
-                onPress={() => navigation.goBack()}
-              />
-            ),
           }
         )}
       />

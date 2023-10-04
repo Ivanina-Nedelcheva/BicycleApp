@@ -21,17 +21,17 @@ const NearestHubs = forwardRef(({ userPosition, onSelectStation }, ref) => {
 
 
   async function handleOpenSheet(index) {
-    console.log(index);
+    // console.log(index);
     if (index !== -1) {
       const data = await getStations();
       setStations(data)
-      console.log(data);
+      // console.log(data);
       await orderLocations(data)
     }
   }
 
   async function orderLocations(stations) {
-    console.log(stations);
+    // console.log(stations);
     const ordered = geolib.orderByDistance(
       userPosition,
       stations.map((item, index) => ({
@@ -57,7 +57,7 @@ const NearestHubs = forwardRef(({ userPosition, onSelectStation }, ref) => {
     });
 
     setOrderedStations(orderedStationsData)
-    console.log(orderedStationsData);
+    // console.log(orderedStationsData);
   }
 
   const selectHub = (hub) => {

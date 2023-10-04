@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { useFocusEffect } from '@react-navigation/native';
 
 import {
   StyleSheet,
@@ -12,6 +11,7 @@ import {
   Modal,
   TouchableOpacity,
 } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { getReports } from '../../api/reports';
 import { colors } from '../../../styles/styles';
@@ -23,21 +23,22 @@ const BikeReports = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
 
-  // useEffect(() => {
-  //   (async () => {
-  //     const data = await getReports();
-  //     setUserReports(data);
-  //   })()
-  // }, []);
-
   useFocusEffect(
     useCallback(() => {
-      (async () => {
-        const data = await getReports();
-        setUserReports(data);
-      })()
+      fetchReports()
     }, [])
   );
+
+  async function fetchReports() {
+    const data = await getReports();
+    console.log(data);
+    setUserReports(data);
+  }
+
+  const handleReport = async (id) => {
+    await activateBicycle(id)
+    await fetchReports()
+  }
 
   const formatDate = (dateStr) => {
     const dateObj = new Date(dateStr);
@@ -79,8 +80,8 @@ const BikeReports = () => {
   return (
     <View style={styles.container}>
       {!userReports.length ? (
-        <View style={styles.indicator}>
-          <ActivityIndicator size={100} color={colors.bleuDeFrance} />
+        <View style={styles.headingContainer}>
+          <Text style={styles.heading}>No reports</Text>
         </View>
       ) : (
         <ScrollView>
@@ -89,7 +90,7 @@ const BikeReports = () => {
               <TouchableOpacity
                 style={styles.report}
                 key={idx}
-                onPress={() => activateBicycle(report.bicycle.id)}
+                onPress={() => handleReport(report.bicycle.id)}
               >
                 <Text style={styles.date}>{formatDate(report.date)}</Text>
 
@@ -156,7 +157,7 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: colors.seasalt,
   },
-  indicator: {
+  headingContainer: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
