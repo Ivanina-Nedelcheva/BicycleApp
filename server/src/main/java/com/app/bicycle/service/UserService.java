@@ -31,5 +31,5 @@ public interface UserService {
 
     void reserveBicycle(Long userId, Long bikeId);
 
-    void returnBicycle(Long userId, Long bikeId, Long stationId) throws APIConnectionException, APIException, AuthenticationException, InvalidRequestException, CardException;
+    void returnBicycle(Long userId, Long bikeId, Long stationId);
 }

@@ -17,7 +17,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping("app/stations")
+@RequestMapping("stations")
 public class StationController {
 
     private final StationService stationService;
