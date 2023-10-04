@@ -3,6 +3,7 @@ import { API } from './axiosConfig';
 const stationsURI = 'stations/getStationWithBicycles'
 const activateStationURI = 'stations/activateStation'
 const deactivateStationURI = 'stations/deactivateStation'
+const newStationURI = 'stations/newStation'
 
 export async function getStations() {
   try {
@@ -13,20 +14,18 @@ export async function getStations() {
   }
 }
 
-export async function activateStation(id) {
+export async function addStation(stationData) {
   try {
-    const response = await API.get(activateStationURI, id);
-    return response.data;
-  } catch (error) {
-    console.error('Error getting data:', error);
-  }
-}
+    const response = await API.post(newStationURI, null, {
+      params: {
+        latitude: stationData.latitude,
+        longitude: stationData.longitude,
+        name: stationData.name
+      },
+    });
 
-export async function deactivateStation(id) {
-  try {
-    const response = await API.get(deactivateStationURI, id);
-    return response.data;
+    console.log('Response from the server:', response.data);
   } catch (error) {
-    console.error('Error getting data:', error);
+    console.error('Error uploading data:', error);
   }
 }

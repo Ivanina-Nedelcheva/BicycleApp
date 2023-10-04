@@ -52,7 +52,7 @@ const SignIn = ({ navigation }) => {
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
-        {({ handleChange, handleSubmit, values, errors, touched, dirty }) => (
+        {({ handleChange, handleSubmit, values, isValid, errors, touched, dirty }) => (
           <View style={styles.form}>
             <View>
               <TextInput

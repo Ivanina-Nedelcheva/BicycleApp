@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
+
 import {
   StyleSheet,
   Text,
@@ -21,12 +23,21 @@ const BikeReports = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
 
-  useEffect(() => {
-    (async () => {
-      const data = await getReports();
-      setUserReports(data);
-    })()
-  }, []);
+  // useEffect(() => {
+  //   (async () => {
+  //     const data = await getReports();
+  //     setUserReports(data);
+  //   })()
+  // }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      (async () => {
+        const data = await getReports();
+        setUserReports(data);
+      })()
+    }, [])
+  );
 
   const formatDate = (dateStr) => {
     const dateObj = new Date(dateStr);

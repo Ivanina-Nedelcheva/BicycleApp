@@ -1,6 +1,6 @@
 import React from "react"
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import { Map, Profile, History, Payment, BikeReports, BikeSelect, ReportIssue } from '../screens'
+import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
+import { Map, Profile, History, Payment, BikeReports, BikeSelect, ReportIssue, AddStation } from '../screens'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import CustomButton from "../components/CustomButton";
 
@@ -14,11 +14,23 @@ const AppStack = () => {
 
   const isAdmin = false
 
+  function CustomDrawerContent(props) {
+    const { state, ...rest } = props;
+    const newState = { ...state };
+    // newState.routes = newState.routes.filter(
+    //   (item) => item.name !== 'Report Issue'
+    // );
+
+    return (
+      <DrawerContentScrollView {...rest}>
+        <DrawerItemList state={newState} {...rest} />
+      </DrawerContentScrollView>
+    );
+  }
+
 
   return (
-    <Drawer.Navigator
-      backBehavior={'history'}
-    >
+    <Drawer.Navigator drawerContent={(props) => <CustomDrawerContent {...props} backBehavior={'history'} />}>
       <Drawer.Screen
         name="Map"
         component={Map}
@@ -28,7 +40,8 @@ const AppStack = () => {
             <MaterialCommunityIcons name={focused ? 'map-marker' : 'map-marker-outline'} color={color} size={size} />
           ),
           drawerLabelStyle,
-        }} />
+        }}
+      />
       <Drawer.Screen
         name="Profile"
         component={Profile}
@@ -37,7 +50,8 @@ const AppStack = () => {
             <MaterialCommunityIcons name={focused ? 'account' : 'account-outline'} color={color} size={size} />
           ),
           drawerLabelStyle
-        }} />
+        }}
+      />
 
       <Drawer.Screen
         name="History"
@@ -46,7 +60,8 @@ const AppStack = () => {
           drawerIcon: ({ focused, color, size }) => (
             <MaterialCommunityIcons name={focused ? 'history' : 'history'} size={size} color={color} />),
           drawerLabelStyle
-        }} />
+        }}
+      />
 
       <Drawer.Screen
         name="Payment"
@@ -55,7 +70,8 @@ const AppStack = () => {
           drawerIcon: ({ focused, color, size }) => (
             <MaterialCommunityIcons name={focused ? 'wallet' : 'wallet-outline'} size={size} color={color} />),
           drawerLabelStyle
-        }} />
+        }}
+      />
 
       <Drawer.Screen
         name="Bike Reports"
@@ -64,7 +80,28 @@ const AppStack = () => {
           drawerIcon: ({ focused, color, size }) => (
             <MaterialCommunityIcons name={focused ? 'alert' : 'alert-outline'} size={size} color={color} />),
           drawerLabelStyle
-        }} />
+        }}
+      />
+
+      <Drawer.Screen
+        name="Add Station"
+        component={AddStation}
+        options={({ navigation }) => (
+          {
+            drawerIcon: ({ color, size }) => (
+              <MaterialCommunityIcons name="hubspot" size={size} color={color} />),
+            drawerLabelStyle,
+            headerLeft: () => (
+              <CustomButton
+                icon="arrow-left"
+                color="white"
+                magicNumber={0.12}
+                onPress={() => navigation.goBack()}
+              />
+            ),
+          }
+        )}
+      />
 
       <Drawer.Screen
         name="Bike Select"
@@ -82,7 +119,8 @@ const AppStack = () => {
               />
             ),
           }
-        )} />
+        )}
+      />
 
       <Drawer.Screen
         name="Report Issue"
@@ -100,7 +138,9 @@ const AppStack = () => {
               />
             ),
           }
-        )} />
+        )}
+      />
+
     </Drawer.Navigator >
   );
 };

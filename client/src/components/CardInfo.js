@@ -6,6 +6,7 @@ import { colors } from '../../styles/styles'
 import CustomButton from './CustomButton'
 import Scanner from './Scanner';
 import { useCard } from '../context/CardContext'
+import { charge } from '../api/payment';
 
 const CardInformation = ({ navigation, route }) => {
   const { card, setCard } = useCard()
@@ -59,6 +60,9 @@ const CardInformation = ({ navigation, route }) => {
   // }
 
   function addCardInfo() {
+    // charge()
+
+
     const areAllFieldsValid = Object.keys(cardInfo).every(key => cardInfo[key]);
     if (!route.params) {
       setCard(true)

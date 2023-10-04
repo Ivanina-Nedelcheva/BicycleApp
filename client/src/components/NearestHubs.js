@@ -4,10 +4,10 @@ import { BottomSheetModal, BottomSheetModalProvider, } from '@gorhom/bottom-shee
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import * as geolib from 'geolib';
 import { colors } from '../../styles/styles'
+import { getStations } from '../api/stations';
 
-const NearestHubs = forwardRef(({ userPosition, stations, onSelectStation }, ref) => {
+const NearestHubs = forwardRef(({ userPosition, onSelectStation }, ref) => {
   const bottomSheetRef = useRef(null);
-  const [bottomSheetPresented, setBottomSheetPresented] = useState(false);
 
   useImperativeHandle(ref, () => ({
     presentBottomSheet() {
@@ -16,21 +16,22 @@ const NearestHubs = forwardRef(({ userPosition, stations, onSelectStation }, ref
   }));
 
   const snapPoints = useMemo(() => ['35%', '95%'], []);
+  const [stations, setStations] = useState([])
   const [orderedStations, setOrderedStations] = useState([])
 
-  useEffect(() => {
-    if (!Object.keys(userPosition).length || bottomSheetPresented) return
 
-    const fetchData = async () => {
-      setBottomSheetPresented(true)
-      await orderLocations()
-      bottomSheetRef.current?.present()
-    };
+  async function handleOpenSheet(index) {
+    console.log(index);
+    if (index !== -1) {
+      const data = await getStations();
+      setStations(data)
+      console.log(data);
+      await orderLocations(data)
+    }
+  }
 
-    fetchData();
-  }, [userPosition.latitude, bottomSheetPresented]);
-
-  async function orderLocations() {
+  async function orderLocations(stations) {
+    console.log(stations);
     const ordered = geolib.orderByDistance(
       userPosition,
       stations.map((item, index) => ({
@@ -56,7 +57,7 @@ const NearestHubs = forwardRef(({ userPosition, stations, onSelectStation }, ref
     });
 
     setOrderedStations(orderedStationsData)
-    // console.log(orderedStationsData);
+    console.log(orderedStationsData);
   }
 
   const selectHub = (hub) => {
@@ -111,6 +112,7 @@ const NearestHubs = forwardRef(({ userPosition, stations, onSelectStation }, ref
         snapPoints={snapPoints}
         style={styles.modal}
         backgroundStyle={{ backgroundColor: colors.seasalt, borderWidth: 1, borderColor: colors.darkFrenchGray }}
+        onChange={handleOpenSheet}
       >
         <Text style={styles.heading}>Nearest Hubs</Text>
         <View>

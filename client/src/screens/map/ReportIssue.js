@@ -162,6 +162,7 @@ const ReportIssue = ({ route, navigation }) => {
     formData.append('faultText', selectedOption === 'Other' ? otherText : selectedOption);
     // formData.append('imageData', imageBase64);
 
+    console.log(formData);
     addReport(formData)
     navigation.navigate('Map', { update: true })
     // await schedulePushNotification();
