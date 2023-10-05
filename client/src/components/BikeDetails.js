@@ -7,6 +7,7 @@ import ReservationTimer from './ReservationTimer'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import StartRideButton from './StartRideButton'
 import { getPrices } from '../api/payment';
+import { changeBicycleState } from '../api/bicycles';
 
 const BikeDetails = ({ bike, bottomSheetRef, navigation }) => {
   const snapPoints = useMemo(() => ['75%'], []);
@@ -23,9 +24,11 @@ const BikeDetails = ({ bike, bottomSheetRef, navigation }) => {
 
   function cancelReservation() {
     setReservation(false)
+    changeBicycleState(bike.id, 'FREE')
   }
 
   function handleReserveBike() {
+    changeBicycleState(bike.id, 'RESERVED')
     setReservation(true)
   }
 
@@ -63,7 +66,7 @@ const BikeDetails = ({ bike, bottomSheetRef, navigation }) => {
 
             {reservation && <View style={styles.bikeAttributes}>
               <MaterialCommunityIcons name="clock-outline" size={24} color="black" />
-              <ReservationTimer />
+              <ReservationTimer bikeId={bike.id} setReservation={setReservation} />
             </View>}
           </View>
 

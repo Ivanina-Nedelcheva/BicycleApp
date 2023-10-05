@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { StyleSheet, View, TextInput, Text, ScrollView, TouchableWithoutFeedback } from 'react-native';
@@ -8,14 +8,15 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import CustomButton from '../../components/CustomButton';
 import { colors } from '../../../styles/styles.js'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-
+import { AuthContext } from '../../context/AuthContext';
 
 const SignUp = ({ navigation }) => {
+  const { register } = useContext(AuthContext)
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [privacyAccepted, setPrivacyAccepted] = useState(false);
   const [datePickerVisible, setDatePickerVisible] = useState(false);
-  const [dateOfBirth, setDateOfBirth] = useState(new Date()); // Initialize with current date
+  const [dateOfBirth, setDateOfBirth] = useState(new Date())
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
@@ -44,7 +45,7 @@ const SignUp = ({ navigation }) => {
   });
 
   const handleSubmit = values => {
-    navigation.navigate('MapNavigator')
+    register()
   };
 
   return (
@@ -58,6 +59,33 @@ const SignUp = ({ navigation }) => {
         >
           {({ handleChange, handleSubmit, values, errors, isValid, dirty, setFieldValue }) => (
             <View style={styles.form}>
+              <View>
+                <TouchableWithoutFeedback onPress={() => setDatePickerVisible(true)}>
+                  <View style={styles.input}>
+                    <Text>Date of Birth: {dateOfBirth.toDateString()}</Text>
+                  </View>
+                </TouchableWithoutFeedback>
+                {datePickerVisible && (
+                  <DateTimePicker
+                    value={dateOfBirth}
+                    mode="date"
+                    display="spinner"
+                    onChange={(event, date) => {
+                      setDatePickerVisible(false);
+                      if (date) {
+                        setDateOfBirth(date)
+                        setFieldValue('dateOfBirth', date)
+                      }
+                    }}
+                  />
+                )}
+                {values.dateOfBirth && !errors.dateOfBirth && (
+                  <MaterialCommunityIcons name="check-circle-outline" size={20} color={colors.keppel} style={styles.inputIcon} />
+                )}
+              </View>
+              {errors.dateOfBirth && <Text style={styles.errorMessage}>{errors.dateOfBirth}</Text>}
+
+
               <View>
                 <TextInput
                   value={values.firstName}
@@ -152,33 +180,6 @@ const SignUp = ({ navigation }) => {
                 )}
               </View>
               {errors.confirmPassword && <Text style={styles.errorMessage}>{errors.confirmPassword}</Text>}
-
-
-              <View>
-                <TouchableWithoutFeedback onPress={() => setDatePickerVisible(true)}>
-                  <View style={styles.input}>
-                    <Text>Date of Birth: {dateOfBirth.toDateString()}</Text>
-                  </View>
-                </TouchableWithoutFeedback>
-                {datePickerVisible && (
-                  <DateTimePicker
-                    value={dateOfBirth}
-                    mode="date"
-                    display="spinner"
-                    onChange={(event, date) => {
-                      setDatePickerVisible(false);
-                      if (date) {
-                        setDateOfBirth(date)
-                        setFieldValue('dateOfBirth', date)
-                      }
-                    }}
-                  />
-                )}
-                {values.dateOfBirth && !errors.dateOfBirth && (
-                  <MaterialCommunityIcons name="check-circle-outline" size={20} color={colors.keppel} style={styles.inputIcon} />
-                )}
-              </View>
-              {errors.dateOfBirth && <Text style={styles.errorMessage}>{errors.dateOfBirth}</Text>}
 
 
               <View style={styles.terms}>

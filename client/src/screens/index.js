@@ -1,6 +1,6 @@
-export { default as LandingScreen } from './home/LandingScreen'
-export { default as SignIn } from './home/SignIn'
-export { default as SignUp } from './home/SignUp'
+export { default as LandingScreen } from './auth/LandingScreen'
+export { default as SignIn } from './auth/SignIn'
+export { default as SignUp } from './auth/SignUp'
 
 export { default as Map } from './map/Map'
 export { default as Profile } from './map/Profile'

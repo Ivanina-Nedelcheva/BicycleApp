@@ -1,6 +1,6 @@
 import React from "react"
 import { createStackNavigator } from "@react-navigation/stack"
-import { LandingScreen, SignIn, SignUp, BikeSelect, ReportIssue } from '../screens'
+import { LandingScreen, SignIn, SignUp, DOB } from '../screens'
 
 const Stack = createStackNavigator();
 const screenOptionStyle = {
@@ -14,11 +14,8 @@ const AuthStack = () => {
 	return (
 		<Stack.Navigator screenOptions={screenOptionStyle}>
 			<Stack.Screen name="LandingScreen" component={LandingScreen} options={{ headerShown: false }} />
-			<Stack.Screen name="Sign In" component={SignIn} />
-			<Stack.Screen name="Sign Up" component={SignUp} />
-			{/* <Stack.Screen name="MapNavigator" component={MapNavigator} options={{ headerShown: false }} /> */}
-			{/* <Stack.Screen name="BikeSelect" component={BikeSelect} options={{ headerTitle: 'Select a bike' }} /> */}
-			{/* <Stack.Screen name="ReportIssue" component={ReportIssue} options={{ headerTitle: 'Report issue' }} /> */}
+			<Stack.Screen name="SignIn" component={SignIn} />
+			<Stack.Screen name="SignUp" component={SignUp} />
 		</Stack.Navigator>
 	)
 }

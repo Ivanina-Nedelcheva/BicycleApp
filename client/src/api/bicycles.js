@@ -4,6 +4,7 @@ const getBicyclesURI = 'bicycles/getAllBicycles'
 const activateBicycleURI = 'bicycles/activateBicycle'
 const deactivateBicycleURI = 'bicycles/deactivateBicycle'
 const newBicycleURI = 'bicycle/newBicycle'
+const changeBicycleStateURI = 'bicycles/changeState'
 
 export async function getBicycle() {
   try {
@@ -35,6 +36,20 @@ export async function deactivateBicycle(id) {
 export async function newBicycle(stationId) {
   try {
     const response = await API.post(newBicycleURI, stationId);
+    console.log('Response from the server:', response.data);
+  } catch (error) {
+    console.error('Error uploading data:', error);
+  }
+
+}
+export async function changeBicycleState(bikeId, newState) {
+  try {
+    const response = await API.post(changeBicycleStateURI, null, {
+      params: {
+        bikeId,
+        newState
+      },
+    });
     console.log('Response from the server:', response.data);
   } catch (error) {
     console.error('Error uploading data:', error);

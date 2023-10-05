@@ -16,10 +16,11 @@ const AppStack = () => {
 
   function CustomDrawerContent(props) {
     const { state, ...rest } = props;
-    const newState = { ...state };
-    // newState.routes = newState.routes.filter(
-    //   (item) => item.name !== 'Report Issue'
-    // );
+    const newState = {
+      ...state,
+      routeNames: state.routeNames.filter((name) => name !== 'Report Issue'),
+      // routes: state.routes.filter((route) => route.name !== 'Report Issue')
+    }
 
     return (
       <DrawerContentScrollView {...rest}>
@@ -135,7 +136,6 @@ const AppStack = () => {
           }
         )}
       />
-
     </Drawer.Navigator >
   );
 };

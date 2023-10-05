@@ -14,14 +14,14 @@ const LandingScreen = ({ navigation }) => {
         <CustomButton
           title="Sign up"
           color={colors.bleuDeFrance}
-          onPress={() => navigation.navigate('Sign Up')}
+          onPress={() => navigation.navigate('SignUp')}
           magicNumber={0.8}
         />
 
         <CustomButton
           title="Sign in"
           color={colors.bleuDeFrance}
-          onPress={() => navigation.navigate('Sign In')}
+          onPress={() => navigation.navigate('SignIn')}
           magicNumber={0.8}
         />
       </View>
