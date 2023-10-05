@@ -178,7 +178,7 @@ public class UserServiceImpl implements UserService {
             throw new CustomError(Constants.BICYCLE_IS_NOT_FREE_OR_RESERVED);
         }
 
-        stationService.deleteSBConnection(bikeId);
+//        stationService.deleteSBConnection(bikeId);
         bicycleService.changeBicycleState(bikeId, BicycleState.RESERVED);
         increaseUserReservedBicycles(userId);
     }

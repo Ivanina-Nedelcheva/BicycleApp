@@ -104,7 +104,7 @@ public class UserController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/return", produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.PATCH, value = "/return", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).ORDINARY_USER)")
     public ResponseEntity<Bicycle> returnBicycle(@RequestParam Long userId, @RequestParam Long bikeId, @RequestParam Long stationId) throws CustomError {
 
