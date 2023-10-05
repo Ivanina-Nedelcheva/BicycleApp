@@ -17,7 +17,6 @@ Notifications.setNotificationHandler({
   }),
 });
 
-
 const ReportIssue = ({ route, navigation }) => {
   const [selectedOption, setSelectedOption] = useState('');
   const [otherText, setOtherText] = useState('');
@@ -164,7 +163,11 @@ const ReportIssue = ({ route, navigation }) => {
 
     console.log(formData);
     addReport(formData)
-    navigation.navigate('Map', { update: true })
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'Map' }],
+    })
+    // navigation.navigate('Map', { update: true })
     // await schedulePushNotification();
   };
 

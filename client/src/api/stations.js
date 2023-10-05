@@ -16,13 +16,7 @@ export async function getStations() {
 
 export async function addStation(stationData) {
   try {
-    const response = await API.post(newStationURI, null, {
-      params: {
-        latitude: stationData.latitude,
-        longitude: stationData.longitude,
-        name: stationData.name
-      },
-    });
+    const response = await API.post(newStationURI, stationData);
 
     console.log('Response from the server:', response.data);
   } catch (error) {

@@ -12,12 +12,10 @@ const AddStation = ({ navigation }) => {
   const validationSchema = Yup.object().shape({
     longitude: Yup.string().required('Longitude is required'),
     latitude: Yup.string().required('Latitude is required'),
-    name: Yup.string().required('Station name is required'),
+    stationName: Yup.string().required('Station name is required'),
   });
 
   const handleSubmit = (values, { resetForm }) => {
-    console.log(values)
-
     addStation(values)
     Alert.alert('Тhe station has been added', null, [{ onPress: () => navigation.navigate('Map', { update: true }) }])
   };
@@ -25,7 +23,7 @@ const AddStation = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Formik
-        initialValues={{ longitude: null, latitude: null, name: '' }}
+        initialValues={{ longitude: null, latitude: null, stationName: '' }}
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
@@ -33,17 +31,17 @@ const AddStation = ({ navigation }) => {
           <View style={styles.form}>
             <View>
               <TextInput
-                value={values.name}
-                onChangeText={handleChange('name')}
+                value={values.stationName}
+                onChangeText={handleChange('stationName')}
                 placeholder="Station name"
                 style={styles.input}
               />
 
-              {values.name && !errors.name && (
+              {values.stationName && !errors.stationName && (
                 <MaterialCommunityIcons name="check-circle-outline" size={20} color={colors.keppel} style={styles.inputIcon} />
               )}
             </View>
-            {errors.name && <Text style={styles.errorMessage}>{errors.name}</Text>}
+            {errors.stationName && <Text style={styles.errorMessage}>{errors.stationName}</Text>}
 
             <View>
               <TextInput

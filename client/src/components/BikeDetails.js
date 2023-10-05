@@ -17,7 +17,6 @@ const BikeDetails = ({ bike, bottomSheetRef, navigation }) => {
   useEffect(() => {
     (async () => {
       const data = await getPrices()
-      console.log(data);
       setPrices(data)
     })()
   }, [])
