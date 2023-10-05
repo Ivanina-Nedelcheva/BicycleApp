@@ -103,8 +103,10 @@ public class BicycleServiceImpl extends BaseService implements BicycleService {
             Bicycle bicycle = bicycleRepository.getBicycleById(bikeId);
             bicycle.setState(newState);
             bicycleRepository.save(bicycle);
+            return true;
+        } else {
+            return false;
         }
-        return false;
     }
 
     @Override

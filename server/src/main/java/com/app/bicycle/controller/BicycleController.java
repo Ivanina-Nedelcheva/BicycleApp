@@ -1,6 +1,7 @@
 package com.app.bicycle.controller;
 
 import com.app.bicycle.entities.Bicycle;
+import com.app.bicycle.enums.BicycleState;
 import com.app.bicycle.service.BicycleService;
 import com.app.bicycle.utils.Constants;
 import com.app.bicycle.utils.CustomError;
@@ -77,6 +78,20 @@ public class BicycleController {
             result = bicycleService.findBicycleById(bikeId);
         } else if (beResponse == Constants.BICYCLE_ALREADY_ACTIVATED) {
             throw new CustomError(Constants.BICYCLE_ALREADY_ACTIVATED);
+        }
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/changeState", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Bicycle> changeState(@RequestParam Long bikeId, @RequestParam String newState) throws CustomError {
+
+        Bicycle result;
+        try {
+            bicycleService.changeBicycleState(bikeId, BicycleState.valueOf(newState));
+            result = bicycleService.findBicycleById(bikeId);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         return new ResponseEntity<>(result, HttpStatus.OK);
