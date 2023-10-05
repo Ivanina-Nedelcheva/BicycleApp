@@ -28,7 +28,7 @@ public class Bicycle extends BaseEntity {
     private List<Reservation> reservations = new ArrayList<>();
 
     @Transient
-    private Double distance = 5.0;
+    private Double distance = 0.0;
 
     public BicycleState getState() {
         return state;

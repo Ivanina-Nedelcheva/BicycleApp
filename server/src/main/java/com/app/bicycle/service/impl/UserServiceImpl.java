@@ -2,6 +2,7 @@ package com.app.bicycle.service.impl;
 
 import com.app.bicycle.dto.ChargeRequestDTO;
 import com.app.bicycle.dto.FaultReportDTO;
+import com.app.bicycle.dto.RentalDTO;
 import com.app.bicycle.entities.*;
 import com.app.bicycle.enums.BicycleState;
 import com.app.bicycle.repositories.*;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -45,7 +47,8 @@ public class UserServiceImpl implements UserService {
                            StationBicycleRepository sbRepository, BicycleService bicycleService,
                            StationService stationService,
                            PriceRepository priceRepository,
-                           PaymentService stripeService, ScheduledTimer timer) {
+                           PaymentService stripeService,
+                           ScheduledTimer timer) {
         this.userRepository = userRepository;
         this.faultReportRepository = faultReportRepository;
         this.bicycleRepository = bicycleRepository;
@@ -104,7 +107,6 @@ public class UserServiceImpl implements UserService {
                 .map(this::mapToDTO)
                 .collect(Collectors.toList());
     }
-
 
 
     private FaultReportDTO mapToDTO(FaultReport faultReport) {
@@ -201,6 +203,7 @@ public class UserServiceImpl implements UserService {
         Long minutes = (endTime.getTime() - startTime.getTime()) / (60 * 1000);
         BigDecimal price = BigDecimal.valueOf(minutes * prices.getMinutePrice() + prices.getUnlockPrice());
         userRent.setPrice(price);
+        userRent.setDistance((double) (minutes / 4));
         rentalRepository.save(userRent);
 
         chargeUser(price, user);
@@ -213,10 +216,45 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    @Override
+    public List<RentalDTO> getUserHistory(Long userId) {
+        List<Rental> history = rentalRepository.findRentalByUserAndFinishedTrue(userRepository.getUserById(userId));
+        return convertToDTO(history);
+    }
+
+    @Override
+    public List<RentalDTO> getAllHistory() {
+        List<Rental> history = rentalRepository.findRentalByFinishedTrue();
+        return convertToDTO(history);
+    }
+
+    private List<RentalDTO> convertToDTO(List<Rental> history) {
+        List<RentalDTO> historyDTOList = new ArrayList<>();
+        if (history != null) {
+            for (Rental rental : history) {
+                RentalDTO rentalDTO = new RentalDTO();
+
+                rentalDTO.setDate(rental.getDate());
+                rentalDTO.setDistance(rental.getDistance());
+                rentalDTO.setPrice(rental.getPrice());
+                rentalDTO.setFinished(rental.isFinished());
+                rentalDTO.setUser(rental.getUser());
+                rentalDTO.setBicycle(rental.getBicycle());
+                Double minutes = (double) ((rental.getEndTime().getTime() - rental.getStartTime().getTime()) / (60 * 1000));
+                rentalDTO.setMinutes(minutes);
+
+                historyDTOList.add(rentalDTO);
+            }
+        }
+
+        return historyDTOList;
+    }
+
+
     private void chargeUser(BigDecimal price, User user) {
         //stripe
         //saveToDB
-         ChargeRequestDTO chargeRequest = new ChargeRequestDTO();
+        ChargeRequestDTO chargeRequest = new ChargeRequestDTO();
         chargeRequest.setAmount(price);
 //        stripeService.charge(chargeRequest);
 

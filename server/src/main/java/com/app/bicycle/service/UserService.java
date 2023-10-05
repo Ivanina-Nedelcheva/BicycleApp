@@ -1,6 +1,7 @@
 package com.app.bicycle.service;
 
 import com.app.bicycle.dto.FaultReportDTO;
+import com.app.bicycle.dto.RentalDTO;
 import com.app.bicycle.entities.FaultReport;
 import com.app.bicycle.entities.User;
 import com.stripe.exception.*;
@@ -32,4 +33,8 @@ public interface UserService {
     void reserveBicycle(Long userId, Long bikeId);
 
     void returnBicycle(Long userId, Long bikeId, Long stationId);
+
+    List<RentalDTO> getUserHistory(Long userId);
+
+    List<RentalDTO> getAllHistory();
 }

@@ -98,7 +98,7 @@ public class Rental extends BaseEntity {
         this.price = price;
     }
 
-    public Boolean getFinished() {
+    public Boolean isFinished() {
         return finished;
     }
 
