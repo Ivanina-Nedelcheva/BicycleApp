@@ -62,13 +62,14 @@ public class UserController {
 
 
     @RequestMapping(method = RequestMethod.POST, value = "/reportFault", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).TECH_SUPPORT_MEMBER, T(com.app.bicycle.enums.UserRole).SYSTEM_ADMIN, " +
-            "T(com.app.bicycle.enums.UserRole).ORDINARY_USER, T(com.app.bicycle.enums.UserRole).OBSERVER)")
-    public ResponseEntity<FaultReport> faultReport(@RequestBody FaultReport faultReport) {
+//    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).TECH_SUPPORT_MEMBER, T(com.app.bicycle.enums.UserRole).SYSTEM_ADMIN, " +
+//            "T(com.app.bicycle.enums.UserRole).ORDINARY_USER, T(com.app.bicycle.enums.UserRole).OBSERVER)")
+    public ResponseEntity<FaultReport> faultReport(@RequestParam Long userId, @RequestParam Long bikeId,
+                                                   @RequestParam String faultText) throws Exception {
 
         FaultReport response;
         try {
-            response = userService.reportFault(faultReport.getUser().getId(), faultReport.getBicycle().getId(), faultReport.getFaultText());
+            response = userService.reportFault(userId, bikeId, faultText);
             String notificationMessage = "A new fault report has been created.";
             messagingTemplate.convertAndSend("/topic/faultReports", notificationMessage);
         } catch (Exception e) {
