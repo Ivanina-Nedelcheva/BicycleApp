@@ -5,6 +5,7 @@ import com.app.bicycle.dto.StationDTO;
 import com.app.bicycle.entities.Bicycle;
 import com.app.bicycle.entities.Station;
 import com.app.bicycle.entities.StationBicycle;
+import com.app.bicycle.enums.BicycleState;
 import com.app.bicycle.repositories.BicycleRepository;
 import com.app.bicycle.repositories.StationBicycleRepository;
 import com.app.bicycle.repositories.StationRepository;
@@ -54,7 +55,8 @@ public class StationServiceImpl extends BaseService implements StationService {
         List<BicycleDTO> bicycleDTOs = station.getStationBicycles().stream()
                 .filter(stationBicycle -> {
                     Bicycle bicycle = stationBicycle.getBicycle();
-                    return bicycle.getActiveFlag() != null && bicycle.getActiveFlag();
+                    return bicycle.getActiveFlag() != null && bicycle.getActiveFlag()
+                            && bicycle.getState() == BicycleState.FREE;
                 })
                 .map(stationBicycle -> {
                     Bicycle bicycle = stationBicycle.getBicycle();
