@@ -16,7 +16,7 @@ public class Station extends BaseEntity {
     @Column(nullable = false)
     private Double longitude;
 
-    @Column(name = "active_flag", columnDefinition = "BIT(1) default 1")
+    @Column(name = "active_flag", columnDefinition = "BIT(1) default 1", nullable = false)
     private Boolean activeFlag;
 
     @OneToMany(mappedBy = "station", fetch = FetchType.EAGER)

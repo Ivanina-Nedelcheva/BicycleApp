@@ -24,7 +24,7 @@ public class Rental extends BaseEntity {
     @JoinColumn(name = "bike_id", nullable = false)
     private Bicycle bicycle;
 
-    @Column
+    @Column(nullable = false)
     Date date;
 
     @Column

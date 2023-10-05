@@ -12,10 +12,10 @@ public class Bicycle extends BaseEntity {
     @Column(nullable = false)
     private BicycleState state;
 
-    @Column(name = "battery_level")
+    @Column(name = "battery_level", nullable = false)
     private Integer batteryLevel;
 
-    @Column(name = "active_flag", columnDefinition = "BIT(1) default 1")
+    @Column(name = "active_flag", columnDefinition = "BIT(1) default 1", nullable = false)
     private Boolean activeFlag;
 
     @OneToMany(mappedBy = "bicycle", fetch = FetchType.EAGER)

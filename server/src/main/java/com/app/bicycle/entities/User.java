@@ -27,6 +27,9 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private String password;
 
+    @Column(name = "stripe_id")
+    private String stripeId;
+
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "role_id", nullable = false)
@@ -153,5 +156,13 @@ public class User extends BaseEntity {
 
     public void setUserReservedBicycles(Integer userReservedBicycles) {
         this.userReservedBicycles = userReservedBicycles;
+    }
+
+    public String getStripeId() {
+        return stripeId;
+    }
+
+    public void setStripeId(String stripeId) {
+        this.stripeId = stripeId;
     }
 }

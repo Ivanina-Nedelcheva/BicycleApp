@@ -1,6 +1,8 @@
 package com.app.bicycle.controller;
 
 import com.app.bicycle.entities.Price;
+import com.app.bicycle.entities.User;
+import com.app.bicycle.repositories.UserRepository;
 import com.app.bicycle.service.PaymentService;
 import com.stripe.Stripe;
 import com.stripe.exception.CardException;
@@ -22,6 +24,7 @@ import java.util.Map;
 public class PaymentController {
 
     private final PaymentService paymentsService;
+    private final UserRepository userRepository;
 
     @Value("${STRIPE_SECRET_KEY}")
     private String stripeSecretKey;
@@ -29,13 +32,14 @@ public class PaymentController {
     @Value("${STRIPE_PUBLIC_KEY}")
     private String stripePublicKey;
 
-    public PaymentController(PaymentService paymentsService) {
+    public PaymentController(PaymentService paymentsService, UserRepository userRepository) {
         this.paymentsService = paymentsService;
+        this.userRepository = userRepository;
     }
 
-    @RequestMapping(value = "/payment-sheet", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/paymentSheet", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 //    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).ORDINARY_USER)")
-    public Map<String, String> handlePaymentSheet() {
+    public Map<String, String> handlePaymentSheet(@RequestParam Long userId) {
 
         Stripe.apiKey = stripeSecretKey;
 
@@ -43,6 +47,9 @@ public class PaymentController {
         Customer customer = null;
         try {
             customer = Customer.create(customerParams);
+            User currentUser = userRepository.getUserById(userId);
+            currentUser.setStripeId(customer.getId());
+            userRepository.save(currentUser);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -78,15 +85,30 @@ public class PaymentController {
         return responseData;
     }
 
-    @RequestMapping(value = "/charge-saved-payment-method", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    //@PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).ORDINARY_USER)") // Uncomment this line if you want to secure this endpoint
-    public Map<String, Object> chargeSavedPaymentMethod(@RequestBody Map<String, String> payload) {
+    @RequestMapping(value = "/attachPaymentMethod", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+//    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).ORDINARY_USER)")
+        public ResponseEntity<String> attachPaymentMethodToCustomer(@RequestParam String paymentMethodId, @RequestParam String stripeId) {
+
+            Stripe.apiKey = stripeSecretKey;
+
+            try {
+                PaymentMethod paymentMethod = PaymentMethod.retrieve(paymentMethodId);
+                PaymentMethod updatedPaymentMethod = paymentMethod.attach(PaymentMethodAttachParams.builder().setCustomer(stripeId).build());
+                return new ResponseEntity<>(updatedPaymentMethod.getId(), HttpStatus.OK);
+            } catch (StripeException e) {
+                e.printStackTrace();
+                return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+    }
+
+
+    @RequestMapping(value = "/chargeSavedPaymentMethod", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    //@PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).ORDINARY_USER)")
+    public Map<String, Object> chargeSavedPaymentMethod(@RequestParam String customerId, @RequestParam Long amount) {
         Map<String, Object> responseData = new HashMap<>();
 
         try {
             Stripe.apiKey = stripeSecretKey;
-
-            String customerId = payload.get("customer");
 
             PaymentMethodListParams params = PaymentMethodListParams.builder()
                     .setCustomer(customerId)
@@ -99,7 +121,7 @@ public class PaymentController {
 
                 PaymentIntentCreateParams createParams = PaymentIntentCreateParams.builder()
                         .setCurrency("bgn")
-                        .setAmount(1099L)
+                        .setAmount(amount)
                         .setAutomaticPaymentMethods(PaymentIntentCreateParams.AutomaticPaymentMethods.builder().setEnabled(true).build())
                         .setCustomer(customerId)
                         .setPaymentMethod(paymentMethodId)
