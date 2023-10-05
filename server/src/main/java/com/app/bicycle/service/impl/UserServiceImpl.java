@@ -174,8 +174,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void reserveBicycle(Long userId, Long bikeId) {
-        User user = userRepository.getUserById(userId);
-
         if (!bicycleService.isBicycleInState(bikeId, BicycleState.FREE)) {
             throw new CustomError(Constants.BICYCLE_IS_NOT_FREE_OR_RESERVED);
         }
@@ -183,7 +181,6 @@ public class UserServiceImpl implements UserService {
         stationService.deleteSBConnection(bikeId);
         bicycleService.changeBicycleState(bikeId, BicycleState.RESERVED);
         increaseUserReservedBicycles(userId);
-        timer.startReservation(user);
     }
 
     @Override

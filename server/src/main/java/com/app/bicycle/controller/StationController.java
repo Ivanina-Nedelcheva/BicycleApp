@@ -59,17 +59,18 @@ public class StationController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/newStation", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).SYSTEM_ADMIN)")
-    public ResponseEntity<Station> addStation(@RequestParam double latitude, @RequestParam double longitude, @RequestParam String name) throws Exception {
+    public ResponseEntity<Station> addStation(@RequestBody Station station) {
 
         Station result;
         try {
-            result = stationService.addStation(latitude, longitude, name);
+            result = stationService.addStation(station.getLatitude(), station.getLongitude(), station.getStationName());
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
+
 
 
     @RequestMapping(method = RequestMethod.POST, value = "/deactivateStation", produces = MediaType.APPLICATION_JSON_VALUE)
