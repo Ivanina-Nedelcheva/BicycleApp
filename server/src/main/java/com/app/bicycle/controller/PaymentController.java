@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -38,8 +39,8 @@ public class PaymentController {
     }
 
     @RequestMapping(value = "/paymentSheet", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-//    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).ORDINARY_USER)")
-    public Map<String, String> handlePaymentSheet(@RequestParam Long userId) {
+    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).ORDINARY_USER)")
+    public Map<String, String> handlePaymentSheet(@RequestParam Long userId, @RequestParam String paymentMethodId) throws StripeException {
 
         Stripe.apiKey = stripeSecretKey;
 
@@ -68,6 +69,7 @@ public class PaymentController {
 
         SetupIntentCreateParams setupIntentParams = SetupIntentCreateParams.builder()
                 .setCustomer(customer.getId())
+                .setPaymentMethod(paymentMethodId)
                 .build();
         SetupIntent setupIntent = null;
         try {
@@ -85,25 +87,23 @@ public class PaymentController {
         return responseData;
     }
 
-    @RequestMapping(value = "/attachPaymentMethod", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+//    @RequestMapping(value = "/attachPaymentMethod", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 //    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).ORDINARY_USER)")
-        public ResponseEntity<String> attachPaymentMethodToCustomer(@RequestParam String paymentMethodId, @RequestParam String stripeId) {
-
-            Stripe.apiKey = stripeSecretKey;
-
-            try {
-                PaymentMethod paymentMethod = PaymentMethod.retrieve(paymentMethodId);
-                PaymentMethod updatedPaymentMethod = paymentMethod.attach(PaymentMethodAttachParams.builder().setCustomer(stripeId).build());
-                return new ResponseEntity<>(updatedPaymentMethod.getId(), HttpStatus.OK);
-            } catch (StripeException e) {
-                e.printStackTrace();
-                return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-    }
+//        public ResponseEntity<String> attachPaymentMethodToCustomer(@RequestParam String paymentMethodId, @RequestParam String stripeId) {
+//            try {
+//                Stripe.apiKey = stripeSecretKey;
+//                PaymentMethod paymentMethod = PaymentMethod.retrieve(paymentMethodId);
+//                PaymentMethod updatedPaymentMethod = paymentMethod.attach(PaymentMethodAttachParams.builder().setCustomer(stripeId).build());
+//                return new ResponseEntity<>(updatedPaymentMethod.getId(), HttpStatus.OK);
+//            } catch (StripeException e) {
+//                e.printStackTrace();
+//                return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+//            }
+//    }
 
 
     @RequestMapping(value = "/chargeSavedPaymentMethod", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    //@PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).ORDINARY_USER)")
+    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).ORDINARY_USER)")
     public Map<String, Object> chargeSavedPaymentMethod(@RequestParam String customerId, @RequestParam Long amount) {
         Map<String, Object> responseData = new HashMap<>();
 
