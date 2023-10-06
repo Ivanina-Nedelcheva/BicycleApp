@@ -2,6 +2,7 @@ package com.app.bicycle.controller;
 
 import com.app.bicycle.dto.FaultReportDTO;
 import com.app.bicycle.dto.RentalDTO;
+import com.app.bicycle.dto.UserDTO;
 import com.app.bicycle.entities.Bicycle;
 import com.app.bicycle.entities.FaultReport;
 import com.app.bicycle.entities.User;
@@ -34,21 +35,46 @@ public class UserController {
 
 
     @RequestMapping(method = RequestMethod.POST, value = "/registerUser", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<User> getAllBicycles(@RequestParam User inputUser) throws Exception {
+    public ResponseEntity<UserDTO> getAllBicycles(@RequestBody UserDTO inputUser) {
 
-        User response;
+        UserDTO response;
         try {
-//            response = userService.registerUser(inputUser);
+            response = userService.registerUser(inputUser);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        return new ResponseEntity<>(null, HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/deleteUser", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UserDTO> deleteUser(@RequestBody UserDTO user) {
+        UserDTO response;
+        try {
+            response = userService.deleteUser(user);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+
+    @RequestMapping(method = RequestMethod.POST, value = "/editUser", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping("/edit")
+    public ResponseEntity<UserDTO> editUser(@RequestBody UserDTO user) {
+        UserDTO response;
+        try {
+            response = userService.editUser(user);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 
     @RequestMapping(method = RequestMethod.GET, value = "/getFaultReports", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<FaultReportDTO>> getFaultReports() throws Exception {
+    public ResponseEntity<List<FaultReportDTO>> getFaultReports() {
 
         List<FaultReportDTO> response;
         try {
@@ -62,10 +88,10 @@ public class UserController {
 
 
     @RequestMapping(method = RequestMethod.POST, value = "/reportFault", produces = MediaType.APPLICATION_JSON_VALUE)
-//    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).TECH_SUPPORT_MEMBER, T(com.app.bicycle.enums.UserRole).SYSTEM_ADMIN, " +
-//            "T(com.app.bicycle.enums.UserRole).ORDINARY_USER, T(com.app.bicycle.enums.UserRole).OBSERVER)")
+    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).TECH_SUPPORT_MEMBER, T(com.app.bicycle.enums.UserRole).SYSTEM_ADMIN, " +
+            "T(com.app.bicycle.enums.UserRole).ORDINARY_USER, T(com.app.bicycle.enums.UserRole).OBSERVER)")
     public ResponseEntity<FaultReport> faultReport(@RequestParam Long userId, @RequestParam Long bikeId,
-                                                   @RequestParam String faultText) throws Exception {
+                                                   @RequestParam String faultText) {
 
         FaultReport response;
         try {

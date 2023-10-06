@@ -2,6 +2,7 @@ package com.app.bicycle.service;
 
 import com.app.bicycle.dto.FaultReportDTO;
 import com.app.bicycle.dto.RentalDTO;
+import com.app.bicycle.dto.UserDTO;
 import com.app.bicycle.entities.FaultReport;
 import com.app.bicycle.entities.User;
 import com.stripe.exception.*;
@@ -10,11 +11,11 @@ import java.util.List;
 
 public interface UserService {
 
-    User registerUser(User input);
+    UserDTO registerUser(UserDTO input);
 
-    User deleteUser (User input);
+    UserDTO deleteUser (UserDTO input);
 
-    User editUser(User input);
+    UserDTO editUser(UserDTO input);
 
     FaultReport reportFault(Long userId, Long bikeId, String faultText);
 

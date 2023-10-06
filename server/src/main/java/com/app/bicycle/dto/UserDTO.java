@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDTO {
-    //maybe delete later!
 
     public UserDTO() {
 
@@ -41,6 +40,8 @@ public class UserDTO {
     private List<Rental> rentals = new ArrayList<>();
 
     private List<Payment> payments = new ArrayList<>();
+
+    //stripeId
 
     public Long getId() {
         return id;

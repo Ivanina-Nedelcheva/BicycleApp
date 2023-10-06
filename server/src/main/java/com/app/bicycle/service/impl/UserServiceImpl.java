@@ -3,6 +3,7 @@ package com.app.bicycle.service.impl;
 import com.app.bicycle.dto.ChargeRequestDTO;
 import com.app.bicycle.dto.FaultReportDTO;
 import com.app.bicycle.dto.RentalDTO;
+import com.app.bicycle.dto.UserDTO;
 import com.app.bicycle.entities.*;
 import com.app.bicycle.enums.BicycleState;
 import com.app.bicycle.repositories.*;
@@ -62,7 +63,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User registerUser(User input) {
+    public UserDTO registerUser(UserDTO input) {
 //        User registerUser = modelMapper.map(input, User.class);
 //        registerUser.setFirstName(input.getFirstName());
 //        registerUser.setLastName(input.getLastName());
@@ -79,12 +80,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User deleteUser(User input) {
+    public UserDTO deleteUser(UserDTO input) {
+        //TODO
         return null;
     }
 
     @Override
-    public User editUser(User input) {
+    public UserDTO editUser(UserDTO input) {
+        //TODO
         return null;
     }
 
