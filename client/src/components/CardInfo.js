@@ -71,7 +71,7 @@ const CardInformation = ({ navigation, route }) => {
 
     if (route.params?.rent && !card) {
       setCard(true)
-      Alert.alert('Success Reserve!', null, [{ onPress: () => toggleScanner() }])
+      Alert.alert('Success!', null, [{ onPress: () => toggleScanner() }])
     }
 
     if (route.params?.scanned) {
