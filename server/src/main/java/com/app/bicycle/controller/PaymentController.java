@@ -4,6 +4,7 @@ import com.app.bicycle.entities.Price;
 import com.app.bicycle.entities.User;
 import com.app.bicycle.repositories.UserRepository;
 import com.app.bicycle.service.PaymentService;
+import com.google.gson.Gson;
 import com.stripe.Stripe;
 import com.stripe.exception.CardException;
 import com.stripe.exception.StripeException;
@@ -40,7 +41,7 @@ public class PaymentController {
 
     @RequestMapping(value = "/paymentSheet", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).ORDINARY_USER)")
-    public Map<String, String> handlePaymentSheet(@RequestParam Long userId, @RequestParam String paymentMethodId) throws StripeException {
+    public ResponseEntity<String> handlePaymentSheet(@RequestParam Long userId, @RequestParam String paymentMethodId) throws StripeException {
 
         Stripe.apiKey = stripeSecretKey;
 
@@ -89,7 +90,8 @@ public class PaymentController {
         responseData.put("customer", customer.getId());
         responseData.put("publishableKey", stripePublicKey);
 
-        return responseData;
+        Gson gson = new Gson();
+        return new ResponseEntity<>(gson.toJson(responseData), HttpStatus.OK);
     }
 
 //    @RequestMapping(value = "/attachPaymentMethod", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
