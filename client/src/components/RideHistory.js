@@ -21,7 +21,9 @@ const RideHistory = () => {
   const currentDate = new Date(timestamp);
 
   const day = currentDate.getDate();
-  const month = currentDate.toLocaleString('default', { month: 'long' });
+  // const month = currentDate.toLocaleString('default', { month: 'long' });
+  const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  const month = months[currentDate.getMonth()];
   const dayOfWeek = currentDate.getDay();
   const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
   const dayName = daysOfWeek[dayOfWeek];
