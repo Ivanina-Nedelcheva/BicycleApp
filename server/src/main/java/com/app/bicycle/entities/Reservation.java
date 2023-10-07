@@ -21,7 +21,7 @@ public class Reservation extends BaseEntity {
     @JoinColumn(name = "bike_id", nullable = false)
     private Bicycle bicycle;
 
-    @Column
+    @Column(nullable = false)
     private Date date;
 
     public User getUser() {
@@ -40,4 +40,11 @@ public class Reservation extends BaseEntity {
         this.bicycle = bicycle;
     }
 
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
 }

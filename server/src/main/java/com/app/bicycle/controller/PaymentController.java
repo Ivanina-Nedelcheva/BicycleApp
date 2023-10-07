@@ -44,11 +44,16 @@ public class PaymentController {
 
         Stripe.apiKey = stripeSecretKey;
 
-        CustomerCreateParams customerParams = CustomerCreateParams.builder().build();
+        User currentUser = userRepository.getUserById(userId);
+
+        CustomerCreateParams customerParams = CustomerCreateParams.builder()
+                .setName(currentUser.getFirstName() + " " + currentUser.getLastName())
+                .setEmail(currentUser.getEmail())
+                .build();
+
         Customer customer = null;
         try {
             customer = Customer.create(customerParams);
-            User currentUser = userRepository.getUserById(userId);
             currentUser.setStripeId(customer.getId());
             userRepository.save(currentUser);
         } catch (Exception e) {
