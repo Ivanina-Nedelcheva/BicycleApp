@@ -105,7 +105,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<FaultReportDTO> getReports() {
-        List<FaultReport> faultReports = faultReportRepository.findAll();
+        List<FaultReport> faultReports = faultReportRepository.findAllByOrderByDateDesc();
         return faultReports.stream()
                 .map(this::mapToDTO)
                 .collect(Collectors.toList());
@@ -219,17 +219,29 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<RentalDTO> getUserHistory(Long userId) {
         List<Rental> history = rentalRepository.findRentalByUserAndFinishedTrue(userRepository.getUserById(userId));
-        return convertToDTO(history);
+        List<RentalDTO> historyDTOList = new ArrayList<>();
+
+        if (history != null) {
+            for (Rental rental : history) {
+                RentalDTO rentalDTO = new RentalDTO();
+
+                rentalDTO.setDate(rental.getDate());
+                rentalDTO.setDistance(rental.getDistance());
+                rentalDTO.setPrice(rental.getPrice());
+                Double minutes = (double) ((rental.getEndTime().getTime() - rental.getStartTime().getTime()) / (60 * 1000));
+                rentalDTO.setMinutes(minutes);
+
+                historyDTOList.add(rentalDTO);
+            }
+        }
+        return historyDTOList;
     }
 
     @Override
     public List<RentalDTO> getAllHistory() {
         List<Rental> history = rentalRepository.findRentalByFinishedTrue();
-        return convertToDTO(history);
-    }
-
-    private List<RentalDTO> convertToDTO(List<Rental> history) {
         List<RentalDTO> historyDTOList = new ArrayList<>();
+
         if (history != null) {
             for (Rental rental : history) {
                 RentalDTO rentalDTO = new RentalDTO();
@@ -239,14 +251,12 @@ public class UserServiceImpl implements UserService {
                 rentalDTO.setPrice(rental.getPrice());
                 rentalDTO.setFinished(rental.isFinished());
                 rentalDTO.setUser(rental.getUser());
-                rentalDTO.setBicycle(rental.getBicycle());
                 Double minutes = (double) ((rental.getEndTime().getTime() - rental.getStartTime().getTime()) / (60 * 1000));
                 rentalDTO.setMinutes(minutes);
 
                 historyDTOList.add(rentalDTO);
             }
         }
-
         return historyDTOList;
     }
 

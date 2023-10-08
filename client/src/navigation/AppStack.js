@@ -75,7 +75,7 @@ const AppStack = () => {
       />
 
       <Drawer.Screen
-        name="Bike Reports"
+        name="Bicycle Reports"
         component={BikeReports}
         options={{
           drawerIcon: ({ focused, color, size }) => (
@@ -97,7 +97,7 @@ const AppStack = () => {
       />
 
       <Drawer.Screen
-        name="Bike Select"
+        name="Bicycle Select"
         component={BikeSelect}
         options={({ navigation }) => (
           {

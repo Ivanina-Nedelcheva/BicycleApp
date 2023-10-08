@@ -30,7 +30,8 @@ const RideHistory = () => {
   const formatDate = (date) => {
     const currentDate = new Date(date);
     const day = currentDate.getDate();
-    const month = currentDate.toLocaleString('default', { month: 'long' });
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const month = months[currentDate.getMonth()];
     const year = currentDate.getFullYear();
     const dayOfWeek = currentDate.getDay();
     const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];

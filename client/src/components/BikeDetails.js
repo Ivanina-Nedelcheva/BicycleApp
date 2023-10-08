@@ -45,7 +45,7 @@ const BikeDetails = ({ bike, bottomSheetRef, navigation }) => {
         backgroundStyle={{ backgroundColor: colors.seasalt, borderWidth: 0.3, borderColor: colors.slateGray }}
       >
         <View style={styles.bikeContent}>
-          <Text style={styles.heading}>Bike Details</Text>
+          <Text style={styles.heading}>Bicycle Details</Text>
 
           <View style={styles.details}>
             <View style={styles.bikeAttributes}>
