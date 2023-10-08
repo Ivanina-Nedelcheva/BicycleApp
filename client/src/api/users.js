@@ -17,6 +17,7 @@ export async function getAllInquiries() {
   try {
     const response = await API.get(inquiryURI);
     console.log('Response from the server:', response.data);
+    return response.data
   } catch (error) {
     console.error('Error uploading data:', error);
   }
