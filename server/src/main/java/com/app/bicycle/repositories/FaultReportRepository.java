@@ -18,4 +18,6 @@ public interface FaultReportRepository extends JpaRepository<FaultReport, Long> 
 
     @Query("SELECT fr FROM FaultReport fr WHERE fr.bicycle.id = :bikeId")
     FaultReport getFaultReportByBicycle(Long bikeId);
+
+    List<FaultReport> findAllByOrderByDateDesc();
 }

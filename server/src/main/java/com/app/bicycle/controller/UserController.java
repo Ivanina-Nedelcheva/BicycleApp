@@ -5,17 +5,14 @@ import com.app.bicycle.dto.RentalDTO;
 import com.app.bicycle.dto.UserDTO;
 import com.app.bicycle.entities.Bicycle;
 import com.app.bicycle.entities.FaultReport;
-import com.app.bicycle.entities.User;
 import com.app.bicycle.service.UserService;
 import com.app.bicycle.utils.CustomError;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -26,11 +23,9 @@ public class UserController {
 
     private final UserService userService;
 
-    private final SimpMessagingTemplate messagingTemplate;
 
-    public UserController(UserService userService, SimpMessagingTemplate messagingTemplate) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.messagingTemplate = messagingTemplate;
     }
 
 
@@ -96,8 +91,6 @@ public class UserController {
         FaultReport response;
         try {
             response = userService.reportFault(userId, bikeId, faultText);
-            String notificationMessage = "A new fault report has been created.";
-            messagingTemplate.convertAndSend("/topic/faultReports", notificationMessage);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
