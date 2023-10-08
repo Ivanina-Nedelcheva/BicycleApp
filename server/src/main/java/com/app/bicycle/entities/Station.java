@@ -22,6 +22,9 @@ public class Station extends BaseEntity {
     @OneToMany(mappedBy = "station", fetch = FetchType.LAZY)
     private List<StationBicycle> stationBicycles = new ArrayList<>();
 
+    @OneToMany(mappedBy = "station", fetch = FetchType.EAGER)
+    private List<Rental> rentals = new ArrayList<>();
+
     public String getStationName() {
         return stationName;
     }
@@ -60,5 +63,13 @@ public class Station extends BaseEntity {
 
     public void setStationBicycles(List<StationBicycle> stationBicycles) {
         this.stationBicycles = stationBicycles;
+    }
+
+    public List<Rental> getRentals() {
+        return rentals;
+    }
+
+    public void setRentals(List<Rental> rentals) {
+        this.rentals = rentals;
     }
 }
