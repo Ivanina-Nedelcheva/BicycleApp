@@ -30,7 +30,6 @@ const RideReceipt = ({ rideRecord, onClose, formatDate }) => {
 
         <View style={styles.rideDetails}>
           <DetailRow label="Date:" value={formatDate(rideRecord.date)} />
-          <DetailRow label="Time Period:" value={rideRecord.timePeriod} />
           <DetailRow label="Distance:" value={rideRecord.distance} />
           <DetailRow label="Time:" value={`${rideRecord.minutes}min`} />
         </View>

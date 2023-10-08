@@ -1,4 +1,7 @@
-import { authAPI } from './axiosConfig';
+import { authAPI, API } from './axiosConfig';
+
+const inquiryURI = 'user/inquiry'
+const userHistoryURI = 'user/userHistory'
 
 export async function getUser(userId) {
   try {
@@ -10,31 +13,24 @@ export async function getUser(userId) {
   }
 }
 
-export async function addUser(userData) {
+export async function getAllInquiries() {
   try {
-    const response = await authAPI.post(`/users/registerUser`, userData);
-    return response.data;
+    const response = await API.get(inquiryURI);
+    console.log('Response from the server:', response.data);
   } catch (error) {
-    // Handle errors here
-    throw error;
+    console.error('Error uploading data:', error);
   }
 }
-
-export async function updateUser(userId, userData) {
+export async function getUserHistory(userId) {
   try {
-    const response = await authAPI.patch(`/users/${userId}`, userData);
-    return response.data;
+    const response = await API.get(userHistoryURI, {
+      params: {
+        userId
+      }
+    });
+    console.log('Response from the server:', response.data);
+    return response.data
   } catch (error) {
-    // Handle errors here
-    throw error;
-  }
-}
-export async function deleteUser(userId) {
-  try {
-    const response = await authAPI.delete(`/users/${userId}`);
-    return response.data;
-  } catch (error) {
-    // Handle errors here
-    throw error;
+    console.error('Error uploading data:', error);
   }
 }
