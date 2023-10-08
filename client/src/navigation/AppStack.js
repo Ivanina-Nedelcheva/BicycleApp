@@ -89,7 +89,7 @@ const AppStack = () => {
         component={Inquiry}
         options={{
           drawerIcon: ({ focused, color, size }) => (
-            <MaterialCommunityIcons name={focused ? 'alert' : 'alert-outline'} size={size} color={color} />),
+            <MaterialCommunityIcons name={focused ? 'animation' : 'animation-outline'} size={size} color={color} />),
           drawerLabelStyle
         }}
       />
