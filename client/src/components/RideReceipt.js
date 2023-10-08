@@ -4,13 +4,12 @@ import CustomButton from './CustomButton';
 import { colors } from '../../styles/styles';
 import { getPrices } from '../api/payment';
 
-const RideReceipt = ({ rideRecord, onClose }) => {
+const RideReceipt = ({ rideRecord, onClose, formatDate }) => {
   const [prices, setPrices] = useState({})
 
   useEffect(() => {
     (async () => {
       const data = await getPrices()
-      console.log(data);
       setPrices(data)
     })()
   }, [])
@@ -30,21 +29,19 @@ const RideReceipt = ({ rideRecord, onClose }) => {
         <Text style={styles.heading}>Ride receipt</Text>
 
         <View style={styles.rideDetails}>
-          <DetailRow label="Date:" value={rideRecord.date} />
+          <DetailRow label="Date:" value={formatDate(rideRecord.date)} />
           <DetailRow label="Time Period:" value={rideRecord.timePeriod} />
           <DetailRow label="Distance:" value={rideRecord.distance} />
-          <DetailRow label="Time:" value={`${rideRecord.time}min`} />
+          <DetailRow label="Time:" value={`${rideRecord.minutes}min`} />
         </View>
 
         <View style={styles.paymentDetails}>
           <DetailRow label="Unlock Fee:" value={`${prices.unlockPrice?.toFixed(2)}lv`} />
-          <DetailRow label={`Riding - ${prices.minutePrice?.toFixed(2)} lv./min`} value={`${(rideRecord.time * prices.minutePrice)?.toFixed(2)}lv`} />
-          <DetailRow label="Total (excl. VAT):" value={`${rideRecord.cost}lv`} />
-          <DetailRow label="VAT - 20%:" value={`${(rideRecord.cost * 0.2).toFixed(2)}lv`} />
+          <DetailRow label={`Riding - ${prices.minutePrice?.toFixed(2)} lv./min`} value={`${(rideRecord.minutes * prices.minutePrice)?.toFixed(2)}lv`} />
         </View>
 
         <View style={styles.total}>
-          <DetailRow label="Total:" value={`${(rideRecord.cost * 1.2).toFixed(2)}lv`} />
+          <DetailRow label="Total:" value={`${(rideRecord.price).toFixed(2)}lv`} />
         </View>
       </View>
     </Modal>

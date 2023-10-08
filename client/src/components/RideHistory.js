@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, ScrollView, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import RideReceipt from './RideReceipt';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { colors } from '../../styles/styles';
+import { getUserHistory } from '../api/users';
 
 const RideHistory = () => {
+  const [history, setHistory] = useState([])
   const [selectedRideRecord, setSelectedRideRide] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -17,28 +19,30 @@ const RideHistory = () => {
     setModalVisible(false);
   };
 
-  const timestamp = Date.now();
-  const currentDate = new Date(timestamp);
+  useEffect(() => {
+    (async () => {
+      const data = await getUserHistory(1);
+      console.log(data);
+      setHistory(data)
+    })()
+  }, [])
 
-  const day = currentDate.getDate();
-  const month = currentDate.toLocaleString('default', { month: 'long' });
-  const dayOfWeek = currentDate.getDay();
-  const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-  const dayName = daysOfWeek[dayOfWeek];
-  const year = currentDate.getFullYear();
-  const formattedDate = `${day} ${month} ${year}`;
+  const formatDate = (date) => {
+    const currentDate = new Date(date);
+    const day = currentDate.getDate();
+    const month = currentDate.toLocaleString('default', { month: 'long' });
+    const year = currentDate.getFullYear();
+    const dayOfWeek = currentDate.getDay();
+    const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const dayName = daysOfWeek[dayOfWeek];
+    return `${dayName}, ${day} ${month} ${year}`;
+  };
 
-  const rideHistory = [
-    { date: formattedDate, distance: '2km', cost: '2.50', time: 5 },
-    { date: formattedDate, distance: '1km', cost: '3.50', time: 2.5 },
-    { date: formattedDate, distance: '10km', cost: '5.50', time: 25 },
-    { date: formattedDate, distance: '10km', cost: '5.50', time: 25 },
-    { date: formattedDate, distance: '10km', cost: '5.50', time: 25 },
-  ];
+  const caloriesPerKm = 50
 
   return (
     <ScrollView style={styles.container}>
-      {rideHistory.map((rideRecord, index) => (
+      {history.map((rideRecord, index) => (
         <TouchableOpacity
           style={styles.rideRecord}
           key={index}
@@ -46,8 +50,8 @@ const RideHistory = () => {
           activeOpacity={0.5}
         >
           <View style={styles.dateAndCost}>
-            <Text style={styles.date}>{`${dayName}, ${rideRecord.date}`}</Text>
-            <Text style={styles.cost}>BGN: {rideRecord.cost}lv</Text>
+            <Text style={styles.date}>{`${formatDate(rideRecord.date)}`}</Text>
+            <Text style={styles.price}>BGN: {rideRecord.price?.toFixed(2)}lv</Text>
           </View>
 
           <View style={styles.statistics}>
@@ -59,20 +63,26 @@ const RideHistory = () => {
 
             <View style={styles.wrapper}>
               <MaterialCommunityIcons name="clock" size={24} color={colors.darkgrey} />
-              <Text style={styles.text}>{rideRecord.time}min</Text>
+              <Text style={styles.text}>{rideRecord.minutes}min</Text>
               <Text style={styles.label}>Time</Text>
             </View>
 
             <View style={styles.wrapper}>
               <MaterialCommunityIcons name="leaf" size={24} color={colors.darkgrey} />
-              <Text style={styles.text}>714cal</Text>
+              <Text style={styles.text}>{rideRecord.distance * caloriesPerKm}</Text>
               <Text style={styles.label}>Calories</Text>
             </View>
           </View>
         </TouchableOpacity>
       ))}
 
-      {modalVisible && selectedRideRecord && <RideReceipt rideRecord={selectedRideRecord} onClose={closeModal} />}
+      {modalVisible && selectedRideRecord &&
+        <RideReceipt
+          rideRecord={selectedRideRecord}
+          onClose={closeModal}
+          formatDate={formatDate}
+        />
+      }
     </ScrollView>
   );
 };
@@ -102,7 +112,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto-Regular',
     fontSize: 16,
   },
-  cost: {
+  price: {
     fontFamily: 'Roboto-Bold',
   },
   statistics: {

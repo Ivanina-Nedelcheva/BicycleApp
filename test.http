@@ -1,4 +1,4 @@
-GET http://192.168.1.102:8080/app/stations/getStationWithBicycles
+GET http://192.168.1.102:8080/app/user/userHistory?userId=1
 
 
 
