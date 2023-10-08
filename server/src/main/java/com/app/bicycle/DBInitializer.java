@@ -69,7 +69,7 @@ public class DBInitializer implements CommandLineRunner {
                 user2.setRole(admin);
                 user2.setPhoneNumber("08942");
                 user2.setAge(String.valueOf(35));
-                user2.setPassword(passwordEncoder.encode("234567"));
+                user2.setPassword(passwordEncoder.encode("123456"));
                 em.persist(user2);
 
                 User user3 = new User();
@@ -80,7 +80,7 @@ public class DBInitializer implements CommandLineRunner {
                 user3.setRole(observer);
                 user3.setPhoneNumber("089754");
                 user3.setAge(String.valueOf(29));
-                user3.setPassword(passwordEncoder.encode("345678"));
+                user3.setPassword(passwordEncoder.encode("123456"));
                 em.persist(user3);
 
                 User user4 = new User();

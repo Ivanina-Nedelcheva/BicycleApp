@@ -1,5 +1,6 @@
 package com.app.bicycle.entities;
 
+import com.app.bicycle.enums.UserRole;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -36,6 +37,13 @@ public class User extends BaseEntity {
     @JoinColumn(name = "role_id", nullable = false)
     @Enumerated(value = EnumType.STRING)
     private Role role;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private UserRole userRole;
+
+    @Column(name = "stripe_id")
+    private String stripeId;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<Reservation> reservations = new ArrayList<>();
@@ -164,5 +172,21 @@ public class User extends BaseEntity {
 
     public void setUserReservedBicycles(Integer userReservedBicycles) {
         this.userReservedBicycles = userReservedBicycles;
+    }
+
+    public UserRole getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(UserRole userRole) {
+        this.userRole = userRole;
+    }
+
+    public String getStripeId() {
+        return stripeId;
+    }
+
+    public void setStripeId(String stripeId) {
+        this.stripeId = stripeId;
     }
 }

@@ -28,7 +28,7 @@ import java.util.List;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    public static final String[] PUBLIC_URLS = {"/login", "app/user/register", "app/user/getFaultReports",
+    public static final String[] PUBLIC_URLS = {"app/login", "app/user/register", "app/user/getFaultReports",
     };
 
     @Autowired
