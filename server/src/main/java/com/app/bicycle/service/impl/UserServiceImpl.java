@@ -258,7 +258,7 @@ public class UserServiceImpl extends BaseService implements UserService {
                 rentalDTO.setPrice(rental.getPrice());
                 rentalDTO.setFinished(rental.isFinished());
                 rentalDTO.setUser(rental.getUser());
-//                rentalDTO.setStation(rental.getStation());
+                rentalDTO.setStation(stationService.stationToDTO(rental.getStation()));
                 rentalDTO.setBicycle(rental.getBicycle());
                 Double minutes = (double) ((rental.getEndTime().getTime() - rental.getStartTime().getTime()) / (60 * 1000));
                 rentalDTO.setMinutes(minutes);

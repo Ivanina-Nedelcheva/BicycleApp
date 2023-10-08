@@ -15,7 +15,7 @@ public class RentalDTO {
     private Long id;
     private User user;
     private Bicycle bicycle;
-    private Station station;
+    private StationDTO station;
     private Double minutes;
 
     public Long getId() {
@@ -82,11 +82,11 @@ public class RentalDTO {
         this.minutes = minutes;
     }
 
-    public Station getStation() {
+    public StationDTO getStation() {
         return station;
     }
 
-    public void setStation(Station station) {
+    public void setStation(StationDTO station) {
         this.station = station;
     }
 }

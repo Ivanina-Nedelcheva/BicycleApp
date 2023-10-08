@@ -24,4 +24,6 @@ public interface StationService {
     CustomResponse addBikeToStation(Long bikeId, Long stationId);
 
     StationDTO findStationById(Long stationId);
+
+    StationDTO stationToDTO(Station station);
 }
