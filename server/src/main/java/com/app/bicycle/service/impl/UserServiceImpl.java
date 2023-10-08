@@ -203,7 +203,7 @@ public class UserServiceImpl implements UserService {
         Long minutes = (endTime.getTime() - startTime.getTime()) / (60 * 1000);
         BigDecimal price = BigDecimal.valueOf(minutes * prices.getMinutePrice() + prices.getUnlockPrice());
         userRent.setPrice(price);
-        userRent.setDistance((double) (minutes / 4));
+        userRent.setDistance(minutes / 2.5);
         rentalRepository.save(userRent);
 
         chargeUser(price, user);
@@ -251,6 +251,8 @@ public class UserServiceImpl implements UserService {
                 rentalDTO.setPrice(rental.getPrice());
                 rentalDTO.setFinished(rental.isFinished());
                 rentalDTO.setUser(rental.getUser());
+                rentalDTO.setStation(rental.getStation());
+                rentalDTO.setBicycle(rental.getBicycle());
                 Double minutes = (double) ((rental.getEndTime().getTime() - rental.getStartTime().getTime()) / (60 * 1000));
                 rentalDTO.setMinutes(minutes);
 
