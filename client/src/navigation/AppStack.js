@@ -1,6 +1,6 @@
 import React from "react"
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
-import { Map, Profile, History, Payment, BikeReports, BikeSelect, ReportIssue, AddStation } from '../screens'
+import { Map, Profile, History, Payment, BikeReports, BikeSelect, ReportIssue, AddStation, Inquiry } from '../screens'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import CustomButton from "../components/CustomButton";
 
@@ -77,6 +77,16 @@ const AppStack = () => {
       <Drawer.Screen
         name="Bicycle Reports"
         component={BikeReports}
+        options={{
+          drawerIcon: ({ focused, color, size }) => (
+            <MaterialCommunityIcons name={focused ? 'alert' : 'alert-outline'} size={size} color={color} />),
+          drawerLabelStyle
+        }}
+      />
+
+      <Drawer.Screen
+        name="Inquiry"
+        component={Inquiry}
         options={{
           drawerIcon: ({ focused, color, size }) => (
             <MaterialCommunityIcons name={focused ? 'alert' : 'alert-outline'} size={size} color={color} />),
