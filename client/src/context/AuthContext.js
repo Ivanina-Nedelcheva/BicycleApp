@@ -9,16 +9,12 @@ export const AuthProvider = ({ children }) => {
   const [userToken, setUserToken] = useState(null)
   const [userInfo, setUserInfo] = useState(null)
 
-  function login() {
-    setIsLoading(false)
-    setUserToken('asd')
-
-    // const res = await authAPI.post('/login', userData, {
-    //   headers: {
-    //     'Content-Type': 'multipart/form-data',
-    //   },
-    // })
-    // console.log(res);
+  async function login(userData) {
+    // setIsLoading(false)
+    // setUserToken('asd')
+    console.log(userData);
+    const res = await API.post('/login', userData)
+    console.log(res);
 
     // setUserInfo(res.data)
   }

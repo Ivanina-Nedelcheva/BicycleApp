@@ -18,14 +18,14 @@ const SignIn = ({ navigation }) => {
   };
 
   const validationSchema = Yup.object().shape({
-    email: Yup.string().email('Invalid email').required('Email is required'),
-    password: Yup.string().required('Password is required'),
+    // email: Yup.string().email('Invalid email').required('Email is required'),
+    // password: Yup.string().required('Password is required'),
   });
 
   const handleSubmit = (values, { resetForm }) => {
     console.log(values)
 
-    // login(values)
+    login(values)
 
 
     // if (values.password == password) {
@@ -48,7 +48,7 @@ const SignIn = ({ navigation }) => {
       /> */}
 
       <Formik
-        initialValues={{ email: '', password: '' }}
+        initialValues={{ username: '', password: '' }}
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
@@ -56,10 +56,10 @@ const SignIn = ({ navigation }) => {
           <View style={styles.form}>
             <View>
               <TextInput
-                value={values.email}
-                onChangeText={handleChange('email')}
+                value={values.username}
+                onChangeText={handleChange('username')}
                 placeholder="Email"
-                keyboardType="email-address"
+                // keyboardType="email-address"
                 style={styles.input}
               />
 
@@ -91,7 +91,7 @@ const SignIn = ({ navigation }) => {
             <CustomButton
               title="Log in"
               color={colors.bleuDeFrance}
-              onPress={() => login()}
+              onPress={handleSubmit}
               magicNumber={0.8}
             // disabled={!dirty || !isValid}
             />

@@ -54,7 +54,7 @@ const AppStack = () => {
         }}
       />
 
-      <Drawer.Screen
+      {/* <Drawer.Screen
         name="History"
         component={History}
         options={{
@@ -62,9 +62,9 @@ const AppStack = () => {
             <MaterialCommunityIcons name={focused ? 'history' : 'history'} size={size} color={color} />),
           drawerLabelStyle
         }}
-      />
+      /> */}
 
-      <Drawer.Screen
+      {/* <Drawer.Screen
         name="Payment"
         component={Payment}
         options={{
@@ -72,7 +72,7 @@ const AppStack = () => {
             <MaterialCommunityIcons name={focused ? 'wallet' : 'wallet-outline'} size={size} color={color} />),
           drawerLabelStyle
         }}
-      />
+      /> */}
 
       <Drawer.Screen
         name="Bicycle Reports"
