@@ -24,11 +24,6 @@ public class Rental extends BaseEntity {
     @JoinColumn(name = "bike_id", nullable = false)
     private Bicycle bicycle;
 
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "station_id", nullable = false)
-    private Station station;
-
     @Column(nullable = false)
     Date date;
 
@@ -61,14 +56,6 @@ public class Rental extends BaseEntity {
 
     public void setBicycle(Bicycle bicycle) {
         this.bicycle = bicycle;
-    }
-
-    public Station getStation() {
-        return station;
-    }
-
-    public void setStation(Station station) {
-        this.station = station;
     }
 
     public Date getDate() {

@@ -1,7 +1,6 @@
 package com.app.bicycle.dto;
 
 import com.app.bicycle.entities.Bicycle;
-import com.app.bicycle.entities.Station;
 import com.app.bicycle.entities.User;
 
 import java.math.BigDecimal;
@@ -21,8 +20,6 @@ public class RentalDTO {
     private User user;
 
     private Bicycle bicycle;
-
-    private Station station;
 
     private Double minutes;
 
@@ -80,13 +77,5 @@ public class RentalDTO {
 
     public void setMinutes(Double minutes) {
         this.minutes = minutes;
-    }
-
-    public Station getStation() {
-        return station;
-    }
-
-    public void setStation(Station station) {
-        this.station = station;
     }
 }
