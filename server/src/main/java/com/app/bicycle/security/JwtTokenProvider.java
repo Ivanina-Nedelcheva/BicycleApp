@@ -29,7 +29,7 @@ public class JwtTokenProvider {
     public String generateToken(UserPrincipal userPrincipal) {
         String[] claims = getClaimsFromUser(userPrincipal);
         return JWT.create()
-                .withIssuer("unan")
+                .withIssuer("BicycleApp")
                 .withAudience("client")
                 .withIssuedAt(new Date())
                 .withSubject(userPrincipal.getUsername())

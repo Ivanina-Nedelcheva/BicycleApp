@@ -2,12 +2,12 @@ package com.app.bicycle.entities;
 
 import com.app.bicycle.enums.UserRole;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class User extends BaseEntity {
@@ -45,18 +45,22 @@ public class User extends BaseEntity {
     @Column(name = "stripe_id")
     private String stripeId;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    private List<Reservation> reservations = new ArrayList<>();
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private List<FaultReport> faultReports = new ArrayList<>();
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    private List<Rental> rentals = new ArrayList<>();
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    private List<Payment> payments = new ArrayList<>();
+//    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+//    private List<Reservation> reservations = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    private Set<FaultReport> faultReports;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    private Set<Rental> rentals;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    private Set<Payment> payments;
+
     @Transient
     private Integer userRentedBicycles = 0;
-    @Transient
-    private Integer userReservedBicycles = 0;
+//    @Transient
+//    private Integer userReservedBicycles = 0;
 
     public String getUsername() {
         return username;
@@ -114,35 +118,28 @@ public class User extends BaseEntity {
         this.password = password;
     }
 
-    public List<Reservation> getReservations() {
-        return reservations;
-    }
 
-    public void setReservations(List<Reservation> reservations) {
-        this.reservations = reservations;
-    }
-
-    public List<FaultReport> getFaultReports() {
+    public Set<FaultReport> getFaultReports() {
         return faultReports;
     }
 
-    public void setFaultReports(List<FaultReport> faultReports) {
+    public void setFaultReports(Set<FaultReport> faultReports) {
         this.faultReports = faultReports;
     }
 
-    public List<Rental> getRentals() {
+    public Set<Rental> getRentals() {
         return rentals;
     }
 
-    public void setRentals(List<Rental> rentals) {
+    public void setRentals(Set<Rental> rentals) {
         this.rentals = rentals;
     }
 
-    public List<Payment> getPayments() {
+    public Set<Payment> getPayments() {
         return payments;
     }
 
-    public void setPayments(List<Payment> payments) {
+    public void setPayments(Set<Payment> payments) {
         this.payments = payments;
     }
 
@@ -166,13 +163,13 @@ public class User extends BaseEntity {
         this.userRentedBicycles = userRentedBicycles;
     }
 
-    public Integer getUserReservedBicycles() {
-        return userReservedBicycles;
-    }
-
-    public void setUserReservedBicycles(Integer userReservedBicycles) {
-        this.userReservedBicycles = userReservedBicycles;
-    }
+//    public Integer getUserReservedBicycles() {
+//        return userReservedBicycles;
+//    }
+//
+//    public void setUserReservedBicycles(Integer userReservedBicycles) {
+//        this.userReservedBicycles = userReservedBicycles;
+//    }
 
     public UserRole getUserRole() {
         return userRole;

@@ -5,6 +5,7 @@ import com.app.bicycle.entities.FaultReport;
 import com.app.bicycle.entities.Payment;
 import com.app.bicycle.entities.Rental;
 import com.app.bicycle.entities.Reservation;
+import com.app.bicycle.enums.UserRole;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +31,8 @@ public class UserDTO {
     private String password;
 
     private String role;
+
+    private UserRole userRole;
 
     private Integer userRentedBicycles = 0;
 
@@ -145,5 +148,13 @@ public class UserDTO {
 
     public void setPayments(List<Payment> payments) {
         this.payments = payments;
+    }
+
+    public UserRole getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(UserRole userRole) {
+        this.userRole = userRole;
     }
 }

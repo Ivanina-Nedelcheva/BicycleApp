@@ -145,7 +145,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void increaseUserReservedBicycles(Long userId) {
         User user = userRepository.getUserById(userId);
-        user.setUserReservedBicycles(1);
+//        user.setUserReservedBicycles(1);
     }
 
 
