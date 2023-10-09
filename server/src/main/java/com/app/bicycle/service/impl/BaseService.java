@@ -2,14 +2,16 @@ package com.app.bicycle.service.impl;
 
 //import org.modelmapper.ModelMapper;
 
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 
 @Service
 public class BaseService {
-//    @Autowired
-//    protected ModelMapper modelMapper;
+    @Autowired
+    protected ModelMapper modelMapper;
 
     public BaseService() {
     }

@@ -6,6 +6,7 @@ import com.app.bicycle.dto.RentalDTO;
 import com.app.bicycle.dto.UserDTO;
 import com.app.bicycle.entities.*;
 import com.app.bicycle.enums.BicycleState;
+import com.app.bicycle.enums.UserRole;
 import com.app.bicycle.repositories.*;
 import com.app.bicycle.service.StationService;
 import com.app.bicycle.service.UserService;
@@ -13,9 +14,13 @@ import com.app.bicycle.service.BicycleService;
 import com.app.bicycle.utils.Constants;
 import com.app.bicycle.utils.CustomError;
 import com.app.bicycle.utils.ScheduledTimer;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.math.BigDecimal;
 import java.sql.Date;
@@ -26,7 +31,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl extends BaseService implements UserService {
 
     private final UserRepository userRepository;
     private final FaultReportRepository faultReportRepository;
@@ -37,6 +42,8 @@ public class UserServiceImpl implements UserService {
     private final StationService stationService;
     private final PriceRepository priceRepository;
     private ScheduledTimer timer;
+    private final PasswordEncoder passwordEncoder;
+    private final ModelMapper modelMapper;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository,
@@ -46,7 +53,7 @@ public class UserServiceImpl implements UserService {
                            StationBicycleRepository sbRepository, BicycleService bicycleService,
                            StationService stationService,
                            PriceRepository priceRepository,
-                           ScheduledTimer timer) {
+                           ScheduledTimer timer, PasswordEncoder passwordEncoder, ModelMapper modelMapper) {
         this.userRepository = userRepository;
         this.faultReportRepository = faultReportRepository;
         this.bicycleRepository = bicycleRepository;
@@ -56,35 +63,49 @@ public class UserServiceImpl implements UserService {
         this.stationService = stationService;
         this.priceRepository = priceRepository;
         this.timer = timer;
+        this.passwordEncoder = passwordEncoder;
+        this.modelMapper = modelMapper;
     }
 
     @Override
     public UserDTO registerUser(UserDTO input) {
-//        User registerUser = modelMapper.map(input, User.class);
-//        registerUser.setFirstName(input.getFirstName());
-//        registerUser.setLastName(input.getLastName());
-//        registerUser.setAge(input.getAge());
-//        registerUser.setEmail(input.getEmail());
-//        registerUser.setPhoneNumber(input.getPhoneNumber());
-//        registerUser.setUsername(input.getFirstName().substring(0,2) + input.getLastName().substring(0,2));
-//        registerUser.setPassword(passwordEncoder.encode(registerUser.getPassword()));
-//        registerUser.setRole(UserRole.ORDINARY_USER);
-//
-//        userRepository.save(registerUser);
-//        User responseUser = modelMapper.map(registerUser, User.class);
-        return input;
+        User registerUser = modelMapper.map(input, User.class);
+        registerUser.setFirstName(input.getFirstName());
+        registerUser.setLastName(input.getLastName());
+        registerUser.setAge(input.getAge());
+        registerUser.setEmail(input.getEmail());
+        registerUser.setPhoneNumber(input.getPhoneNumber());
+        registerUser.setUsername(input.getFirstName().substring(0,2) + input.getLastName().substring(0,2));
+        registerUser.setPassword(passwordEncoder.encode(registerUser.getPassword()));
+        Role ordinary = new Role();
+        ordinary.setRoleName(UserRole.ORDINARY_USER);
+        registerUser.setRole(ordinary);
+        registerUser.setUserRole(UserRole.ORDINARY_USER);
+
+        userRepository.save(registerUser);
+        return modelMapper.map(registerUser, UserDTO.class);
     }
 
     @Override
     public UserDTO deleteUser(UserDTO input) {
-        //TODO
-        return null;
+        User foundUser = userRepository.findUserByUsername(input.getUsername());
+        checkIfNull(foundUser, input.getUsername());
+        userRepository.delete(foundUser);
+        return modelMapper.map(input, UserDTO.class);
     }
 
     @Override
     public UserDTO editUser(UserDTO input) {
-        //TODO
-        return null;
+        User foundUser = userRepository.findById(input.getId()).orElseThrow(() -> new UsernameNotFoundException("No user found!"));
+        foundUser.setFirstName(input.getFirstName());
+        foundUser.setLastName(input.getLastName());
+        foundUser.setAge(input.getAge());
+        foundUser.setEmail(input.getEmail());
+        foundUser.setPhoneNumber(input.getPhoneNumber());
+        foundUser.setUsername(input.getFirstName().substring(0,2) + input.getLastName().substring(0,2));
+        foundUser.setPassword(passwordEncoder.encode(foundUser.getPassword()));
+
+        return modelMapper.map(foundUser, UserDTO.class);
     }
 
     @Override
