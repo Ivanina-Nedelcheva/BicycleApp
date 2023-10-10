@@ -30,19 +30,19 @@ public class DBInitializer implements CommandLineRunner {
         List<Role> userRoles = em.createQuery("from Role ", Role.class).setMaxResults(1).getResultList();
         if (userRoles.isEmpty()) {
             Role ordinary = new Role();
-            ordinary.setRoleName(UserRole.ORDINARY_USER);
+            ordinary.setRoleName(UserRole.ROLE_ORDINARY_USER);
             em.persist(ordinary);
 
             Role admin = new Role();
-            admin.setRoleName(UserRole.SYSTEM_ADMIN);
+            admin.setRoleName(UserRole.ROLE_SYSTEM_ADMIN);
             em.persist(admin);
 
             Role tech = new Role();
-            tech.setRoleName(UserRole.TECH_SUPPORT_MEMBER);
+            tech.setRoleName(UserRole.ROLE_TECH_SUPPORT_MEMBER);
             em.persist(tech);
 
             Role observer = new Role();
-            observer.setRoleName(UserRole.OBSERVER);
+            observer.setRoleName(UserRole.ROLE_OBSERVER);
             em.persist(observer);
 
 
@@ -54,7 +54,7 @@ public class DBInitializer implements CommandLineRunner {
                 user1.setLastName("Ned");
                 user1.setEmail("iva@gmail.com");
                 user1.setRole(ordinary);
-                user1.setUserRole(UserRole.ORDINARY_USER);
+                user1.setUserRole(UserRole.ROLE_ORDINARY_USER);
                 user1.setPhoneNumber("08946");
                 user1.setAge(String.valueOf(25));
                 user1.setPassword(passwordEncoder.encode("123456"));
@@ -67,7 +67,7 @@ public class DBInitializer implements CommandLineRunner {
                 user2.setLastName("Georg");
                 user2.setEmail("nik@gmail.com");
                 user2.setRole(admin);
-                user2.setUserRole(UserRole.SYSTEM_ADMIN);
+                user2.setUserRole(UserRole.ROLE_SYSTEM_ADMIN);
                 user2.setPhoneNumber("08942");
                 user2.setAge(String.valueOf(35));
                 user2.setPassword(passwordEncoder.encode("123456"));
@@ -79,7 +79,7 @@ public class DBInitializer implements CommandLineRunner {
                 user3.setLastName("Ned");
                 user3.setEmail("mil@gmail.com");
                 user3.setRole(observer);
-                user3.setUserRole(UserRole.OBSERVER);
+                user3.setUserRole(UserRole.ROLE_OBSERVER);
                 user3.setPhoneNumber("089754");
                 user3.setAge(String.valueOf(29));
                 user3.setPassword(passwordEncoder.encode("123456"));
@@ -91,7 +91,7 @@ public class DBInitializer implements CommandLineRunner {
                 user4.setLastName("Georg");
                 user4.setEmail("ive@gmail.com");
                 user4.setRole(tech);
-                user4.setUserRole(UserRole.TECH_SUPPORT_MEMBER);
+                user4.setUserRole(UserRole.ROLE_TECH_SUPPORT_MEMBER);
                 user4.setPhoneNumber("08966");
                 user4.setAge(String.valueOf(37));
                 user4.setPassword(passwordEncoder.encode("456789"));

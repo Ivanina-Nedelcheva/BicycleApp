@@ -1,8 +1,8 @@
 package com.app.bicycle.enums;
 
 public enum UserRole {
-    ORDINARY_USER,
-    SYSTEM_ADMIN,
-    TECH_SUPPORT_MEMBER,
-    OBSERVER
+    ROLE_ORDINARY_USER,
+    ROLE_SYSTEM_ADMIN,
+    ROLE_TECH_SUPPORT_MEMBER,
+    ROLE_OBSERVER
 }

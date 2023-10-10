@@ -55,7 +55,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException, ServletException {
         UserPrincipal userPrincipal = (UserPrincipal)authentication.getPrincipal();
         String token = jwtTokenProvider.generateToken(userPrincipal);
-        response.setHeader("Jwt-Token", token);
+        response.setHeader("jwt-token", token);
         User user = this.modelMapper.map(userPrincipal.getUser(), User.class);
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.writeValue(response.getOutputStream(), user);

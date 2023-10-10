@@ -4,6 +4,7 @@ import javax.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Station extends BaseEntity {
@@ -19,11 +20,11 @@ public class Station extends BaseEntity {
     @Column(name = "active_flag", columnDefinition = "BIT(1) default 1", nullable = false)
     private Boolean activeFlag;
 
-    @OneToMany(mappedBy = "station", fetch = FetchType.LAZY)
-    private List<StationBicycle> stationBicycles = new ArrayList<>();
+    @OneToMany(mappedBy = "station", fetch = FetchType.EAGER)
+    private Set<StationBicycle> stationBicycles ;
 
     @OneToMany(mappedBy = "station", fetch = FetchType.EAGER)
-    private List<Rental> rentals = new ArrayList<>();
+    private Set<Rental> rentals;
 
     public String getStationName() {
         return stationName;
@@ -57,19 +58,19 @@ public class Station extends BaseEntity {
         this.activeFlag = activeFlag;
     }
 
-    public List<StationBicycle> getStationBicycles() {
+    public Set<StationBicycle> getStationBicycles() {
         return stationBicycles;
     }
 
-    public void setStationBicycles(List<StationBicycle> stationBicycles) {
+    public void setStationBicycles(Set<StationBicycle> stationBicycles) {
         this.stationBicycles = stationBicycles;
     }
 
-    public List<Rental> getRentals() {
+    public Set<Rental> getRentals() {
         return rentals;
     }
 
-    public void setRentals(List<Rental> rentals) {
+    public void setRentals(Set<Rental> rentals) {
         this.rentals = rentals;
     }
 }

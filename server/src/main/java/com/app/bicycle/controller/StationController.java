@@ -43,7 +43,7 @@ public class StationController {
 
 
     @RequestMapping(method = RequestMethod.POST, value = "/newStation", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).SYSTEM_ADMIN)")
+    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).ROLE_SYSTEM_ADMIN)")
     public ResponseEntity<StationDTO> addStation(@RequestBody Station station) {
 
         StationDTO result;
@@ -58,7 +58,7 @@ public class StationController {
 
 
     @RequestMapping(method = RequestMethod.POST, value = "/deactivateStation", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).TECH_SUPPORT_MEMBER, T(com.app.bicycle.enums.UserRole).SYSTEM_ADMIN)")
+    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).ROLE_TECH_SUPPORT_MEMBER, T(com.app.bicycle.enums.UserRole).ROLE_SYSTEM_ADMIN)")
     public ResponseEntity<StationDTO> deactivateStation(@RequestParam Long stationId) throws CustomError {
 
         StationDTO result = new StationDTO();
@@ -73,7 +73,7 @@ public class StationController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/activateStation", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).TECH_SUPPORT_MEMBER, T(com.app.bicycle.enums.UserRole).SYSTEM_ADMIN)")
+    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).ROLE_TECH_SUPPORT_MEMBER, T(com.app.bicycle.enums.UserRole).ROLE_SYSTEM_ADMIN)")
     public ResponseEntity<StationDTO> activateStation(@RequestParam Long stationId) throws CustomError {
 
         StationDTO result = new StationDTO();
@@ -89,7 +89,7 @@ public class StationController {
 
 
     @RequestMapping(method = RequestMethod.POST, value = "/addBicycleToStation", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).TECH_SUPPORT_MEMBER, T(com.app.bicycle.enums.UserRole).SYSTEM_ADMIN)")
+    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).ROLE_TECH_SUPPORT_MEMBER, T(com.app.bicycle.enums.UserRole).ROLE_SYSTEM_ADMIN)")
     public ResponseEntity<StationBicycleDTO> addBikeToStation(@RequestParam Long bikeId, @RequestParam Long stationId) throws CustomError {
 
         StationBicycleDTO result = new StationBicycleDTO();

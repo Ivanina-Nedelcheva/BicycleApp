@@ -72,9 +72,9 @@ public class UserServiceImpl extends BaseService implements UserService {
         User registerUser = modelMapper.map(input, User.class);
         setUser(input, registerUser);
         Role ordinary = new Role();
-        ordinary.setRoleName(UserRole.ORDINARY_USER);
+        ordinary.setRoleName(UserRole.ROLE_ORDINARY_USER);
         registerUser.setRole(ordinary);
-        registerUser.setUserRole(UserRole.ORDINARY_USER);
+        registerUser.setUserRole(UserRole.ROLE_ORDINARY_USER);
 
         userRepository.save(registerUser);
         return modelMapper.map(registerUser, UserDTO.class);

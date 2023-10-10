@@ -43,6 +43,7 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/deleteUser", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).ROLE_ORDINARY_USER)")
     public ResponseEntity<UserDTO> deleteUser(@RequestBody UserDTO user) {
         UserDTO response;
         try {
@@ -56,6 +57,7 @@ public class UserController {
 
 
     @RequestMapping(method = RequestMethod.POST, value = "/editUser", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).ROLE_ORDINARY_USER)")
     @PostMapping("/edit")
     public ResponseEntity<UserDTO> editUser(@RequestBody UserDTO user) {
         UserDTO response;
@@ -68,6 +70,7 @@ public class UserController {
     }
 
 
+    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).ROLE_SYSTEM_ADMIN, T(com.app.bicycle.enums.UserRole).ROLE_TECH_SUPPORT_MEMBER)")
     @RequestMapping(method = RequestMethod.GET, value = "/getFaultReports", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<FaultReportDTO>> getFaultReports() {
 
@@ -83,8 +86,8 @@ public class UserController {
 
 
     @RequestMapping(method = RequestMethod.POST, value = "/reportFault", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).TECH_SUPPORT_MEMBER, T(com.app.bicycle.enums.UserRole).SYSTEM_ADMIN, " +
-            "T(com.app.bicycle.enums.UserRole).ORDINARY_USER, T(com.app.bicycle.enums.UserRole).OBSERVER)")
+    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).ROLE_TECH_SUPPORT_MEMBER, T(com.app.bicycle.enums.UserRole).ROLE_SYSTEM_ADMIN, " +
+            "T(com.app.bicycle.enums.UserRole).ROLE_ORDINARY_USER, T(com.app.bicycle.enums.UserRole).ROLE_OBSERVER)")
     public ResponseEntity<FaultReportDTO> faultReport(@RequestParam Long userId, @RequestParam Long bikeId,
                                                    @RequestParam String faultText) {
 
@@ -99,7 +102,7 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/rent", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).ORDINARY_USER)")
+    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).ROLE_ORDINARY_USER)")
     public ResponseEntity<Bicycle> rentBicycle(@RequestParam Long userId, @RequestParam Long bikeId) throws CustomError {
 
         Bicycle result = new Bicycle();
@@ -112,7 +115,7 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/reserve", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).ORDINARY_USER)")
+    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).ROLE_ORDINARY_USER)")
     public ResponseEntity<Bicycle> reserveBicycle(@RequestParam Long userId, @RequestParam Long bikeId) throws CustomError {
 
         Bicycle result = new Bicycle();
@@ -125,7 +128,7 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.PATCH, value = "/return", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).ORDINARY_USER)")
+    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).ROLE_ORDINARY_USER)")
     public ResponseEntity<Bicycle> returnBicycle(@RequestParam Long userId, @RequestParam Long bikeId, @RequestParam Long stationId) throws CustomError {
 
         Bicycle result = new Bicycle();
@@ -138,7 +141,7 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/userHistory", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).ORDINARY_USER)")
+    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).ROLE_ORDINARY_USER)")
     public ResponseEntity<List<RentalDTO>> userHistory(@RequestParam Long userId) throws CustomError {
 
         List<RentalDTO> result;
@@ -152,8 +155,8 @@ public class UserController {
 
 
     @RequestMapping(method = RequestMethod.GET, value = "/inquiry", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).TECH_SUPPORT_MEMBER, T(com.app.bicycle.enums.UserRole).SYSTEM_ADMIN, " +
-            "T(com.app.bicycle.enums.UserRole).ORDINARY_USER, T(com.app.bicycle.enums.UserRole).OBSERVER)")
+    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).ROLE_TECH_SUPPORT_MEMBER, T(com.app.bicycle.enums.UserRole).ROLE_SYSTEM_ADMIN, " +
+            "T(com.app.bicycle.enums.UserRole).ROLE_ORDINARY_USER, T(com.app.bicycle.enums.UserRole).ROLE_OBSERVER)")
     public ResponseEntity<List<RentalDTO>> getAllUserHistory() throws CustomError {
 
         List<RentalDTO> result;

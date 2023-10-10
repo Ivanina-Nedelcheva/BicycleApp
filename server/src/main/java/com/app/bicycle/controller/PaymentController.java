@@ -39,7 +39,7 @@ public class PaymentController {
     }
 
     @RequestMapping(value = "/paymentSheet", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).ORDINARY_USER)")
+    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).ROLE_ORDINARY_USER)")
     public Map<String, String> handlePaymentSheet(@RequestParam Long userId, @RequestParam String paymentMethodId) throws StripeException {
 
         Stripe.apiKey = stripeSecretKey;
@@ -108,7 +108,7 @@ public class PaymentController {
 
 
     @RequestMapping(value = "/chargeSavedPaymentMethod", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).ORDINARY_USER)")
+    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).ROLE_ORDINARY_USER)")
     public Map<String, Object> chargeSavedPaymentMethod(@RequestParam String customerId, @RequestParam Long amount) {
         Map<String, Object> responseData = new HashMap<>();
 

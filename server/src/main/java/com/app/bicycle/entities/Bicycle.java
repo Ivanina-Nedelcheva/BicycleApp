@@ -20,10 +20,10 @@ public class Bicycle extends BaseEntity {
     @OneToMany(mappedBy = "bicycle", fetch = FetchType.EAGER)
     private Set<FaultReport> faultReports;
 
-    @OneToMany(mappedBy = "bicycle", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "bicycle", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     private Set<Rental> rentals;
 
-    @OneToMany(mappedBy = "bicycle", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "bicycle", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     private Set<Reservation> reservations;
 
     @Transient
