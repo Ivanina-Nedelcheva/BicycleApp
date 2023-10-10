@@ -130,8 +130,8 @@ public class UserServiceImpl extends BaseService implements UserService {
 
     private FaultReportDTO mapToDTO(FaultReport faultReport) {
         FaultReportDTO dto = new FaultReportDTO();
-        dto.setBicycle(faultReport.getBicycle());
-        dto.setUser(faultReport.getUser());
+        dto.setBikeId(faultReport.getBicycle().getId());
+        dto.setUserId(faultReport.getUser().getId());
         dto.setFaultText(faultReport.getFaultText());
         dto.setDate(faultReport.getDate());
 

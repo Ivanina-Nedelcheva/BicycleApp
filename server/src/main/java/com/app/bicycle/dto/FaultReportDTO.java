@@ -8,27 +8,27 @@ import java.sql.Date;
 
 public class FaultReportDTO {
 
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    private Bicycle bicycle;
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    private User user;
+    private Long bikeId;
+
+    private Long userId;
+
     private String faultText;
     private Date date;
 
-    public Bicycle getBicycle() {
-        return bicycle;
+    public Long getBikeId() {
+        return bikeId;
     }
 
-    public void setBicycle(Bicycle bicycle) {
-        this.bicycle = bicycle;
+    public void setBikeId(Long bikeId) {
+        this.bikeId = bikeId;
     }
 
-    public User getUser() {
-        return user;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getFaultText() {
