@@ -11,38 +11,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDTO {
-
-    public UserDTO() {
-
-    }
     private String username;
-
     private Long id;
-
     private String firstName;
-
     private String lastName;
-
     private String phoneNumber;
-
     private String email;
-
     private String age;
-
     private String password;
-
     private String role;
-
     private UserRole userRole;
-
     private Integer userRentedBicycles = 0;
-
     private List<Reservation> reservations = new ArrayList<>();
-
     private List<FaultReport> faultReports = new ArrayList<>();
-
     private List<Rental> rentals = new ArrayList<>();
-
     private List<Payment> payments = new ArrayList<>();
 
     //stripeId

@@ -41,9 +41,9 @@ public class UserServiceImpl extends BaseService implements UserService {
     private final BicycleService bicycleService;
     private final StationService stationService;
     private final PriceRepository priceRepository;
-    private ScheduledTimer timer;
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
+    private ScheduledTimer timer;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository,
@@ -70,13 +70,7 @@ public class UserServiceImpl extends BaseService implements UserService {
     @Override
     public UserDTO registerUser(UserDTO input) {
         User registerUser = modelMapper.map(input, User.class);
-        registerUser.setFirstName(input.getFirstName());
-        registerUser.setLastName(input.getLastName());
-        registerUser.setAge(input.getAge());
-        registerUser.setEmail(input.getEmail());
-        registerUser.setPhoneNumber(input.getPhoneNumber());
-        registerUser.setUsername(input.getFirstName().substring(0,2) + input.getLastName().substring(0,2));
-        registerUser.setPassword(passwordEncoder.encode(registerUser.getPassword()));
+        setUser(input, registerUser);
         Role ordinary = new Role();
         ordinary.setRoleName(UserRole.ORDINARY_USER);
         registerUser.setRole(ordinary);
@@ -97,19 +91,23 @@ public class UserServiceImpl extends BaseService implements UserService {
     @Override
     public UserDTO editUser(UserDTO input) {
         User foundUser = userRepository.findById(input.getId()).orElseThrow(() -> new UsernameNotFoundException("No user found!"));
+        setUser(input, foundUser);
+
+        return modelMapper.map(foundUser, UserDTO.class);
+    }
+
+    private void setUser(UserDTO input, User foundUser) {
         foundUser.setFirstName(input.getFirstName());
         foundUser.setLastName(input.getLastName());
         foundUser.setAge(input.getAge());
         foundUser.setEmail(input.getEmail());
         foundUser.setPhoneNumber(input.getPhoneNumber());
-        foundUser.setUsername(input.getFirstName().substring(0,2) + input.getLastName().substring(0,2));
+        foundUser.setUsername(input.getFirstName().substring(0, 2) + input.getLastName().substring(0, 2));
         foundUser.setPassword(passwordEncoder.encode(foundUser.getPassword()));
-
-        return modelMapper.map(foundUser, UserDTO.class);
     }
 
     @Override
-    public FaultReport reportFault(Long userId, Long bikeId, String faultText) {
+    public FaultReportDTO reportFault(Long userId, Long bikeId, String faultText) {
         FaultReport report = new FaultReport();
         report.setUser(userRepository.getReferenceById(userId));
         report.setBicycle(bicycleRepository.getBicycleById(bikeId));
@@ -117,7 +115,8 @@ public class UserServiceImpl extends BaseService implements UserService {
         report.setDate(new Date(System.currentTimeMillis()));
 
         bicycleService.deactivateBicycle(bikeId);
-        return faultReportRepository.save(report);
+        report = faultReportRepository.save(report);
+        return mapToDTO(report);
     }
 
     @Override

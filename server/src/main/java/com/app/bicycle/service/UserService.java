@@ -17,7 +17,7 @@ public interface UserService {
 
     UserDTO editUser(UserDTO input);
 
-    FaultReport reportFault(Long userId, Long bikeId, String faultText);
+    FaultReportDTO reportFault(Long userId, Long bikeId, String faultText);
 
     List<FaultReportDTO> getReports();
 

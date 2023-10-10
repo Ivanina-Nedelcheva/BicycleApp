@@ -9,21 +9,13 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 public class RentalDTO {
-
     Date date;
-
     Double distance;
-
     BigDecimal price;
-
     Boolean finished;
-
     private User user;
-
     private Bicycle bicycle;
-
     private Station station;
-
     private Double minutes;
 
     public Date getDate() {

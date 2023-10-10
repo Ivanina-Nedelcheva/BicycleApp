@@ -4,9 +4,7 @@ import com.app.bicycle.enums.UserRole;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -45,8 +43,8 @@ public class User extends BaseEntity {
     @Column(name = "stripe_id")
     private String stripeId;
 
-//    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-//    private List<Reservation> reservations = new ArrayList<>();
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    private Set<Reservation> reservations;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Set<FaultReport> faultReports;
@@ -59,8 +57,9 @@ public class User extends BaseEntity {
 
     @Transient
     private Integer userRentedBicycles = 0;
-//    @Transient
-//    private Integer userReservedBicycles = 0;
+
+    @Transient
+    private Integer userReservedBicycles = 0;
 
     public String getUsername() {
         return username;
@@ -163,13 +162,13 @@ public class User extends BaseEntity {
         this.userRentedBicycles = userRentedBicycles;
     }
 
-//    public Integer getUserReservedBicycles() {
-//        return userReservedBicycles;
-//    }
-//
-//    public void setUserReservedBicycles(Integer userReservedBicycles) {
-//        this.userReservedBicycles = userReservedBicycles;
-//    }
+    public Integer getUserReservedBicycles() {
+        return userReservedBicycles;
+    }
+
+    public void setUserReservedBicycles(Integer userReservedBicycles) {
+        this.userReservedBicycles = userReservedBicycles;
+    }
 
     public UserRole getUserRole() {
         return userRole;

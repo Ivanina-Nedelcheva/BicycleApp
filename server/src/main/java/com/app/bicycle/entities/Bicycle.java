@@ -1,10 +1,9 @@
 package com.app.bicycle.entities;
 
 import com.app.bicycle.enums.BicycleState;
-import javax.persistence.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 public class Bicycle extends BaseEntity {
@@ -19,13 +18,13 @@ public class Bicycle extends BaseEntity {
     private Boolean activeFlag;
 
     @OneToMany(mappedBy = "bicycle", fetch = FetchType.EAGER)
-    private List<FaultReport> faultReports = new ArrayList<>();
+    private Set<FaultReport> faultReports;
 
     @OneToMany(mappedBy = "bicycle", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    private List<Rental> rentals = new ArrayList<>();
+    private Set<Rental> rentals;
 
-    @OneToMany(mappedBy = "bicycle", fetch = FetchType.LAZY, cascade  = CascadeType.PERSIST)
-    private List<Reservation> reservations = new ArrayList<>();
+    @OneToMany(mappedBy = "bicycle", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    private Set<Reservation> reservations;
 
     @Transient
     private Double distance = 0.0;
@@ -54,28 +53,28 @@ public class Bicycle extends BaseEntity {
         this.activeFlag = activeFlag;
     }
 
-    public List<Rental> getRentals() {
-        return rentals;
-    }
-
-    public void setRentals(List<Rental> rentals) {
-        this.rentals = rentals;
-    }
-
-    public List<Reservation> getReservations() {
-        return reservations;
-    }
-
-    public void setReservations(List<Reservation> reservations) {
-        this.reservations = reservations;
-    }
-
-    public List<FaultReport> getFaultReports() {
+    public Set<FaultReport> getFaultReports() {
         return faultReports;
     }
 
-    public void setFaultReports(List<FaultReport> faultReports) {
+    public void setFaultReports(Set<FaultReport> faultReports) {
         this.faultReports = faultReports;
+    }
+
+    public Set<Rental> getRentals() {
+        return rentals;
+    }
+
+    public void setRentals(Set<Rental> rentals) {
+        this.rentals = rentals;
+    }
+
+    public Set<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(Set<Reservation> reservations) {
+        this.reservations = reservations;
     }
 
     public Double getDistance() {

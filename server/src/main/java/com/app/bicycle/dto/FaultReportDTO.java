@@ -8,13 +8,9 @@ import java.sql.Date;
 public class FaultReportDTO {
 
     private Bicycle bicycle;
-
     private User user;
-
     private String faultText;
-
     private Date date;
-
     private String imageData;
 
     public Bicycle getBicycle() {
