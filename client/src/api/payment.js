@@ -6,6 +6,7 @@ const chargeURI = 'payment/charge'
 export async function getPrices() {
   try {
     const response = await API.get(paymentURI);
+    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error('Error getting data:', error);

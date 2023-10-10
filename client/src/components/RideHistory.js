@@ -1,14 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { View, ScrollView, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import RideReceipt from './RideReceipt';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { colors } from '../../styles/styles';
 import { getUserHistory } from '../api/users';
+import { AuthContext } from '../context/AuthContext'
 
 const RideHistory = () => {
   const [history, setHistory] = useState([])
   const [selectedRideRecord, setSelectedRideRide] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
+  const { userInfo } = useContext(AuthContext)
 
   const openRecord = (rideRecord) => {
     setSelectedRideRide(rideRecord);
@@ -20,11 +22,12 @@ const RideHistory = () => {
   };
 
   useEffect(() => {
-    (async () => {
-      const data = await getUserHistory(1);
-      console.log(data);
-      setHistory(data)
-    })()
+    console.log(userInfo.id);
+    // (async () => {
+    //   const data = await getUserHistory(userInfo.id);
+    //   console.log(data);
+    //   setHistory(data)
+    // })()
   }, [])
 
   const formatDate = (date) => {
@@ -43,7 +46,7 @@ const RideHistory = () => {
 
   return (
     <ScrollView style={styles.container}>
-      {history.map((rideRecord, index) => (
+      {/* {history.map((rideRecord, index) => (
         <TouchableOpacity
           style={styles.rideRecord}
           key={index}
@@ -83,7 +86,7 @@ const RideHistory = () => {
           onClose={closeModal}
           formatDate={formatDate}
         />
-      }
+      } */}
     </ScrollView>
   );
 };
