@@ -23,11 +23,11 @@ const RideHistory = () => {
 
   useEffect(() => {
     console.log(userInfo.id);
-    // (async () => {
-    //   const data = await getUserHistory(userInfo.id);
-    //   console.log(data);
-    //   setHistory(data)
-    // })()
+    (async () => {
+      const data = await getUserHistory(userInfo.id);
+      console.log(data);
+      setHistory(data)
+    })()
   }, [])
 
   const formatDate = (date) => {
