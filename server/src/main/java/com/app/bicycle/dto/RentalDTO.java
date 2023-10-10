@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 public class RentalDTO {
+    private Long id;
     Date date;
     Double distance;
     BigDecimal price;
@@ -17,6 +18,14 @@ public class RentalDTO {
     private Bicycle bicycle;
     private Station station;
     private Double minutes;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public Date getDate() {
         return date;

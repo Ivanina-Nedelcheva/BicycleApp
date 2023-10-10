@@ -1,6 +1,7 @@
 package com.app.bicycle.service.impl;
 
 import com.app.bicycle.dto.BicycleDTO;
+import com.app.bicycle.dto.StationBicycleDTO;
 import com.app.bicycle.dto.StationDTO;
 import com.app.bicycle.entities.Bicycle;
 import com.app.bicycle.entities.Station;
@@ -52,23 +53,25 @@ public class StationServiceImpl extends BaseService implements StationService {
         dto.setLatitude(station.getLatitude());
         dto.setLongitude(station.getLongitude());
 
-        List<BicycleDTO> bicycleDTOs = station.getStationBicycles().stream()
-                .filter(stationBicycle -> {
-                    Bicycle bicycle = stationBicycle.getBicycle();
-                    return bicycle.getActiveFlag() != null && bicycle.getActiveFlag()
-                            && bicycle.getState() == BicycleState.FREE;
-                })
-                .map(stationBicycle -> {
-                    Bicycle bicycle = stationBicycle.getBicycle();
-                    BicycleDTO bicycleDTO = new BicycleDTO();
-                    bicycleDTO.setId(bicycle.getId());
-                    bicycleDTO.setState(bicycle.getState().toString());
-                    bicycleDTO.setBatteryLevel(bicycle.getBatteryLevel());
-                    bicycleDTO.setActiveFlag(bicycle.getActiveFlag());
-                    return bicycleDTO;
-                })
-                .collect(Collectors.toList());
-        dto.setBicycles(bicycleDTOs);
+        if (!station.getStationBicycles().isEmpty()) {
+            List<BicycleDTO> bicycleDTOs = station.getStationBicycles().stream()
+                    .filter(stationBicycle -> {
+                        Bicycle bicycle = stationBicycle.getBicycle();
+                        return bicycle.getActiveFlag() != null && bicycle.getActiveFlag()
+                                && bicycle.getState() == BicycleState.FREE;
+                    })
+                    .map(stationBicycle -> {
+                        Bicycle bicycle = stationBicycle.getBicycle();
+                        BicycleDTO bicycleDTO = new BicycleDTO();
+                        bicycleDTO.setId(bicycle.getId());
+                        bicycleDTO.setState(bicycle.getState().toString());
+                        bicycleDTO.setBatteryLevel(bicycle.getBatteryLevel());
+                        bicycleDTO.setActiveFlag(bicycle.getActiveFlag());
+                        return bicycleDTO;
+                    })
+                    .collect(Collectors.toList());
+            dto.setBicycles(bicycleDTOs);
+        }
         return dto;
     }
 
@@ -95,21 +98,28 @@ public class StationServiceImpl extends BaseService implements StationService {
     }
 
     @Override
-    public Station addStation(double latitude, double longitude, String name) {
+    public StationDTO addStation(double latitude, double longitude, String name) {
         Station station = new Station();
         station.setLatitude(latitude);
         station.setLongitude(longitude);
         station.setStationName(name);
         station.setActiveFlag(true);
 
-        return stationRepository.save(station);
+        station = stationRepository.save(station);
+        return convertToDTO(station);
     }
 
     @Override
-    public StationBicycle findSBConnection(Long bikeId, Long stationId) {
+    public StationBicycleDTO findSBConnection(Long bikeId, Long stationId) {
         Bicycle bicycle = bicycleRepository.getBicycleById(bikeId);
         Station station = stationRepository.getStationById(stationId);
-        return sbRepository.findByBicycleAndStation(bicycle, station);
+        StationBicycle sb = sbRepository.findByBicycleAndStation(bicycle, station);
+
+        StationBicycleDTO dto = new StationBicycleDTO();
+        dto.setId(sb.getId());
+        dto.setBicycle(sb.getBicycle());
+        dto.setStation(sb.getStation());
+        return dto;
     }
 
     @Override
@@ -156,7 +166,8 @@ public class StationServiceImpl extends BaseService implements StationService {
     }
 
     @Override
-    public Station findStationById(Long stationId) {
-        return stationRepository.getStationById(stationId);
+    public StationDTO findStationById(Long stationId) {
+        Station station = stationRepository.getStationById(stationId);
+        return convertToDTO(station);
     }
 }

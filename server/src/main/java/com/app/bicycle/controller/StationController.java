@@ -1,5 +1,6 @@
 package com.app.bicycle.controller;
 
+import com.app.bicycle.dto.StationBicycleDTO;
 import com.app.bicycle.dto.StationDTO;
 import com.app.bicycle.entities.Station;
 import com.app.bicycle.entities.StationBicycle;
@@ -26,22 +27,6 @@ public class StationController {
         this.stationService = stationService;
     }
 
-
-    @RequestMapping(method = RequestMethod.GET, value = "/getAllStations", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Station>> getStations() throws Exception {
-
-        List<Station> result;
-
-        try {
-            result = stationService.getAllActiveStations();
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-
-
     @RequestMapping(method = RequestMethod.GET, value = "/getStationWithBicycles", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<StationDTO>> getStationWithBicycles() {
 
@@ -59,9 +44,9 @@ public class StationController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/newStation", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).SYSTEM_ADMIN)")
-    public ResponseEntity<Station> addStation(@RequestBody Station station) {
+    public ResponseEntity<StationDTO> addStation(@RequestBody Station station) {
 
-        Station result;
+        StationDTO result;
         try {
             result = stationService.addStation(station.getLatitude(), station.getLongitude(), station.getStationName());
         } catch (Exception e) {
@@ -72,12 +57,11 @@ public class StationController {
     }
 
 
-
     @RequestMapping(method = RequestMethod.POST, value = "/deactivateStation", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).TECH_SUPPORT_MEMBER, T(com.app.bicycle.enums.UserRole).SYSTEM_ADMIN)")
-    public ResponseEntity<Station> deactivateStation(@RequestParam Long stationId) throws CustomError {
+    public ResponseEntity<StationDTO> deactivateStation(@RequestParam Long stationId) throws CustomError {
 
-        Station result = new Station();
+        StationDTO result = new StationDTO();
         CustomResponse beResponse = stationService.deactivateStation(stationId);
         if (beResponse == Constants.SUCCESSFUL_OPERATION) {
             result = stationService.findStationById(stationId);
@@ -90,9 +74,9 @@ public class StationController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/activateStation", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).TECH_SUPPORT_MEMBER, T(com.app.bicycle.enums.UserRole).SYSTEM_ADMIN)")
-    public ResponseEntity<Station> activateStation(@RequestParam Long stationId) throws CustomError {
+    public ResponseEntity<StationDTO> activateStation(@RequestParam Long stationId) throws CustomError {
 
-        Station result = new Station();
+        StationDTO result = new StationDTO();
         CustomResponse beResponse = stationService.activateStation(stationId);
         if (beResponse == Constants.SUCCESSFUL_OPERATION) {
             result = stationService.findStationById(stationId);
@@ -106,9 +90,9 @@ public class StationController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/addBicycleToStation", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).TECH_SUPPORT_MEMBER, T(com.app.bicycle.enums.UserRole).SYSTEM_ADMIN)")
-    public ResponseEntity<StationBicycle> addBikeToStation(@RequestParam Long bikeId, @RequestParam Long stationId) throws CustomError {
+    public ResponseEntity<StationBicycleDTO> addBikeToStation(@RequestParam Long bikeId, @RequestParam Long stationId) throws CustomError {
 
-        StationBicycle result = new StationBicycle();
+        StationBicycleDTO result = new StationBicycleDTO();
         CustomResponse beResponse = stationService.addBikeToStation(bikeId, stationId);
         if (beResponse == Constants.SUCCESSFUL_OPERATION) {
             result = stationService.findSBConnection(bikeId, stationId);
