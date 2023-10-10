@@ -23,6 +23,9 @@ export const AuthProvider = ({ children }) => {
     setIsLoading(true)
     const res = await API.post('/login', userData)
     setUserToken(res.headers['jwt-token'])
+
+    console.log(res.headers['jwt-token']);
+    console.log(res.data);
     setAuthToken(res.headers['jwt-token'])
     AsyncStorage.setItem('userToken', res.headers['jwt-token'])
     AsyncStorage.setItem('userInfo', JSON.stringify(userInfo))
@@ -77,8 +80,8 @@ export const AuthProvider = ({ children }) => {
   }, [])
 
   return (
-      <AuthContext.Provider value={{ register, login, logout, isLoading, userToken, userInfo }}>
-        {children}
-      </AuthContext.Provider>
+    <AuthContext.Provider value={{ register, login, logout, isLoading, userToken, userInfo }}>
+      {children}
+    </AuthContext.Provider>
   )
 }

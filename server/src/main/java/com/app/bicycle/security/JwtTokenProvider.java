@@ -49,7 +49,7 @@ public class JwtTokenProvider {
         JWTVerifier verifier;
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
-            verifier = JWT.require(algorithm).withIssuer("unan").build();
+            verifier = JWT.require(algorithm).withIssuer("BicycleApp").build();
         } catch (JWTVerificationException exception) {
             throw new JWTVerificationException("TOKEN CAN NOT BE VERIFIED");
         }

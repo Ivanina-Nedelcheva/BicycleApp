@@ -2,8 +2,6 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { StyleSheet, Text, View, StatusBar, Image } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { useDrawerStatus } from '@react-navigation/drawer';
-
-
 import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { throttle } from 'lodash';

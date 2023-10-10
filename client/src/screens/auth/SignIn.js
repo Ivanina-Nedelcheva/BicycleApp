@@ -26,18 +26,6 @@ const SignIn = ({ navigation }) => {
     console.log(values)
 
     login(values)
-
-
-    // if (values.password == password) {
-    //     setTimeout(() => {
-    //         resetForm()
-    //     }, 1500);
-    // } else {
-    //     setErr(true)
-    //     setTimeout(() => {
-    //         setErr(false)
-    //     }, 1000);
-    // }
   };
 
   return (
@@ -48,7 +36,7 @@ const SignIn = ({ navigation }) => {
       /> */}
 
       <Formik
-        initialValues={{ username: '', password: '' }}
+        initialValues={{ username: 'Iva', password: '123456' }}
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
