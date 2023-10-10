@@ -61,14 +61,6 @@ public class User extends BaseEntity {
     @Transient
     private Integer userReservedBicycles = 0;
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     public String getFirstName() {
         return firstName;
     }
@@ -117,6 +109,45 @@ public class User extends BaseEntity {
         this.password = password;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public UserRole getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(UserRole userRole) {
+        this.userRole = userRole;
+    }
+
+    public String getStripeId() {
+        return stripeId;
+    }
+
+    public void setStripeId(String stripeId) {
+        this.stripeId = stripeId;
+    }
+
+    public Set<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(Set<Reservation> reservations) {
+        this.reservations = reservations;
+    }
 
     public Set<FaultReport> getFaultReports() {
         return faultReports;
@@ -142,18 +173,6 @@ public class User extends BaseEntity {
         this.payments = payments;
     }
 
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
-    public String getRoleName() {
-        return this.role != null && this.role.getRoleName() != null ? this.role.getRoleName().name() : null;
-    }
-
     public Integer getUserRentedBicycles() {
         return userRentedBicycles;
     }
@@ -168,21 +187,5 @@ public class User extends BaseEntity {
 
     public void setUserReservedBicycles(Integer userReservedBicycles) {
         this.userReservedBicycles = userReservedBicycles;
-    }
-
-    public UserRole getUserRole() {
-        return userRole;
-    }
-
-    public void setUserRole(UserRole userRole) {
-        this.userRole = userRole;
-    }
-
-    public String getStripeId() {
-        return stripeId;
-    }
-
-    public void setStripeId(String stripeId) {
-        this.stripeId = stripeId;
     }
 }
