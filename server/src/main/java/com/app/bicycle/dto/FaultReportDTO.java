@@ -2,16 +2,18 @@ package com.app.bicycle.dto;
 
 import com.app.bicycle.entities.Bicycle;
 import com.app.bicycle.entities.User;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.sql.Date;
 
 public class FaultReportDTO {
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Bicycle bicycle;
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private User user;
     private String faultText;
     private Date date;
-    private String imageData;
 
     public Bicycle getBicycle() {
         return bicycle;
@@ -43,14 +45,6 @@ public class FaultReportDTO {
 
     public void setDate(Date date) {
         this.date = date;
-    }
-
-    public String getImageData() {
-        return imageData;
-    }
-
-    public void setImageData(String imageData) {
-        this.imageData = imageData;
     }
 }
 
