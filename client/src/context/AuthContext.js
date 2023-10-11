@@ -2,6 +2,7 @@ import React, { createContext, useEffect, useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Alert } from 'react-native'
 import { API, setAuthToken } from '../api/axiosConfig'
+import { addUser } from '../api/users'
 
 export const AuthContext = createContext()
 
@@ -10,46 +11,23 @@ export const AuthProvider = ({ children }) => {
   const [userToken, setUserToken] = useState('')
   const [userInfo, setUserInfo] = useState(null)
 
-  function register() {
-    setIsLoading(false)
-    setUserToken('asd')
-
-    Alert.alert('Successful Registration!', null, [{
-      onPress: () => setUserToken('asd')
-    }])
+  function register(userData) {
+    addUser(userData)
+    // Alert.alert('Successful Registration!', null, [{
+    //   onPress: () => setUserToken('asd')
+    // }])
   }
 
   async function login(userData) {
     setIsLoading(true)
     const res = await API.post('/login', userData)
     setUserToken(res.headers['jwt-token'])
-
-    console.log(res.headers['jwt-token']);
-    console.log(res.data);
     setAuthToken(res.headers['jwt-token'])
+    setUserInfo(res.data)
     AsyncStorage.setItem('userToken', res.headers['jwt-token'])
     AsyncStorage.setItem('userInfo', JSON.stringify(userInfo))
-
-    const userString = `{
-      "id": 1,
-      "firstName": "Iva",
-      "lastName": "Ned",
-      "phoneNumber": "08946",
-      "email": "iva@gmail.com",
-      "age": "25",
-      "password": "$2a$10$Wn0a4wns5BwEdt4GQcj3MujN37OiuH93rMsc0aSDKknDVq16.VJ3W",
-      "username": "Iva",
-      "userRole": "ORDINARY_USER",
-      "stripeId": null,
-      "reservations": []
-    }`;
-
-    const userObject = JSON.parse(userString);
-    setUserInfo(userObject)
-
+    setIsLoading(false)
   }
-
-  console.log(userInfo);
 
   function logout() {
     setIsLoading(true)

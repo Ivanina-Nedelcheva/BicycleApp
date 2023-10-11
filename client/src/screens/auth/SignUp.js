@@ -45,14 +45,15 @@ const SignUp = ({ navigation }) => {
   });
 
   const handleSubmit = values => {
-    register()
+    register(values)
+    navigation.navigate('SignIn')
   };
 
   return (
     <ScrollView contentContainerStyle={styles.scroll}>
       <View style={styles.container}>
         <Formik
-          initialValues={{ firstName: '', lastName: '', id: '', phoneNumber: '', email: '', password: '', confirmPassword: '', dateOfBirth: '' }}
+          initialValues={{ firstName: 'Pom', lastName: 'Pom', phoneNumber: '0888555299', email: 'asd@gmail.com', password: 'Hasmukar123!', confirmPassword: 'Hasmukar123!', dateOfBirth: '' }}
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
           initialErrors={true}

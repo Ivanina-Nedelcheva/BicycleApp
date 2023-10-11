@@ -18,7 +18,7 @@ const Map = ({ route, navigation }) => {
 	const [isScannerOpen, setScannerOpen] = useState(false);
 	const [stations, setStations] = useState([])
 
-	console.log(useDrawerStatus());
+	// console.log(useDrawerStatus());
 
 	const hubsRef = useRef();
 	const mapRef = useRef()

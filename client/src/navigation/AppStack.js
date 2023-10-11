@@ -18,10 +18,10 @@ const AppStack = () => {
   console.log(userInfo?.userRole);
   const role = userInfo?.userRole
 
-  const SYSTEM_ADMIN = "SYSTEM_ADMIN"
-  const ORDINARY_USER = "ORDINARY_USER"
-  const OBSERVER = "OBSERVER"
-  const TECH_SUPPORT_MEMBER = "TECH_SUPPORT_MEMBER"
+  const SYSTEM_ADMIN = "ROLE_SYSTEM_ADMIN"
+  const ORDINARY_USER = "ROLE_ORDINARY_USER"
+  const OBSERVER = "ROLE_OBSERVER"
+  const TECH_SUPPORT_MEMBER = "ROLE_TECH_SUPPORT_MEMBER"
 
   const screens = [
     {

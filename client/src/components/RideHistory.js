@@ -46,7 +46,7 @@ const RideHistory = () => {
 
   return (
     <ScrollView style={styles.container}>
-      {/* {history.map((rideRecord, index) => (
+      {history.map((rideRecord, index) => (
         <TouchableOpacity
           style={styles.rideRecord}
           key={index}
@@ -86,7 +86,7 @@ const RideHistory = () => {
           onClose={closeModal}
           formatDate={formatDate}
         />
-      } */}
+      }
     </ScrollView>
   );
 };
