@@ -8,6 +8,7 @@ public class StationDTO {
     private Double latitude;
     private Double longitude;
     private List<BicycleDTO> bicycles;
+    private Boolean activeFlag;
 
     public Long getId() {
         return id;
@@ -47,5 +48,13 @@ public class StationDTO {
 
     public void setBicycles(List<BicycleDTO> bicycles) {
         this.bicycles = bicycles;
+    }
+
+    public Boolean getActiveFlag() {
+        return activeFlag;
+    }
+
+    public void setActiveFlag(Boolean activeFlag) {
+        this.activeFlag = activeFlag;
     }
 }

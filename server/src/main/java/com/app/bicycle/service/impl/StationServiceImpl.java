@@ -42,18 +42,17 @@ public class StationServiceImpl extends BaseService implements StationService {
         List<Station> stations = stationRepository.findAll();
 
         return stations.stream()
-                .map(this::convertToDTO)
+                .map(this::convertSBtoDTO)
                 .collect(Collectors.toList());
     }
 
-    private StationDTO convertToDTO(Station station) {
+    private StationDTO convertSBtoDTO(Station station) {
         StationDTO dto = new StationDTO();
         dto.setId(station.getId());
         dto.setStationName(station.getStationName());
         dto.setLatitude(station.getLatitude());
         dto.setLongitude(station.getLongitude());
 
-        if (!station.getStationBicycles().isEmpty()) {
             List<BicycleDTO> bicycleDTOs = station.getStationBicycles().stream()
                     .filter(stationBicycle -> {
                         Bicycle bicycle = stationBicycle.getBicycle();
@@ -71,7 +70,7 @@ public class StationServiceImpl extends BaseService implements StationService {
                     })
                     .collect(Collectors.toList());
             dto.setBicycles(bicycleDTOs);
-        }
+
         return dto;
     }
 
@@ -106,7 +105,14 @@ public class StationServiceImpl extends BaseService implements StationService {
         station.setActiveFlag(true);
 
         station = stationRepository.save(station);
-        return convertToDTO(station);
+
+        StationDTO stationDTO = new StationDTO();
+        stationDTO.setLatitude(station.getLatitude());
+        stationDTO.setLongitude(station.getLongitude());
+        stationDTO.setStationName(station.getStationName());
+        stationDTO.setActiveFlag(station.getActiveFlag());
+
+        return stationDTO;
     }
 
     @Override
@@ -168,6 +174,6 @@ public class StationServiceImpl extends BaseService implements StationService {
     @Override
     public StationDTO findStationById(Long stationId) {
         Station station = stationRepository.getStationById(stationId);
-        return convertToDTO(station);
+        return convertSBtoDTO(station);
     }
 }

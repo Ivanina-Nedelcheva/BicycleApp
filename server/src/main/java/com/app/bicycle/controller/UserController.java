@@ -70,8 +70,8 @@ public class UserController {
     }
 
 
-    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).ROLE_SYSTEM_ADMIN, T(com.app.bicycle.enums.UserRole).ROLE_TECH_SUPPORT_MEMBER)")
     @RequestMapping(method = RequestMethod.GET, value = "/getFaultReports", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).ROLE_SYSTEM_ADMIN, T(com.app.bicycle.enums.UserRole).ROLE_TECH_SUPPORT_MEMBER)")
     public ResponseEntity<List<FaultReportDTO>> getFaultReports() {
 
         List<FaultReportDTO> response;
