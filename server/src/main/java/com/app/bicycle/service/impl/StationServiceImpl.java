@@ -174,6 +174,11 @@ public class StationServiceImpl extends BaseService implements StationService {
     @Override
     public StationDTO findStationById(Long stationId) {
         Station station = stationRepository.getStationById(stationId);
-        return convertSBtoDTO(station);
+        StationDTO stationDTO = new StationDTO();
+        stationDTO.setLatitude(station.getLatitude());
+        stationDTO.setLongitude(station.getLongitude());
+        stationDTO.setStationName(station.getStationName());
+        stationDTO.setActiveFlag(station.getActiveFlag());
+        return stationDTO;
     }
 }
