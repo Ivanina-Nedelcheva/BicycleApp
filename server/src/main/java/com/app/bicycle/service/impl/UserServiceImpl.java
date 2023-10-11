@@ -81,8 +81,8 @@ public class UserServiceImpl extends BaseService implements UserService {
 
     @Override
     public UserDTO deleteUser(UserDTO input) {
-        User foundUser = userRepository.findUserByUsername(input.getUsername());
-        checkIfNull(foundUser, input.getUsername());
+        User foundUser = userRepository.findUserByEmail(input.getEmail());
+        checkIfNull(foundUser, input.getEmail());
         userRepository.delete(foundUser);
         return modelMapper.map(input, UserDTO.class);
     }
@@ -272,13 +272,11 @@ public class UserServiceImpl extends BaseService implements UserService {
         foundUser.setAge(5);
         foundUser.setEmail(input.getEmail());
         foundUser.setPhoneNumber(input.getPhoneNumber());
-        foundUser.setUsername(input.getFirstName().substring(0, 2) + input.getLastName().substring(0, 2));
         foundUser.setPassword(passwordEncoder.encode(foundUser.getPassword()));
     }
 
     private UserDTO userToDTO(User user) {
         UserDTO userDTO = new UserDTO();
-        userDTO.setUsername(user.getUsername());
         userDTO.setFirstName(user.getFirstName());
         userDTO.setLastName(user.getLastName());
         userDTO.setPhoneNumber(user.getPhoneNumber());

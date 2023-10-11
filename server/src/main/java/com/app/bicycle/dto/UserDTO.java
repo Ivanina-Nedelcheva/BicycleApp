@@ -12,7 +12,6 @@ import java.util.List;
 
 public class UserDTO {
     private Long id;
-    private String username;
     private String firstName;
     private String lastName;
     private String phoneNumber;
@@ -22,12 +21,11 @@ public class UserDTO {
     private String role;
     private UserRole userRole;
     private Integer userRentedBicycles = 0;
+    private String stripeId;
     private List<Reservation> reservations = new ArrayList<>();
     private List<FaultReport> faultReports = new ArrayList<>();
     private List<Rental> rentals = new ArrayList<>();
     private List<Payment> payments = new ArrayList<>();
-
-    //stripeId
 
     public Long getId() {
         return id;
@@ -93,12 +91,28 @@ public class UserDTO {
         this.role = role;
     }
 
+    public UserRole getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(UserRole userRole) {
+        this.userRole = userRole;
+    }
+
     public Integer getUserRentedBicycles() {
         return userRentedBicycles;
     }
 
     public void setUserRentedBicycles(Integer userRentedBicycles) {
         this.userRentedBicycles = userRentedBicycles;
+    }
+
+    public String getStripeId() {
+        return stripeId;
+    }
+
+    public void setStripeId(String stripeId) {
+        this.stripeId = stripeId;
     }
 
     public List<Reservation> getReservations() {
@@ -131,21 +145,5 @@ public class UserDTO {
 
     public void setPayments(List<Payment> payments) {
         this.payments = payments;
-    }
-
-    public UserRole getUserRole() {
-        return userRole;
-    }
-
-    public void setUserRole(UserRole userRole) {
-        this.userRole = userRole;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 }

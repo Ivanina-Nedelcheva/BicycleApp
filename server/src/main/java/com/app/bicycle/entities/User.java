@@ -27,9 +27,6 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private String password;
 
-    @Column
-    private String username;
-
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "role_id")
@@ -103,14 +100,6 @@ public class User extends BaseEntity {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public Role getRole() {

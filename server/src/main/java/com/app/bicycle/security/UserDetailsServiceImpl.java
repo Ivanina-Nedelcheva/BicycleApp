@@ -14,10 +14,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private UserRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String username) {
-        User user = userRepository.findUserByUsername(username);
+    public UserDetails loadUserByUsername(String email) {
+        User user = userRepository.findUserByEmail(email);
         if (user == null) {
-            throw new RuntimeException(String.format("User %s not found in the database", username));
+            throw new RuntimeException(String.format("User %s not found in the database", email));
         }
         return new UserPrincipal(user);
     }

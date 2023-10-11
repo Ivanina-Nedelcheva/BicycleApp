@@ -49,7 +49,6 @@ public class DBInitializer implements CommandLineRunner {
             List<User> userList = em.createQuery("from User", User.class).setMaxResults(1).getResultList();
             if (userList.isEmpty()) {
                 User user1 = new User();
-                user1.setUsername("Iva");
                 user1.setFirstName("Iva");
                 user1.setLastName("Ned");
                 user1.setEmail("iva@gmail.com");
@@ -61,7 +60,6 @@ public class DBInitializer implements CommandLineRunner {
 
 
                 User user2 = new User();
-                user2.setUsername("Niki");
                 user2.setFirstName("Niki");
                 user2.setLastName("Georg");
                 user2.setEmail("nik@gmail.com");
@@ -72,7 +70,6 @@ public class DBInitializer implements CommandLineRunner {
                 em.persist(user2);
 
                 User user3 = new User();
-                user3.setUsername("Mil");
                 user3.setFirstName("Mil");
                 user3.setLastName("Ned");
                 user3.setEmail("mil@gmail.com");
@@ -83,7 +80,6 @@ public class DBInitializer implements CommandLineRunner {
                 em.persist(user3);
 
                 User user4 = new User();
-                user4.setUsername("Ive");
                 user4.setFirstName("Ive");
                 user4.setLastName("Georg");
                 user4.setEmail("ive@gmail.com");
