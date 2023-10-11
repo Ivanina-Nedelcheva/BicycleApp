@@ -54,9 +54,8 @@ public class DBInitializer implements CommandLineRunner {
                 user1.setLastName("Ned");
                 user1.setEmail("iva@gmail.com");
                 user1.setRole(ordinary);
-                user1.setUserRole(UserRole.ROLE_ORDINARY_USER);
                 user1.setPhoneNumber("08946");
-                user1.setAge(String.valueOf(25));
+                user1.setAge(25);
                 user1.setPassword(passwordEncoder.encode("123456"));
                 em.persist(user1);
 
@@ -67,9 +66,8 @@ public class DBInitializer implements CommandLineRunner {
                 user2.setLastName("Georg");
                 user2.setEmail("nik@gmail.com");
                 user2.setRole(admin);
-                user2.setUserRole(UserRole.ROLE_SYSTEM_ADMIN);
                 user2.setPhoneNumber("08942");
-                user2.setAge(String.valueOf(35));
+                user2.setAge(35);
                 user2.setPassword(passwordEncoder.encode("123456"));
                 em.persist(user2);
 
@@ -79,9 +77,8 @@ public class DBInitializer implements CommandLineRunner {
                 user3.setLastName("Ned");
                 user3.setEmail("mil@gmail.com");
                 user3.setRole(observer);
-                user3.setUserRole(UserRole.ROLE_OBSERVER);
                 user3.setPhoneNumber("089754");
-                user3.setAge(String.valueOf(29));
+                user3.setAge(29);
                 user3.setPassword(passwordEncoder.encode("123456"));
                 em.persist(user3);
 
@@ -91,9 +88,8 @@ public class DBInitializer implements CommandLineRunner {
                 user4.setLastName("Georg");
                 user4.setEmail("ive@gmail.com");
                 user4.setRole(tech);
-                user4.setUserRole(UserRole.ROLE_TECH_SUPPORT_MEMBER);
                 user4.setPhoneNumber("08966");
-                user4.setAge(String.valueOf(37));
+                user4.setAge(37);
                 user4.setPassword(passwordEncoder.encode("456789"));
                 em.persist(user4);
             }

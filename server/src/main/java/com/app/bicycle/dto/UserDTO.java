@@ -11,13 +11,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDTO {
-    private String username;
     private Long id;
+    private String username;
     private String firstName;
     private String lastName;
     private String phoneNumber;
     private String email;
-    private String age;
+    private Integer age;
     private String password;
     private String role;
     private UserRole userRole;
@@ -69,11 +69,11 @@ public class UserDTO {
         this.email = email;
     }
 
-    public String getAge() {
+    public Integer getAge() {
         return age;
     }
 
-    public void setAge(String age) {
+    public void setAge(Integer age) {
         this.age = age;
     }
 

@@ -30,7 +30,7 @@ public class UserController {
 
 
     @RequestMapping(method = RequestMethod.POST, value = "/registerUser", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDTO> getAllBicycles(@RequestBody UserDTO inputUser) {
+    public ResponseEntity<UserDTO> registerUser(@RequestBody UserDTO inputUser) {
 
         UserDTO response;
         try {

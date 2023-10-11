@@ -84,8 +84,6 @@ public class BicycleController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/changeState", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).ROLE_TECH_SUPPORT_MEMBER, T(com.app.bicycle.enums.UserRole).ROLE_SYSTEM_ADMIN, " +
-            "T(com.app.bicycle.enums.UserRole).ROLE_OBSERVER)")
     public ResponseEntity<Bicycle> changeState(@RequestParam Long bikeId, @RequestParam String newState) throws CustomError {
 
         Bicycle result;

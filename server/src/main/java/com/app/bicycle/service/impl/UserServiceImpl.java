@@ -1,6 +1,5 @@
 package com.app.bicycle.service.impl;
 
-import com.app.bicycle.dto.ChargeRequestDTO;
 import com.app.bicycle.dto.FaultReportDTO;
 import com.app.bicycle.dto.RentalDTO;
 import com.app.bicycle.dto.UserDTO;
@@ -43,6 +42,7 @@ public class UserServiceImpl extends BaseService implements UserService {
     private final PriceRepository priceRepository;
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
+    private final RoleRepository roleRepository;
     private ScheduledTimer timer;
 
     @Autowired
@@ -53,7 +53,8 @@ public class UserServiceImpl extends BaseService implements UserService {
                            StationBicycleRepository sbRepository, BicycleService bicycleService,
                            StationService stationService,
                            PriceRepository priceRepository,
-                           ScheduledTimer timer, PasswordEncoder passwordEncoder, ModelMapper modelMapper) {
+                           ScheduledTimer timer, PasswordEncoder passwordEncoder, ModelMapper modelMapper,
+                           RoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.faultReportRepository = faultReportRepository;
         this.bicycleRepository = bicycleRepository;
@@ -65,19 +66,17 @@ public class UserServiceImpl extends BaseService implements UserService {
         this.timer = timer;
         this.passwordEncoder = passwordEncoder;
         this.modelMapper = modelMapper;
+        this.roleRepository = roleRepository;
     }
 
     @Override
     public UserDTO registerUser(UserDTO input) {
         User registerUser = modelMapper.map(input, User.class);
         setUser(input, registerUser);
-       Role ordinary = new Role();
-        ordinary.setRoleName(UserRole.ROLE_ORDINARY_USER);
+        Role ordinary = roleRepository.findByRoleName(UserRole.ROLE_ORDINARY_USER);
         registerUser.setRole(ordinary);
-        registerUser.setUserRole(UserRole.ROLE_ORDINARY_USER);
-
         userRepository.save(registerUser);
-        return modelMapper.map(registerUser, UserDTO.class);
+        return userToDTO(registerUser);
     }
 
     @Override
@@ -96,16 +95,6 @@ public class UserServiceImpl extends BaseService implements UserService {
         return modelMapper.map(foundUser, UserDTO.class);
     }
 
-    private void setUser(UserDTO input, User foundUser) {
-        foundUser.setFirstName(input.getFirstName());
-        foundUser.setLastName(input.getLastName());
-        foundUser.setAge(input.getAge());
-        foundUser.setEmail(input.getEmail());
-        foundUser.setPhoneNumber(input.getPhoneNumber());
-        foundUser.setUsername(input.getFirstName().substring(0, 2) + input.getLastName().substring(0, 2));
-        foundUser.setPassword(passwordEncoder.encode(foundUser.getPassword()));
-    }
-
     @Override
     public FaultReportDTO reportFault(Long userId, Long bikeId, String faultText) {
         FaultReport report = new FaultReport();
@@ -116,27 +105,17 @@ public class UserServiceImpl extends BaseService implements UserService {
 
         bicycleService.deactivateBicycle(bikeId);
         report = faultReportRepository.save(report);
-        return mapToDTO(report);
+        return reportToDTO(report);
     }
 
     @Override
     public List<FaultReportDTO> getReports() {
         List<FaultReport> faultReports = faultReportRepository.findAllByOrderByDateDesc();
         return faultReports.stream()
-                .map(this::mapToDTO)
+                .map(this::reportToDTO)
                 .collect(Collectors.toList());
     }
 
-
-    private FaultReportDTO mapToDTO(FaultReport faultReport) {
-        FaultReportDTO dto = new FaultReportDTO();
-        dto.setBikeId(faultReport.getBicycle().getId());
-        dto.setUserId(faultReport.getUser().getId());
-        dto.setFaultText(faultReport.getFaultText());
-        dto.setDate(faultReport.getDate());
-
-        return dto;
-    }
 
     @Override
     public boolean checkUserRentedBicycles(Long userId) {
@@ -197,7 +176,7 @@ public class UserServiceImpl extends BaseService implements UserService {
             throw new CustomError(Constants.BICYCLE_IS_NOT_FREE_OR_RESERVED);
         }
 
-//        stationService.deleteSBConnection(bikeId);
+//      stationService.deleteSBConnection(bikeId); could be removed
         bicycleService.changeBicycleState(bikeId, BicycleState.RESERVED);
         increaseUserReservedBicycles(userId);
     }
@@ -221,8 +200,7 @@ public class UserServiceImpl extends BaseService implements UserService {
         userRent.setPrice(price);
         userRent.setDistance(minutes / 2.5);
         rentalRepository.save(userRent);
-
-        chargeUser(price, user);
+        //charge
 
         stationService.addBikeToStation(bikeId, stationId); //here is the check if the station has more room and save is here
 
@@ -278,24 +256,36 @@ public class UserServiceImpl extends BaseService implements UserService {
         return historyDTOList;
     }
 
+    private FaultReportDTO reportToDTO(FaultReport faultReport) {
+        FaultReportDTO dto = new FaultReportDTO();
+        dto.setBikeId(faultReport.getBicycle().getId());
+        dto.setUserId(faultReport.getUser().getId());
+        dto.setFaultText(faultReport.getFaultText());
+        dto.setDate(faultReport.getDate());
 
-    private void chargeUser(BigDecimal price, User user) {
-        //stripe
-        //saveToDB
-        ChargeRequestDTO chargeRequest = new ChargeRequestDTO();
-        chargeRequest.setAmount(price);
-//        stripeService.charge(chargeRequest);
+        return dto;
+    }
 
-        if (true
-            // successful
-        ) {
-            Payment newPayment = new Payment();
-            newPayment.setUser(user);
-            newPayment.setAmount(price);
-            newPayment.setDate(new Date(System.currentTimeMillis()));
-            //saveNewPayment
-        } else {
-        }
-        //try again and save
+    private void setUser(UserDTO input, User foundUser) {
+        foundUser.setFirstName(input.getFirstName());
+        foundUser.setLastName(input.getLastName());
+        foundUser.setAge(5);
+        foundUser.setEmail(input.getEmail());
+        foundUser.setPhoneNumber(input.getPhoneNumber());
+        foundUser.setUsername(input.getFirstName().substring(0, 2) + input.getLastName().substring(0, 2));
+        foundUser.setPassword(passwordEncoder.encode(foundUser.getPassword()));
+    }
+
+    private UserDTO userToDTO(User user) {
+        UserDTO userDTO = new UserDTO();
+        userDTO.setUsername(user.getUsername());
+        userDTO.setFirstName(user.getFirstName());
+        userDTO.setLastName(user.getLastName());
+        userDTO.setPhoneNumber(user.getPhoneNumber());
+        userDTO.setEmail(user.getEmail());
+        userDTO.setAge(user.getAge());
+        userDTO.setPassword(user.getPassword());
+
+        return userDTO;
     }
 }

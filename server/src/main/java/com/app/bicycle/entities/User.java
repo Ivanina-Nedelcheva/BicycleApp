@@ -22,7 +22,7 @@ public class User extends BaseEntity {
     private String email;
 
     @Column(nullable = false)
-    private String age;
+    private Integer age;
 
     @Column(nullable = false)
     private String password;
@@ -32,13 +32,9 @@ public class User extends BaseEntity {
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "role_id", nullable = false)
+    @JoinColumn(name = "role_id")
     @Enumerated(value = EnumType.STRING)
     private Role role;
-
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private UserRole userRole;
 
     @Column(name = "stripe_id")
     private String stripeId;
@@ -93,11 +89,11 @@ public class User extends BaseEntity {
         this.email = email;
     }
 
-    public String getAge() {
+    public Integer getAge() {
         return age;
     }
 
-    public void setAge(String age) {
+    public void setAge(Integer age) {
         this.age = age;
     }
 
@@ -123,14 +119,6 @@ public class User extends BaseEntity {
 
     public void setRole(Role role) {
         this.role = role;
-    }
-
-    public UserRole getUserRole() {
-        return userRole;
-    }
-
-    public void setUserRole(UserRole userRole) {
-        this.userRole = userRole;
     }
 
     public String getStripeId() {
