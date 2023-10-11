@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { StyleSheet, Text, View, StatusBar, Image } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
-import { useDrawerStatus } from '@react-navigation/drawer';
 import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { throttle } from 'lodash';
@@ -17,8 +16,6 @@ const Map = ({ route, navigation }) => {
 	const [errorMsg, setErrorMsg] = useState('');
 	const [isScannerOpen, setScannerOpen] = useState(false);
 	const [stations, setStations] = useState([])
-
-	// console.log(useDrawerStatus());
 
 	const hubsRef = useRef();
 	const mapRef = useRef()

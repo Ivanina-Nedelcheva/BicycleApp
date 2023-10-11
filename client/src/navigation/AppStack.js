@@ -4,13 +4,16 @@ import { Map, Profile, History, Payment, BikeReports, BikeSelect, ReportIssue, A
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import CustomButton from "../components/CustomButton";
 import { AuthContext } from "../context/AuthContext";
+import CustomDrawer from "../components/CustomDrawer";
+import { colors } from "../../styles/styles";
 
 const Drawer = createDrawerNavigator();
 const AppStack = () => {
   const drawerLabelStyle = {
-    fontFamily: 'Roboto-Bold',
+    fontFamily: 'Roboto-Regular',
     fontSize: 16,
     textAlign: 'center',
+    color: colors.bleuDeFrance,
   }
 
   const { userInfo } = useContext(AuthContext)
@@ -31,13 +34,6 @@ const AppStack = () => {
       visible: true,
       options: {
         headerShown: false,
-        drawerIcon: ({ focused, color, size }) => (
-          <MaterialCommunityIcons
-            name={focused ? 'map-marker' : 'map-marker-outline'}
-            color={color}
-            size={size}
-          />
-        ),
         drawerLabelStyle,
       },
     },
@@ -47,13 +43,6 @@ const AppStack = () => {
       icon: ['account', 'account-outline'],
       visible: true,
       options: {
-        drawerIcon: ({ focused, color, size }) => (
-          <MaterialCommunityIcons
-            name={focused ? 'account' : 'account-outline'}
-            color={color}
-            size={size}
-          />
-        ),
         drawerLabelStyle,
       },
     },
@@ -63,13 +52,6 @@ const AppStack = () => {
       icon: ['history', 'history'],
       visible: role !== SYSTEM_ADMIN,
       options: {
-        drawerIcon: ({ focused, color, size }) => (
-          <MaterialCommunityIcons
-            name='history'
-            color={color}
-            size={size}
-          />
-        ),
         drawerLabelStyle,
       },
     },
@@ -79,13 +61,6 @@ const AppStack = () => {
       icon: ['wallet', 'wallet-outline'],
       visible: role !== SYSTEM_ADMIN,
       options: {
-        drawerIcon: ({ focused, color, size }) => (
-          <MaterialCommunityIcons
-            name={focused ? 'wallet' : 'wallet-outline'}
-            color={color}
-            size={size}
-          />
-        ),
         drawerLabelStyle,
       },
     },
@@ -115,21 +90,9 @@ const AppStack = () => {
     },
   ];
 
-  function CustomDrawerContent(props) {
-    const { state, ...rest } = props;
-    const newState = {
-      ...state,
-    }
-
-    return (
-      <DrawerContentScrollView {...rest}>
-        <DrawerItemList state={newState} {...rest} />
-      </DrawerContentScrollView>
-    );
-  }
 
   return (
-    <Drawer.Navigator drawerContent={(props) => <CustomDrawerContent {...props} backBehavior={'history'} />}>
+    <Drawer.Navigator drawerContent={(props) => <CustomDrawer {...props} backBehavior={'history'} screens={screens} />}>
       {
         screens.filter(screen => screen.visible).map((screen) => (
           <Drawer.Screen
@@ -139,9 +102,7 @@ const AppStack = () => {
             options={({ navigation }) => {
               if (screen.name === 'Bicycle Select' || screen.name === 'Report Issue') {
                 return {
-                  hideStatusBar: false,
-                  focused: false,
-                  // drawerLabel: () => null,
+                  drawerLabel: () => null,
                   drawerIcon: () => null,
                   headerLeft: () => (
                     <CustomButton

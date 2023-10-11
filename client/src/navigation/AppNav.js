@@ -10,15 +10,15 @@ const AppNav = () => {
   const { isLoading, userToken } = useContext(AuthContext)
 
   if (isLoading) {
-    <View style={styles.indicator}>
-      <ActivityIndicator size={100} color={colors.bleuDeFrance} />
-    </View>
+    return (
+      <View style={styles.indicator}>
+        <ActivityIndicator size={100} color={colors.bleuDeFrance} />
+      </View>
+    );
   }
-
   return (
     <NavigationContainer>
       {userToken ? <AppStack></AppStack> : <AuthStack></AuthStack>}
-
     </NavigationContainer>
   )
 }
