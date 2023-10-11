@@ -1,5 +1,6 @@
 package com.app.bicycle.service.impl;
 
+import com.app.bicycle.dto.BicycleDTO;
 import com.app.bicycle.entities.Bicycle;
 import com.app.bicycle.entities.FaultReport;
 import com.app.bicycle.entities.Station;
@@ -59,8 +60,9 @@ public class BicycleServiceImpl extends BaseService implements BicycleService {
     }
 
     @Override
-    public Bicycle findBicycleById(Long bikeId) {
-        return bicycleRepository.getBicycleById(bikeId);
+    public BicycleDTO findBicycleById(Long bikeId) {
+        Bicycle bicycle = bicycleRepository.getBicycleById(bikeId);
+        return mapToDTO(bicycle);
     }
 
     @Override
@@ -121,6 +123,15 @@ public class BicycleServiceImpl extends BaseService implements BicycleService {
             FaultReport faultReportForDelete = faultReportRepository.getFaultReportByBicycle(bikeId);
             faultReportRepository.delete(faultReportForDelete);
         }
+    }
+
+    private BicycleDTO mapToDTO(Bicycle bicycle) {
+        BicycleDTO bicycleDTO = new BicycleDTO();
+        bicycleDTO.setId(bicycle.getId());
+        bicycleDTO.setState(bicycle.getState().toString());
+        bicycleDTO.setBatteryLevel(bicycle.getBatteryLevel());
+        bicycleDTO.setActiveFlag(bicycle.getActiveFlag());
+        return bicycleDTO;
     }
 
     private Boolean isValidStateTransition(BicycleState currentState, BicycleState newState) {

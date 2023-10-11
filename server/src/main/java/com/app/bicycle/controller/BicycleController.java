@@ -1,6 +1,6 @@
 package com.app.bicycle.controller;
 
-import com.app.bicycle.entities.Bicycle;
+import com.app.bicycle.dto.BicycleDTO;
 import com.app.bicycle.enums.BicycleState;
 import com.app.bicycle.service.BicycleService;
 import com.app.bicycle.utils.Constants;
@@ -11,9 +11,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -28,9 +25,9 @@ public class BicycleController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/newBicycle", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).ROLE_SYSTEM_ADMIN)")
-    public ResponseEntity<Bicycle> addBicycle(@RequestParam Long stationId) throws CustomError {
+    public ResponseEntity<BicycleDTO> addBicycle(@RequestParam Long stationId) throws CustomError {
 
-        Bicycle result = new Bicycle();
+        BicycleDTO result = new BicycleDTO();
         CustomResponse beResponse = bicycleService.addBicycle(stationId);
         if (beResponse == Constants.SUCCESSFUL_OPERATION) {
             result = bicycleService.findBicycleById(bicycleService.getBicycleNextId());
@@ -42,9 +39,9 @@ public class BicycleController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/deactivateBicycle", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).ROLE_TECH_SUPPORT_MEMBER, T(com.app.bicycle.enums.UserRole).ROLE_SYSTEM_ADMIN)")
-    public ResponseEntity<Bicycle> deactivateBicycle(@RequestParam Long bikeId) throws CustomError {
+    public ResponseEntity<BicycleDTO> deactivateBicycle(@RequestParam Long bikeId) throws CustomError {
 
-        Bicycle result = new Bicycle();
+        BicycleDTO result = new BicycleDTO();
         CustomResponse beResponse = bicycleService.deactivateBicycle(bikeId);
         if (beResponse == Constants.SUCCESSFUL_OPERATION) {
             result = bicycleService.findBicycleById(bikeId);
@@ -57,10 +54,10 @@ public class BicycleController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/activateBicycle", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).ROLE_TECH_SUPPORT_MEMBER, T(com.app.bicycle.enums.UserRole).ROLE_SYSTEM_ADMIN)")
-    public ResponseEntity<Bicycle> activateBicycle(@RequestBody Long bikeId) throws CustomError {
+    public ResponseEntity<BicycleDTO> activateBicycle(@RequestBody Long bikeId) throws CustomError {
 
-        Bicycle result = new Bicycle();
-        CustomResponse beResponse = bicycleService.activateBicycle(bikeId);
+        BicycleDTO result = new BicycleDTO();
+        CustomResponse beResponse =  bicycleService.activateBicycle(bikeId);
         if (beResponse == Constants.SUCCESSFUL_OPERATION) {
             result = bicycleService.findBicycleById(bikeId);
         } else if (beResponse == Constants.BICYCLE_ALREADY_ACTIVATED) {
@@ -71,9 +68,9 @@ public class BicycleController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/changeState", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Bicycle> changeState(@RequestParam Long bikeId, @RequestParam String newState) throws CustomError {
+    public ResponseEntity<BicycleDTO> changeState(@RequestParam Long bikeId, @RequestParam String newState) throws CustomError {
 
-        Bicycle result;
+        BicycleDTO result;
         try {
             bicycleService.changeBicycleState(bikeId, BicycleState.valueOf(newState));
             result = bicycleService.findBicycleById(bikeId);
