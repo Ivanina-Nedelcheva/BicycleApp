@@ -26,19 +26,6 @@ public class BicycleController {
         this.bicycleService = bicycleService;
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/getAllBicycles", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Bicycle>> getAllBicycles() {
-
-        List<Bicycle> result;
-        try {
-            result = bicycleService.getAvailableBicycles();
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-
     @RequestMapping(method = RequestMethod.POST, value = "/newBicycle", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).ROLE_SYSTEM_ADMIN)")
     public ResponseEntity<Bicycle> addBicycle(@RequestParam Long stationId) throws CustomError {
