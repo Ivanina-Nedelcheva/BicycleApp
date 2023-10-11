@@ -33,7 +33,7 @@ const BikeReports = () => {
   async function fetchReports() {
     const data = await getReports();
     console.log(data);
-    setUserReports(data);
+    // setUserReports(data);
   }
 
   const handleReport = (id) => {

@@ -9,7 +9,9 @@ import DeleteAccount from '../../components/DeleteAccount';
 import { AuthContext } from '../../context/AuthContext';
 
 const Profile = ({ navigation }) => {
-  const { logout } = useContext(AuthContext)
+  const { logout, userInfo } = useContext(AuthContext)
+
+  console.log(userInfo.firstName);
 
   const validationSchema = Yup.object().shape({
     firstName: Yup.string().required('First name is required'),
@@ -56,11 +58,11 @@ const Profile = ({ navigation }) => {
       /> */}
 
         <Formik
-          initialValues={{ firstName: '', lastName: '', phoneNumber: '', email: '', password: '' }}
+          initialValues={{ firstName: userInfo.firstName, lastName: userInfo.lastName, phoneNumber: userInfo.phoneNumber, email: userInfo.email, password: '' }}
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
         >
-          {({ handleChange, handleSubmit, values, errors, isValid, handleBlur }) => (
+          {({ handleChange, handleSubmit, values, errors, isValid, dirty, setFieldValue }) => (
             <View style={styles.form}>
               <View>
                 <TextInput
@@ -71,7 +73,7 @@ const Profile = ({ navigation }) => {
                 />
 
                 {values.firstName && !errors.firstName && (
-                  <MaterialCommunityIcons name="check-circle" size={20} color="green" style={styles.inputIcon} />
+                  <MaterialCommunityIcons name="check-circle" size={20} color={colors.keppel} style={styles.inputIcon} />
                 )}
               </View>
               {errors.firstName && <Text style={styles.errorMessage}>{errors.firstName}</Text>}
@@ -84,7 +86,7 @@ const Profile = ({ navigation }) => {
                   style={styles.input}
                 />
                 {values.lastName && !errors.lastName && (
-                  <MaterialCommunityIcons name="check-circle" size={20} color="green" style={styles.inputIcon} />
+                  <MaterialCommunityIcons name="check-circle" size={20} color={colors.keppel} style={styles.inputIcon} />
                 )}
               </View>
               {errors.lastName && <Text style={styles.errorMessage}>{errors.lastName}</Text>}
@@ -99,7 +101,7 @@ const Profile = ({ navigation }) => {
                 />
 
                 {values.phoneNumber && !errors.phoneNumber && (
-                  <MaterialCommunityIcons name="check-circle" size={20} color="green" style={styles.inputIcon} />
+                  <MaterialCommunityIcons name="check-circle" size={20} color={colors.keppel} style={styles.inputIcon} />
                 )}
               </View>
               {errors.phoneNumber && <Text style={styles.errorMessage}>{errors.phoneNumber}</Text>}
@@ -114,7 +116,7 @@ const Profile = ({ navigation }) => {
                 />
 
                 {values.email && !errors.email && (
-                  <MaterialCommunityIcons name="check-circle" size={20} color="green" style={styles.inputIcon} />
+                  <MaterialCommunityIcons name="check-circle" size={20} color={colors.keppel} style={styles.inputIcon} />
                 )}
               </View>
               {errors.email && <Text style={styles.errorMessage}>{errors.email}</Text>}

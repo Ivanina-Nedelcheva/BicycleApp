@@ -1,7 +1,6 @@
 import React, { useContext } from "react"
-import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, useDrawerStatus } from '@react-navigation/drawer';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import { Map, Profile, History, Payment, BikeReports, BikeSelect, ReportIssue, AddStation } from '../screens'
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import CustomButton from "../components/CustomButton";
 import { AuthContext } from "../context/AuthContext";
 import CustomDrawer from "../components/CustomDrawer";
@@ -18,13 +17,13 @@ const AppStack = () => {
 
   const { userInfo } = useContext(AuthContext)
 
-  console.log(userInfo?.userRole);
-  const role = userInfo?.userRole
+  // console.log(userInfo?.userRole);
 
   const SYSTEM_ADMIN = "ROLE_SYSTEM_ADMIN"
   const ORDINARY_USER = "ROLE_ORDINARY_USER"
   const OBSERVER = "ROLE_OBSERVER"
   const TECH_SUPPORT_MEMBER = "ROLE_TECH_SUPPORT_MEMBER"
+  const role = SYSTEM_ADMIN
 
   const screens = [
     {
@@ -69,12 +68,18 @@ const AppStack = () => {
       component: BikeReports,
       icon: ['alert', 'alert-outline'],
       visible: role !== ORDINARY_USER,
+      options: {
+        drawerLabelStyle,
+      },
     },
     {
       name: 'Add Station',
       component: AddStation,
       icon: ['hubspot', 'hubspot'],
       visible: role !== ORDINARY_USER,
+      options: {
+        drawerLabelStyle,
+      },
     },
     {
       name: 'Bicycle Select',
