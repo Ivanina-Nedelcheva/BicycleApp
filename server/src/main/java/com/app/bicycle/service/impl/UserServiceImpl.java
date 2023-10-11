@@ -71,9 +71,9 @@ public class UserServiceImpl extends BaseService implements UserService {
     public UserDTO registerUser(UserDTO input) {
         User registerUser = modelMapper.map(input, User.class);
         setUser(input, registerUser);
-//        Role ordinary = new Role();
-//        ordinary.setRoleName(UserRole.ROLE_ORDINARY_USER);
-//        registerUser.setRole((Role)UserRole.ROLE_ORDINARY_USER);
+       Role ordinary = new Role();
+        ordinary.setRoleName(UserRole.ROLE_ORDINARY_USER);
+        registerUser.setRole(ordinary);
         registerUser.setUserRole(UserRole.ROLE_ORDINARY_USER);
 
         userRepository.save(registerUser);
@@ -159,7 +159,7 @@ public class UserServiceImpl extends BaseService implements UserService {
     @Override
     public void increaseUserRentedBicycles(Long userId) {
         User user = userRepository.getUserById(userId);
-        user.setUserRentedBicycles(1);
+//        user.setUserRentedBicycles(1);
     }
 
     @Override
