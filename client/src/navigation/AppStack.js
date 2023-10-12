@@ -1,6 +1,6 @@
 import React, { useContext } from "react"
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { Map, Profile, History, Payment, BikeReports, BikeSelect, ReportIssue, AddStation } from '../screens'
+import { Map, Profile, History, Payment, BikeReports, BikeSelect, ReportIssue, AddStation, Inquiry } from '../screens'
 import CustomButton from "../components/CustomButton";
 import { AuthContext } from "../context/AuthContext";
 import CustomDrawer from "../components/CustomDrawer";
@@ -17,13 +17,15 @@ const AppStack = () => {
 
   const { userInfo } = useContext(AuthContext)
 
-  // console.log(userInfo?.userRole);
+  console.log(userInfo?.userRole);
 
   const SYSTEM_ADMIN = "ROLE_SYSTEM_ADMIN"
   const ORDINARY_USER = "ROLE_ORDINARY_USER"
   const OBSERVER = "ROLE_OBSERVER"
   const TECH_SUPPORT_MEMBER = "ROLE_TECH_SUPPORT_MEMBER"
   const role = SYSTEM_ADMIN
+
+  // console.log(userInfo);
 
   const screens = [
     {
@@ -41,6 +43,15 @@ const AppStack = () => {
       component: Profile,
       icon: ['account', 'account-outline'],
       visible: true,
+      options: {
+        drawerLabelStyle,
+      },
+    },
+    {
+      name: 'Inquiry',
+      component: Inquiry,
+      icon: ['animation', 'animation-outline'],
+      visible: role !== ORDINARY_USER,
       options: {
         drawerLabelStyle,
       },

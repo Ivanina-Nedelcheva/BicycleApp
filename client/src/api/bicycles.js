@@ -1,19 +1,10 @@
 import { API } from './axiosConfig';
 
-const getBicyclesURI = 'bicycles/getAllBicycles'
 const activateBicycleURI = 'bicycles/activateBicycle'
 const deactivateBicycleURI = 'bicycles/deactivateBicycle'
 const newBicycleURI = 'bicycle/newBicycle'
 const changeBicycleStateURI = 'bicycles/changeState'
 
-export async function getBicycle() {
-  try {
-    const response = await API.get(getBicyclesURI);
-    return response.data;
-  } catch (error) {
-    console.error('Error getting data:', error);
-  }
-}
 
 export async function activateBicycle(id) {
   try {

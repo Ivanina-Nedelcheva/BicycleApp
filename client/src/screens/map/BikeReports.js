@@ -33,7 +33,7 @@ const BikeReports = () => {
   async function fetchReports() {
     const data = await getReports();
     console.log(data);
-    // setUserReports(data);
+    setUserReports(data);
   }
 
   const handleReport = (id) => {
@@ -110,18 +110,19 @@ const BikeReports = () => {
               <TouchableOpacity
                 style={styles.report}
                 key={idx}
-                onPress={() => handleReport(report.bicycle.id)}
+                onPress={() => handleReport(report.bikeId)}
               >
                 <Text style={styles.date}>{formatDate(report.date)}</Text>
 
                 <View style={styles.attribute}>
-                  <Text style={styles.label}>User:</Text>
-                  <Text style={styles.description}>{` ${report.user.firstName} ${report.user.lastName}`}</Text>
+                  <Text style={styles.label}>User ID:</Text>
+                  {/* <Text style={styles.description}>{` ${report.user.firstName} ${report.user.lastName}`}</Text> */}
+                  <Text style={styles.description}>{report.userId}</Text>
                 </View>
 
                 <View style={styles.attribute}>
                   <Text style={styles.label}>Bike ID:</Text>
-                  <Text style={styles.description}>{report.bicycle.id}</Text>
+                  <Text style={styles.description}>{report.bikeId}</Text>
                 </View>
 
                 <View style={styles.attribute}>

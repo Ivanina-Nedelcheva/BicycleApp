@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { StyleSheet, View, Text, Image, TextInput } from 'react-native';
@@ -6,16 +6,23 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import CustomButton from '../../components/CustomButton';
 import { colors } from '../../../styles/styles'
 import { AuthContext } from '../../context/AuthContext';
+import { useIsFocused } from '@react-navigation/native';
 
 const SignIn = ({ navigation }) => {
-  const { login } = useContext(AuthContext)
+  const { login, errorLoginMessage, setErrorLoginMessage } = useContext(AuthContext)
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [err, setErr] = useState(false)
-  const password = 'asd'
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
+
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    if (!isFocused) {
+      setErrorLoginMessage('');
+    }
+  }, [isFocused, setErrorLoginMessage]);
 
   const validationSchema = Yup.object().shape({
     // email: Yup.string().email('Invalid email').required('Email is required'),
@@ -24,19 +31,13 @@ const SignIn = ({ navigation }) => {
 
   const handleSubmit = (values, { resetForm }) => {
     console.log(values)
-
     login(values)
   };
 
   return (
     <View style={styles.container}>
-      {/* <Image
-        style={styles.image}
-        source={require('../../../assets/images/bike3.jpg')}
-      /> */}
-
       <Formik
-        initialValues={{ username: 'Iva', password: '123456' }}
+        initialValues={{ username: 'nikolai@test.com', password: '123456' }}
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
@@ -45,9 +46,9 @@ const SignIn = ({ navigation }) => {
             <View>
               <TextInput
                 value={values.username}
-                onChangeText={handleChange('username')}
+                onChangeText={handleChange('email')}
                 placeholder="Email"
-                // keyboardType="email-address"
+                keyboardType="email-address"
                 style={styles.input}
               />
 
@@ -75,7 +76,6 @@ const SignIn = ({ navigation }) => {
             </View>
             {errors.password && <Text style={styles.errorMessage}>{errors.password}</Text>}
 
-            {err && <Text style={styles.errorMessage}>Wrong password!</Text>}
             <CustomButton
               title="Log in"
               color={colors.bleuDeFrance}
@@ -83,6 +83,8 @@ const SignIn = ({ navigation }) => {
               magicNumber={0.8}
             // disabled={!dirty || !isValid}
             />
+
+            {errorLoginMessage && <Text style={styles.errorMessage}>{errorLoginMessage}</Text>}
           </View>
         )}
       </Formik>
