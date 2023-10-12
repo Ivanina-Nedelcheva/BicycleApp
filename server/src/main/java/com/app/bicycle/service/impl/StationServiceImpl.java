@@ -145,14 +145,14 @@ public class StationServiceImpl extends BaseService implements StationService {
             return Constants.STATION_DOESNT_EXIST;
         }
 
-        if (findSBConnection(bikeId, stationId) != null) {
-            return Constants.CONNECTION_ALREADY_EXISTS;
-        }
+//        if (findSBConnection(bikeId, stationId) != null) {
+//            return Constants.CONNECTION_ALREADY_EXISTS;
+//        }
 
-        StationBicycle existingBicycleAssociation = sbRepository.findStationBicycleByBicycle(bicycle);
-        if (existingBicycleAssociation != null) {
-            return Constants.BICYCLE_ALREADY_ADDED_TO_A_STATION;
-        }
+//        StationBicycle existingBicycleAssociation = sbRepository.findStationBicycleByBicycle(bicycle);
+//        if (existingBicycleAssociation != null) {
+//            return Constants.BICYCLE_ALREADY_ADDED_TO_A_STATION;
+//        }
 
         List<StationBicycle> stationBicyclesAtStation = sbRepository.findAllBicyclesByStation(station);
         if (stationBicyclesAtStation.size() >= 10) {

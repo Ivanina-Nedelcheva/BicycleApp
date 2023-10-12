@@ -290,8 +290,6 @@ public class UserServiceImpl extends BaseService implements UserService {
 
     private UserDTO userToDTO(User user) {
         Rental rental = rentalRepository.findRentalByUserAndFinishedFalse(user);
-        RentalDTO rentalDTO = new RentalDTO();
-        rentalDTO.setFinished(rental.isFinished());
 
         UserDTO userDTO = new UserDTO();
         userDTO.setId(user.getId());
@@ -305,7 +303,11 @@ public class UserServiceImpl extends BaseService implements UserService {
         userDTO.setReservations(user.getReservations().stream()
                 .map(this::convertReservationToDTO)
                 .collect(Collectors.toList()));
-        userDTO.setRentals(Collections.singletonList(rentalDTO));
+        if (rental != null) {
+            RentalDTO rentalDTO = new RentalDTO();
+            rentalDTO.setFinished(rental.isFinished());
+            userDTO.setRentals(Collections.singletonList(rentalDTO));
+        }
         return userDTO;
     }
 
