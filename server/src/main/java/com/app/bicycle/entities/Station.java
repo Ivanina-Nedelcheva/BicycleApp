@@ -23,8 +23,8 @@ public class Station extends BaseEntity {
     @OneToMany(mappedBy = "station", fetch = FetchType.EAGER)
     private Set<StationBicycle> stationBicycles;
 
-    @OneToMany(mappedBy = "station", fetch = FetchType.EAGER)
-    private Set<Rental> rentals;
+//    @OneToMany(mappedBy = "station", fetch = FetchType.EAGER)
+//    private Set<Rental> rentals;
 
     public String getStationName() {
         return stationName;
@@ -66,11 +66,11 @@ public class Station extends BaseEntity {
         this.stationBicycles = stationBicycles;
     }
 
-    public Set<Rental> getRentals() {
-        return rentals;
-    }
-
-    public void setRentals(Set<Rental> rentals) {
-        this.rentals = rentals;
-    }
+//    public Set<Rental> getRentals() {
+//        return rentals;
+//    }
+//
+//    public void setRentals(Set<Rental> rentals) {
+//        this.rentals = rentals;
+//    }
 }
