@@ -135,7 +135,7 @@ public class UserServiceImpl extends BaseService implements UserService {
     @Override
     public void addUserRentalRecord(Long userId, Long bikeId) {
         Rental newRental = new Rental();
-        newRental.setUser(userRepository.getReferenceById(userId));
+        newRental.setUser(userRepository.findUserById(userId));
         newRental.setBicycle(bicycleRepository.getBicycleById(bikeId));
         newRental.setDate(new Date(System.currentTimeMillis()));
         newRental.setStartTime(new Timestamp(System.currentTimeMillis()));
@@ -259,7 +259,7 @@ public class UserServiceImpl extends BaseService implements UserService {
                 rentalDTO.setPrice(rental.getPrice());
                 rentalDTO.setFinished(rental.isFinished());
                 rentalDTO.setUser(rental.getUser());
-                rentalDTO.setStation(rental.getStation());
+//                rentalDTO.setStation(rental.getStation());
                 rentalDTO.setBicycle(rental.getBicycle());
                 Double minutes = (double) ((rental.getEndTime().getTime() - rental.getStartTime().getTime()) / (60 * 1000));
                 rentalDTO.setMinutes(minutes);
