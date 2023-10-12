@@ -17,7 +17,7 @@ const Map = ({ route, navigation }) => {
 	const [isScannerOpen, setScannerOpen] = useState(false);
 	const [stations, setStations] = useState([])
 
-	console.log(route.params?.bikeId);
+	console.log('bikeID', route.params?.bikeId);
 
 	const hubsRef = useRef();
 	const mapRef = useRef()

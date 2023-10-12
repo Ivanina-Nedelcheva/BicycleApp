@@ -7,6 +7,7 @@ const updateUserURI = 'user/editUser'
 const deleteUserURI = 'user/deleteUser'
 const rentBicycleURI = 'user/rent'
 const userDetailsURI = 'user/details'
+const returnBicycleURI = 'user/return'
 
 export async function getUserDetails(userId) {
   try {
@@ -28,6 +29,20 @@ export async function rentBicycle(userId, bikeId) {
       params: {
         userId,
         bikeId
+      }
+    });
+    console.log('Response from the server:', response.data);
+  } catch (error) {
+    console.error('Error uploading data:', error);
+  }
+}
+
+export async function returnBicycle(userId, stationId) {
+  try {
+    const response = await API.patch(returnBicycleURI, null, {
+      params: {
+        userId,
+        stationId
       }
     });
     console.log('Response from the server:', response.data);

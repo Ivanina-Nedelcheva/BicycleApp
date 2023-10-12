@@ -6,11 +6,12 @@ import { colors } from '../../../styles/styles';
 import { AuthContext } from '../../context/AuthContext';
 import CustomButton from '../../components/CustomButton';
 import { newBicycle } from '../../api/bicycles';
-import { getUserDetails } from '../../api/users';
+import { getUserDetails, returnBicycle } from '../../api/users';
 
 const Station = ({ route, navigation }) => {
   const { station } = route.params
   const [selectedBike, setSelectedBike] = useState({})
+  const [isRented, setIsRented] = useState(false)
   const bottomSheetRef = useRef(null)
 
   const { userRole, userInfo } = useContext(AuthContext)
@@ -25,10 +26,22 @@ const Station = ({ route, navigation }) => {
     const res = await newBicycle(station.id)
   }
 
-  async function handleReturnBicycle() {
-    const res = await getUserDetails()
-    console.log(res)
+  async function handleUserDetails() {
+    const res = await getUserDetails(userInfo.id)
+    console.log(res);
+    if (res.rentals && res.rentals.length) {
+      setIsRented(true)
+    }
   }
+
+  async function handleReturnBicycle() {
+    const res = await returnBicycle(userInfo.id, station.id)
+    console.log(res);
+  }
+
+  useEffect(() => {
+    handleUserDetails()
+  }, [])
 
   const bike = ({ item }) => (
     <TouchableHighlight onPress={() => selectBike(item)} underlayColor="transparent">
@@ -83,7 +96,7 @@ const Station = ({ route, navigation }) => {
         </View>
       }
 
-      {userRole == "ROLE_ORDINARY_USER" &&
+      {userRole == "ROLE_ORDINARY_USER" && isRented &&
         <View style={styles.bottomBtnsWrapper}>
           <CustomButton
             title="Return bicycle"
