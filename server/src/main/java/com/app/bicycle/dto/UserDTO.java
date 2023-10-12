@@ -22,9 +22,9 @@ public class UserDTO {
     private UserRole userRole;
     private Integer userRentedBicycles = 0;
     private String stripeId;
-    private List<Reservation> reservations = new ArrayList<>();
-    private List<FaultReport> faultReports = new ArrayList<>();
-    private List<Rental> rentals = new ArrayList<>();
+    private List<ReservationDTO> reservations = new ArrayList<>();
+    private List<FaultReportDTO> faultReports = new ArrayList<>();
+    private List<RentalDTO> rentals = new ArrayList<>();
     private List<Payment> payments = new ArrayList<>();
 
     public Long getId() {
@@ -115,27 +115,27 @@ public class UserDTO {
         this.stripeId = stripeId;
     }
 
-    public List<Reservation> getReservations() {
+    public List<ReservationDTO> getReservations() {
         return reservations;
     }
 
-    public void setReservations(List<Reservation> reservations) {
+    public void setReservations(List<ReservationDTO> reservations) {
         this.reservations = reservations;
     }
 
-    public List<FaultReport> getFaultReports() {
+    public List<FaultReportDTO> getFaultReports() {
         return faultReports;
     }
 
-    public void setFaultReports(List<FaultReport> faultReports) {
+    public void setFaultReports(List<FaultReportDTO> faultReports) {
         this.faultReports = faultReports;
     }
 
-    public List<Rental> getRentals() {
+    public List<RentalDTO> getRentals() {
         return rentals;
     }
 
-    public void setRentals(List<Rental> rentals) {
+    public void setRentals(List<RentalDTO> rentals) {
         this.rentals = rentals;
     }
 

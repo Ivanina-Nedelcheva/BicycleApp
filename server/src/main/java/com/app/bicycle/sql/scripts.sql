@@ -102,7 +102,10 @@ SET `active_flag` = 0
 WHERE (`id` = '1');
 
 INSERT INTO `bicycleapp`.`fault_report` (`date`, `fault_text`, `bike_id`, `user_id`)
-VALUES ('2023-10-13', 'Break issue', '1', '1');
+VALUES ('2023-10-13', 'Break issue', '2', '2');
+UPDATE `bicycleapp`.`bicycle`
+SET `active_flag` = 0
+WHERE (`id` = '2');
 
 INSERT INTO `bicycleapp`.`price` (`minute_price`, `start_date`, `unlock_price`)
 VALUES ('0.30', '2023-09-16', '1.50');

@@ -51,7 +51,7 @@ public class BicycleServiceImpl extends BaseService implements BicycleService {
         newConnection.setStation(station);
 
         List<StationBicycle> stationBicyclesAtStation = sbRepository.findAllBicyclesByStation(station);
-        if (stationBicyclesAtStation.size() >= 10) {
+        if (stationBicyclesAtStation.size() >= 15) {
             return Constants.STATION_AT_FULL_CAPACITY;
         }
         sbRepository.save(newConnection);

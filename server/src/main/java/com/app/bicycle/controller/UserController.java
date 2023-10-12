@@ -1,10 +1,10 @@
 package com.app.bicycle.controller;
 
+import com.app.bicycle.dto.BicycleDTO;
 import com.app.bicycle.dto.FaultReportDTO;
 import com.app.bicycle.dto.RentalDTO;
 import com.app.bicycle.dto.UserDTO;
 import com.app.bicycle.entities.Bicycle;
-import com.app.bicycle.entities.FaultReport;
 import com.app.bicycle.service.UserService;
 import com.app.bicycle.utils.CustomError;
 import org.springframework.http.HttpStatus;
@@ -89,7 +89,7 @@ public class UserController {
     @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).ROLE_TECH_SUPPORT_MEMBER, T(com.app.bicycle.enums.UserRole).ROLE_SYSTEM_ADMIN, " +
             "T(com.app.bicycle.enums.UserRole).ROLE_ORDINARY_USER, T(com.app.bicycle.enums.UserRole).ROLE_OBSERVER)")
     public ResponseEntity<FaultReportDTO> faultReport(@RequestParam Long userId, @RequestParam Long bikeId,
-                                                   @RequestParam String faultText) {
+                                                      @RequestParam String faultText) {
 
         FaultReportDTO response;
         try {
@@ -163,6 +163,18 @@ public class UserController {
         List<RentalDTO> result;
         try {
             result = userService.getAllHistory();
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/details", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UserDTO> getUserDetails(@RequestParam Long userId) {
+
+        UserDTO result;
+        try {
+            result = userService.getUserDetails(userId);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }

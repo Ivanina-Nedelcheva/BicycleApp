@@ -1,17 +1,12 @@
 package com.app.bicycle.dto;
 
-import com.app.bicycle.entities.Bicycle;
 import com.app.bicycle.entities.User;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.sql.Date;
 
 public class FaultReportDTO {
-
     private Long bikeId;
-
-    private Long userId;
-
+    private User user;
     private String faultText;
     private Date date;
 
@@ -23,12 +18,12 @@ public class FaultReportDTO {
         this.bikeId = bikeId;
     }
 
-    public Long getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getFaultText() {

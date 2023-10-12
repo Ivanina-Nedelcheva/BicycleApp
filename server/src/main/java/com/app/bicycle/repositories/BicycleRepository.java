@@ -24,5 +24,7 @@ public interface BicycleRepository extends JpaRepository<Bicycle, Long> {
 
     @Query("SELECT b.state FROM Bicycle b WHERE b.id = :bikeId")
     BicycleState getBicycleState(Long bikeId);
+
+    Bicycle findBicycleById(Long bikeId);
 }
 

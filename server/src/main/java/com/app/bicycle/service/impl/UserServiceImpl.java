@@ -2,6 +2,7 @@ package com.app.bicycle.service.impl;
 
 import com.app.bicycle.dto.FaultReportDTO;
 import com.app.bicycle.dto.RentalDTO;
+import com.app.bicycle.dto.ReservationDTO;
 import com.app.bicycle.dto.UserDTO;
 import com.app.bicycle.entities.*;
 import com.app.bicycle.enums.BicycleState;
@@ -15,6 +16,7 @@ import com.app.bicycle.utils.CustomError;
 import com.app.bicycle.utils.ScheduledTimer;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +28,6 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -45,6 +46,7 @@ public class UserServiceImpl extends BaseService implements UserService {
     private final ModelMapper modelMapper;
     private final RoleRepository roleRepository;
     private ScheduledTimer timer;
+    private final ReservationRepository reservationRepository;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository,
@@ -55,7 +57,8 @@ public class UserServiceImpl extends BaseService implements UserService {
                            StationService stationService,
                            PriceRepository priceRepository,
                            ScheduledTimer timer, PasswordEncoder passwordEncoder, ModelMapper modelMapper,
-                           RoleRepository roleRepository) {
+                           RoleRepository roleRepository,
+                           ReservationRepository reservationRepository) {
         this.userRepository = userRepository;
         this.faultReportRepository = faultReportRepository;
         this.bicycleRepository = bicycleRepository;
@@ -68,6 +71,7 @@ public class UserServiceImpl extends BaseService implements UserService {
         this.passwordEncoder = passwordEncoder;
         this.modelMapper = modelMapper;
         this.roleRepository = roleRepository;
+        this.reservationRepository = reservationRepository;
     }
 
     @Override
@@ -92,6 +96,12 @@ public class UserServiceImpl extends BaseService implements UserService {
         setUser(input, foundUser);
 
         return modelMapper.map(foundUser, UserDTO.class);
+    }
+
+    @Override
+    public UserDTO getUserDetails(Long userId) throws ChangeSetPersister.NotFoundException {
+        return userRepository.findById(userId).map(this::userToDTO)
+                .orElseThrow(ChangeSetPersister.NotFoundException::new);
     }
 
     @Override
@@ -174,14 +184,20 @@ public class UserServiceImpl extends BaseService implements UserService {
         if (!bicycleService.isBicycleInState(bikeId, BicycleState.FREE)) {
             throw new CustomError(Constants.BICYCLE_IS_NOT_FREE_OR_RESERVED);
         }
-
 //      stationService.deleteSBConnection(bikeId); could be removed
         bicycleService.changeBicycleState(bikeId, BicycleState.RESERVED);
         increaseUserReservedBicycles(userId);
+
+        User user = userRepository.findUserById(userId);
+        Bicycle bicycle = bicycleRepository.findBicycleById(bikeId);
+        Reservation reservation = new Reservation();
+        reservation.setUser(user);
+        reservation.setBicycle(bicycle);
+
+        reservationRepository.save(reservation);
     }
 
     @Override
-    @Transactional
     public void returnBicycle(Long userId, Long bikeId, Long stationId) {
         Price prices = priceRepository.findTopByOrderByIdDesc();
         User user = userRepository.findUserById(userId);
@@ -258,7 +274,7 @@ public class UserServiceImpl extends BaseService implements UserService {
     private FaultReportDTO reportToDTO(FaultReport faultReport) {
         FaultReportDTO dto = new FaultReportDTO();
         dto.setBikeId(faultReport.getBicycle().getId());
-        dto.setUserId(faultReport.getUser().getId());
+        dto.setUser(faultReport.getUser());
         dto.setFaultText(faultReport.getFaultText());
         dto.setDate(faultReport.getDate());
 
@@ -282,7 +298,18 @@ public class UserServiceImpl extends BaseService implements UserService {
         userDTO.setEmail(user.getEmail());
         userDTO.setAge(user.getAge());
         userDTO.setPassword(user.getPassword());
+        userDTO.setStripeId(user.getStripeId());
+        userDTO.setReservations(user.getReservations().stream()
+                .map(this::convertReservationToDTO)
+                .collect(Collectors.toList()));
 
         return userDTO;
     }
+
+    private ReservationDTO convertReservationToDTO(Reservation reservation){
+        ReservationDTO reservationDTO = new ReservationDTO();
+        modelMapper.map(reservationDTO, Reservation.class);
+        return reservationDTO;
+    }
+
 }

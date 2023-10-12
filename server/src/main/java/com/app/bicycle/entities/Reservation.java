@@ -21,12 +21,6 @@ public class Reservation extends BaseEntity {
     @JoinColumn(name = "bike_id", nullable = false)
     private Bicycle bicycle;
 
-    @Column
-    private Timestamp startTime;
-
-    @Column
-    private Timestamp endTime;
-
     public User getUser() {
         return user;
     }
@@ -41,21 +35,5 @@ public class Reservation extends BaseEntity {
 
     public void setBicycle(Bicycle bicycle) {
         this.bicycle = bicycle;
-    }
-
-    public Timestamp getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(Timestamp startTime) {
-        this.startTime = startTime;
-    }
-
-    public Timestamp getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(Timestamp endTime) {
-        this.endTime = endTime;
     }
 }

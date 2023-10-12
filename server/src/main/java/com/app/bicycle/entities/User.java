@@ -1,10 +1,8 @@
 package com.app.bicycle.entities;
 
-import com.app.bicycle.enums.UserRole;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.Set;
 
 @Entity
