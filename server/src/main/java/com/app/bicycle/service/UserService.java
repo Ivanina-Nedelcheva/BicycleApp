@@ -33,7 +33,7 @@ public interface UserService {
 
     void reserveBicycle(Long userId, Long bikeId);
 
-    void returnBicycle(Long userId, Long bikeId, Long stationId);
+    void returnBicycle(Long userId, Long stationId);
 
     List<RentalDTO> getUserHistory(Long userId);
 

@@ -198,13 +198,13 @@ public class UserServiceImpl extends BaseService implements UserService {
     }
 
     @Override
-    public void returnBicycle(Long userId, Long bikeId, Long stationId) {
+    public void returnBicycle(Long userId, Long stationId) {
         Price prices = priceRepository.findTopByOrderByIdDesc();
         User user = userRepository.findUserById(userId);
-        Bicycle bicycle = bicycleRepository.getBicycleById(bikeId);
-        Rental userRent = rentalRepository.findRentalByUserAndBicycleAndFinishedFalse(user, bicycle);
+        Rental userRent = rentalRepository.findRentalByUserAndFinishedFalse(user);
 
-        timer.completeRent(user);
+        Bicycle bicycle = userRent.getBicycle();
+
         userRent.setFinished(true);
         userRent.setDistance(bicycle.getDistance());
         Timestamp endTime = new Timestamp(System.currentTimeMillis());
@@ -215,14 +215,12 @@ public class UserServiceImpl extends BaseService implements UserService {
         userRent.setPrice(price);
         userRent.setDistance(minutes / 2.5);
         rentalRepository.save(userRent);
-        //charge
 
-        stationService.addBikeToStation(bikeId, stationId); //here is the check if the station has more room and save is here
+        stationService.addBikeToStation(bicycle.getId(), stationId); //here is the check if the station has more room and save is here
 
-        if (bicycleService.isBicycleInState(bikeId, BicycleState.RENTED)) {
-            bicycleService.changeBicycleState(bikeId, BicycleState.CHARGING); //save is here
+        if (bicycleService.isBicycleInState(bicycle.getId(), BicycleState.RENTED)) {
+            bicycleService.changeBicycleState(bicycle.getId(), BicycleState.CHARGING); //save is here
         }
-
     }
 
     @Override

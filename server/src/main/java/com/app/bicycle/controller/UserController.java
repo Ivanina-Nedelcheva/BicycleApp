@@ -129,11 +129,11 @@ public class UserController {
 
     @RequestMapping(method = RequestMethod.PATCH, value = "/return", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).ROLE_ORDINARY_USER)")
-    public ResponseEntity<Bicycle> returnBicycle(@RequestParam Long userId, @RequestParam Long bikeId, @RequestParam Long stationId) throws CustomError {
+    public ResponseEntity<Bicycle> returnBicycle(@RequestParam Long userId, @RequestParam Long stationId) throws CustomError {
 
         Bicycle result = new Bicycle();
         try {
-            userService.returnBicycle(userId, bikeId, stationId);
+            userService.returnBicycle(userId, stationId);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
