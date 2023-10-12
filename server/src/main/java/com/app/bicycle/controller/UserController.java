@@ -44,10 +44,10 @@ public class UserController {
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/deleteUser", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).ROLE_ORDINARY_USER)")
-    public ResponseEntity<UserDTO> deleteUser(@RequestBody UserDTO user) {
-        UserDTO response;
+    public ResponseEntity<UserDTO> deleteUser(@RequestParam Long userId) {
+        UserDTO response = new UserDTO();
         try {
-            response = userService.deleteUser(user);
+            userService.deleteUser(userId);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }

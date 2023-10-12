@@ -26,6 +26,7 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -80,11 +81,9 @@ public class UserServiceImpl extends BaseService implements UserService {
     }
 
     @Override
-    public UserDTO deleteUser(UserDTO input) {
-        User foundUser = userRepository.findUserByEmail(input.getEmail());
-        checkIfNull(foundUser, input.getEmail());
+    public void deleteUser(Long userId) {
+        User foundUser = userRepository.findUserById((userId));
         userRepository.delete(foundUser);
-        return modelMapper.map(input, UserDTO.class);
     }
 
     @Override
@@ -137,20 +136,20 @@ public class UserServiceImpl extends BaseService implements UserService {
 
     @Override
     public void increaseUserRentedBicycles(Long userId) {
-        User user = userRepository.getUserById(userId);
+        User user = userRepository.findUserById(userId);
 //        user.setUserRentedBicycles(1);
     }
 
     @Override
     public void increaseUserReservedBicycles(Long userId) {
-        User user = userRepository.getUserById(userId);
+        User user = userRepository.findUserById(userId);
 //        user.setUserReservedBicycles(1);
     }
 
 
     @Override
     public void rentBicycle(Long userId, Long bikeId) {
-        User user = userRepository.getUserById(userId);
+        User user = userRepository.findUserById(userId);
 
         if (checkUserRentedBicycles(userId)) {
             throw new CustomError(Constants.CANNOT_RENT_MORE_THAN_ONE_BICYCLE);
@@ -185,7 +184,7 @@ public class UserServiceImpl extends BaseService implements UserService {
     @Transactional
     public void returnBicycle(Long userId, Long bikeId, Long stationId) {
         Price prices = priceRepository.findTopByOrderByIdDesc();
-        User user = userRepository.getUserById(userId);
+        User user = userRepository.findUserById(userId);
         Bicycle bicycle = bicycleRepository.getBicycleById(bikeId);
         Rental userRent = rentalRepository.findRentalByUserAndBicycleAndFinishedFalse(user, bicycle);
 
@@ -212,7 +211,7 @@ public class UserServiceImpl extends BaseService implements UserService {
 
     @Override
     public List<RentalDTO> getUserHistory(Long userId) {
-        List<Rental> history = rentalRepository.findRentalByUserAndFinishedTrue(userRepository.getUserById(userId));
+        List<Rental> history = rentalRepository.findRentalByUserAndFinishedTrue(userRepository.findUserById(userId));
         List<RentalDTO> historyDTOList = new ArrayList<>();
 
         if (history != null) {
@@ -269,10 +268,10 @@ public class UserServiceImpl extends BaseService implements UserService {
     private void setUser(UserDTO input, User foundUser) {
         foundUser.setFirstName(input.getFirstName());
         foundUser.setLastName(input.getLastName());
-        foundUser.setAge(5);
+        foundUser.setAge(input.getAge());
         foundUser.setEmail(input.getEmail());
         foundUser.setPhoneNumber(input.getPhoneNumber());
-        foundUser.setPassword(passwordEncoder.encode(foundUser.getPassword()));
+        foundUser.setPassword(passwordEncoder.encode(input.getPassword()));
     }
 
     private UserDTO userToDTO(User user) {

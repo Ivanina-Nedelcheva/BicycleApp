@@ -29,10 +29,10 @@ export async function updateUser(id, updatedData) {
   }
 }
 
-export async function deleteUser(id) {
+export async function deleteUser(userId) {
   try {
     const response = await API.delete(deleteUserURI, {
-      id
+      params : { userId }
     });
     console.log('Response from the server:', response.data);
     return response.data;

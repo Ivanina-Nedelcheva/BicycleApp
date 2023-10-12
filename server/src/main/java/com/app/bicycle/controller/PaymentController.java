@@ -44,7 +44,7 @@ public class PaymentController {
 
         Stripe.apiKey = stripeSecretKey;
 
-        User currentUser = userRepository.getUserById(userId);
+        User currentUser = userRepository.findUserById(userId);
 
         CustomerCreateParams customerParams = CustomerCreateParams.builder()
                 .setName(currentUser.getFirstName() + " " + currentUser.getLastName())

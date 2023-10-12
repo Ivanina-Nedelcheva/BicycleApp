@@ -13,7 +13,7 @@ public interface UserService {
 
     UserDTO registerUser(UserDTO input);
 
-    UserDTO deleteUser (UserDTO input);
+    void deleteUser (Long userId);
 
     UserDTO editUser(UserDTO input);
 
