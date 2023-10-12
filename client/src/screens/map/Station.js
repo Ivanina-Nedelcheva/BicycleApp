@@ -24,7 +24,6 @@ const Station = ({ route, navigation }) => {
 
   async function handleAddBicycle() {
     const res = await newBicycle(station.id)
-    console.log(res);
   }
 
   const bike = ({ item }) => (

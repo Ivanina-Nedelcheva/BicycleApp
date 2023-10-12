@@ -15,15 +15,14 @@ const AppStack = () => {
     color: colors.bleuDeFrance,
   }
 
-  const { userInfo } = useContext(AuthContext)
-
   const SYSTEM_ADMIN = "ROLE_SYSTEM_ADMIN"
   const ORDINARY_USER = "ROLE_ORDINARY_USER"
   const OBSERVER = "ROLE_OBSERVER"
   const TECH_SUPPORT_MEMBER = "ROLE_TECH_SUPPORT_MEMBER"
-  const role = SYSTEM_ADMIN
 
-  // console.log(userInfo);
+  const { userInfo } = useContext(AuthContext)
+  console.log(userInfo);
+  const role = SYSTEM_ADMIN
 
   const screens = [
     {

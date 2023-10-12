@@ -32,23 +32,22 @@ const Map = ({ route, navigation }) => {
 		left: 0,
 	}
 
+	async function handleGetStations() {
+		const data = await getStations();
+		setStations(data)
+	}
+
 	useEffect(() => {
 		if (route.params?.center) centerCamera()
 		if (route.params?.openScanner) setScannerOpen(true)
 		if (route.params?.update) {
-			(async () => {
-				const data = await getStations();
-				setStations(data)
-			})()
+			handleGetStations()
 		}
 	}, [route.params])
 
 	useFocusEffect(
 		useCallback(() => {
-			(async () => {
-				const data = await getStations();
-				setStations(data)
-			})()
+			handleGetStations()
 		}, [])
 	);
 

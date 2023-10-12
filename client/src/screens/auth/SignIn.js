@@ -46,7 +46,7 @@ const SignIn = ({ navigation }) => {
             <View>
               <TextInput
                 value={values.username}
-                onChangeText={handleChange('email')}
+                onChangeText={handleChange('username')}
                 placeholder="Email"
                 keyboardType="email-address"
                 style={styles.input}
