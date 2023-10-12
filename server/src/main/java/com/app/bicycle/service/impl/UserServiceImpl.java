@@ -100,8 +100,8 @@ public class UserServiceImpl extends BaseService implements UserService {
 
     @Override
     public UserDTO getUserDetails(Long userId) throws ChangeSetPersister.NotFoundException {
-        return userRepository.findById(userId).map(this::userToDTO)
-                .orElseThrow(ChangeSetPersister.NotFoundException::new);
+        User user = userRepository.findUserById(userId);
+        return userToDTO(user);
     }
 
     @Override
@@ -291,11 +291,12 @@ public class UserServiceImpl extends BaseService implements UserService {
     }
 
     private UserDTO userToDTO(User user) {
-        Rental rental = rentalRepository.findRentalByUserAndFinishedFalse(user.getId());
+        Rental rental = rentalRepository.findRentalByUserAndFinishedFalse(user);
         RentalDTO rentalDTO = new RentalDTO();
         rentalDTO.setFinished(rental.isFinished());
 
         UserDTO userDTO = new UserDTO();
+        userDTO.setId(user.getId());
         userDTO.setFirstName(user.getFirstName());
         userDTO.setLastName(user.getLastName());
         userDTO.setPhoneNumber(user.getPhoneNumber());
