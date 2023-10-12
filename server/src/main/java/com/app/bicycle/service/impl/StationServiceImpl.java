@@ -16,6 +16,7 @@ import com.app.bicycle.utils.CustomResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -68,6 +69,7 @@ public class StationServiceImpl extends BaseService implements StationService {
                         bicycleDTO.setActiveFlag(bicycle.getActiveFlag());
                         return bicycleDTO;
                     })
+                    .sorted(Comparator.comparing(BicycleDTO::getId))
                     .collect(Collectors.toList());
             dto.setBicycles(bicycleDTOs);
 

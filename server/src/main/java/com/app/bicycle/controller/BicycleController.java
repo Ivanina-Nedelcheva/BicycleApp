@@ -25,16 +25,13 @@ public class BicycleController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/newBicycle", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).ROLE_SYSTEM_ADMIN)")
-    public ResponseEntity<BicycleDTO> addBicycle(@RequestParam Long stationId) throws CustomError {
+    public ResponseEntity<CustomResponse> addBicycle(@RequestParam Long stationId) throws CustomError {
 
-        BicycleDTO result = new BicycleDTO();
         CustomResponse beResponse = bicycleService.addBicycle(stationId);
-        if (beResponse == Constants.SUCCESSFUL_OPERATION) {
-            result = bicycleService.findBicycleById(bicycleService.getBicycleNextId());
-        } else if (beResponse == Constants.STATION_AT_FULL_CAPACITY) {
+        if (beResponse == Constants.STATION_AT_FULL_CAPACITY) {
             throw new CustomError(Constants.STATION_AT_FULL_CAPACITY);
         }
-        return new ResponseEntity<>(result, HttpStatus.CREATED);
+        return new ResponseEntity<>(beResponse, HttpStatus.CREATED);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/deactivateBicycle", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -57,7 +54,7 @@ public class BicycleController {
     public ResponseEntity<BicycleDTO> activateBicycle(@RequestBody Long bikeId) throws CustomError {
 
         BicycleDTO result = new BicycleDTO();
-        CustomResponse beResponse =  bicycleService.activateBicycle(bikeId);
+        CustomResponse beResponse = bicycleService.activateBicycle(bikeId);
         if (beResponse == Constants.SUCCESSFUL_OPERATION) {
             result = bicycleService.findBicycleById(bikeId);
         } else if (beResponse == Constants.BICYCLE_ALREADY_ACTIVATED) {
