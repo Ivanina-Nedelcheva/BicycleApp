@@ -1,9 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { StyleSheet, View, Text, Modal, FlatList } from 'react-native';
 import CustomButton from '../components/CustomButton';
 import { colors } from '../../styles/styles'
+import { AuthContext } from '../context/AuthContext';
+import { deleteUser } from '../api/users';
 
 const DeleteAccount = ({ modalVisible, setModalVisible, navigation }) => {
+  const { userInfo } = useContext(AuthContext)
+
+
   const data = [
     { id: 1, text: 'You do not have any legal holds on your account due to pending litigation or other legal action related to your account' },
     { id: 2, text: 'You do not have negative cash balance' },
@@ -16,6 +21,12 @@ const DeleteAccount = ({ modalVisible, setModalVisible, navigation }) => {
       <Text style={styles.itemText}>{item.text}</Text>
     </View>
   );
+
+  async function handleDelete() {
+    const res = await deleteUser(userInfo.id)
+    console.log(res);
+    // navigation.navigate('Auth')
+  }
 
   return (
     <Modal
@@ -48,7 +59,7 @@ const DeleteAccount = ({ modalVisible, setModalVisible, navigation }) => {
           <CustomButton
             title='Delete'
             color={colors.lightred}
-            onPress={() => navigation.navigate('Auth')}
+            onPress={handleDelete}
             magicNumber={0.45}
             style={styles.deleteBtn}
           />

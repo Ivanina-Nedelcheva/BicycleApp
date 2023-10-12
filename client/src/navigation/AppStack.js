@@ -17,8 +17,6 @@ const AppStack = () => {
 
   const { userInfo } = useContext(AuthContext)
 
-  console.log(userInfo?.userRole);
-
   const SYSTEM_ADMIN = "ROLE_SYSTEM_ADMIN"
   const ORDINARY_USER = "ROLE_ORDINARY_USER"
   const OBSERVER = "ROLE_OBSERVER"

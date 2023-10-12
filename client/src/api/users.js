@@ -3,6 +3,8 @@ import { API } from './axiosConfig';
 const inquiryURI = 'user/inquiry'
 const userHistoryURI = 'user/userHistory'
 const registerUserURI = 'user/registerUser'
+const updateUserURI = 'user/editUser'
+const deleteUserURI = 'user/deleteUser'
 
 export async function addUser(userData) {
   try {
@@ -11,6 +13,31 @@ export async function addUser(userData) {
     return response.data;
   } catch (error) {
     console.error('Error uploading data:', error);
+  }
+}
+
+export async function updateUser(id, updatedData) {
+  try {
+    const response = await API.patch(updateUserURI, {
+      id,
+      ...updatedData
+    });
+    console.log('Response from the server:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error updating data:', error);
+  }
+}
+
+export async function deleteUser(id) {
+  try {
+    const response = await API.delete(deleteUserURI, {
+      id
+    });
+    console.log('Response from the server:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error deleting data:', error);
   }
 }
 

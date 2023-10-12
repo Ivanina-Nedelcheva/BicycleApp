@@ -52,13 +52,6 @@ const Map = ({ route, navigation }) => {
 		}, [])
 	);
 
-	useEffect(() => {
-		(async () => {
-			const data = await getStations();
-			setStations(data)
-		})()
-	}, [])
-
 	const handleOpenDrawer = () => {
 		navigation.openDrawer();
 	};

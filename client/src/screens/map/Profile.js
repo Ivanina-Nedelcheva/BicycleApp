@@ -7,25 +7,25 @@ import { colors } from '../../../styles/styles'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import DeleteAccount from '../../components/DeleteAccount';
 import { AuthContext } from '../../context/AuthContext';
+import { updateUser } from '../../api/users';
 
 const Profile = ({ navigation }) => {
   const { logout, userInfo } = useContext(AuthContext)
 
-  console.log(userInfo.firstName);
-
+  console.log(userInfo);
   const validationSchema = Yup.object().shape({
-    firstName: Yup.string().required('First name is required'),
-    lastName: Yup.string().required('Last name is required'),
-    phoneNumber: Yup.string().required('Phone number is required').matches(
-      /^(((\+|00)359[- ]?)|(0))(8[- ]?[789]([- ]?\d){7})$/gm,
-      "Plese enter valid phone number"
-    ),
-    email: Yup.string().email('Invalid email').required('Email is required'),
-    password: Yup.string().min(8).required('Password is required').matches(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
-      "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"
-    ),
-    confirmPassword: Yup.string().required('Confirm password is required').min(8).oneOf([Yup.ref('password')], 'Your password do not match'),
+    // firstName: Yup.string().required('First name is required'),
+    // lastName: Yup.string().required('Last name is required'),
+    // phoneNumber: Yup.string().required('Phone number is required').matches(
+    //   /^(((\+|00)359[- ]?)|(0))(8[- ]?[789]([- ]?\d){7})$/gm,
+    //   "Plese enter valid phone number"
+    // ),
+    // email: Yup.string().email('Invalid email').required('Email is required'),
+    // password: Yup.string().min(8).required('Password is required').matches(
+    //   /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
+    //   "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"
+    // ),
+    // confirmPassword: Yup.string().required('Confirm password is required').min(8).oneOf([Yup.ref('password')], 'Your password do not match'),
 
   });
 
@@ -36,17 +36,25 @@ const Profile = ({ navigation }) => {
     setPasswordVisible(!passwordVisible);
   };
 
-  const handleSubmit = values => {
-    Alert.alert(
-      'Changes saved!',
-      null,
-      [
-        {
-          text: 'OK',
-          onPress: () => navigation.navigate("Map"), // Call the function when "OK" is pressed
-        },
-      ],
-    );
+  const handleSubmit = async (values) => {
+    try {
+      const res = await updateUser(userInfo.id, values)
+      console.log(res);
+      if (res) {
+        Alert.alert(
+          'Changes saved!',
+          null,
+          [
+            {
+              text: 'OK',
+              onPress: () => navigation.navigate("Map"),
+            },
+          ],
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

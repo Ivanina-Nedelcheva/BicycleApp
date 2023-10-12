@@ -42,7 +42,7 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/deleteUser", produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.DELETE, value = "/deleteUser", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).ROLE_ORDINARY_USER)")
     public ResponseEntity<UserDTO> deleteUser(@RequestBody UserDTO user) {
         UserDTO response;
@@ -56,7 +56,7 @@ public class UserController {
     }
 
 
-    @RequestMapping(method = RequestMethod.POST, value = "/editUser", produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.PATCH, value = "/editUser", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).ROLE_ORDINARY_USER)")
     @PostMapping("/edit")
     public ResponseEntity<UserDTO> editUser(@RequestBody UserDTO user) {

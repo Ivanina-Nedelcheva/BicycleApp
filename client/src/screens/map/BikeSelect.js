@@ -5,7 +5,6 @@ import BikeDetails from '../../components/BikeDetails';
 import { colors } from '../../../styles/styles';
 import { useFocusEffect } from '@react-navigation/native';
 
-
 const BikeSelect = ({ route, navigation }) => {
   const { station } = route.params
   const [selectedBike, setSelectedBike] = useState({})
@@ -26,7 +25,6 @@ const BikeSelect = ({ route, navigation }) => {
         <View style={styles.textContainer}>
           <Text style={styles.itemText}>ID: {item.id}</Text>
           <Text style={styles.itemText}>Status: {item.state}</Text>
-          {/* <Text style={styles.itemText}>State: {item.state}</Text> */}
         </View>
 
         <View>
