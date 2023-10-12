@@ -99,7 +99,7 @@ const BikeReports = () => {
 
   return (
     <View style={styles.container}>
-      {!userReports.length ? (
+      {!userReports ? (
         <View style={styles.headingContainer}>
           <Text style={styles.heading}>No reports</Text>
         </View>

@@ -141,7 +141,7 @@ const Map = ({ route, navigation }) => {
 							longitude: station.longitude,
 						}}
 						key={index}
-						onPress={() => navigation.navigate('Bicycle Select', { station })}
+						onPress={() => navigation.navigate('Station', { station })}
 					>
 						{region.longitudeDelta > 0.2 || region.latitudeDelta > 0.2 ? (
 							<View style={styles.stationDot} />

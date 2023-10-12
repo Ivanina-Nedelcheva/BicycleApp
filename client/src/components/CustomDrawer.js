@@ -17,7 +17,7 @@ function CustomDrawer(props) {
   });
 
   function shouldRouteBeAccessible(routeName) {
-    const inaccessibleRoutes = ['Bicycle Select', 'Report Issue'];
+    const inaccessibleRoutes = ['Station', 'Report Issue'];
     return !inaccessibleRoutes.includes(routeName);
   }
 

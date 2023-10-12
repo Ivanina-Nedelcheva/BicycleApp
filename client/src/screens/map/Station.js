@@ -1,19 +1,30 @@
-import React, { useRef, useState, useCallback, useEffect } from 'react';
+import React, { useRef, useState, useCallback, useEffect, useContext } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableHighlight } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import BikeDetails from '../../components/BikeDetails';
 import { colors } from '../../../styles/styles';
 import { useFocusEffect } from '@react-navigation/native';
+import { AuthContext } from '../../context/AuthContext';
+import CustomButton from '../../components/CustomButton';
+import { newBicycle } from '../../api/bicycles';
 
-const BikeSelect = ({ route, navigation }) => {
+const Station = ({ route, navigation }) => {
   const { station } = route.params
   const [selectedBike, setSelectedBike] = useState({})
   const bottomSheetRef = useRef(null)
+
+  const { userInfo } = useContext(AuthContext)
+  const role = "ROLE_SYSTEM_ADMIN"
 
   const selectBike = (bike) => {
     setSelectedBike(bike)
     bottomSheetRef.current?.present();
   };
+
+  async function handleAddBicycle() {
+    const res = await newBicycle(station.id)
+    console.log(res);
+  }
 
   const bike = ({ item }) => (
     <TouchableHighlight onPress={() => selectBike(item)} underlayColor="transparent">
@@ -45,11 +56,19 @@ const BikeSelect = ({ route, navigation }) => {
         style={styles.list}
       />
 
-      <BikeDetails
+      {role !== "ROLE_SYSTEM_ADMIN" && <BikeDetails
         bike={selectedBike}
         bottomSheetRef={bottomSheetRef}
         navigation={navigation}
-      />
+      />}
+
+      {role === "ROLE_SYSTEM_ADMIN" && <CustomButton
+        icon="plus"
+        color="white"
+        onPress={handleAddBicycle}
+        magicNumber={0.125}
+        style={styles.btn}
+      />}
     </View>
   );
 };
@@ -87,6 +106,11 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto-Bold',
     fontSize: 12,
   },
+  btn: {
+    position: 'absolute',
+    bottom: 20,
+    right: 20
+  }
 });
 
-export default BikeSelect;
+export default Station;

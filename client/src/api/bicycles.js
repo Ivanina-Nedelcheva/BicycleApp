@@ -2,7 +2,7 @@ import { API } from './axiosConfig';
 
 const activateBicycleURI = 'bicycles/activateBicycle'
 const deactivateBicycleURI = 'bicycles/deactivateBicycle'
-const newBicycleURI = 'bicycle/newBicycle'
+const newBicycleURI = 'bicycles/newBicycle'
 const changeBicycleStateURI = 'bicycles/changeState'
 
 
@@ -26,7 +26,12 @@ export async function deactivateBicycle(id) {
 
 export async function newBicycle(stationId) {
   try {
-    const response = await API.post(newBicycleURI, stationId);
+    const response = await API.post(newBicycleURI, null, {
+      params: {
+        stationId
+      }
+    });
+
     console.log('Response from the server:', response.data);
   } catch (error) {
     console.error('Error uploading data:', error);

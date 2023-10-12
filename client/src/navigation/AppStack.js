@@ -1,6 +1,6 @@
 import React, { useContext } from "react"
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { Map, Profile, History, Payment, BikeReports, BikeSelect, ReportIssue, AddStation, Inquiry } from '../screens'
+import { Map, Profile, History, Payment, BikeReports, Station, ReportIssue, AddStation, Inquiry } from '../screens'
 import CustomButton from "../components/CustomButton";
 import { AuthContext } from "../context/AuthContext";
 import CustomDrawer from "../components/CustomDrawer";
@@ -91,8 +91,8 @@ const AppStack = () => {
       },
     },
     {
-      name: 'Bicycle Select',
-      component: BikeSelect,
+      name: 'Station',
+      component: Station,
       icon: ['bicycle', 'bicycle'],
       visible: true,
     },
@@ -114,7 +114,7 @@ const AppStack = () => {
             name={screen.name}
             component={screen.component}
             options={({ navigation }) => {
-              if (screen.name === 'Bicycle Select' || screen.name === 'Report Issue') {
+              if (screen.name === 'Station' || screen.name === 'Report Issue') {
                 return {
                   drawerLabel: () => null,
                   drawerIcon: () => null,
