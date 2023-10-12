@@ -1,10 +1,7 @@
 package com.app.bicycle.dto;
 
 
-import com.app.bicycle.entities.FaultReport;
 import com.app.bicycle.entities.Payment;
-import com.app.bicycle.entities.Rental;
-import com.app.bicycle.entities.Reservation;
 import com.app.bicycle.enums.UserRole;
 
 import java.util.ArrayList;

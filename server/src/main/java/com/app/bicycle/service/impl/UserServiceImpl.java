@@ -8,9 +8,9 @@ import com.app.bicycle.entities.*;
 import com.app.bicycle.enums.BicycleState;
 import com.app.bicycle.enums.UserRole;
 import com.app.bicycle.repositories.*;
+import com.app.bicycle.service.BicycleService;
 import com.app.bicycle.service.StationService;
 import com.app.bicycle.service.UserService;
-import com.app.bicycle.service.BicycleService;
 import com.app.bicycle.utils.Constants;
 import com.app.bicycle.utils.CustomError;
 import com.app.bicycle.utils.ScheduledTimer;
@@ -18,10 +18,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.math.BigDecimal;
 import java.sql.Date;
@@ -45,8 +44,8 @@ public class UserServiceImpl extends BaseService implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
     private final RoleRepository roleRepository;
-    private ScheduledTimer timer;
     private final ReservationRepository reservationRepository;
+    private ScheduledTimer timer;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository,
@@ -306,10 +305,8 @@ public class UserServiceImpl extends BaseService implements UserService {
         return userDTO;
     }
 
-    private ReservationDTO convertReservationToDTO(Reservation reservation){
-        ReservationDTO reservationDTO = new ReservationDTO();
-        modelMapper.map(reservationDTO, Reservation.class);
-        return reservationDTO;
+    private ReservationDTO convertReservationToDTO(Reservation reservation) {
+        return modelMapper.map(reservation, ReservationDTO.class);
     }
 
 }

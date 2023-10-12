@@ -5,15 +5,14 @@ import com.app.bicycle.entities.Station;
 import com.app.bicycle.entities.User;
 
 import java.math.BigDecimal;
-
 import java.util.Date;
 
 public class RentalDTO {
-    private Long id;
     Date date;
     Double distance;
     BigDecimal price;
     Boolean finished;
+    private Long id;
     private User user;
     private Bicycle bicycle;
     private Station station;

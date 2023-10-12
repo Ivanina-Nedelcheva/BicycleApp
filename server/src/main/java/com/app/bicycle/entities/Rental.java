@@ -3,11 +3,11 @@ package com.app.bicycle.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;

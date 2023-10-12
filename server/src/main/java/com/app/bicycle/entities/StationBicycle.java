@@ -1,6 +1,7 @@
 package com.app.bicycle.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity

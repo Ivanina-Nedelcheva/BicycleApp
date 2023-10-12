@@ -1,6 +1,5 @@
 package com.app.bicycle.controller;
 
-import com.app.bicycle.dto.BicycleDTO;
 import com.app.bicycle.dto.FaultReportDTO;
 import com.app.bicycle.dto.RentalDTO;
 import com.app.bicycle.dto.UserDTO;

@@ -1,9 +1,9 @@
 package com.app.bicycle.entities;
 
-import javax.persistence.*;
-
-import java.util.ArrayList;
-import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 import java.util.Set;
 
 @Entity
@@ -21,7 +21,7 @@ public class Station extends BaseEntity {
     private Boolean activeFlag;
 
     @OneToMany(mappedBy = "station", fetch = FetchType.EAGER)
-    private Set<StationBicycle> stationBicycles ;
+    private Set<StationBicycle> stationBicycles;
 
     @OneToMany(mappedBy = "station", fetch = FetchType.EAGER)
     private Set<Rental> rentals;

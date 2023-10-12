@@ -3,7 +3,6 @@ package com.app.bicycle.controller;
 import com.app.bicycle.dto.StationBicycleDTO;
 import com.app.bicycle.dto.StationDTO;
 import com.app.bicycle.entities.Station;
-import com.app.bicycle.entities.StationBicycle;
 import com.app.bicycle.service.StationService;
 import com.app.bicycle.utils.Constants;
 import com.app.bicycle.utils.CustomError;

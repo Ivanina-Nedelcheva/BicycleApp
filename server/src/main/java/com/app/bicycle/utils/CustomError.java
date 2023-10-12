@@ -1,6 +1,6 @@
 package com.app.bicycle.utils;
 
-public class CustomError extends RuntimeException  {
+public class CustomError extends RuntimeException {
     private CustomResponse customResponse;
 
     public CustomError(CustomResponse customResponse) {

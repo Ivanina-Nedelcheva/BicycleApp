@@ -2,12 +2,10 @@ package com.app.bicycle.entities;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import javax.persistence.Column;
+
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-
-import java.sql.Timestamp;
 
 @Entity
 public class Reservation extends BaseEntity {

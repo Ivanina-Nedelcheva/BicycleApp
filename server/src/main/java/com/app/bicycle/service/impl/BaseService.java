@@ -16,8 +16,8 @@ public class BaseService {
     public BaseService() {
     }
 
-    public <T> void checkIfNull(T variable, String objectToFind){
-        if (Objects.isNull(variable)){
+    public <T> void checkIfNull(T variable, String objectToFind) {
+        if (Objects.isNull(variable)) {
             throw new NullPointerException(String.format("%s not found!", objectToFind));
         }
     }
