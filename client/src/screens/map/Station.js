@@ -12,9 +12,10 @@ const Station = ({ route, navigation }) => {
   const { station } = route.params
   const [selectedBike, setSelectedBike] = useState({})
   const bottomSheetRef = useRef(null)
-
+  console.log(station);
   const { userInfo } = useContext(AuthContext)
   const role = "ROLE_SYSTEM_ADMIN"
+  const isActive = true
 
   const selectBike = (bike) => {
     setSelectedBike(bike)
@@ -62,13 +63,23 @@ const Station = ({ route, navigation }) => {
         navigation={navigation}
       />}
 
-      {role === "ROLE_SYSTEM_ADMIN" && <CustomButton
-        icon="plus"
-        color="white"
-        onPress={handleAddBicycle}
-        magicNumber={0.125}
-        style={styles.btn}
-      />}
+      {role === "ROLE_SYSTEM_ADMIN" &&
+        <View style={styles.bottomBtnsWrapper}>
+          <CustomButton
+            // icon="plus"
+            title={isActive ? "Deactivate" : "Activate"}
+            color={colors.bleuDeFrance}
+            magicNumber={0.4}
+            onPress={handleAddBicycle}
+          />
+          <CustomButton
+            title="Add bicycle"
+            color={colors.bleuDeFrance}
+            magicNumber={0.4}
+            onPress={handleAddBicycle}
+          />
+        </View>
+      }
     </View>
   );
 };
@@ -106,11 +117,14 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto-Bold',
     fontSize: 12,
   },
-  btn: {
+  bottomBtnsWrapper: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     position: 'absolute',
-    bottom: 20,
-    right: 20
-  }
+    paddingHorizontal: 20,
+    bottom: 20
+  },
 });
 
 export default Station;
