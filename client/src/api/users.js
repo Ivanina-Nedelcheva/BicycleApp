@@ -5,6 +5,36 @@ const userHistoryURI = 'user/userHistory'
 const registerUserURI = 'user/registerUser'
 const updateUserURI = 'user/editUser'
 const deleteUserURI = 'user/deleteUser'
+const rentBicycleURI = 'user/rent'
+const userDetailsURI = 'user/details'
+
+export async function getUserDetails(userId) {
+  try {
+    const response = await API.get(userDetailsURI, {
+      params: {
+        userId
+      }
+    });
+    console.log('Response from the server:', response.data);
+    return response.data
+  } catch (error) {
+    console.error('Error uploading data:', error);
+  }
+}
+
+export async function rentBicycle(userId, bikeId) {
+  try {
+    const response = await API.post(rentBicycleURI, null, {
+      params: {
+        userId,
+        bikeId
+      }
+    });
+    console.log('Response from the server:', response.data);
+  } catch (error) {
+    console.error('Error uploading data:', error);
+  }
+}
 
 export async function addUser(userData) {
   try {
@@ -32,7 +62,7 @@ export async function updateUser(id, updatedData) {
 export async function deleteUser(userId) {
   try {
     const response = await API.delete(deleteUserURI, {
-      params : { userId }
+      params: { userId }
     });
     console.log('Response from the server:', response.data);
     return response.data;

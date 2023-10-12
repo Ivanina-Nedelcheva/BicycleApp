@@ -17,6 +17,8 @@ const Map = ({ route, navigation }) => {
 	const [isScannerOpen, setScannerOpen] = useState(false);
 	const [stations, setStations] = useState([])
 
+	console.log(route.params?.bikeId);
+
 	const hubsRef = useRef();
 	const mapRef = useRef()
 	const sofiaCity = {
@@ -167,7 +169,7 @@ const Map = ({ route, navigation }) => {
 				keyExtractor={(item, index) => index.toString()}
 			/> */}
 
-			<Scanner isOpen={isScannerOpen} onToggle={setScannerOpen} navigation={navigation} />
+			<Scanner isOpen={isScannerOpen} onToggle={setScannerOpen} navigation={navigation} bikeId={route.params?.bikeId} />
 
 			<View style={styles.uppperBtnsWrapper}>
 				<CustomButton

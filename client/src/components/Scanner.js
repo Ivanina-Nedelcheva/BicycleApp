@@ -1,17 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Text, View, StyleSheet, StatusBar, Button, Modal, TextInput, Alert } from 'react-native';
 import { Camera } from 'expo-camera';
 import { colors } from '../../styles/styles';
 import CustomButton from './CustomButton';
 import { useCard } from '../context/CardContext';
+import { rentBicycle } from '../api/users';
+import { AuthContext } from '../context/AuthContext';
 
-const Scanner = ({ isOpen, onToggle, navigation }) => {
+const Scanner = ({ isOpen, onToggle, navigation, bikeId }) => {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
   const [isFlashlightOn, setIsFlashlightOn] = useState(false);
   const [isInputVisible, setInputVisible] = useState(false);
   const [vehicleCode, setVehicleCode] = useState('');
   const { card } = useCard();
+
+  const { userInfo } = useContext(AuthContext)
 
   useEffect(() => {
     const getBarCodeScannerPermissions = async () => {
@@ -22,12 +26,12 @@ const Scanner = ({ isOpen, onToggle, navigation }) => {
     getBarCodeScannerPermissions();
   }, []);
 
-  const handleBarCodeScanned = ({ type, data }) => {
+  const handleBarCodeScanned = async ({ type, data }) => {
     setScanned(true);
-    // alert(`Bar code with type ${type} and data ${data} has been scanned!`);
-
     if (card) {
-      Alert.alert('Ride Started!', `${data}`, [{ onPress: () => navigation.navigate('Map', { center: true }) }])
+      const res = await rentBicycle(userInfo.id, bikeId)
+      console.log(res);
+      // Alert.alert('Ride Started!', [{ onPress: () => navigation.navigate('Map', { center: true }) }])
     } else {
       navigation.navigate('Payment', { scanned: true })
     }

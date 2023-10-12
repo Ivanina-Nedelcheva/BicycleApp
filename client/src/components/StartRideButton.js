@@ -13,7 +13,7 @@ import { colors } from "../../styles/styles";
 const ACTION_TIMER = 500;
 const COLORS = [colors.columbiaBlue, colors.bleuDeFrance];
 
-const StartRideButton = ({ navigation }) => {
+const StartRideButton = ({ navigation, bikeId }) => {
   const [buttonWidth, setButtonWidth] = useState(0);
   const [buttonHeight, setButtonHeight] = useState(0);
   const pressAction = useRef(new Animated.Value(0)).current;
@@ -44,10 +44,10 @@ const StartRideButton = ({ navigation }) => {
 
   const animationActionComplete = () => {
     if (!card) {
-      navigation.navigate('Payment', { rent: true })
+      navigation.navigate('Payment', { rent: true, bikeId })
     }
     if (_value === 1 && card) {
-      navigation.navigate('Map', { openScanner: true })
+      navigation.navigate('Map', { openScanner: true, bikeId })
     }
   };
 

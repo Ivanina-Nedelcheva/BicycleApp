@@ -3,18 +3,17 @@ import { View, Text, StyleSheet, FlatList, TouchableHighlight } from 'react-nati
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import BikeDetails from '../../components/BikeDetails';
 import { colors } from '../../../styles/styles';
-import { useFocusEffect } from '@react-navigation/native';
 import { AuthContext } from '../../context/AuthContext';
 import CustomButton from '../../components/CustomButton';
 import { newBicycle } from '../../api/bicycles';
+import { getUserDetails } from '../../api/users';
 
 const Station = ({ route, navigation }) => {
   const { station } = route.params
   const [selectedBike, setSelectedBike] = useState({})
   const bottomSheetRef = useRef(null)
-  console.log(station);
-  const { userInfo } = useContext(AuthContext)
-  const role = "ROLE_SYSTEM_ADMIN"
+
+  const { userRole, userInfo } = useContext(AuthContext)
   const isActive = true
 
   const selectBike = (bike) => {
@@ -24,6 +23,11 @@ const Station = ({ route, navigation }) => {
 
   async function handleAddBicycle() {
     const res = await newBicycle(station.id)
+  }
+
+  async function handleReturnBicycle() {
+    const res = await getUserDetails()
+    console.log(res)
   }
 
   const bike = ({ item }) => (
@@ -56,16 +60,15 @@ const Station = ({ route, navigation }) => {
         style={styles.list}
       />
 
-      {role !== "ROLE_SYSTEM_ADMIN" && <BikeDetails
+      {userRole !== "ROLE_SYSTEM_ADMIN" && <BikeDetails
         bike={selectedBike}
         bottomSheetRef={bottomSheetRef}
         navigation={navigation}
       />}
 
-      {role === "ROLE_SYSTEM_ADMIN" &&
+      {userRole === "ROLE_SYSTEM_ADMIN" &&
         <View style={styles.bottomBtnsWrapper}>
           <CustomButton
-            // icon="plus"
             title={isActive ? "Deactivate" : "Activate"}
             color={colors.bleuDeFrance}
             magicNumber={0.4}
@@ -76,6 +79,17 @@ const Station = ({ route, navigation }) => {
             color={colors.bleuDeFrance}
             magicNumber={0.4}
             onPress={handleAddBicycle}
+          />
+        </View>
+      }
+
+      {userRole == "ROLE_ORDINARY_USER" &&
+        <View style={styles.bottomBtnsWrapper}>
+          <CustomButton
+            title="Return bicycle"
+            color={colors.bleuDeFrance}
+            magicNumber={0.4}
+            onPress={handleReturnBicycle}
           />
         </View>
       }

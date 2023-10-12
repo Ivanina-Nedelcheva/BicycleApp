@@ -105,10 +105,10 @@ const BikeDetails = ({ bike, bottomSheetRef, navigation }) => {
                   magicNumber={0.4}
                 />
               ) : (
-                <StartRideButton navigation={navigation} />
+                <StartRideButton navigation={navigation} bikeId={bike.id} />
               )}
 
-              {!reservation && <StartRideButton navigation={navigation} />}
+              {!reservation && <StartRideButton navigation={navigation} bikeId={bike.id} />}
             </View>
           </View>
         </View>

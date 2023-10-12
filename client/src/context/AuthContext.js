@@ -3,6 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Alert } from 'react-native'
 import { API, setAuthToken } from '../api/axiosConfig'
 import { addUser } from '../api/users'
+import jwtDecode from 'jwt-decode';
 
 export const AuthContext = createContext()
 
@@ -11,6 +12,7 @@ export const AuthProvider = ({ children }) => {
   const [userToken, setUserToken] = useState('')
   const [userInfo, setUserInfo] = useState(null)
   const [errorLoginMessage, setErrorLoginMessage] = useState('')
+  const [userRole, setUserRole] = useState(null)
 
   function register(userData) {
     addUser(userData)
@@ -27,6 +29,9 @@ export const AuthProvider = ({ children }) => {
       setUserInfo(res.data)
       await AsyncStorage.setItem('userToken', res.headers['jwt-token'])
       await AsyncStorage.setItem('userInfo', JSON.stringify(res.data))
+      const decodedToken = jwtDecode(res.headers['jwt-token'])
+      setUserRole(decodedToken.authorities[0])
+
     } catch (error) {
       console.error(error)
       let errorMessage = 'An error occurred while logging in.'
@@ -66,7 +71,17 @@ export const AuthProvider = ({ children }) => {
   }, [])
 
   return (
-    <AuthContext.Provider value={{ register, login, logout, isLoading, userToken, userInfo, errorLoginMessage, setErrorLoginMessage }}>
+    <AuthContext.Provider value={{
+      register,
+      login,
+      logout,
+      isLoading,
+      userToken,
+      userInfo,
+      errorLoginMessage,
+      setErrorLoginMessage,
+      userRole
+    }}>
       {children}
     </AuthContext.Provider>
   )

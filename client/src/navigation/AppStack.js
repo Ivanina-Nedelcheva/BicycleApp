@@ -15,14 +15,8 @@ const AppStack = () => {
     color: colors.bleuDeFrance,
   }
 
-  const SYSTEM_ADMIN = "ROLE_SYSTEM_ADMIN"
-  const ORDINARY_USER = "ROLE_ORDINARY_USER"
-  const OBSERVER = "ROLE_OBSERVER"
-  const TECH_SUPPORT_MEMBER = "ROLE_TECH_SUPPORT_MEMBER"
-
-  const { userInfo } = useContext(AuthContext)
-  console.log(userInfo);
-  const role = SYSTEM_ADMIN
+  const { userRole } = useContext(AuthContext)
+  console.log(userRole)
 
   const screens = [
     {
@@ -48,7 +42,7 @@ const AppStack = () => {
       name: 'Inquiry',
       component: Inquiry,
       icon: ['animation', 'animation-outline'],
-      visible: role !== ORDINARY_USER,
+      visible: userRole !== "ROLE_ORDINARY_USER",
       options: {
         drawerLabelStyle,
       },
@@ -57,7 +51,7 @@ const AppStack = () => {
       name: 'History',
       component: History,
       icon: ['history', 'history'],
-      visible: role !== SYSTEM_ADMIN,
+      visible: userRole !== "ROLE_SYSTEM_ADMIN",
       options: {
         drawerLabelStyle,
       },
@@ -66,7 +60,7 @@ const AppStack = () => {
       name: 'Payment',
       component: Payment,
       icon: ['wallet', 'wallet-outline'],
-      visible: role !== SYSTEM_ADMIN,
+      visible: userRole !== "ROLE_SYSTEM_ADMIN",
       options: {
         drawerLabelStyle,
       },
@@ -75,7 +69,7 @@ const AppStack = () => {
       name: 'Bicycle Reports',
       component: BikeReports,
       icon: ['alert', 'alert-outline'],
-      visible: role !== ORDINARY_USER,
+      visible: userRole !== "ROLE_ORDINARY_USER",
       options: {
         drawerLabelStyle,
       },
@@ -84,7 +78,7 @@ const AppStack = () => {
       name: 'Add Station',
       component: AddStation,
       icon: ['hubspot', 'hubspot'],
-      visible: role !== ORDINARY_USER,
+      visible: userRole !== "ROLE_ORDINARY_USER",
       options: {
         drawerLabelStyle,
       },
