@@ -26,6 +26,7 @@ import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -290,6 +291,10 @@ public class UserServiceImpl extends BaseService implements UserService {
     }
 
     private UserDTO userToDTO(User user) {
+        Rental rental = rentalRepository.findRentalByUserAndFinishedFalse(user.getId());
+        RentalDTO rentalDTO = new RentalDTO();
+        rentalDTO.setFinished(rental.isFinished());
+
         UserDTO userDTO = new UserDTO();
         userDTO.setFirstName(user.getFirstName());
         userDTO.setLastName(user.getLastName());
@@ -301,7 +306,7 @@ public class UserServiceImpl extends BaseService implements UserService {
         userDTO.setReservations(user.getReservations().stream()
                 .map(this::convertReservationToDTO)
                 .collect(Collectors.toList()));
-
+        userDTO.setRentals(Collections.singletonList(rentalDTO));
         return userDTO;
     }
 

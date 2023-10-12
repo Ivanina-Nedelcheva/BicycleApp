@@ -20,4 +20,6 @@ public interface RentalRepository extends JpaRepository<Rental, Long> {
     List<Rental> findRentalByUserAndFinishedTrue(User userId);
 
     Rental findRentalByUserAndBicycleAndFinishedFalse(User userId, Bicycle bikeId);
+
+    Rental findRentalByUserAndFinishedFalse(Long userId);
 }
