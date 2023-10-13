@@ -1,5 +1,5 @@
 import React, { useRef, useState, useCallback, useEffect, useContext } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableHighlight } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableHighlight, Alert } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import BikeDetails from '../../components/BikeDetails';
 import { colors } from '../../../styles/styles';
@@ -7,6 +7,7 @@ import { AuthContext } from '../../context/AuthContext';
 import CustomButton from '../../components/CustomButton';
 import { newBicycle } from '../../api/bicycles';
 import { getUserDetails, returnBicycle } from '../../api/users';
+import { getStations } from '../../api/stations';
 
 const Station = ({ route, navigation }) => {
   const { station } = route.params
@@ -28,7 +29,6 @@ const Station = ({ route, navigation }) => {
 
   async function handleUserDetails() {
     const res = await getUserDetails(userInfo.id)
-    console.log(res);
     if (res.rentals && res.rentals.length) {
       setIsRented(true)
     }
@@ -37,6 +37,7 @@ const Station = ({ route, navigation }) => {
   async function handleReturnBicycle() {
     const res = await returnBicycle(userInfo.id, station.id)
     console.log(res);
+    Alert.alert('Bicycle returned')
   }
 
   useEffect(() => {

@@ -16,15 +16,14 @@ const CardInformation = ({ navigation, route }) => {
     cvc: '',
   });
 
+
+  console.log('CardInfo', route.params);
+
   const [isScannerOpen, setScannerOpen] = useState(false);
 
   const toggleScanner = () => {
     setScannerOpen(!isScannerOpen);
   };
-
-
-
-
 
 
   // const handleCardFieldChange = (event) => {
@@ -60,9 +59,6 @@ const CardInformation = ({ navigation, route }) => {
   // }
 
   function addCardInfo() {
-    // charge()
-
-
     const areAllFieldsValid = Object.keys(cardInfo).every(key => cardInfo[key]);
     if (!route.params) {
       setCard(true)
@@ -76,7 +72,7 @@ const CardInformation = ({ navigation, route }) => {
 
     if (route.params?.scanned) {
       setCard(true)
-      Alert.alert('Ride Started! Scanner', null, [{ onPress: () => navigation.navigate('Map', { center: true }) }])
+      Alert.alert('Ride Started!', null, [{ onPress: () => navigation.navigate('Map', { center: true }) }])
     }
   }
 
@@ -130,7 +126,7 @@ const CardInformation = ({ navigation, route }) => {
           disabled={loading}
         />
 
-        <Scanner isOpen={isScannerOpen} onToggle={setScannerOpen} navigation={navigation} />
+        <Scanner isOpen={isScannerOpen} onToggle={setScannerOpen} navigation={navigation} bikeId={route.params?.bikeId} />
 
       </View>
     </StripeProvider>

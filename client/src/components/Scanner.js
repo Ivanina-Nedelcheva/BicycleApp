@@ -13,9 +13,12 @@ const Scanner = ({ isOpen, onToggle, navigation, bikeId }) => {
   const [isFlashlightOn, setIsFlashlightOn] = useState(false);
   const [isInputVisible, setInputVisible] = useState(false);
   const [vehicleCode, setVehicleCode] = useState('');
-  const { card } = useCard();
+  const [rented, setRented] = useState(false)
 
+  const { card } = useCard();
   const { userInfo } = useContext(AuthContext)
+
+  // console.log("Scanner", bikeId);
 
   useEffect(() => {
     const getBarCodeScannerPermissions = async () => {
@@ -26,16 +29,31 @@ const Scanner = ({ isOpen, onToggle, navigation, bikeId }) => {
     getBarCodeScannerPermissions();
   }, []);
 
+  function getRandomNumber() {
+    const randomNumber = Math.random() * 51
+    return Math.round(randomNumber);
+  }
+
   const handleBarCodeScanned = async ({ type, data }) => {
     setScanned(true);
     if (card) {
-      const res = await rentBicycle(userInfo.id, bikeId)
-      console.log(res);
-      // Alert.alert('Ride Started!', [{ onPress: () => navigation.navigate('Map', { center: true }) }])
+      try {
+        const res = await rentBicycle(userInfo.id, bikeId || getRandomNumber())
+        onToggle(false);
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'Map', params: { center: true, scanned: true } }],
+        });
+
+      } catch (error) {
+        console.log(error);
+        setRented(false)
+      }
+
     } else {
+      onToggle(false);
       navigation.navigate('Payment', { scanned: true })
     }
-    onToggle(false);
   };
 
   const toggleFlashlight = () => {
@@ -113,9 +131,9 @@ const Scanner = ({ isOpen, onToggle, navigation, bikeId }) => {
                 flashMode={isFlashlightOn ? Camera.Constants.FlashMode.torch : Camera.Constants.FlashMode.off}
               />
             </View>
-            {scanned && (
+            {/* {scanned && (
               <Button title={'Tap to Scan Again'} onPress={() => setScanned(false)} />
-            )}
+            )} */}
 
             <View style={styles.buttonsContainer}>
               <CustomButton

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { StyleSheet, Text, View, StatusBar, Image } from 'react-native';
+import { StyleSheet, Text, View, StatusBar, Image, Alert } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
@@ -16,8 +16,6 @@ const Map = ({ route, navigation }) => {
 	const [errorMsg, setErrorMsg] = useState('');
 	const [isScannerOpen, setScannerOpen] = useState(false);
 	const [stations, setStations] = useState([])
-
-	console.log('bikeID', route.params?.bikeId);
 
 	const hubsRef = useRef();
 	const mapRef = useRef()
@@ -40,7 +38,10 @@ const Map = ({ route, navigation }) => {
 	}
 
 	useEffect(() => {
-		if (route.params?.center) centerCamera()
+		if (route.params?.center && route.params?.scanned) {
+			centerCamera()
+			Alert.alert('Ride Started!')
+		}
 		if (route.params?.openScanner) setScannerOpen(true)
 		if (route.params?.update) {
 			handleGetStations()
