@@ -37,7 +37,13 @@ const Station = ({ route, navigation }) => {
   async function handleReturnBicycle() {
     const res = await returnBicycle(userInfo.id, station.id)
     console.log(res);
-    Alert.alert('Bicycle returned')
+    Alert.alert('Bicycle returned', null, [{
+      onPress: () => navigation.reset({
+        index: 0,
+        routes: [{ name: 'Map', params: { center: true } }],
+      })
+    }])
+
   }
 
   useEffect(() => {
