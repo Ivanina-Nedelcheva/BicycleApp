@@ -6,7 +6,7 @@ import java.sql.Date;
 
 public class FaultReportDTO {
     private Long bikeId;
-    private User user;
+    private UserDTO user;
     private String faultText;
     private Date date;
 
@@ -18,11 +18,11 @@ public class FaultReportDTO {
         this.bikeId = bikeId;
     }
 
-    public User getUser() {
+    public UserDTO getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(UserDTO user) {
         this.user = user;
     }
 
