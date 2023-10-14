@@ -4,6 +4,7 @@ package com.app.bicycle.dto;
 import com.app.bicycle.entities.Payment;
 import com.app.bicycle.enums.UserRole;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +20,7 @@ public class UserDTO {
     private UserRole userRole;
     private Integer userRentedBicycles = 0;
     private String stripeId;
+    private LocalDate dateOfBirth;
     private List<ReservationDTO> reservations = new ArrayList<>();
     private List<FaultReportDTO> faultReports = new ArrayList<>();
     private List<RentalDTO> rentals = new ArrayList<>();
@@ -110,6 +112,14 @@ public class UserDTO {
 
     public void setStripeId(String stripeId) {
         this.stripeId = stripeId;
+    }
+
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
     public List<ReservationDTO> getReservations() {

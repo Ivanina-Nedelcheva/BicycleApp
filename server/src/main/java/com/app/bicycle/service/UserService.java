@@ -3,7 +3,6 @@ package com.app.bicycle.service;
 import com.app.bicycle.dto.FaultReportDTO;
 import com.app.bicycle.dto.RentalDTO;
 import com.app.bicycle.dto.UserDTO;
-import org.springframework.data.crossstore.ChangeSetPersister;
 
 import java.util.List;
 
@@ -15,7 +14,7 @@ public interface UserService {
 
     UserDTO editUser(UserDTO input);
 
-    UserDTO getUserDetails(Long userId) throws ChangeSetPersister.NotFoundException;
+    UserDTO getUserDetails(Long userId);
 
     FaultReportDTO reportFault(Long userId, Long bikeId, String faultText);
 
