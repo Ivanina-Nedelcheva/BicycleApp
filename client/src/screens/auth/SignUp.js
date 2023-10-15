@@ -37,17 +37,21 @@ const SignUp = ({ navigation }) => {
     confirmPassword: Yup.string().required('Confirm password is required').min(8).oneOf([Yup.ref('password')], 'Your password do not match'),
     dateOfBirth: Yup.date()
       .required('Date of birth is required')
-      .test('is-at-least-16', 'You must be at least 16 years old.', function (value) {
-        const cutoffDate = new Date();
-        cutoffDate.setFullYear(cutoffDate.getFullYear() - 16); // Subtract 16 years from current year
-        return value <= cutoffDate;
-      }),
+      .test('is-at-least-16', 'You must be at least 16 years old.', handleUserAge),
   });
 
   const handleSubmit = values => {
     register(values)
+    console.log(values);
     navigation.navigate('SignIn')
   };
+
+  function handleUserAge(value) {
+    const cutoffDate = new Date();
+    const minAge = 16
+    cutoffDate.setFullYear(cutoffDate.getFullYear() - minAge);
+    return value <= cutoffDate;
+  }
 
   return (
     <ScrollView contentContainerStyle={styles.scroll}>
