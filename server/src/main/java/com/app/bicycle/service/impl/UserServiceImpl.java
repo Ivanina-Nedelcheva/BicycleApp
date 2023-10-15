@@ -25,6 +25,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -99,7 +101,7 @@ public class UserServiceImpl extends BaseService implements UserService {
     }
 
     @Override
-    public UserDTO getUserDetails(Long userId) throws ChangeSetPersister.NotFoundException {
+    public UserDTO getUserDetails(Long userId) {
         User user = userRepository.findUserById(userId);
         return userToDTO(user);
     }
@@ -282,7 +284,8 @@ public class UserServiceImpl extends BaseService implements UserService {
     private void setUser(UserDTO input, User foundUser) {
         foundUser.setFirstName(input.getFirstName());
         foundUser.setLastName(input.getLastName());
-        foundUser.setAge(input.getAge());
+        Integer age = Period.between(input.getDateOfBirth(), LocalDate.now()).getYears();
+        foundUser.setAge(age);
         foundUser.setEmail(input.getEmail());
         foundUser.setPhoneNumber(input.getPhoneNumber());
         foundUser.setPassword(passwordEncoder.encode(input.getPassword()));
