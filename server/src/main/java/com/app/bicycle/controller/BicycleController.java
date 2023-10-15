@@ -7,7 +7,6 @@ import com.app.bicycle.utils.Constants;
 import com.app.bicycle.utils.CustomError;
 import com.app.bicycle.utils.CustomResponse;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +22,7 @@ public class BicycleController {
         this.bicycleService = bicycleService;
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/newBicycle", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping("/newBicycle")
     @PreAuthorize("hasAnyRole('ROLE_SYSTEM_ADMIN')")
     public ResponseEntity<CustomResponse> addBicycle(@RequestParam Long stationId) throws CustomError {
 
@@ -34,7 +33,7 @@ public class BicycleController {
         return new ResponseEntity<>(beResponse, HttpStatus.CREATED);
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/deactivateBicycle", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping("/deactivateBicycle")
     @PreAuthorize("hasAnyRole('ROLE_TECH_SUPPORT_MEMBER', 'ROLE_SYSTEM_ADMIN')")
     public ResponseEntity<BicycleDTO> deactivateBicycle(@RequestParam Long bikeId) throws CustomError {
 
@@ -49,7 +48,7 @@ public class BicycleController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/activateBicycle", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping("/activateBicycle")
     @PreAuthorize("hasAnyRole('ROLE_TECH_SUPPORT_MEMBER', 'ROLE_SYSTEM_ADMIN')")
     public ResponseEntity<BicycleDTO> activateBicycle(@RequestBody Long bikeId) throws CustomError {
 
@@ -64,7 +63,7 @@ public class BicycleController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/changeState", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping("/changeState")
     public ResponseEntity<BicycleDTO> changeState(@RequestParam Long bikeId, @RequestParam String newState) throws CustomError {
 
         BicycleDTO response;

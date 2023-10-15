@@ -5,7 +5,6 @@ import com.app.bicycle.service.PaymentService;
 import com.stripe.Stripe;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -18,15 +17,14 @@ import java.util.Map;
 public class PaymentController {
 
     private final PaymentService paymentsService;
+    @Value("${STRIPE_SECRET_KEY}")
+    private String stripeSecretKey;
 
     public PaymentController(PaymentService paymentsService) {
         this.paymentsService = paymentsService;
     }
 
-    @Value("${STRIPE_SECRET_KEY}")
-    private String stripeSecretKey;
-
-    @RequestMapping(value = "/paymentSheet", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping("/paymentSheet")
     @PreAuthorize("hasAnyRole('ROLE_ORDINARY_USER')")
     public ResponseEntity<Map<String, String>> handlePaymentSheet(@RequestParam Long userId, @RequestParam String paymentMethodId) {
 
@@ -56,7 +54,7 @@ public class PaymentController {
 //    }
 
 
-    @RequestMapping(value = "/chargeSavedPaymentMethod", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping("/chargeSavedPaymentMethod")
     @PreAuthorize("hasAnyRole('ROLE_ORDINARY_USER')")
     public ResponseEntity<Map<String, Object>> chargeSavedPaymentMethod(@RequestParam String customerId, @RequestParam Long amount) {
         Map<String, Object> response;
@@ -69,7 +67,7 @@ public class PaymentController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/getPrices", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping("/getPrices")
     public ResponseEntity<com.app.bicycle.entities.Price> getPrices() {
         Price response;
         try {

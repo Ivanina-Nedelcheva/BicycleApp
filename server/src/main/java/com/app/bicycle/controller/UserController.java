@@ -8,7 +8,6 @@ import com.app.bicycle.entities.Bicycle;
 import com.app.bicycle.service.UserService;
 import com.app.bicycle.utils.CustomError;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +28,7 @@ public class UserController {
     }
 
 
-    @RequestMapping(method = RequestMethod.POST, value = "/registerUser", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping("/registerUser")
     public ResponseEntity<UserDTO> registerUser(@RequestBody UserDTO inputUser) {
 
         UserDTO response;
@@ -42,7 +41,7 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "/deleteUser", produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping("/deleteUser")
     @PreAuthorize("hasAnyRole('ROLE_ORDINARY_USER')")
     public ResponseEntity<UserDTO> deleteUser(@RequestParam Long userId) {
         UserDTO response = new UserDTO();
@@ -56,9 +55,8 @@ public class UserController {
     }
 
 
-    @RequestMapping(method = RequestMethod.PATCH, value = "/editUser", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PatchMapping("/editUser")
     @PreAuthorize("hasAnyRole('ROLE_ORDINARY_USER')")
-    @PostMapping("/edit")
     public ResponseEntity<UserDTO> editUser(@RequestBody UserDTO user) {
         UserDTO response;
         try {
@@ -70,7 +68,7 @@ public class UserController {
     }
 
 
-    @RequestMapping(method = RequestMethod.GET, value = "/getFaultReports", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping("/getFaultReports")
     @PreAuthorize("hasAnyRole('ROLE_SYSTEM_ADMIN', 'ROLE_TECH_SUPPORT_MEMBER')")
     public ResponseEntity<List<FaultReportDTO>> getFaultReports() {
 
@@ -85,7 +83,7 @@ public class UserController {
     }
 
 
-    @RequestMapping(method = RequestMethod.POST, value = "/reportFault", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping("/reportFault")
     @PreAuthorize("hasAnyRole('ROLE_TECH_SUPPORT_MEMBER', 'ROLE_SYSTEM_ADMIN', 'ROLE_ORDINARY_USER', 'ROLE_OBSERVER')")
     public ResponseEntity<FaultReportDTO> faultReport(@RequestParam Long userId, @RequestParam Long bikeId,
                                                       @RequestParam String faultText) {
@@ -100,7 +98,7 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/rent", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping("/rent")
     @PreAuthorize("hasAnyRole('ROLE_ORDINARY_USER')")
     public ResponseEntity<BicycleDTO> rentBicycle(@RequestParam Long userId, @RequestParam Long bikeId) {
 
@@ -113,8 +111,7 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-
-    @RequestMapping(method = RequestMethod.POST, value = "/reserve", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping("/reserve")
     @PreAuthorize("hasAnyRole('ROLE_ORDINARY_USER')")
     public ResponseEntity<Bicycle> reserveBicycle(@RequestParam Long userId, @RequestParam Long bikeId) throws CustomError {
 
@@ -127,7 +124,7 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.PATCH, value = "/return", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PatchMapping("/return")
     @PreAuthorize("hasAnyRole('ROLE_ORDINARY_USER')")
     public ResponseEntity<Bicycle> returnBicycle(@RequestParam Long userId, @RequestParam Long stationId) throws CustomError {
 
@@ -140,7 +137,7 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/userHistory", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping("/userHistory")
     @PreAuthorize("hasAnyRole('ROLE_ORDINARY_USER')")
     public ResponseEntity<List<RentalDTO>> userHistory(@RequestParam Long userId) throws CustomError {
 
@@ -154,7 +151,7 @@ public class UserController {
     }
 
 
-    @RequestMapping(method = RequestMethod.GET, value = "/inquiry", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping("/inquiry")
     @PreAuthorize("hasAnyRole('ROLE_TECH_SUPPORT_MEMBER', 'ROLE_SYSTEM_ADMIN', 'ROLE_ORDINARY_USER', 'ROLE_OBSERVER')")
     public ResponseEntity<List<RentalDTO>> getAllUserHistory() throws CustomError {
 
@@ -167,7 +164,7 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/details", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping("/details")
     public ResponseEntity<UserDTO> getUserDetails(@RequestParam Long userId) {
 
         UserDTO response;

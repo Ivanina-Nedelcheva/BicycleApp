@@ -8,7 +8,6 @@ import com.app.bicycle.utils.Constants;
 import com.app.bicycle.utils.CustomError;
 import com.app.bicycle.utils.CustomResponse;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +25,7 @@ public class StationController {
         this.stationService = stationService;
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/getStationWithBicycles", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping("/getStationWithBicycles")
     public ResponseEntity<List<StationDTO>> getStationWithBicycles() {
 
         List<StationDTO> response;
@@ -41,7 +40,7 @@ public class StationController {
     }
 
 
-    @RequestMapping(method = RequestMethod.POST, value = "/newStation", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping("/newStation")
     @PreAuthorize("hasAnyRole('ROLE_SYSTEM_ADMIN')")
     public ResponseEntity<StationDTO> addStation(@RequestBody Station station) {
 
@@ -56,7 +55,7 @@ public class StationController {
     }
 
 
-    @RequestMapping(method = RequestMethod.POST, value = "/deactivateStation", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping("/deactivateStation")
     @PreAuthorize("hasAnyRole('ROLE_TECH_SUPPORT_MEMBER', 'ROLE_SYSTEM_ADMIN')")
     public ResponseEntity<StationDTO> deactivateStation(@RequestParam Long stationId) throws CustomError {
 
@@ -71,7 +70,7 @@ public class StationController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/activateStation", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping("/activateStation")
     @PreAuthorize("hasAnyRole('ROLE_TECH_SUPPORT_MEMBER', 'ROLE_SYSTEM_ADMIN')")
     public ResponseEntity<StationDTO> activateStation(@RequestParam Long stationId) throws CustomError {
 
@@ -86,8 +85,7 @@ public class StationController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-
-    @RequestMapping(method = RequestMethod.POST, value = "/addBicycleToStation", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping("/addBicycleToStation")
     @PreAuthorize("hasAnyRole('ROLE_TECH_SUPPORT_MEMBER', 'ROLE_SYSTEM_ADMIN')")
     public ResponseEntity<StationBicycleDTO> addBikeToStation(@RequestParam Long bikeId, @RequestParam Long stationId) throws CustomError {
 
