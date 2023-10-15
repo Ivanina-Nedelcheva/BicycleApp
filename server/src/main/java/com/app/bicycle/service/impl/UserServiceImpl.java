@@ -10,7 +10,6 @@ import com.app.bicycle.service.StationService;
 import com.app.bicycle.service.UserService;
 import com.app.bicycle.utils.Constants;
 import com.app.bicycle.utils.CustomError;
-import com.app.bicycle.utils.ScheduledTimer;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -123,12 +122,11 @@ public class UserServiceImpl extends BaseService implements UserService {
                 .collect(Collectors.toList());
     }
 
-
     @Override
     public boolean checkUserRentedBicycles(Long userId) {
         User user = userRepository.getReferenceById(userId);
         Long result = rentalRepository.checkUserRentals(user);
-        return result >= 1;
+        return result < 1;
     }
 
     @Override
@@ -143,16 +141,12 @@ public class UserServiceImpl extends BaseService implements UserService {
         user.setUserReservedBicycles(1);
     }
 
-
     @Override
     public BicycleDTO rentBicycle(Long userId, Long bikeId) {
-        if (checkUserRentedBicycles(userId)) {
+        if (!checkUserRentedBicycles(userId)) {
             throw new CustomError(Constants.CANNOT_RENT_MORE_THAN_ONE_BICYCLE);
         } else if (bicycleService.getAvailableBicycles().isEmpty()) {
             throw new CustomError(Constants.NO_BICYCLES_AVAILABLE);
-        } else if (!bicycleService.isBicycleInState(bikeId, BicycleState.FREE) &&
-                !bicycleService.isBicycleInState(bikeId, BicycleState.RESERVED)) {
-            throw new CustomError(Constants.BICYCLE_IS_NOT_FREE_OR_RESERVED);
         } else {
             increaseUserRentedBicycles(userId);
             addUserRentalRecord(userId, bikeId);
