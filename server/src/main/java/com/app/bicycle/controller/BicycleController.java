@@ -24,7 +24,7 @@ public class BicycleController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/newBicycle", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).ROLE_SYSTEM_ADMIN)")
+    @PreAuthorize("hasAnyRole('ROLE_SYSTEM_ADMIN')")
     public ResponseEntity<CustomResponse> addBicycle(@RequestParam Long stationId) throws CustomError {
 
         CustomResponse beResponse = bicycleService.addBicycle(stationId);
@@ -35,7 +35,7 @@ public class BicycleController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/deactivateBicycle", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).ROLE_TECH_SUPPORT_MEMBER, T(com.app.bicycle.enums.UserRole).ROLE_SYSTEM_ADMIN)")
+    @PreAuthorize("hasAnyRole('ROLE_TECH_SUPPORT_MEMBER', 'ROLE_SYSTEM_ADMIN')")
     public ResponseEntity<BicycleDTO> deactivateBicycle(@RequestParam Long bikeId) throws CustomError {
 
         BicycleDTO result = new BicycleDTO();
@@ -50,7 +50,7 @@ public class BicycleController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/activateBicycle", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).ROLE_TECH_SUPPORT_MEMBER, T(com.app.bicycle.enums.UserRole).ROLE_SYSTEM_ADMIN)")
+    @PreAuthorize("hasAnyRole('ROLE_TECH_SUPPORT_MEMBER', 'ROLE_SYSTEM_ADMIN')")
     public ResponseEntity<BicycleDTO> activateBicycle(@RequestBody Long bikeId) throws CustomError {
 
         BicycleDTO result = new BicycleDTO();

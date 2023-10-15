@@ -27,7 +27,7 @@ public class PaymentController {
     private String stripeSecretKey;
 
     @RequestMapping(value = "/paymentSheet", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).ROLE_ORDINARY_USER)")
+    @PreAuthorize("hasAnyRole('ROLE_ORDINARY_USER')")
     public ResponseEntity<Map<String, String>> handlePaymentSheet(@RequestParam Long userId, @RequestParam String paymentMethodId) {
 
         Map<String, String> response;
@@ -57,7 +57,7 @@ public class PaymentController {
 
 
     @RequestMapping(value = "/chargeSavedPaymentMethod", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).ROLE_ORDINARY_USER)")
+    @PreAuthorize("hasAnyRole('ROLE_ORDINARY_USER')")
     public ResponseEntity<Map<String, Object>> chargeSavedPaymentMethod(@RequestParam String customerId, @RequestParam Long amount) {
         Map<String, Object> response;
         try {
