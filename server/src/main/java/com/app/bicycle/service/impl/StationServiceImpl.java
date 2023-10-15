@@ -26,6 +26,7 @@ public class StationServiceImpl extends BaseService implements StationService {
     private final StationRepository stationRepository;
     private final BicycleRepository bicycleRepository;
     private final StationBicycleRepository sbRepository;
+    private final Integer M = 15;
 
     public StationServiceImpl(StationRepository stationRepository, BicycleRepository bicycleRepository, StationBicycleRepository sbRepository) {
         this.stationRepository = stationRepository;
@@ -144,30 +145,14 @@ public class StationServiceImpl extends BaseService implements StationService {
         Bicycle bicycle = bicycleRepository.getBicycleById(bikeId);
         Station station = stationRepository.getStationById(stationId);
 
-        if (bicycle == null) {
-            return Constants.BICYCLE_DOESNT_EXIST;
-        } else if (station == null) {
-            return Constants.STATION_DOESNT_EXIST;
-        }
-
-//        if (findSBConnection(bikeId, stationId) != null) {
-//            return Constants.CONNECTION_ALREADY_EXISTS;
-//        }
-
-//        StationBicycle existingBicycleAssociation = sbRepository.findStationBicycleByBicycle(bicycle);
-//        if (existingBicycleAssociation != null) {
-//            return Constants.BICYCLE_ALREADY_ADDED_TO_A_STATION;
-//        }
-
         List<StationBicycle> stationBicyclesAtStation = sbRepository.findAllBicyclesByStation(station);
-        if (stationBicyclesAtStation.size() >= 10) {
+        if (stationBicyclesAtStation.size() == M) {
             return Constants.STATION_AT_FULL_CAPACITY;
         }
 
         StationBicycle stationBicycle = new StationBicycle();
         stationBicycle.setBicycle(bicycle);
         stationBicycle.setStation(station);
-
         sbRepository.save(stationBicycle);
 
         return Constants.SUCCESSFUL_OPERATION;
