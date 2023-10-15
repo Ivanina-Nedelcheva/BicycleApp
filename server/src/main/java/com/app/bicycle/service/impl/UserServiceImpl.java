@@ -10,7 +10,6 @@ import com.app.bicycle.service.StationService;
 import com.app.bicycle.service.UserService;
 import com.app.bicycle.utils.Constants;
 import com.app.bicycle.utils.CustomError;
-import com.app.bicycle.utils.ScheduledTimer;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
