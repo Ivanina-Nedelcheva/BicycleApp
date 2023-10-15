@@ -41,7 +41,7 @@ public class StationController {
 
 
     @PostMapping("/newStation")
-    @PreAuthorize("hasAnyRole('ROLE_SYSTEM_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_SYSTEM_ADMIN')")
     public ResponseEntity<StationDTO> addStation(@RequestBody Station station) {
 
         StationDTO response;

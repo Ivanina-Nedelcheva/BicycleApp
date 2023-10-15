@@ -30,7 +30,6 @@ public class UserController {
 
     @PostMapping("/registerUser")
     public ResponseEntity<UserDTO> registerUser(@RequestBody UserDTO inputUser) {
-
         UserDTO response;
         try {
             response = userService.registerUser(inputUser);
@@ -42,7 +41,7 @@ public class UserController {
     }
 
     @DeleteMapping("/deleteUser")
-    @PreAuthorize("hasAnyRole('ROLE_ORDINARY_USER')")
+    @PreAuthorize("hasRole('ROLE_ORDINARY_USER')")
     public ResponseEntity<UserDTO> deleteUser(@RequestParam Long userId) {
         UserDTO response = new UserDTO();
         try {
@@ -56,7 +55,7 @@ public class UserController {
 
 
     @PatchMapping("/editUser")
-    @PreAuthorize("hasAnyRole('ROLE_ORDINARY_USER')")
+    @PreAuthorize("hasRole('ROLE_ORDINARY_USER')")
     public ResponseEntity<UserDTO> editUser(@RequestBody UserDTO user) {
         UserDTO response;
         try {
@@ -71,14 +70,12 @@ public class UserController {
     @GetMapping("/getFaultReports")
     @PreAuthorize("hasAnyRole('ROLE_SYSTEM_ADMIN', 'ROLE_TECH_SUPPORT_MEMBER')")
     public ResponseEntity<List<FaultReportDTO>> getFaultReports() {
-
         List<FaultReportDTO> response;
         try {
             response = userService.getReports();
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -87,21 +84,18 @@ public class UserController {
     @PreAuthorize("hasAnyRole('ROLE_TECH_SUPPORT_MEMBER', 'ROLE_SYSTEM_ADMIN', 'ROLE_ORDINARY_USER', 'ROLE_OBSERVER')")
     public ResponseEntity<FaultReportDTO> faultReport(@RequestParam Long userId, @RequestParam Long bikeId,
                                                       @RequestParam String faultText) {
-
         FaultReportDTO response;
         try {
             response = userService.reportFault(userId, bikeId, faultText);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping("/rent")
-    @PreAuthorize("hasAnyRole('ROLE_ORDINARY_USER')")
+    @PreAuthorize("hasRole('ROLE_ORDINARY_USER')")
     public ResponseEntity<BicycleDTO> rentBicycle(@RequestParam Long userId, @RequestParam Long bikeId) {
-
         BicycleDTO response;
         try {
             response = userService.rentBicycle(userId, bikeId);
@@ -112,9 +106,8 @@ public class UserController {
     }
 
     @PostMapping("/reserve")
-    @PreAuthorize("hasAnyRole('ROLE_ORDINARY_USER')")
+    @PreAuthorize("hasRole('ROLE_ORDINARY_USER')")
     public ResponseEntity<Bicycle> reserveBicycle(@RequestParam Long userId, @RequestParam Long bikeId) throws CustomError {
-
         Bicycle response = new Bicycle();
         try {
             userService.reserveBicycle(userId, bikeId);
@@ -125,9 +118,8 @@ public class UserController {
     }
 
     @PatchMapping("/return")
-    @PreAuthorize("hasAnyRole('ROLE_ORDINARY_USER')")
+    @PreAuthorize("hasRole('ROLE_ORDINARY_USER')")
     public ResponseEntity<Bicycle> returnBicycle(@RequestParam Long userId, @RequestParam Long stationId) throws CustomError {
-
         Bicycle response = new Bicycle();
         try {
             userService.returnBicycle(userId, stationId);
@@ -138,9 +130,8 @@ public class UserController {
     }
 
     @GetMapping("/userHistory")
-    @PreAuthorize("hasAnyRole('ROLE_ORDINARY_USER')")
+    @PreAuthorize("hasRole('ROLE_ORDINARY_USER')")
     public ResponseEntity<List<RentalDTO>> userHistory(@RequestParam Long userId) throws CustomError {
-
         List<RentalDTO> response;
         try {
             response = userService.getUserHistory(userId);
@@ -154,7 +145,6 @@ public class UserController {
     @GetMapping("/inquiry")
     @PreAuthorize("hasAnyRole('ROLE_TECH_SUPPORT_MEMBER', 'ROLE_SYSTEM_ADMIN', 'ROLE_ORDINARY_USER', 'ROLE_OBSERVER')")
     public ResponseEntity<List<RentalDTO>> getAllUserHistory() throws CustomError {
-
         List<RentalDTO> response;
         try {
             response = userService.getAllHistory();
@@ -166,7 +156,6 @@ public class UserController {
 
     @GetMapping("/details")
     public ResponseEntity<UserDTO> getUserDetails(@RequestParam Long userId) {
-
         UserDTO response;
         try {
             response = userService.getUserDetails(userId);

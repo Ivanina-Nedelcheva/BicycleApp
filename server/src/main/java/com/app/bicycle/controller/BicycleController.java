@@ -23,7 +23,7 @@ public class BicycleController {
     }
 
     @PostMapping("/newBicycle")
-    @PreAuthorize("hasAnyRole('ROLE_SYSTEM_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_SYSTEM_ADMIN')")
     public ResponseEntity<CustomResponse> addBicycle(@RequestParam Long stationId) throws CustomError {
 
         CustomResponse beResponse = bicycleService.addBicycle(stationId);

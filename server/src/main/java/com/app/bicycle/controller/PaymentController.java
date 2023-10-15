@@ -25,7 +25,7 @@ public class PaymentController {
     }
 
     @PostMapping("/paymentSheet")
-    @PreAuthorize("hasAnyRole('ROLE_ORDINARY_USER')")
+    @PreAuthorize("hasRole('ROLE_ORDINARY_USER')")
     public ResponseEntity<Map<String, String>> handlePaymentSheet(@RequestParam Long userId, @RequestParam String paymentMethodId) {
 
         Map<String, String> response;
@@ -55,7 +55,7 @@ public class PaymentController {
 
 
     @PostMapping("/chargeSavedPaymentMethod")
-    @PreAuthorize("hasAnyRole('ROLE_ORDINARY_USER')")
+    @PreAuthorize("hasRole('ROLE_ORDINARY_USER')")
     public ResponseEntity<Map<String, Object>> chargeSavedPaymentMethod(@RequestParam String customerId, @RequestParam Long amount) {
         Map<String, Object> response;
         try {
