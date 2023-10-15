@@ -1,9 +1,6 @@
 package com.app.bicycle.service.impl;
 
-import com.app.bicycle.dto.FaultReportDTO;
-import com.app.bicycle.dto.RentalDTO;
-import com.app.bicycle.dto.ReservationDTO;
-import com.app.bicycle.dto.UserDTO;
+import com.app.bicycle.dto.*;
 import com.app.bicycle.entities.*;
 import com.app.bicycle.enums.BicycleState;
 import com.app.bicycle.enums.UserRole;
@@ -47,17 +44,18 @@ public class UserServiceImpl extends BaseService implements UserService {
     private final ModelMapper modelMapper;
     private final RoleRepository roleRepository;
     private final ReservationRepository reservationRepository;
-    private ScheduledTimer timer;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository,
                            FaultReportRepository faultReportRepository,
                            BicycleRepository bicycleRepository,
                            RentalRepository rentalRepository,
-                           StationBicycleRepository sbRepository, BicycleService bicycleService,
+                           StationBicycleRepository sbRepository,
+                           BicycleService bicycleService,
                            StationService stationService,
                            PriceRepository priceRepository,
-                           ScheduledTimer timer, PasswordEncoder passwordEncoder, ModelMapper modelMapper,
+                           PasswordEncoder passwordEncoder,
+                           ModelMapper modelMapper,
                            RoleRepository roleRepository,
                            ReservationRepository reservationRepository) {
         this.userRepository = userRepository;
@@ -68,7 +66,6 @@ public class UserServiceImpl extends BaseService implements UserService {
         this.bicycleService = bicycleService;
         this.stationService = stationService;
         this.priceRepository = priceRepository;
-        this.timer = timer;
         this.passwordEncoder = passwordEncoder;
         this.modelMapper = modelMapper;
         this.roleRepository = roleRepository;
@@ -134,16 +131,6 @@ public class UserServiceImpl extends BaseService implements UserService {
         return result >= 1;
     }
 
-    private void addUserRentalRecord(Long userId, Long bikeId) {
-        Rental newRental = new Rental();
-        newRental.setUser(userRepository.findUserById(userId));
-        newRental.setBicycle(bicycleRepository.getBicycleById(bikeId));
-        newRental.setDate(new Date(System.currentTimeMillis()));
-        newRental.setStartTime(new Timestamp(System.currentTimeMillis()));
-        newRental.setFinished(false);
-        rentalRepository.save(newRental);
-    }
-
     @Override
     public void increaseUserRentedBicycles(Long userId) {
         User user = userRepository.findUserById(userId);
@@ -158,7 +145,7 @@ public class UserServiceImpl extends BaseService implements UserService {
 
 
     @Override
-    public void rentBicycle(Long userId, Long bikeId) {
+    public BicycleDTO rentBicycle(Long userId, Long bikeId) {
         if (checkUserRentedBicycles(userId)) {
             throw new CustomError(Constants.CANNOT_RENT_MORE_THAN_ONE_BICYCLE);
         } else if (bicycleService.getAvailableBicycles().isEmpty()) {
@@ -172,6 +159,20 @@ public class UserServiceImpl extends BaseService implements UserService {
             stationService.deleteSBConnection(bikeId);
             bicycleService.changeBicycleState(bikeId, BicycleState.RENTED);
         }
+        return bicycleService.findBicycleById(bikeId);
+    }
+
+    private void addUserRentalRecord(Long userId, Long bikeId) {
+        Rental newRental = new Rental();
+        newRental.setUser(userRepository.findUserById(userId));
+        Bicycle bicycle = bicycleRepository.getBicycleById(bikeId);
+        newRental.setBicycle(bicycle);
+        newRental.setStartTime(new Timestamp(System.currentTimeMillis()));
+        newRental.setDate(new Date(System.currentTimeMillis()));
+        StationBicycle connection = sbRepository.findStationBicycleByBicycle(bicycle);
+        newRental.setStation(connection.getStation());
+        newRental.setFinished(false);
+        rentalRepository.save(newRental);
     }
 
 

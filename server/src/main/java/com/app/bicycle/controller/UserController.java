@@ -1,5 +1,6 @@
 package com.app.bicycle.controller;
 
+import com.app.bicycle.dto.BicycleDTO;
 import com.app.bicycle.dto.FaultReportDTO;
 import com.app.bicycle.dto.RentalDTO;
 import com.app.bicycle.dto.UserDTO;
@@ -101,11 +102,11 @@ public class UserController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/rent", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAnyRole('ROLE_ORDINARY_USER')")
-    public ResponseEntity<Bicycle> rentBicycle(@RequestParam Long userId, @RequestParam Long bikeId) throws CustomError {
+    public ResponseEntity<BicycleDTO> rentBicycle(@RequestParam Long userId, @RequestParam Long bikeId) {
 
-        Bicycle response = new Bicycle();
+        BicycleDTO response;
         try {
-            userService.rentBicycle(userId, bikeId);
+            response = userService.rentBicycle(userId, bikeId);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }

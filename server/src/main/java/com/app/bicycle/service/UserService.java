@@ -1,5 +1,6 @@
 package com.app.bicycle.service;
 
+import com.app.bicycle.dto.BicycleDTO;
 import com.app.bicycle.dto.FaultReportDTO;
 import com.app.bicycle.dto.RentalDTO;
 import com.app.bicycle.dto.UserDTO;
@@ -26,7 +27,7 @@ public interface UserService {
 
     void increaseUserReservedBicycles(Long userId);
 
-    void rentBicycle(Long userId, Long bikeId);
+    BicycleDTO rentBicycle(Long userId, Long bikeId);
 
     void reserveBicycle(Long userId, Long bikeId);
 
