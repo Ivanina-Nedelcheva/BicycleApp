@@ -38,43 +38,43 @@ public class BicycleController {
     @PreAuthorize("hasAnyRole('ROLE_TECH_SUPPORT_MEMBER', 'ROLE_SYSTEM_ADMIN')")
     public ResponseEntity<BicycleDTO> deactivateBicycle(@RequestParam Long bikeId) throws CustomError {
 
-        BicycleDTO result = new BicycleDTO();
+        BicycleDTO response = new BicycleDTO();
         CustomResponse beResponse = bicycleService.deactivateBicycle(bikeId);
         if (beResponse == Constants.SUCCESSFUL_OPERATION) {
-            result = bicycleService.findBicycleById(bikeId);
+            response = bicycleService.findBicycleById(bikeId);
         } else if (beResponse == Constants.BICYCLE_ALREADY_DEACTIVATED) {
             throw new CustomError(Constants.BICYCLE_ALREADY_DEACTIVATED);
         }
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/activateBicycle", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAnyRole('ROLE_TECH_SUPPORT_MEMBER', 'ROLE_SYSTEM_ADMIN')")
     public ResponseEntity<BicycleDTO> activateBicycle(@RequestBody Long bikeId) throws CustomError {
 
-        BicycleDTO result = new BicycleDTO();
+        BicycleDTO response = new BicycleDTO();
         CustomResponse beResponse = bicycleService.activateBicycle(bikeId);
         if (beResponse == Constants.SUCCESSFUL_OPERATION) {
-            result = bicycleService.findBicycleById(bikeId);
+            response = bicycleService.findBicycleById(bikeId);
         } else if (beResponse == Constants.BICYCLE_ALREADY_ACTIVATED) {
             throw new CustomError(Constants.BICYCLE_ALREADY_ACTIVATED);
         }
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/changeState", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<BicycleDTO> changeState(@RequestParam Long bikeId, @RequestParam String newState) throws CustomError {
 
-        BicycleDTO result;
+        BicycleDTO response;
         try {
             bicycleService.changeBicycleState(bikeId, BicycleState.valueOf(newState));
-            result = bicycleService.findBicycleById(bikeId);
+            response = bicycleService.findBicycleById(bikeId);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

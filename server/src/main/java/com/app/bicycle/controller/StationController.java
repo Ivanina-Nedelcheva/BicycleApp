@@ -29,15 +29,15 @@ public class StationController {
     @RequestMapping(method = RequestMethod.GET, value = "/getStationWithBicycles", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<StationDTO>> getStationWithBicycles() {
 
-        List<StationDTO> result;
+        List<StationDTO> response;
 
         try {
-            result = stationService.getAllStationsWithBicycles();
+            response = stationService.getAllStationsWithBicycles();
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 
@@ -45,14 +45,14 @@ public class StationController {
     @PreAuthorize("hasAnyRole('ROLE_SYSTEM_ADMIN')")
     public ResponseEntity<StationDTO> addStation(@RequestBody Station station) {
 
-        StationDTO result;
+        StationDTO response;
         try {
-            result = stationService.addStation(station.getLatitude(), station.getLongitude(), station.getStationName());
+            response = stationService.addStation(station.getLatitude(), station.getLongitude(), station.getStationName());
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 
@@ -60,30 +60,30 @@ public class StationController {
     @PreAuthorize("hasAnyRole('ROLE_TECH_SUPPORT_MEMBER', 'ROLE_SYSTEM_ADMIN')")
     public ResponseEntity<StationDTO> deactivateStation(@RequestParam Long stationId) throws CustomError {
 
-        StationDTO result = new StationDTO();
+        StationDTO response = new StationDTO();
         CustomResponse beResponse = stationService.deactivateStation(stationId);
         if (beResponse == Constants.SUCCESSFUL_OPERATION) {
-            result = stationService.findStationById(stationId);
+            response = stationService.findStationById(stationId);
         } else if (beResponse == Constants.STATION_ALREADY_DEACTIVATED) {
             throw new CustomError(Constants.STATION_ALREADY_DEACTIVATED);
         }
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/activateStation", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAnyRole('ROLE_TECH_SUPPORT_MEMBER', 'ROLE_SYSTEM_ADMIN')")
     public ResponseEntity<StationDTO> activateStation(@RequestParam Long stationId) throws CustomError {
 
-        StationDTO result = new StationDTO();
+        StationDTO response = new StationDTO();
         CustomResponse beResponse = stationService.activateStation(stationId);
         if (beResponse == Constants.SUCCESSFUL_OPERATION) {
-            result = stationService.findStationById(stationId);
+            response = stationService.findStationById(stationId);
         } else if (beResponse == Constants.STATION_ALREADY_ACTIVATED) {
             throw new CustomError(Constants.STATION_ALREADY_ACTIVATED);
         }
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 
@@ -91,10 +91,10 @@ public class StationController {
     @PreAuthorize("hasAnyRole('ROLE_TECH_SUPPORT_MEMBER', 'ROLE_SYSTEM_ADMIN')")
     public ResponseEntity<StationBicycleDTO> addBikeToStation(@RequestParam Long bikeId, @RequestParam Long stationId) throws CustomError {
 
-        StationBicycleDTO result = new StationBicycleDTO();
+        StationBicycleDTO response = new StationBicycleDTO();
         CustomResponse beResponse = stationService.addBikeToStation(bikeId, stationId);
         if (beResponse == Constants.SUCCESSFUL_OPERATION) {
-            result = stationService.findSBConnection(bikeId, stationId);
+            response = stationService.findSBConnection(bikeId, stationId);
         } else if (beResponse == Constants.CONNECTION_ALREADY_EXISTS) {
             throw new CustomError(Constants.CONNECTION_ALREADY_EXISTS);
         } else if (beResponse == Constants.BICYCLE_ALREADY_ADDED_TO_A_STATION) {
@@ -103,6 +103,6 @@ public class StationController {
             throw new CustomError(Constants.STATION_AT_FULL_CAPACITY);
         }
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

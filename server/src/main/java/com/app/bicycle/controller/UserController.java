@@ -103,13 +103,13 @@ public class UserController {
     @PreAuthorize("hasAnyRole('ROLE_ORDINARY_USER')")
     public ResponseEntity<Bicycle> rentBicycle(@RequestParam Long userId, @RequestParam Long bikeId) throws CustomError {
 
-        Bicycle result = new Bicycle();
+        Bicycle response = new Bicycle();
         try {
             userService.rentBicycle(userId, bikeId);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 
@@ -117,39 +117,39 @@ public class UserController {
     @PreAuthorize("hasAnyRole('ROLE_ORDINARY_USER')")
     public ResponseEntity<Bicycle> reserveBicycle(@RequestParam Long userId, @RequestParam Long bikeId) throws CustomError {
 
-        Bicycle result = new Bicycle();
+        Bicycle response = new Bicycle();
         try {
             userService.reserveBicycle(userId, bikeId);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.PATCH, value = "/return", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAnyRole('ROLE_ORDINARY_USER')")
     public ResponseEntity<Bicycle> returnBicycle(@RequestParam Long userId, @RequestParam Long stationId) throws CustomError {
 
-        Bicycle result = new Bicycle();
+        Bicycle response = new Bicycle();
         try {
             userService.returnBicycle(userId, stationId);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/userHistory", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAnyRole('ROLE_ORDINARY_USER')")
     public ResponseEntity<List<RentalDTO>> userHistory(@RequestParam Long userId) throws CustomError {
 
-        List<RentalDTO> result;
+        List<RentalDTO> response;
         try {
-            result = userService.getUserHistory(userId);
+            response = userService.getUserHistory(userId);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 
@@ -157,25 +157,25 @@ public class UserController {
     @PreAuthorize("hasAnyRole('ROLE_TECH_SUPPORT_MEMBER', 'ROLE_SYSTEM_ADMIN', 'ROLE_ORDINARY_USER', 'ROLE_OBSERVER')")
     public ResponseEntity<List<RentalDTO>> getAllUserHistory() throws CustomError {
 
-        List<RentalDTO> result;
+        List<RentalDTO> response;
         try {
-            result = userService.getAllHistory();
+            response = userService.getAllHistory();
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/details", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> getUserDetails(@RequestParam Long userId) {
 
-        UserDTO result;
+        UserDTO response;
         try {
-            result = userService.getUserDetails(userId);
+            response = userService.getUserDetails(userId);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 }

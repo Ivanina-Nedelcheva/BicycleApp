@@ -71,12 +71,12 @@ public class PaymentController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/getPrices", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<com.app.bicycle.entities.Price> getPrices() {
-        Price result;
+        Price response;
         try {
-            result = paymentsService.getCurrentPrices();
+            response = paymentsService.getCurrentPrices();
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
