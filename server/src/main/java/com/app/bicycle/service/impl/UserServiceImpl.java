@@ -138,6 +138,7 @@ public class UserServiceImpl extends BaseService implements UserService {
         Rental newRental = new Rental();
         newRental.setUser(userRepository.findUserById(userId));
         newRental.setBicycle(bicycleRepository.getBicycleById(bikeId));
+        newRental.setDate(new Date(System.currentTimeMillis()));
         newRental.setStartTime(new Timestamp(System.currentTimeMillis()));
         newRental.setFinished(false);
         rentalRepository.save(newRental);
