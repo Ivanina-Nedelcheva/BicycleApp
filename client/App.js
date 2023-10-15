@@ -9,6 +9,7 @@ import { CardProvider } from './src/context/CardContext';
 import AppNav from './src/navigation/AppNav';
 import { fonts } from './styles/styles'
 import { AuthProvider } from './src/context/AuthContext';
+import { TimerProvider } from './src/context/TimerContext';
 
 const App = () => {
   const [fontsLoaded] = useFonts(fonts);
@@ -25,7 +26,9 @@ const App = () => {
   return (
     <CardProvider>
       <AuthProvider>
-        <AppNav onLayout={onLayoutRootView}></AppNav>
+        <TimerProvider>
+          <AppNav onLayout={onLayoutRootView}></AppNav>
+        </TimerProvider>
       </AuthProvider>
     </CardProvider>
   );

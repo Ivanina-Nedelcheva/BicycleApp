@@ -1,18 +1,60 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { View, Text, StyleSheet, Alert } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { BottomSheetModal, BottomSheetModalProvider, } from '@gorhom/bottom-sheet';
-import { colors } from '../../styles/styles'
 import CustomButton from './CustomButton'
-import ReservationTimer from './ReservationTimer'
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import StartRideButton from './StartRideButton'
-import { getPrices } from '../api/payment';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { changeBicycleState } from '../api/bicycles';
+import { getPrices } from '../api/payment';
+import { useTimer } from '../context/TimerContext';
+import { colors } from '../../styles/styles'
+import * as Notifications from 'expo-notifications';
 
 const BikeDetails = ({ bike, bottomSheetRef, navigation }) => {
   const snapPoints = useMemo(() => ['75%'], []);
   const [reservation, setReservation] = useState(false)
   const [prices, setPrices] = useState({})
+  const [reservedBicycleId, setReservedBicycleId] = useState(null)
+
+  const { startTimer, remainingTime } = useTimer();
+
+  function handleReserveBike() {
+    changeBicycleState(bike.id, 'RESERVED')
+    setReservation(true);
+    setReservedBicycleId(bike.id)
+    // startTimer(15 * 60 * 1000)
+    startTimer(1000 * 6)
+  }
+
+  const formatTime = (remainingTime) => {
+    const minutes = Math.floor(remainingTime / 1000 / 60);
+    const remainingSeconds = Math.floor((remainingTime / 1000) % 60);
+    return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
+  };
+
+  function cancelReservation() {
+    setReservation(false)
+    changeBicycleState(reservedBicycleId, 'FREE')
+  }
+
+  function handleReportIssue() {
+    console.log(bike);
+    navigation.navigate('Report Issue', { id: bike.id })
+  }
+
+  useEffect(() => {
+    if (Math.floor((remainingTime / 1000) % 60) == 0) {
+      cancelReservation()
+
+      Notifications.scheduleNotificationAsync({
+        content: {
+          title: "Time's Up!",
+          body: 'Your reservation time has ended.',
+        },
+        trigger: null,
+      });
+    }
+  }, [remainingTime]);
 
   useEffect(() => {
     (async () => {
@@ -20,21 +62,6 @@ const BikeDetails = ({ bike, bottomSheetRef, navigation }) => {
       setPrices(data)
     })()
   }, [])
-
-  function cancelReservation() {
-    setReservation(false)
-    changeBicycleState(bike.id, 'FREE')
-  }
-
-  function handleReserveBike() {
-    changeBicycleState(bike.id, 'RESERVED')
-    setReservation(true)
-  }
-
-  function handleReportIssue() {
-    console.log(bike);
-    navigation.navigate('Report Issue', { id: bike.id })
-  }
 
   return (
     <BottomSheetModalProvider>
@@ -49,8 +76,8 @@ const BikeDetails = ({ bike, bottomSheetRef, navigation }) => {
 
           <View style={styles.details}>
             <View style={styles.bikeAttributes}>
-              <Text style={styles.attribute}>Bike ID:</Text>
-              <Text style={styles.attribute}>{bike.id}</Text>
+              <Text style={styles.attribute}>{reservation ? "Reserved Bicycle ID: " : "Bike ID:"}</Text>
+              <Text style={styles.attribute}>{reservedBicycleId || bike.id}</Text>
             </View>
 
             <View style={styles.bikeAttributes}>
@@ -65,7 +92,8 @@ const BikeDetails = ({ bike, bottomSheetRef, navigation }) => {
 
             {reservation && <View style={styles.bikeAttributes}>
               <MaterialCommunityIcons name="clock-outline" size={24} color="black" />
-              <ReservationTimer bikeId={bike.id} setReservation={setReservation} />
+              <Text style={styles.text}>Remaining time: </Text>
+              <Text style={styles.attribute}>{formatTime(remainingTime)}</Text>
             </View>}
           </View>
 

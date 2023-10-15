@@ -12,7 +12,7 @@ const History = () => {
       {!rides.length ? (
         <View style={styles.informationWrapper}>
           <MaterialCommunityIcons name="information-outline" size={128} color="black" />
-          <Text style={styles.heading}>No rides yet</Text>
+          <Text style={styles.heading}>No records</Text>
 
           <Text style={styles.text}>Once you take a ride or make a purchase, you'll see it here.</Text>
         </View>

@@ -37,7 +37,7 @@ const SignIn = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Formik
-        initialValues={{ username: 'iva@test.com', password: '123456' }}
+        initialValues={{ username: 'ivanina@test.com', password: '123456' }}
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >

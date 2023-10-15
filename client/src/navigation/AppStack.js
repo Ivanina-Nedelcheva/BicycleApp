@@ -116,10 +116,7 @@ const AppStack = () => {
                       icon="arrow-left"
                       color="white"
                       magicNumber={0.12}
-                      onPress={() => navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'Map' }],
-                      })}
+                      onPress={() => navigation.goBack()}
                     />
                   ),
                 };

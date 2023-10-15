@@ -13,9 +13,8 @@ const Inquiry = () => {
   const [filteredInquiries, setFilteredInquiries] = useState([]);
 
   const filterInquiries = () => {
-    console.log(inquiry);
     if (selectedOption === '') {
-      (inquiry)
+      setFilteredInquiries(inquiry)
     } else {
       const filtered = inquiry.filter(report => report.station.id === selectedOption);
       setFilteredInquiries(filtered)
