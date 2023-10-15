@@ -99,15 +99,12 @@ public class BicycleServiceImpl extends BaseService implements BicycleService {
     }
 
     @Override
-    public boolean changeBicycleState(Long bikeId, BicycleState newState) {
+    public void changeBicycleState(Long bikeId, BicycleState newState) {
         BicycleState currentState = bicycleRepository.getBicycleState(bikeId);
         if (isValidStateTransition(currentState, newState)) {
             Bicycle bicycle = bicycleRepository.getBicycleById(bikeId);
             bicycle.setState(newState);
             bicycleRepository.save(bicycle);
-            return true;
-        } else {
-            return false;
         }
     }
 

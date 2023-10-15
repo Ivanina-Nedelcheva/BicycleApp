@@ -22,8 +22,6 @@ public interface UserService {
 
     boolean checkUserRentedBicycles(Long userId);
 
-    void addUserRentalRecord(Long userId, Long bikeId);
-
     void increaseUserRentedBicycles(Long userId);
 
     void increaseUserReservedBicycles(Long userId);

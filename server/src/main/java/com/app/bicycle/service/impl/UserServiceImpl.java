@@ -135,12 +135,10 @@ public class UserServiceImpl extends BaseService implements UserService {
         return result >= 1;
     }
 
-    @Override
-    public void addUserRentalRecord(Long userId, Long bikeId) {
+    private void addUserRentalRecord(Long userId, Long bikeId) {
         Rental newRental = new Rental();
         newRental.setUser(userRepository.findUserById(userId));
         newRental.setBicycle(bicycleRepository.getBicycleById(bikeId));
-        newRental.setDate(new Date(System.currentTimeMillis()));
         newRental.setStartTime(new Timestamp(System.currentTimeMillis()));
         newRental.setFinished(false);
         rentalRepository.save(newRental);
@@ -149,20 +147,18 @@ public class UserServiceImpl extends BaseService implements UserService {
     @Override
     public void increaseUserRentedBicycles(Long userId) {
         User user = userRepository.findUserById(userId);
-//        user.setUserRentedBicycles(1);
+        user.setUserRentedBicycles(1);
     }
 
     @Override
     public void increaseUserReservedBicycles(Long userId) {
         User user = userRepository.findUserById(userId);
-//        user.setUserReservedBicycles(1);
+        user.setUserReservedBicycles(1);
     }
 
 
     @Override
     public void rentBicycle(Long userId, Long bikeId) {
-        User user = userRepository.findUserById(userId);
-
         if (checkUserRentedBicycles(userId)) {
             throw new CustomError(Constants.CANNOT_RENT_MORE_THAN_ONE_BICYCLE);
         } else if (bicycleService.getAvailableBicycles().isEmpty()) {
@@ -171,9 +167,6 @@ public class UserServiceImpl extends BaseService implements UserService {
                 !bicycleService.isBicycleInState(bikeId, BicycleState.RESERVED)) {
             throw new CustomError(Constants.BICYCLE_IS_NOT_FREE_OR_RESERVED);
         } else {
-            if (timer.isReservationValid(user)) {
-                timer.completeReservation(user);
-            }
             increaseUserRentedBicycles(userId);
             addUserRentalRecord(userId, bikeId);
             stationService.deleteSBConnection(bikeId);
@@ -181,21 +174,24 @@ public class UserServiceImpl extends BaseService implements UserService {
         }
     }
 
+
     @Override
     public void reserveBicycle(Long userId, Long bikeId) {
         if (!bicycleService.isBicycleInState(bikeId, BicycleState.FREE)) {
             throw new CustomError(Constants.BICYCLE_IS_NOT_FREE_OR_RESERVED);
         }
-//      stationService.deleteSBConnection(bikeId); could be removed
+        stationService.deleteSBConnection(bikeId);
         bicycleService.changeBicycleState(bikeId, BicycleState.RESERVED);
         increaseUserReservedBicycles(userId);
+        saveUserReservation(userId, bikeId);
+    }
 
+    private void saveUserReservation(Long userId, Long bikeId) {
         User user = userRepository.findUserById(userId);
         Bicycle bicycle = bicycleRepository.findBicycleById(bikeId);
         Reservation reservation = new Reservation();
         reservation.setUser(user);
         reservation.setBicycle(bicycle);
-
         reservationRepository.save(reservation);
     }
 
@@ -204,25 +200,22 @@ public class UserServiceImpl extends BaseService implements UserService {
         Price prices = priceRepository.findTopByOrderByIdDesc();
         User user = userRepository.findUserById(userId);
         Rental userRent = rentalRepository.findRentalByUserAndFinishedFalse(user);
-
         Bicycle bicycle = userRent.getBicycle();
 
         userRent.setFinished(true);
         userRent.setDistance(bicycle.getDistance());
+        Timestamp startTime = userRent.getStartTime();
         Timestamp endTime = new Timestamp(System.currentTimeMillis());
         userRent.setEndTime(endTime);
-        Timestamp startTime = userRent.getStartTime();
-        Long minutes = (endTime.getTime() - startTime.getTime()) / (60 * 1000);
-        BigDecimal price = BigDecimal.valueOf(minutes * prices.getMinutePrice() + prices.getUnlockPrice());
+        long duration = (endTime.getTime() - startTime.getTime()) / (60 * 1000);
+
+        BigDecimal price = BigDecimal.valueOf(duration * prices.getMinutePrice() + prices.getUnlockPrice());
         userRent.setPrice(price);
-        userRent.setDistance(minutes / 2.5);
+        userRent.setDistance(duration / 2.5);
         rentalRepository.save(userRent);
 
-        stationService.addBikeToStation(bicycle.getId(), stationId); //here is the check if the station has more room and save is here
-
-        if (bicycleService.isBicycleInState(bicycle.getId(), BicycleState.RENTED)) {
-            bicycleService.changeBicycleState(bicycle.getId(), BicycleState.CHARGING); //save is here
-        }
+        stationService.addBikeToStation(bicycle.getId(), stationId);
+        bicycleService.changeBicycleState(bicycle.getId(), BicycleState.CHARGING);
     }
 
     @Override

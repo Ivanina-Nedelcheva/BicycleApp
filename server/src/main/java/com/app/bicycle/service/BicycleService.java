@@ -20,7 +20,7 @@ public interface BicycleService {
 
     List<Bicycle> getAvailableBicycles();
 
-    boolean changeBicycleState(Long bikeId, BicycleState newState);
+    void changeBicycleState(Long bikeId, BicycleState newState);
 
     boolean isBicycleInState(Long bikeId, BicycleState desiredState);
 

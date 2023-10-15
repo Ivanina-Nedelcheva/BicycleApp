@@ -46,11 +46,11 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private Set<Payment> payments;
 
-//    @Transient
-//    private Integer userRentedBicycles = 0;
-//
-//    @Transient
-//    private Integer userReservedBicycles = 0;
+    @Transient
+    private Integer userRentedBicycles = 0;
+
+    @Transient
+    private Integer userReservedBicycles = 0;
 
     public String getFirstName() {
         return firstName;
@@ -148,19 +148,19 @@ public class User extends BaseEntity {
         this.payments = payments;
     }
 
-//    public Integer getUserRentedBicycles() {
-//        return userRentedBicycles;
-//    }
-//
-//    public void setUserRentedBicycles(Integer userRentedBicycles) {
-//        this.userRentedBicycles = userRentedBicycles;
-//    }
+    public Integer getUserRentedBicycles() {
+        return userRentedBicycles;
+    }
 
-//    public Integer getUserReservedBicycles() {
-//        return userReservedBicycles;
-//    }
-//
-//    public void setUserReservedBicycles(Integer userReservedBicycles) {
-//        this.userReservedBicycles = userReservedBicycles;
-//    }
+    public void setUserRentedBicycles(Integer userRentedBicycles) {
+        this.userRentedBicycles = userRentedBicycles;
+    }
+
+    public Integer getUserReservedBicycles() {
+        return userReservedBicycles;
+    }
+
+    public void setUserReservedBicycles(Integer userReservedBicycles) {
+        this.userReservedBicycles = userReservedBicycles;
+    }
 }

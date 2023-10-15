@@ -50,7 +50,7 @@ public class DBInitializer implements CommandLineRunner {
                 User user1 = new User();
                 user1.setFirstName("Ivanina");
                 user1.setLastName("Nedelcheva");
-                user1.setEmail("iva@test.com");
+                user1.setEmail("ivanina@test.com");
                 user1.setRole(ordinary);
                 user1.setPhoneNumber("0891324500");
                 user1.setAge(25);
