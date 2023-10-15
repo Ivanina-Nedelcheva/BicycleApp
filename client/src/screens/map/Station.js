@@ -36,7 +36,6 @@ const Station = ({ route, navigation }) => {
 
   async function handleReturnBicycle() {
     const res = await returnBicycle(userInfo.id, station.id)
-    console.log(res);
     Alert.alert('Bicycle returned', null, [{
       onPress: () => navigation.reset({
         index: 0,
@@ -82,6 +81,7 @@ const Station = ({ route, navigation }) => {
 
       {userRole !== "ROLE_SYSTEM_ADMIN" && <BikeDetails
         bike={selectedBike}
+        stationName={station.stationName}
         bottomSheetRef={bottomSheetRef}
         navigation={navigation}
       />}

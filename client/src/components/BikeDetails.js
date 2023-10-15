@@ -10,7 +10,7 @@ import { useTimer } from '../context/TimerContext';
 import { colors } from '../../styles/styles'
 import * as Notifications from 'expo-notifications';
 
-const BikeDetails = ({ bike, bottomSheetRef, navigation }) => {
+const BikeDetails = ({ bike, bottomSheetRef, navigation, stationName }) => {
   const snapPoints = useMemo(() => ['75%'], []);
   const [reservation, setReservation] = useState(false)
   const [prices, setPrices] = useState({})
@@ -34,6 +34,7 @@ const BikeDetails = ({ bike, bottomSheetRef, navigation }) => {
 
   function cancelReservation() {
     setReservation(false)
+    setReservedBicycleId(null)
     changeBicycleState(reservedBicycleId, 'FREE')
   }
 
@@ -80,6 +81,11 @@ const BikeDetails = ({ bike, bottomSheetRef, navigation }) => {
               <Text style={styles.attribute}>{reservation ? "Reserved Bicycle ID: " : "Bike ID:"}</Text>
               <Text style={styles.attribute}>{reservedBicycleId || bike.id}</Text>
             </View>
+
+            {reservation && <View style={styles.bikeAttributes}>
+              <Text style={styles.attribute}>Station: </Text>
+              <Text style={styles.attribute}>{stationName}</Text>
+            </View>}
 
             <View style={styles.bikeAttributes}>
               <MaterialCommunityIcons name="battery" size={24} color="black" />
