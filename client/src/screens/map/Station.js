@@ -7,7 +7,6 @@ import { AuthContext } from '../../context/AuthContext';
 import CustomButton from '../../components/CustomButton';
 import { newBicycle } from '../../api/bicycles';
 import { getUserDetails, returnBicycle } from '../../api/users';
-import { getStations } from '../../api/stations';
 
 const Station = ({ route, navigation }) => {
   const { station } = route.params
@@ -29,6 +28,7 @@ const Station = ({ route, navigation }) => {
 
   async function handleUserDetails() {
     const res = await getUserDetails(userInfo.id)
+    console.log(res);
     if (res.rentals && res.rentals.length) {
       setIsRented(true)
     }

@@ -22,8 +22,8 @@ const BikeDetails = ({ bike, bottomSheetRef, navigation }) => {
     changeBicycleState(bike.id, 'RESERVED')
     setReservation(true);
     setReservedBicycleId(bike.id)
-    // startTimer(15 * 60 * 1000)
-    startTimer(1000 * 6)
+    startTimer(15 * 60 * 1000)
+    // startTimer(1000 * 10)
   }
 
   const formatTime = (remainingTime) => {
@@ -43,6 +43,7 @@ const BikeDetails = ({ bike, bottomSheetRef, navigation }) => {
   }
 
   useEffect(() => {
+    if (!reservation) return
     if (Math.floor((remainingTime / 1000) % 60) == 0) {
       cancelReservation()
 

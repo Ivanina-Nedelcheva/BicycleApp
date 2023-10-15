@@ -1,15 +1,25 @@
-import React from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import RideHistory from '../../components/RideHistory';
 import { colors } from '../../../styles/styles';
-
-const rides = [1, 2]
+import { AuthContext } from '../../context/AuthContext';
+import { getUserHistory } from '../../api/users';
 
 const History = () => {
+  const [history, setHistory] = useState([])
+  const { userInfo } = useContext(AuthContext)
+
+  useEffect(() => {
+    (async () => {
+      const data = await getUserHistory(userInfo.id);
+      setHistory(data)
+    })()
+  }, [])
+
   return (
     <View style={styles.container}>
-      {!rides.length ? (
+      {!history.length ? (
         <View style={styles.informationWrapper}>
           <MaterialCommunityIcons name="information-outline" size={128} color="black" />
           <Text style={styles.heading}>No records</Text>
@@ -18,7 +28,7 @@ const History = () => {
         </View>
       ) : (
         <View>
-          <RideHistory></RideHistory>
+          <RideHistory history={history}></RideHistory>
         </View>
       )
       }

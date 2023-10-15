@@ -18,7 +18,6 @@ export const TimerProvider = ({ children }) => {
           setRemainingTime(newRemainingTime);
         } else {
           clearInterval(timerInterval);
-          console.log('timeout');
         }
       }, 100);
 
