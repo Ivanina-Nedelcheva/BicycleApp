@@ -115,9 +115,9 @@ const BikeReports = () => {
                 <Text style={styles.date}>{formatDate(report.date)}</Text>
 
                 <View style={styles.attribute}>
-                  <Text style={styles.label}>User ID:</Text>
-                  {/* <Text style={styles.description}>{` ${report.user.firstName} ${report.user.lastName}`}</Text> */}
-                  <Text style={styles.description}>{report.userId}</Text>
+                  <Text style={styles.label}>User:</Text>
+                  <Text style={styles.description}>{` ${report.user.firstName} ${report.user.lastName}`}</Text>
+                  {/* <Text style={styles.description}>{report.user.id}</Text> */}
                 </View>
 
                 <View style={styles.attribute}>

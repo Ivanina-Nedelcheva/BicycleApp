@@ -8,6 +8,7 @@ import Constants from "expo-constants";
 import { colors } from '../../../styles/styles'
 import CustomButton from '../../components/CustomButton';
 import { addReport } from '../../api/reports';
+import { useAuth } from '../../context/AuthContext';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -27,32 +28,33 @@ const ReportIssue = ({ route, navigation }) => {
   const notificationListener = useRef();
   const responseListener = useRef();
 
+  const { userInfo } = useAuth()
   const bikeId = route.params.id
 
-  // useEffect(() => {
-  //   registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+  useEffect(() => {
+    registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
 
-  //   notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-  //     setNotification(notification);
-  //   });
+    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+      setNotification(notification);
+    });
 
-  //   responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-  //     console.log(response);
-  //   });
+    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+      console.log(response);
+    });
 
-  //   return () => {
-  //     Notifications.removeNotificationSubscription(notificationListener.current);
-  //     Notifications.removeNotificationSubscription(responseListener.current);
-  //   };
-  // }, []);
+    return () => {
+      Notifications.removeNotificationSubscription(notificationListener.current);
+      Notifications.removeNotificationSubscription(responseListener.current);
+    };
+  }, []);
 
 
   async function schedulePushNotification() {
     await Notifications.scheduleNotificationAsync({
       content: {
-        title: "You've got notification! 🐱‍👤",
-        body: 'I want to be ninja 🐱‍👤',
-        data: { data: 'Im almost a ninjaaaa!' },
+        title: "REPORTED ISSUE!",
+        body: selectedOption,
+        // data: { data: 'Im almost a ninjaaaa!' },
       },
       trigger: { seconds: 1 },
     });
@@ -86,6 +88,8 @@ const ReportIssue = ({ route, navigation }) => {
         projectId: Constants.expoConfig.extra.eas.projectId,
       });
 
+      console.log(token);
+
     } else {
       alert('Must use physical device for Push Notifications');
     }
@@ -106,23 +110,23 @@ const ReportIssue = ({ route, navigation }) => {
   ];
 
   const handleImageUpload = async () => {
-    const { status } = await ImagePicker.getCameraPermissionsAsync();
+    // const { status } = await ImagePicker.getCameraPermissionsAsync();
     // const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
-    if (status !== 'granted') {
-      Alert.alert('Camera Roll permission is required to upload an image.');
-      return;
-    }
+    // if (status !== 'granted') {
+    //   Alert.alert('Camera Roll permission is required to upload an image.');
+    //   return;
+    // }
 
     // if (status !== 'granted') {
     //   alert('Permission to access media library required!');
     //   return;
     // }
 
-    const result = await ImagePicker.launchCameraAsync({
-      base64: true,
-      quality: 1,
-    });
+    // const result = await ImagePicker.launchCameraAsync({
+    //   base64: true,
+    //   quality: 1,
+    // });
 
     // const result = await ImagePicker.launchImageLibraryAsync({
     //   mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -132,12 +136,12 @@ const ReportIssue = ({ route, navigation }) => {
     //   base64: true
     // })
 
-    console.log(result.assets);
-    if (!result.canceled) {
-      setImageUri(result.assets[0].uri);
-      setImageBase64(result.assets[0].base64);
-      console.log(imageBase64);
-    }
+    // console.log(result.assets);
+    // if (!result.canceled) {
+    //   setImageUri(result.assets[0].uri);
+    //   setImageBase64(result.assets[0].base64);
+    //   console.log(imageBase64);
+    // }
   };
 
   const handleSubmit = async () => {
@@ -156,19 +160,18 @@ const ReportIssue = ({ route, navigation }) => {
     // }
 
     const formData = new FormData();
-    formData.append('userId', 1);
+    formData.append('userId', userInfo.id);
     formData.append('bikeId', bikeId);
     formData.append('faultText', selectedOption === 'Other' ? otherText : selectedOption);
     // formData.append('imageData', imageBase64);
 
-    console.log(formData);
     addReport(formData)
-    navigation.reset({
-      index: 0,
-      routes: [{ name: 'Map' }],
-    })
-    // navigation.navigate('Map', { update: true })
-    // await schedulePushNotification();
+    // navigation.reset({
+    //   index: 0,
+    //   routes: [{ name: 'Map' }],
+    // })
+    navigation.navigate('Map', { update: true })
+    await schedulePushNotification();
   };
 
   return (

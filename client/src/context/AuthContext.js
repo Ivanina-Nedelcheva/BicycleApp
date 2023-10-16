@@ -1,6 +1,5 @@
-import React, { createContext, useEffect, useState } from 'react'
+import React, { createContext, useEffect, useState, useContext } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { Alert } from 'react-native'
 import { API, setAuthToken } from '../api/axiosConfig'
 import { addUser } from '../api/users'
 import jwtDecode from 'jwt-decode';
@@ -16,9 +15,6 @@ export const AuthProvider = ({ children }) => {
 
   function register(userData) {
     addUser(userData)
-    // Alert.alert('Successful Registration!', null, [{
-    //   onPress: () => setUserToken('asd')
-    // }])
   }
 
   async function login(userData) {
@@ -86,3 +82,11 @@ export const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   )
 }
+
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useTimer must be used within a TimerProvider');
+  }
+  return context;
+};

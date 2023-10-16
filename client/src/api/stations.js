@@ -23,3 +23,29 @@ export async function addStation(stationData) {
     console.error('Error uploading data:', error);
   }
 }
+
+export async function deactivateStation(stationId) {
+  try {
+    const response = await API.post(deactivateStationURI, null, {
+      params: {
+        stationId
+      }
+    });
+    console.log('Response from the server:', response.data);
+  } catch (error) {
+    console.error('Error uploading data:', error);
+  }
+}
+
+export async function activateStation(stationId) {
+  try {
+    const response = await API.post(activateStationURI, null, {
+      params: {
+        stationId
+      }
+    });
+    console.log('Response from the server:', response.data);
+  } catch (error) {
+    console.error('Error uploading data:', error);
+  }
+}

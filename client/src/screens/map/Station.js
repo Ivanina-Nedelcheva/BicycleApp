@@ -7,15 +7,16 @@ import { AuthContext } from '../../context/AuthContext';
 import CustomButton from '../../components/CustomButton';
 import { newBicycle } from '../../api/bicycles';
 import { getUserDetails, returnBicycle } from '../../api/users';
+import { activateStation, deactivateStation } from '../../api/stations';
 
 const Station = ({ route, navigation }) => {
   const { station } = route.params
   const [selectedBike, setSelectedBike] = useState({})
   const [isRented, setIsRented] = useState(false)
   const bottomSheetRef = useRef(null)
+  const [isActiveStation, setIsActiveStation] = useState(true)
 
   const { userRole, userInfo } = useContext(AuthContext)
-  const isActive = true
 
   const selectBike = (bike) => {
     setSelectedBike(bike)
@@ -42,7 +43,15 @@ const Station = ({ route, navigation }) => {
         routes: [{ name: 'Map', params: { center: true } }],
       })
     }])
-
+  }
+  async function toggleStationState() {
+    if (isActiveStation) {
+      deactivateStation(station.id)
+      setIsActiveStation(false)
+    } else {
+      activateStation(station.id)
+      setIsActiveStation(true)
+    }
   }
 
   useEffect(() => {
@@ -89,10 +98,10 @@ const Station = ({ route, navigation }) => {
       {userRole === "ROLE_SYSTEM_ADMIN" &&
         <View style={styles.bottomBtnsWrapper}>
           <CustomButton
-            title={isActive ? "Deactivate" : "Activate"}
+            title={isActiveStation ? "Deactivate" : "Activate"}
             color={colors.bleuDeFrance}
             magicNumber={0.4}
-            onPress={handleAddBicycle}
+            onPress={toggleStationState}
           />
           <CustomButton
             title="Add bicycle"
