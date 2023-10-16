@@ -102,7 +102,10 @@ public class PaymentServiceImpl implements PaymentService {
                 PaymentIntentCreateParams createParams = PaymentIntentCreateParams.builder()
                         .setCurrency("bgn")
                         .setAmount(amount)
-                        .setAutomaticPaymentMethods(PaymentIntentCreateParams.AutomaticPaymentMethods.builder().setEnabled(true).build())
+                        .setAutomaticPaymentMethods(PaymentIntentCreateParams.AutomaticPaymentMethods
+                                .builder()
+                                .setEnabled(true)
+                                .build())
                         .setCustomer(customerId)
                         .setPaymentMethod(paymentMethodId)
                         .setConfirm(true)

@@ -12,9 +12,6 @@ import java.util.List;
 
 @Repository
 public interface StationBicycleRepository extends JpaRepository<StationBicycle, Long> {
-    @Transactional
-    @Modifying
-//    @Query("DELETE FROM StationBicycle s WHERE s.id = :idToDelete")
     void deleteById(Long id);
 
     StationBicycle findByBicycleAndStation(Bicycle bicycle, Station station);

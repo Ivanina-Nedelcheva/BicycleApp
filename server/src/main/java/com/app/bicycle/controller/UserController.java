@@ -81,7 +81,7 @@ public class UserController {
 
 
     @PostMapping("/reportFault")
-    @PreAuthorize("hasAnyRole('ROLE_TECH_SUPPORT_MEMBER', 'ROLE_SYSTEM_ADMIN', 'ROLE_ORDINARY_USER', 'ROLE_OBSERVER')")
+    @PreAuthorize("hasAnyRole('ROLE_ORDINARY_USER', 'ROLE_TECH_SUPPORT_MEMBER', 'ROLE_OBSERVER')")
     public ResponseEntity<FaultReportDTO> faultReport(@RequestParam Long userId, @RequestParam Long bikeId,
                                                       @RequestParam String faultText) {
         FaultReportDTO response;
@@ -143,7 +143,7 @@ public class UserController {
 
 
     @GetMapping("/inquiry")
-    @PreAuthorize("hasAnyRole('ROLE_TECH_SUPPORT_MEMBER', 'ROLE_SYSTEM_ADMIN', 'ROLE_ORDINARY_USER', 'ROLE_OBSERVER')")
+    @PreAuthorize("hasAnyRole('ROLE_TECH_SUPPORT_MEMBER', 'ROLE_SYSTEM_ADMIN', 'ROLE_OBSERVER')")
     public ResponseEntity<List<RentalDTO>> getAllUserHistory() throws CustomError {
         List<RentalDTO> response;
         try {
