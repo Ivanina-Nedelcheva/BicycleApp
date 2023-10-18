@@ -191,7 +191,7 @@ public class UserServiceImpl extends BaseService implements UserService {
     }
 
     @Override
-    public void returnBicycle(Long userId, Long stationId) {
+    public RentalDTO returnBicycle(Long userId, Long stationId) {
         Price prices = priceRepository.findTopByOrderByIdDesc();
         User user = userRepository.findUserById(userId);
         Rental userRent = rentalRepository.findRentalByUserAndFinishedFalse(user);
@@ -211,6 +211,24 @@ public class UserServiceImpl extends BaseService implements UserService {
 
         stationService.addBikeToStation(bicycle.getId(), stationId);
         bicycleService.changeBicycleState(bicycle.getId(), BicycleState.CHARGING);
+
+        return rental(user);
+    }
+
+    private RentalDTO rental(User user) {
+        Rental rental = rentalRepository.findTopByUser(user);
+        rentalToDto(rental);
+        return rentalToDto(rental);
+    }
+
+    private RentalDTO rentalToDto(Rental rental) {
+        RentalDTO rentalDTO = new RentalDTO();
+        rentalDTO.setDate(rental.getDate());
+        rentalDTO.setDistance(rental.getDistance());
+        rentalDTO.setPrice(rental.getPrice());
+        Double minutes = (double) ((rental.getEndTime().getTime() - rental.getStartTime().getTime()) / (60 * 1000));
+        rentalDTO.setMinutes(minutes);
+        return rentalDTO;
     }
 
     @Override
@@ -220,15 +238,7 @@ public class UserServiceImpl extends BaseService implements UserService {
 
         if (history != null) {
             for (Rental rental : history) {
-                RentalDTO rentalDTO = new RentalDTO();
-
-                rentalDTO.setDate(rental.getDate());
-                rentalDTO.setDistance(rental.getDistance());
-                rentalDTO.setPrice(rental.getPrice());
-                Double minutes = (double) ((rental.getEndTime().getTime() - rental.getStartTime().getTime()) / (60 * 1000));
-                rentalDTO.setMinutes(minutes);
-
-                historyDTOList.add(rentalDTO);
+                historyDTOList.add(rentalToDto(rental));
             }
         }
         return historyDTOList;

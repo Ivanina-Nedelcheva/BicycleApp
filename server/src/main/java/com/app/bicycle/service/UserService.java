@@ -31,7 +31,7 @@ public interface UserService {
 
     void reserveBicycle(Long userId, Long bikeId);
 
-    void returnBicycle(Long userId, Long stationId);
+    RentalDTO returnBicycle(Long userId, Long stationId);
 
     List<RentalDTO> getUserHistory(Long userId);
 

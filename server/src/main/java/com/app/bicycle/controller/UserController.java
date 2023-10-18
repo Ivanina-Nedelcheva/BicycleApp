@@ -119,10 +119,10 @@ public class UserController {
 
     @PatchMapping("/return")
     @PreAuthorize("hasRole('ROLE_ORDINARY_USER')")
-    public ResponseEntity<Bicycle> returnBicycle(@RequestParam Long userId, @RequestParam Long stationId) throws CustomError {
-        Bicycle response = new Bicycle();
+    public ResponseEntity<RentalDTO> returnBicycle(@RequestParam Long userId, @RequestParam Long stationId) throws CustomError {
+        RentalDTO response;
         try {
-            userService.returnBicycle(userId, stationId);
+            response = userService.returnBicycle(userId, stationId);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }

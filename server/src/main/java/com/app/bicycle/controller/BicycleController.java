@@ -44,7 +44,6 @@ public class BicycleController {
         } else if (beResponse == Constants.BICYCLE_ALREADY_DEACTIVATED) {
             throw new CustomError(Constants.BICYCLE_ALREADY_DEACTIVATED);
         }
-
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -59,7 +58,6 @@ public class BicycleController {
         } else if (beResponse == Constants.BICYCLE_ALREADY_ACTIVATED) {
             throw new CustomError(Constants.BICYCLE_ALREADY_ACTIVATED);
         }
-
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

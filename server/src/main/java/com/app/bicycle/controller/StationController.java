@@ -27,15 +27,12 @@ public class StationController {
 
     @GetMapping("/getStationWithBicycles")
     public ResponseEntity<List<StationDTO>> getStationWithBicycles() {
-
         List<StationDTO> response;
-
         try {
             response = stationService.getAllStationsWithBicycles();
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
