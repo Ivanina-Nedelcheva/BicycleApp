@@ -9,6 +9,7 @@ import CustomButton from '../../components/CustomButton'
 import Scanner from '../../components/Scanner'
 import { colors } from '../../../styles/styles'
 import { getStations } from '../../api/stations';
+import RideProgress from '../../components/RideProgress';
 
 const Map = ({ route, navigation }) => {
 	const [region, setRegion] = useState({})
@@ -18,6 +19,7 @@ const Map = ({ route, navigation }) => {
 	const [stations, setStations] = useState([])
 
 	const hubsRef = useRef();
+	const rideRef = useRef();
 	const mapRef = useRef()
 	const sofiaCity = {
 		latitude: 42.69833,
@@ -38,9 +40,8 @@ const Map = ({ route, navigation }) => {
 	}
 
 	useEffect(() => {
-		if (route.params?.center && route.params?.scanned) {
-			centerCamera()
-			Alert.alert('Ride Started!')
+		if (route.params?.rented) {
+			Alert.alert('Ride started!', null, [{ onPress: () => centerCamera() }])
 		}
 		if (route.params?.openScanner) setScannerOpen(true)
 		if (route.params?.update) {
@@ -101,6 +102,8 @@ const Map = ({ route, navigation }) => {
 	};
 
 	useEffect(() => {
+		console.log('params', route.params);
+
 		async function fetchDataAndProcess() {
 			try {
 				const position = await updateCurrentPosition();
@@ -115,9 +118,12 @@ const Map = ({ route, navigation }) => {
 			}
 		}
 
+		if (route.params?.rented) rideRef.current.presentBottomSheet()
+
 		const interval = setInterval(() => {
 			fetchDataAndProcess()
 		}, 3000);
+
 		return () => clearInterval(interval)
 	}, [])
 
@@ -190,21 +196,35 @@ const Map = ({ route, navigation }) => {
 			</View>
 
 			<View style={styles.bottomBtnsWrapper}>
-				<CustomButton
-					icon="hubspot"
+				{route.params?.rented && <CustomButton
+					icon="bike-fast"
 					color="white"
 					magicNumber={0.125}
-					onPress={() => hubsRef.current.presentBottomSheet()}
-				/>
-				<CustomButton
-					icon="qrcode-scan"
-					color="white"
-					magicNumber={0.125}
-					onPress={toggleScanner}
-				/>
+					onPress={() => rideRef.current.presentBottomSheet()}
+				/>}
+
+				{!route.params?.rented &&
+					<CustomButton
+						icon="hubspot"
+						color="white"
+						magicNumber={0.125}
+						onPress={() => hubsRef.current.presentBottomSheet()}
+					/>}
+
+				{!route.params?.rented &&
+					<CustomButton
+						icon="qrcode-scan"
+						color="white"
+						magicNumber={0.125}
+						onPress={toggleScanner}
+					/>}
 			</View>
 
-			<NearestHubs userPosition={currentUserPosition} ref={hubsRef} stations={stations} onSelectStation={locateStation} />
+			{route.params ? (
+				<RideProgress ref={rideRef} bikeId={route.params?.bikeId}></RideProgress>
+			) : (
+				<NearestHubs userPosition={currentUserPosition} ref={hubsRef} stations={stations} onSelectStation={locateStation} />
+			)}
 		</View >
 	);
 }

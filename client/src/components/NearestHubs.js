@@ -21,11 +21,9 @@ const NearestHubs = forwardRef(({ userPosition, onSelectStation }, ref) => {
 
 
   async function handleOpenSheet(index) {
-    // console.log(index);
     if (index !== -1) {
       const data = await getStations();
       setStations(data)
-      // console.log(data);
       await orderLocations(data)
     }
   }
@@ -57,7 +55,6 @@ const NearestHubs = forwardRef(({ userPosition, onSelectStation }, ref) => {
     });
 
     setOrderedStations(orderedStationsData)
-    // console.log(orderedStationsData);
   }
 
   const selectHub = (hub) => {

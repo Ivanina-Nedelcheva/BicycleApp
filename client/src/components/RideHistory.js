@@ -1,11 +1,11 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { View, ScrollView, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import RideReceipt from './RideReceipt';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { colors } from '../../styles/styles';
 
 const RideHistory = ({ history }) => {
-  const [selectedRideRecord, setSelectedRideRide] = useState(null);
+  const [selectedRideRecord, setSelectedRideRide] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
 
   const openRecord = (rideRecord) => {

@@ -1,7 +1,8 @@
-import React, { useRef, useState, useCallback, useEffect, useContext } from 'react';
+import React, { useRef, useState, useEffect, useContext } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableHighlight, Alert } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import BikeDetails from '../../components/BikeDetails';
+import RideReceipt from '../../components/RideReceipt';
 import { colors } from '../../../styles/styles';
 import { AuthContext } from '../../context/AuthContext';
 import CustomButton from '../../components/CustomButton';
@@ -12,13 +13,39 @@ import { activateStation, deactivateStation } from '../../api/stations';
 const Station = ({ route, navigation }) => {
   const { station } = route.params
   const [selectedBike, setSelectedBike] = useState({})
+  const [selectedRideRecord, setSelectedRideRide] = useState([]);
   const [isRented, setIsRented] = useState(false)
-  const bottomSheetRef = useRef(null)
   const [isActiveStation, setIsActiveStation] = useState(true)
+  const [modalVisible, setModalVisible] = useState(false);
+  const [message, setMessage] = useState('');
+  const bottomSheetRef = useRef(null)
 
   const { userRole, userInfo } = useContext(AuthContext)
 
+  const openRecord = (rideRecord) => {
+    setSelectedRideRide(rideRecord);
+    setModalVisible(true);
+  };
+
+  const closeModal = () => {
+    setModalVisible(false);
+    setIsRented(false)
+    Alert.alert('Bicycle returned', null, [{
+      onPress: () => navigation.reset({
+        index: 0,
+        routes: [{ name: 'Map', params: { center: true } }],
+      })
+    }])
+  };
+
   const selectBike = (bike) => {
+    if (isRented) {
+      setMessage("Sorry, only one bicycle rental allowed per user at a time.")
+      setTimeout(() => {
+        setMessage('')
+      }, 3000)
+      return
+    }
     setSelectedBike(bike)
     bottomSheetRef.current?.present();
   };
@@ -29,7 +56,6 @@ const Station = ({ route, navigation }) => {
 
   async function handleUserDetails() {
     const res = await getUserDetails(userInfo.id)
-    console.log(res);
     if (res.rentals && res.rentals.length) {
       setIsRented(true)
     }
@@ -37,12 +63,7 @@ const Station = ({ route, navigation }) => {
 
   async function handleReturnBicycle() {
     const res = await returnBicycle(userInfo.id, station.id)
-    Alert.alert('Bicycle returned', null, [{
-      onPress: () => navigation.reset({
-        index: 0,
-        routes: [{ name: 'Map', params: { center: true } }],
-      })
-    }])
+    openRecord(res)
   }
   async function toggleStationState() {
     if (isActiveStation) {
@@ -53,6 +74,18 @@ const Station = ({ route, navigation }) => {
       setIsActiveStation(true)
     }
   }
+
+  const formatDate = (date) => {
+    const currentDate = new Date(date);
+    const day = currentDate.getDate();
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const month = months[currentDate.getMonth()];
+    const year = currentDate.getFullYear();
+    const dayOfWeek = currentDate.getDay();
+    const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const dayName = daysOfWeek[dayOfWeek];
+    return `${dayName}, ${day} ${month} ${year}`;
+  };
 
   useEffect(() => {
     handleUserDetails()
@@ -88,6 +121,8 @@ const Station = ({ route, navigation }) => {
         style={styles.list}
       />
 
+      <Text style={styles.msg}>{message}</Text>
+
       {userRole !== "ROLE_SYSTEM_ADMIN" && <BikeDetails
         bike={selectedBike}
         stationName={station.stationName}
@@ -121,6 +156,14 @@ const Station = ({ route, navigation }) => {
             onPress={handleReturnBicycle}
           />
         </View>
+      }
+
+      {modalVisible &&
+        <RideReceipt
+          rideRecord={selectedRideRecord}
+          onClose={closeModal}
+          formatDate={formatDate}
+        />
       }
     </View>
   );
@@ -167,6 +210,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     bottom: 20
   },
+  msg: {
+    position: 'absolute',
+    fontFamily: 'Roboto-Regular',
+    bottom: 100,
+    fontSize: 18,
+    color: colors.red,
+    // textAlign: 'auto',
+    // padding: 20
+  }
 });
 
 export default Station;
