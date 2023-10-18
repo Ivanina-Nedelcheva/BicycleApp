@@ -216,7 +216,7 @@ public class UserServiceImpl extends BaseService implements UserService {
     }
 
     private RentalDTO rental(User user) {
-        Rental rental = rentalRepository.findTopByUser(user);
+        Rental rental = rentalRepository.findTopByUserOrderByEndTime(user);
         rentalToDto(rental);
         return rentalToDto(rental);
     }
