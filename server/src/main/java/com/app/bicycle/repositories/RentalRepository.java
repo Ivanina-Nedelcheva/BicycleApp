@@ -17,9 +17,9 @@ public interface RentalRepository extends JpaRepository<Rental, Long> {
 
     List<Rental> findRentalByFinishedTrue();
 
-    List<Rental> findRentalByUserAndFinishedTrue(User userId);
+    List<Rental> findRentalByUserAndFinishedTrueOrderByEndTimeDesc(User userId);
 
     Rental findRentalByUserAndFinishedFalse(User user);
 
-    Rental findTopByUserOrderByEndTime(User user);
+    Rental findTopByUserOrderByEndTimeDesc(User user);
 }

@@ -216,7 +216,7 @@ public class UserServiceImpl extends BaseService implements UserService {
     }
 
     private RentalDTO rental(User user) {
-        Rental rental = rentalRepository.findTopByUserOrderByEndTime(user);
+        Rental rental = rentalRepository.findTopByUserOrderByEndTimeDesc(user);
         rentalToDto(rental);
         return rentalToDto(rental);
     }
@@ -233,7 +233,7 @@ public class UserServiceImpl extends BaseService implements UserService {
 
     @Override
     public List<RentalDTO> getUserHistory(Long userId) {
-        List<Rental> history = rentalRepository.findRentalByUserAndFinishedTrue(userRepository.findUserById(userId));
+        List<Rental> history = rentalRepository.findRentalByUserAndFinishedTrueOrderByEndTimeDesc(userRepository.findUserById(userId));
         List<RentalDTO> historyDTOList = new ArrayList<>();
 
         if (history != null) {
