@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import { StyleSheet, View, Text, Image, TextInput } from 'react-native';
+import { StyleSheet, View, Text, TextInput } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import CustomButton from '../../components/CustomButton';
 import { colors } from '../../../styles/styles'
@@ -25,12 +25,11 @@ const SignIn = ({ navigation }) => {
   }, [isFocused, setErrorLoginMessage]);
 
   const validationSchema = Yup.object().shape({
-    // email: Yup.string().email('Invalid email').required('Email is required'),
-    // password: Yup.string().required('Password is required'),
+    username: Yup.string().email('Invalid email').required('Email is required'),
+    password: Yup.string().required('Password is required'),
   });
 
   const handleSubmit = (values, { resetForm }) => {
-    console.log(values)
     login(values)
   };
 
@@ -41,7 +40,7 @@ const SignIn = ({ navigation }) => {
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
-        {({ handleChange, handleSubmit, values, isValid, errors, touched, dirty }) => (
+        {({ handleChange, handleSubmit, values, isValid, errors, dirty }) => (
           <View style={styles.form}>
             <View>
               <TextInput
@@ -52,11 +51,11 @@ const SignIn = ({ navigation }) => {
                 style={styles.input}
               />
 
-              {values.email && !errors.email && (
+              {values.username && !errors.username && (
                 <MaterialCommunityIcons name="check-circle-outline" size={20} color={colors.keppel} style={styles.inputIcon} />
               )}
             </View>
-            {errors.email && <Text style={styles.errorMessage}>{errors.email}</Text>}
+            {errors.username && <Text style={styles.errorMessage}>{errors.username}</Text>}
 
             <View>
               <TextInput
@@ -81,7 +80,8 @@ const SignIn = ({ navigation }) => {
               color={colors.bleuDeFrance}
               onPress={handleSubmit}
               magicNumber={0.8}
-            // disabled={!dirty || !isValid}
+              // disabled={!dirty || !isValid}
+              disabled={!isValid}
             />
 
             {errorLoginMessage && <Text style={styles.errorMessage}>{errorLoginMessage}</Text>}

@@ -1,7 +1,7 @@
 import { API } from './axiosConfig';
 
 const paymentURI = 'payment/getPrices'
-const chargeURI = 'payment/charge'
+const paymentSheetURI = 'payment/paymentSheet'
 
 export async function getPrices() {
   try {
@@ -13,16 +13,17 @@ export async function getPrices() {
   }
 }
 
-export async function charge() {
+export async function getPaymentSheetParams(userId, paymentMethodId) {
   try {
-    const response = await API.get(chargeURI, null, {
-      headers: {
-        token: token.id,
-        amount: 500,
-      },
+    const response = await API.post(paymentSheetURI, null, {
+      params: {
+        userId,
+        paymentMethodId
+      }
     });
+    console.log('Response from the server:', response.data);
     return response.data;
   } catch (error) {
-    console.error('Error getting data:', error);
+    console.error('Error uploading data:', error);
   }
 }

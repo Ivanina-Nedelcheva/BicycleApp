@@ -39,7 +39,7 @@
     "lodash": "^4.17.21",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-native": "0.71.13",
+    "react-native": "0.71.14",
     "react-native-appearance": "^0.3.4",
     "react-native-gesture-handler": "~2.9.0",
     "react-native-image-picker": "^7.0.0",

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, StatusBar, Image } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { colors } from '../../../styles/styles';
 import CardInfo from '../../components/CardInfo'
 

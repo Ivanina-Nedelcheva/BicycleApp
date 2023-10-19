@@ -102,8 +102,6 @@ const Map = ({ route, navigation }) => {
 	};
 
 	useEffect(() => {
-		console.log('params', route.params);
-
 		async function fetchDataAndProcess() {
 			try {
 				const position = await updateCurrentPosition();
