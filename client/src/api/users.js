@@ -46,6 +46,7 @@ export async function returnBicycle(userId, stationId) {
       }
     });
     console.log('Response from the server:', response.data);
+    return response.data
   } catch (error) {
     console.error('Error uploading data:', error);
   }

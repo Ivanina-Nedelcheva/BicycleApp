@@ -1,110 +1,84 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Alert } from 'react-native';
-import { StripeProvider } from '@stripe/stripe-react-native'
-import { CardForm, useConfirmPayment } from '@stripe/stripe-react-native'
+import { StripeProvider, CardForm, useConfirmPayment, confirmPayment } from '@stripe/stripe-react-native'
 import { colors } from '../../styles/styles'
 import CustomButton from './CustomButton'
 import Scanner from './Scanner';
 import { useCard } from '../context/CardContext'
-import { charge } from '../api/payment';
 
 const CardInformation = ({ navigation, route }) => {
   const { card, setCard } = useCard()
-  const [cardInfo, setCardInfo] = useState({
-    number: '',
-    expiry: '',
-    cvc: '',
-  });
-
-
-  console.log('CardInfo', route.params);
-
   const [isScannerOpen, setScannerOpen] = useState(false);
+  const [cardDetails, setCardDetails] = useState();
+  const [loading, setLoading] = useState(false);
+
 
   const toggleScanner = () => {
     setScannerOpen(!isScannerOpen);
   };
 
-
-  // const handleCardFieldChange = (event) => {
-  //   console.log(event);
-  //   if (event.complete) {
-  //     setCardInfo({
-  //       number: event.values.number,
-  //       expiry: event.values.expiry,
-  //       cvc: event.values.cvc,
-  //     });
-  //   } else {
-  //     setCardInfo({
-  //       number: '',
-  //       expiry: '',
-  //       cvc: '',
-  //     });
+  // function addCardInfo() {
+  //   if (!route.params) {
+  //     setCard(true)
+  //     Alert.alert('Success!', null, [{ onPress: () => toggleScanner() }])
   //   }
-  // };
 
+  //   if (route.params?.rent && !card) {
+  //     setCard(true)
+  //     Alert.alert('Success!', null, [{ onPress: () => toggleScanner() }])
+  //   }
 
-  // const API_URL = "http://192.168.1.168:8080/app/payment/charge"
-  const { confirmPayment, loading } = useConfirmPayment()
-  // async function fetchPaymentIntentClientSecret() {
-  //   const response = await fetch(`${API_URL}/create-payment-intent`, {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     }
-  //   })
-
-  //   const { clientSecret } = await response.json()
-  //   return clientSecret
+  //   if (route.params?.scanned) {
+  //     setCard(true)
+  //     Alert.alert('Ride Started!', null, [{ onPress: () => navigation.navigate('Map', { center: true }) }])
+  //   }
   // }
 
-  function addCardInfo() {
-    const areAllFieldsValid = Object.keys(cardInfo).every(key => cardInfo[key]);
-    if (!route.params) {
-      setCard(true)
-      Alert.alert('Success!', null, [{ onPress: () => toggleScanner() }])
-    }
+  async function fetchPaymentIntentClientSecret() {
+    const response = await fetch(`${API_URL}/create-payment-intent`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      }
+    })
 
-    if (route.params?.rent && !card) {
-      setCard(true)
-      Alert.alert('Success!', null, [{ onPress: () => toggleScanner() }])
-    }
-
-    if (route.params?.scanned) {
-      setCard(true)
-      Alert.alert('Ride Started!', null, [{ onPress: () => navigation.navigate('Map', { center: true }) }])
-    }
+    const { clientSecret } = await response.json()
+    return clientSecret
   }
 
-  // async function addCardInfo() {
-  //   console.log(cardInfo);
-  //   if (!cardInfo?.complete) {
-  //     Alert.alert('Please enter complete information')
-  //     return
-  //   }
+  async function addCardInfo() {
+    console.log(cardDetails);
+    if (!cardDetails?.complete) {
+      Alert.alert('Please enter complete information')
+      return
+    }
 
-  //   try {
-  //     const { clientSecret, error } = await fetchPaymentIntentClientSecret()
-  //     if (error) {
-  //       console.log("Unable to process payment");
-  //     } else {
-  //       const { paymentIntent, error } = await confirmPayment(clientSecret, {
-  //         type: "Card",
-  //         billingDetails,
-  //       })
+    try {
+      const { clientSecret, error } = await fetchPaymentIntentClientSecret()
+      if (error) {
+        console.log("Unable to process payment");
+      } else {
+        const { paymentIntent, error } = await confirmPayment(clientSecret, {
+          type: "Card",
+          // billingDetails,
+        })
 
-  //       if (error) {
-  //         Alert.alert(`Payment Confirmation Error ${error.message}`)
-  //       } else if (paymentIntent) {
-  //         Alert.alert("Payment Successful")
-  //         console.log("Payment Successful", paymentIntent);
-  //       }
-  //     }
+        setLoading(true)
 
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // }
+        if (error) {
+          Alert.alert(`Payment Confirmation Error ${error.message}`)
+        } else if (paymentIntent) {
+          Alert.alert("Payment Successful")
+          console.log("Payment Successful", paymentIntent);
+        }
+      }
+
+    } catch (err) {
+      console.log(err);
+    }
+
+    setLoading(false)
+  }
 
   return (
     <StripeProvider
@@ -115,6 +89,7 @@ const CardInformation = ({ navigation, route }) => {
           style={styles.cardForm}
           cardStyle={{ borderRadius: 5, fontFamily: 'Roboto-Regular' }}
           postalCodeEnabled={false}
+          onFormComplete={(details) => setCardDetails(details)}
         />
 
         <CustomButton
@@ -127,7 +102,6 @@ const CardInformation = ({ navigation, route }) => {
         />
 
         <Scanner isOpen={isScannerOpen} onToggle={setScannerOpen} navigation={navigation} bikeId={route.params?.bikeId} />
-
       </View>
     </StripeProvider>
   );

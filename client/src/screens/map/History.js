@@ -10,6 +10,7 @@ const History = () => {
   const [history, setHistory] = useState([])
   const { userInfo } = useContext(AuthContext)
 
+  console.log(history, userInfo);
   useEffect(() => {
     (async () => {
       const data = await getUserHistory(userInfo.id);

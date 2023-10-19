@@ -14,6 +14,8 @@ const RideReceipt = ({ rideRecord, onClose, formatDate }) => {
     })()
   }, [])
 
+  console.log(rideRecord);
+
   return (
     <Modal visible={true} animationType="slide">
       <View style={styles.modalContainer}>
@@ -29,18 +31,19 @@ const RideReceipt = ({ rideRecord, onClose, formatDate }) => {
         <Text style={styles.heading}>Ride receipt</Text>
 
         <View style={styles.rideDetails}>
-          <DetailRow label="Date:" value={formatDate(rideRecord.date)} />
-          <DetailRow label="Distance:" value={rideRecord.distance} />
-          <DetailRow label="Time:" value={`${rideRecord.minutes}min`} />
+          <DetailRow label="Date:" value={formatDate(rideRecord?.date)} />
+          <DetailRow label="Distance:" value={`${rideRecord?.distance} km`} />
+          <DetailRow label="Time:" value={`${rideRecord?.minutes} min`} />
         </View>
 
         <View style={styles.paymentDetails}>
-          <DetailRow label="Unlock Fee:" value={`${prices.unlockPrice?.toFixed(2)}lv`} />
-          <DetailRow label={`Riding - ${prices.minutePrice?.toFixed(2)} lv./min`} value={`${(rideRecord.minutes * prices.minutePrice)?.toFixed(2)}lv`} />
+          <DetailRow label="Unlock Fee:" value={`${prices.unlockPrice?.toFixed(2)} lv`} />
+          <DetailRow label={`Riding - ${prices.minutePrice?.toFixed(2)} lv./min`} value={`${(rideRecord?.minutes * prices.minutePrice)?.toFixed(2)} lv`} />
         </View>
 
         <View style={styles.total}>
-          <DetailRow label="Total:" value={`${(rideRecord.price).toFixed(2)}lv`} />
+          {/* <DetailRow label="Total:" value={`${(rideRecord?.price).toFixed(2)} lv`} /> */}
+          <DetailRow label="Total:" value={`${(rideRecord?.minutes * prices.minutePrice + prices.unlockPrice).toFixed(2)} lv`} />
         </View>
       </View>
     </Modal>
@@ -101,7 +104,7 @@ const styles = StyleSheet.create({
     color: colors.ultraViolet
   },
   value: {
-    fontFamily: 'Roboto-Bold',
+    fontFamily: 'Roboto-Regular',
     fontSize: 18,
   }
 });

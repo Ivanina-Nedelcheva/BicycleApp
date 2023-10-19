@@ -1,6 +1,6 @@
 import React, { useRef, useState, useMemo, useEffect, useImperativeHandle, forwardRef } from 'react';
 import { View, Text, FlatList, TouchableHighlight, ActivityIndicator, StyleSheet } from 'react-native';
-import { BottomSheetModal, BottomSheetModalProvider, } from '@gorhom/bottom-sheet';
+import { BottomSheetModal, BottomSheetModalProvider, BottomSheetFlatList } from '@gorhom/bottom-sheet';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import * as geolib from 'geolib';
 import { colors } from '../../styles/styles'
@@ -15,23 +15,20 @@ const NearestHubs = forwardRef(({ userPosition, onSelectStation }, ref) => {
     }
   }));
 
-  const snapPoints = useMemo(() => ['35%', '95%'], []);
+  const snapPoints = useMemo(() => ['55%'], []);
   const [stations, setStations] = useState([])
   const [orderedStations, setOrderedStations] = useState([])
 
 
   async function handleOpenSheet(index) {
-    // console.log(index);
     if (index !== -1) {
       const data = await getStations();
       setStations(data)
-      // console.log(data);
       await orderLocations(data)
     }
   }
 
   async function orderLocations(stations) {
-    // console.log(stations);
     const ordered = geolib.orderByDistance(
       userPosition,
       stations.map((item, index) => ({
@@ -42,7 +39,7 @@ const NearestHubs = forwardRef(({ userPosition, onSelectStation }, ref) => {
     );
 
     function calculateTimeToStation(distanceMeters) {
-      const averageSpeedMps = 1.4;  // meters per second
+      const averageSpeedMps = 1.4;
       const timeSeconds = distanceMeters / averageSpeedMps;
       const timeMinutes = timeSeconds / 60;
       return timeMinutes;
@@ -57,7 +54,6 @@ const NearestHubs = forwardRef(({ userPosition, onSelectStation }, ref) => {
     });
 
     setOrderedStations(orderedStationsData)
-    // console.log(orderedStationsData);
   }
 
   const selectHub = (hub) => {
@@ -115,20 +111,18 @@ const NearestHubs = forwardRef(({ userPosition, onSelectStation }, ref) => {
         onChange={handleOpenSheet}
       >
         <Text style={styles.heading}>Nearest Hubs</Text>
-        <View>
-          {
-            orderedStations.length ? (
-              <FlatList
-                data={orderedStations}
-                renderItem={hub}
-                keyExtractor={(item) => item.id.toString()}
-                style={styles.list}
-              />
-            ) : (
-              <ActivityIndicator style={styles.spinner} size={60} color={colors.bleuDeFrance} />
-            )
-          }
-        </View>
+        {
+          orderedStations.length ? (
+            <BottomSheetFlatList
+              data={orderedStations}
+              renderItem={hub}
+              keyExtractor={(item) => item.id.toString()}
+              contentContainerStyle={styles.list}
+            />
+          ) : (
+            <ActivityIndicator style={styles.spinner} size={60} color={colors.bleuDeFrance} />
+          )
+        }
       </BottomSheetModal>
     </BottomSheetModalProvider >
   );
@@ -140,10 +134,11 @@ const styles = StyleSheet.create({
   },
   heading: {
     fontFamily: 'Roboto-Regular',
-    fontSize: 24
+    fontSize: 24,
+    paddingBottom: 20
   },
   list: {
-    marginTop: 10
+    // marginTop: 50
   },
   hub: {
     backgroundColor: 'white',

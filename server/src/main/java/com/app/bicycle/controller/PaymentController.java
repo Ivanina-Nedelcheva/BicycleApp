@@ -16,7 +16,7 @@ import java.util.Map;
 @RequestMapping("payment")
 public class PaymentController {
 
-    private final PaymentService paymentsService;
+    private final PaymentService paymentsService;   
     @Value("${STRIPE_SECRET_KEY}")
     private String stripeSecretKey;
 

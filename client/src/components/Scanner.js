@@ -13,12 +13,9 @@ const Scanner = ({ isOpen, onToggle, navigation, bikeId }) => {
   const [isFlashlightOn, setIsFlashlightOn] = useState(false);
   const [isInputVisible, setInputVisible] = useState(false);
   const [vehicleCode, setVehicleCode] = useState('');
-  const [rented, setRented] = useState(false)
 
   const { card } = useCard();
   const { userInfo } = useContext(AuthContext)
-
-  // console.log("Scanner", bikeId);
 
   useEffect(() => {
     const getBarCodeScannerPermissions = async () => {
@@ -30,7 +27,7 @@ const Scanner = ({ isOpen, onToggle, navigation, bikeId }) => {
   }, []);
 
   function getRandomNumber() {
-    const randomNumber = Math.random() * 51
+    const randomNumber = Math.random() * 40
     return Math.round(randomNumber);
   }
 
@@ -42,12 +39,11 @@ const Scanner = ({ isOpen, onToggle, navigation, bikeId }) => {
         onToggle(false);
         navigation.reset({
           index: 0,
-          routes: [{ name: 'Map', params: { center: true, scanned: true } }],
+          routes: [{ name: 'Map', params: { rented: true, bikeId } }],
         });
 
       } catch (error) {
         console.log(error);
-        setRented(false)
       }
 
     } else {

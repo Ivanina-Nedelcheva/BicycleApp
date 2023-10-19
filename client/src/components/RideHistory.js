@@ -1,11 +1,11 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { View, ScrollView, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import RideReceipt from './RideReceipt';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { colors } from '../../styles/styles';
 
 const RideHistory = ({ history }) => {
-  const [selectedRideRecord, setSelectedRideRide] = useState(null);
+  const [selectedRideRecord, setSelectedRideRide] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
 
   const openRecord = (rideRecord) => {
@@ -95,13 +95,15 @@ const styles = StyleSheet.create({
   },
   dateAndCost: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: 20
+    padding: 16,
+    gap: 5
   },
   date: {
     fontFamily: 'Roboto-Regular',
-    fontSize: 16,
+    fontSize: 14,
   },
   price: {
     fontFamily: 'Roboto-Bold',
