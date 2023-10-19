@@ -102,7 +102,6 @@ const CardInformation = ({ navigation, route }) => {
         />
 
         <Scanner isOpen={isScannerOpen} onToggle={setScannerOpen} navigation={navigation} bikeId={route.params?.bikeId} />
-
       </View>
     </StripeProvider>
   );

@@ -95,13 +95,15 @@ const styles = StyleSheet.create({
   },
   dateAndCost: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: 20
+    padding: 16,
+    gap: 5
   },
   date: {
     fontFamily: 'Roboto-Regular',
-    fontSize: 16,
+    fontSize: 14,
   },
   price: {
     fontFamily: 'Roboto-Bold',
