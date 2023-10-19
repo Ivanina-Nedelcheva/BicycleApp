@@ -53,18 +53,6 @@ public class PaymentServiceImpl implements PaymentService {
             e.printStackTrace();
         }
 
-        EphemeralKeyCreateParams ephemeralKeyParams = EphemeralKeyCreateParams.builder()
-                .setStripeVersion("2023-08-16")
-                .setCustomer(customer.getId())
-                .build();
-
-        EphemeralKey ephemeralKey = null;
-        try {
-            ephemeralKey = EphemeralKey.create(ephemeralKeyParams);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
         SetupIntentCreateParams setupIntentParams = SetupIntentCreateParams.builder()
                 .setCustomer(customer.getId())
                 .setPaymentMethod(paymentMethodId)
@@ -78,7 +66,6 @@ public class PaymentServiceImpl implements PaymentService {
 
         Map<String, String> responseData = new HashMap<>();
         responseData.put("setupIntent", setupIntent.getClientSecret());
-        responseData.put("ephemeralKey", ephemeralKey.getSecret());
         responseData.put("customer", customer.getId());
         responseData.put("publishableKey", stripePublicKey);
 
@@ -113,6 +100,7 @@ public class PaymentServiceImpl implements PaymentService {
                         .build();
 
                 PaymentIntent intent = PaymentIntent.create(createParams);
+                intent.getI
                 responseData.put("paymentIntent", intent);
             } else {
                 responseData.put("error", "No payment method found");
