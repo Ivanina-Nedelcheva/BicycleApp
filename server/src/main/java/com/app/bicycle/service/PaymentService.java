@@ -7,7 +7,7 @@ import java.util.Map;
 public interface PaymentService {
     Price getCurrentPrices();
 
-    Map<String, String> paymentSheet(Long userId, String paymentMethodId);
+    Map<String, String> paymentSheet(Long userId);
 
-    Map<String, Object> chargeSavedPaymentMethod(String customerId, Long amount);
+    Map<String, Object> chargeSavedPaymentMethod(String customerId, String paymentMethodId, Long amount);
 }
