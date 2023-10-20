@@ -17,7 +17,7 @@ const AddStation = ({ navigation }) => {
 
   const handleSubmit = (values, { resetForm }) => {
     addStation(values)
-    Alert.alert('Тhe station has been added', null, [{ onPress: () => navigation.navigate('Map', { update: true }) }])
+    Alert.alert('Тhe station has been added', null, [{ onPress: () => navigation.navigate('Map') }])
   };
 
   return (
@@ -74,11 +74,13 @@ const AddStation = ({ navigation }) => {
             {errors.latitude && <Text style={styles.errorMessage}>{errors.latitude}</Text>}
 
             <CustomButton
-              title="Add"
-              color={colors.bleuDeFrance}
+              icon="plus"
+              color="white"
+              iconColor={isValid ? 'black' : colors.disabled}
+              magicNumber={0.13}
               onPress={() => handleSubmit(values)}
-              magicNumber={0.8}
               disabled={!dirty || !isValid}
+              style={{ borderWidth: 1, borderColor: isValid ? 'black' : colors.disabled, marginTop: 20 }}
             />
           </View>
         )}
@@ -91,8 +93,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
-    position: 'relative',
+    paddingVertical: 40,
     backgroundColor: colors.seasalt
   },
   form: {

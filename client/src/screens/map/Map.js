@@ -46,7 +46,6 @@ const Map = ({ route, navigation }) => {
 		if (route.params?.center) centerCamera()
 		if (route.params?.rented) Alert.alert('Ride started!', null, [{ onPress: () => centerCamera() }])
 		if (route.params?.openScanner) setScannerOpen(true)
-		if (route.params?.update) handleGetStations()
 	}, [route.params])
 
 	useFocusEffect(

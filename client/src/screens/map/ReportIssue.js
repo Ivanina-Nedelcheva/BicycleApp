@@ -166,7 +166,7 @@ const ReportIssue = ({ route, navigation }) => {
     // formData.append('imageData', imageBase64);
 
     addReport(formData)
-    navigation.navigate('Map', { update: true })
+    navigation.navigate('Map')
     await schedulePushNotification();
   };
 
