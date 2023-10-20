@@ -50,9 +50,21 @@ const Station = ({ route, navigation }) => {
 
   async function handleAddBicycle() {
     newBicycle(station.id)
-    Alert.alert('Added Bicycle', `Station: ${station.stationName}`, [{
-      onPress: () => navigation.navigate('Map')
-    }])
+    Alert.alert(
+      'Activate',
+      'Do you want to add the bicycle?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'OK',
+          onPress: () => navigation.navigate('Map')
+        },
+      ],
+      { cancelable: true }
+    );
   }
 
   async function handleUserDetails() {
@@ -68,11 +80,44 @@ const Station = ({ route, navigation }) => {
   }
   async function toggleStationState() {
     if (isActiveStation) {
-      deactivateStation(station.id)
-      setIsActiveStation(false)
+      Alert.alert(
+        'Deactivate',
+        'Do you want to deactivate the station?',
+        [
+          {
+            text: 'Cancel',
+            style: 'cancel',
+          },
+          {
+            text: 'OK',
+            onPress: () => {
+              deactivateStation(station.id)
+              setIsActiveStation(false)
+            }
+          },
+        ],
+        { cancelable: true }
+      );
+
     } else {
-      activateStation(station.id)
-      setIsActiveStation(true)
+      Alert.alert(
+        'Activate',
+        'Do you want to activate the station?',
+        [
+          {
+            text: 'Cancel',
+            style: 'cancel',
+          },
+          {
+            text: 'OK',
+            onPress: () => {
+              activateStation(station.id)
+              setIsActiveStation(true)
+            }
+          },
+        ],
+        { cancelable: true }
+      );
     }
   }
 
@@ -132,40 +177,41 @@ const Station = ({ route, navigation }) => {
 
       <Text style={styles.msg}>{message}</Text>
 
-      {userRole !== "ROLE_SYSTEM_ADMIN" && <BikeDetails
+      <View style={styles.bottomBtnsWrapper}>
+        {userRole === "ROLE_SYSTEM_ADMIN" || userRole === "ROLE_TECH_SUPPORT_MEMBER" ? (
+          <CustomButton
+            icon="power"
+            color={isActiveStation ? 'black' : 'white'}
+            iconColor={isActiveStation ? colors.antiFlashWhite : null}
+            magicNumber={0.125}
+            onPress={toggleStationState}
+          />
+        ) : null}
+        {userRole === "ROLE_SYSTEM_ADMIN" &&
+          <CustomButton
+            icon="plus"
+            color="white"
+            magicNumber={0.125}
+            onPress={handleAddBicycle}
+          />
+        }
+      </View>
+
+      {userRole == "ROLE_ORDINARY_USER" && isRented &&
+        <CustomButton
+          title="Return bicycle"
+          color={colors.bleuDeFrance}
+          magicNumber={0.4}
+          onPress={handleReturnBicycle}
+        />
+      }
+
+      <BikeDetails
         bike={selectedBike}
         stationName={station.stationName}
         bottomSheetRef={bottomSheetRef}
         navigation={navigation}
-      />}
-
-      {userRole === "ROLE_SYSTEM_ADMIN" &&
-        <View style={styles.bottomBtnsWrapper}>
-          <CustomButton
-            title={isActiveStation ? "Deactivate" : "Activate"}
-            color={colors.bleuDeFrance}
-            magicNumber={0.4}
-            onPress={toggleStationState}
-          />
-          <CustomButton
-            title="Add bicycle"
-            color={colors.bleuDeFrance}
-            magicNumber={0.4}
-            onPress={handleAddBicycle}
-          />
-        </View>
-      }
-
-      {userRole == "ROLE_ORDINARY_USER" && isRented &&
-        <View style={styles.bottomBtnsWrapper}>
-          <CustomButton
-            title="Return bicycle"
-            color={colors.bleuDeFrance}
-            magicNumber={0.4}
-            onPress={handleReturnBicycle}
-          />
-        </View>
-      }
+      />
 
       {modalVisible &&
         <RideReceipt
@@ -182,7 +228,7 @@ const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: colors.platinum
+    backgroundColor: colors.platinum,
   },
   list: {
     width: '90%',
@@ -214,9 +260,8 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    position: 'absolute',
     paddingHorizontal: 20,
-    bottom: 20
+    bottom: 20,
   },
   msg: {
     position: 'absolute',
@@ -224,8 +269,6 @@ const styles = StyleSheet.create({
     bottom: 100,
     fontSize: 18,
     color: colors.red,
-    // textAlign: 'auto',
-    // padding: 20
   }
 });
 

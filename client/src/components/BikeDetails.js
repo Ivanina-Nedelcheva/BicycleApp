@@ -12,20 +12,20 @@ import * as Notifications from 'expo-notifications';
 import { useAuth } from '../context/AuthContext';
 
 const BikeDetails = ({ bike, bottomSheetRef, navigation, stationName }) => {
-  const snapPoints = useMemo(() => ['75%'], []);
   const [reservation, setReservation] = useState(false)
   const [prices, setPrices] = useState({})
   const [reservedBicycleId, setReservedBicycleId] = useState(null)
-
   const { startTimer, remainingTime } = useTimer();
   const { userRole } = useAuth()
+
+  const snapValue = userRole === "ROLE_ORDINARY_USER" ? '75%' : '40%'
+  const snapPoints = useMemo(() => [snapValue], []);
 
   function handleReserveBike() {
     changeBicycleState(bike.id, 'RESERVED')
     setReservation(true);
     setReservedBicycleId(bike.id)
     startTimer(15 * 60 * 1000)
-    // startTimer(1000 * 10)
   }
 
   const formatTime = (remainingTime) => {
@@ -79,24 +79,33 @@ const BikeDetails = ({ bike, bottomSheetRef, navigation, stationName }) => {
           <Text style={styles.heading}>Bicycle Details</Text>
 
           <View style={styles.details}>
-            <View style={styles.bikeAttributes}>
-              <Text style={styles.attribute}>{reservation ? "Reserved Bicycle ID: " : "Bike ID:"}</Text>
-              <Text style={styles.attribute}>{reservedBicycleId || bike.id}</Text>
-            </View>
-
             {reservation && <View style={styles.bikeAttributes}>
               <Text style={styles.attribute}>Station: </Text>
               <Text style={styles.attribute}>{stationName}</Text>
             </View>}
 
             <View style={styles.bikeAttributes}>
+              <MaterialCommunityIcons name={reservation ? 'barcode-off' : 'barcode'} size={24} color="black" />
+
+              {/* <Text style={styles.attribute}>{reservation ? "Reserved Bicycle ID: " : "Bike ID:"}</Text> */}
+              <Text style={styles.attribute}>{reservedBicycleId || bike.id}</Text>
+            </View>
+
+            <View style={styles.bikeAttributes}>
               <MaterialCommunityIcons name="battery" size={24} color="black" />
               <Text style={styles.attribute}>{bike.batteryLevel}%</Text>
             </View>
 
+            {userRole === "ROLE_ORDINARY_USER" &&
+              <View style={styles.bikeAttributes}>
+                <MaterialCommunityIcons name="wallet-outline" size={24} color="black" />
+                <Text style={styles.attribute}>{`${prices.unlockPrice?.toFixed(2)}lv. to start, then ${prices.minutePrice?.toFixed(2)} lv./min`} </Text>
+              </View>
+            }
+
             <View style={styles.bikeAttributes}>
-              <MaterialCommunityIcons name="wallet-outline" size={24} color="black" />
-              <Text style={styles.attribute}>{`${prices.unlockPrice?.toFixed(2)}lv. to start, then ${prices.minutePrice?.toFixed(2)} lv./min`} </Text>
+              <MaterialCommunityIcons name="state-machine" size={24} color="black" />
+              <Text style={styles.attribute}>{bike.state}</Text>
             </View>
 
             {reservation && <View style={styles.bikeAttributes}>
@@ -107,13 +116,15 @@ const BikeDetails = ({ bike, bottomSheetRef, navigation, stationName }) => {
           </View>
 
           <View style={styles.btnsContainer}>
-            <CustomButton
-              title="Report Issue"
-              icon="alert-outline"
-              onPress={handleReportIssue}
-              magicNumber={0.4}
-              style={styles.btns}
-            />
+            {userRole !== "ROLE_SYSTEM_ADMIN" &&
+              <CustomButton
+                title="Report Issue"
+                icon="alert-outline"
+                onPress={handleReportIssue}
+                magicNumber={0.4}
+                style={styles.btns}
+              />
+            }
 
             {reservation &&
               <CustomButton
@@ -126,28 +137,29 @@ const BikeDetails = ({ bike, bottomSheetRef, navigation, stationName }) => {
             }
           </View>
 
-          {userRole !== "ROLE_OBSERVER" && <View style={styles.reservation}>
-            <View style={styles.reservationMsg}>
-              <MaterialCommunityIcons name="clock-alert-outline" size={24} color="black" />
-              <Text style={styles.msg}>Reservation is free for 15min</Text>
-            </View>
-            <Text style={styles.subMsg}>Hold to start ride</Text>
+          {userRole === "ROLE_ORDINARY_USER" &&
+            <View style={styles.reservation}>
+              <View style={styles.reservationMsg}>
+                <MaterialCommunityIcons name="clock-alert-outline" size={24} color="black" />
+                <Text style={styles.msg}>Reservation is free for 15min</Text>
+              </View>
+              <Text style={styles.subMsg}>Hold to start ride</Text>
 
-            <View style={styles.bottomBtns}>
-              {!reservation ? (
-                <CustomButton
-                  title="Reserve"
-                  color={colors.bleuDeFrance}
-                  onPress={handleReserveBike}
-                  magicNumber={0.4}
-                />
-              ) : (
-                <StartRideButton navigation={navigation} bikeId={bike.id} />
-              )}
+              <View style={styles.bottomBtns}>
+                {!reservation ? (
+                  <CustomButton
+                    title="Reserve"
+                    color={colors.bleuDeFrance}
+                    onPress={handleReserveBike}
+                    magicNumber={0.4}
+                  />
+                ) : (
+                  <StartRideButton navigation={navigation} bikeId={bike.id} />
+                )}
 
-              {!reservation && <StartRideButton navigation={navigation} bikeId={bike.id} />}
-            </View>
-          </View>}
+                {!reservation && <StartRideButton navigation={navigation} bikeId={bike.id} />}
+              </View>
+            </View>}
         </View>
       </BottomSheetModal>
     </BottomSheetModalProvider>
@@ -165,6 +177,7 @@ const styles = StyleSheet.create({
   details: {
     minHeight: 100,
     marginTop: 10,
+    gap: 5
   },
   bikeAttributes: {
     flexDirection: 'row',

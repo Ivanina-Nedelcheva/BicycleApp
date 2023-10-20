@@ -49,7 +49,7 @@ const AppStack = () => {
       name: 'History',
       component: History,
       icon: ['history', 'history'],
-      visible: userRole !== "ROLE_SYSTEM_ADMIN" && userRole !== "ROLE_OBSERVER",
+      visible: userRole === "ROLE_ORDINARY_USER",
       options: {
         drawerLabelStyle,
       },
@@ -58,7 +58,7 @@ const AppStack = () => {
       name: 'Payment',
       component: Payment,
       icon: ['wallet', 'wallet-outline'],
-      visible: userRole !== "ROLE_SYSTEM_ADMIN" && userRole !== "ROLE_OBSERVER",
+      visible: userRole === "ROLE_ORDINARY_USER",
       options: {
         drawerLabelStyle,
       },
@@ -76,7 +76,7 @@ const AppStack = () => {
       name: 'Add Station',
       component: AddStation,
       icon: ['hubspot', 'hubspot'],
-      visible: userRole !== "ROLE_ORDINARY_USER" && userRole !== "ROLE_OBSERVER",
+      visible: userRole === "ROLE_SYSTEM_ADMIN",
       options: {
         drawerLabelStyle,
       },

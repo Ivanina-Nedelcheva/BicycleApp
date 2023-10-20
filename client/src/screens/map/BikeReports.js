@@ -43,7 +43,6 @@ const BikeReports = () => {
       [
         {
           text: 'Cancel',
-          onPress: () => console.log('Cancel Pressed'),
           style: 'cancel',
         },
         {
@@ -56,8 +55,6 @@ const BikeReports = () => {
       ],
       { cancelable: true }
     );
-
-
   }
 
   const formatDate = (dateStr) => {

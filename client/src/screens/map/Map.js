@@ -183,20 +183,23 @@ const Map = ({ route, navigation }) => {
 			</View>
 
 			<View style={styles.bottomBtnsWrapper}>
-				{route.params?.rented && <CustomButton
-					icon="bike-fast"
-					color="white"
-					magicNumber={0.125}
-					onPress={() => rideRef.current.presentBottomSheet()}
-				/>}
+				{route.params?.rented &&
+					<CustomButton
+						icon="bike-fast"
+						color="white"
+						magicNumber={0.125}
+						onPress={() => rideRef.current.presentBottomSheet()}
+					/>
+				}
 
 				{!route.params?.rented && currentUserPosition &&
-					< CustomButton
+					<CustomButton
 						icon="hubspot"
 						color="white"
 						magicNumber={0.125}
 						onPress={() => hubsRef.current.presentBottomSheet()}
-					/>}
+					/>
+				}
 
 				{!route.params?.rented && userRole === "ROLE_ORDINARY_USER" &&
 					<CustomButton
@@ -204,7 +207,8 @@ const Map = ({ route, navigation }) => {
 						color="white"
 						magicNumber={0.125}
 						onPress={toggleScanner}
-					/>}
+					/>
+				}
 			</View>
 
 			{route.params ? (
