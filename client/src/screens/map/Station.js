@@ -32,10 +32,7 @@ const Station = ({ route, navigation }) => {
     setModalVisible(false);
     setIsRented(false)
     Alert.alert('Bicycle returned', null, [{
-      onPress: () => navigation.reset({
-        index: 0,
-        routes: [{ name: 'Map', params: { center: true } }],
-      })
+      onPress: () => navigation.navigate('Map')
     }])
   };
 
@@ -52,7 +49,10 @@ const Station = ({ route, navigation }) => {
   };
 
   async function handleAddBicycle() {
-    const res = await newBicycle(station.id)
+    newBicycle(station.id)
+    Alert.alert('Added Bicycle', `Station: ${station.stationName}`, [{
+      onPress: () => navigation.navigate('Map')
+    }])
   }
 
   async function handleUserDetails() {

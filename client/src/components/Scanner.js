@@ -37,11 +37,7 @@ const Scanner = ({ isOpen, onToggle, navigation, bikeId }) => {
       try {
         const res = await rentBicycle(userInfo.id, bikeId || getRandomNumber())
         onToggle(false);
-        navigation.reset({
-          index: 0,
-          routes: [{ name: 'Map', params: { rented: true, bikeId } }],
-        });
-
+        navigation.navigate('Map', { rented: true, bikeId })
       } catch (error) {
         console.log(error);
       }

@@ -39,7 +39,6 @@ const Profile = ({ navigation }) => {
   const handleSubmit = async (values) => {
     try {
       const res = await updateUser(userInfo.id, values)
-      console.log(res);
       if (res) {
         Alert.alert(
           'Changes saved!',
