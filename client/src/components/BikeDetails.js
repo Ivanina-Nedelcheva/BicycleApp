@@ -9,6 +9,7 @@ import { getPrices } from '../api/payment';
 import { useTimer } from '../context/TimerContext';
 import { colors } from '../../styles/styles'
 import * as Notifications from 'expo-notifications';
+import { useAuth } from '../context/AuthContext';
 
 const BikeDetails = ({ bike, bottomSheetRef, navigation, stationName }) => {
   const snapPoints = useMemo(() => ['75%'], []);
@@ -17,6 +18,7 @@ const BikeDetails = ({ bike, bottomSheetRef, navigation, stationName }) => {
   const [reservedBicycleId, setReservedBicycleId] = useState(null)
 
   const { startTimer, remainingTime } = useTimer();
+  const { userRole } = useAuth()
 
   function handleReserveBike() {
     changeBicycleState(bike.id, 'RESERVED')
@@ -124,7 +126,7 @@ const BikeDetails = ({ bike, bottomSheetRef, navigation, stationName }) => {
             }
           </View>
 
-          <View style={styles.reservation}>
+          {userRole !== "ROLE_OBSERVER" && <View style={styles.reservation}>
             <View style={styles.reservationMsg}>
               <MaterialCommunityIcons name="clock-alert-outline" size={24} color="black" />
               <Text style={styles.msg}>Reservation is free for 15min</Text>
@@ -145,7 +147,7 @@ const BikeDetails = ({ bike, bottomSheetRef, navigation, stationName }) => {
 
               {!reservation && <StartRideButton navigation={navigation} bikeId={bike.id} />}
             </View>
-          </View>
+          </View>}
         </View>
       </BottomSheetModal>
     </BottomSheetModalProvider>

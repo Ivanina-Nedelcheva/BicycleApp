@@ -5,14 +5,12 @@ import { colors } from '../../styles/styles'
 import { AuthContext } from '../context/AuthContext';
 import { deleteUser } from '../api/users';
 
-const DeleteAccount = ({ modalVisible, setModalVisible, navigation }) => {
-  const { userInfo } = useContext(AuthContext)
-
+const DeleteAccount = ({ modalVisible, setModalVisible }) => {
+  const { userInfo, logout } = useContext(AuthContext)
 
   const data = [
     { id: 1, text: 'You do not have any legal holds on your account due to pending litigation or other legal action related to your account' },
     { id: 2, text: 'You do not have negative cash balance' },
-    // Add more items as needed
   ];
 
   const renderItem = ({ item }) => (
@@ -24,8 +22,7 @@ const DeleteAccount = ({ modalVisible, setModalVisible, navigation }) => {
 
   async function handleDelete() {
     const res = await deleteUser(userInfo.id)
-    console.log(res);
-    // navigation.navigate('Auth')
+    if (res) logout()
   }
 
   return (

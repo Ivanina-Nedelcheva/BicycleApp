@@ -10,13 +10,16 @@ import Scanner from '../../components/Scanner'
 import { colors } from '../../../styles/styles'
 import { getStations } from '../../api/stations';
 import RideProgress from '../../components/RideProgress';
+import { useAuth } from '../../context/AuthContext';
 
 const Map = ({ route, navigation }) => {
 	const [region, setRegion] = useState({})
-	const [currentUserPosition, setCurrentUserPosition] = useState({});
+	const [currentUserPosition, setCurrentUserPosition] = useState(null);
 	const [errorMsg, setErrorMsg] = useState('');
 	const [isScannerOpen, setScannerOpen] = useState(false);
 	const [stations, setStations] = useState([])
+
+	const { userRole } = useAuth()
 
 	const hubsRef = useRef();
 	const rideRef = useRef();
@@ -40,13 +43,10 @@ const Map = ({ route, navigation }) => {
 	}
 
 	useEffect(() => {
-		if (route.params?.rented) {
-			Alert.alert('Ride started!', null, [{ onPress: () => centerCamera() }])
-		}
+		if (route.params?.center) centerCamera()
+		if (route.params?.rented) Alert.alert('Ride started!', null, [{ onPress: () => centerCamera() }])
 		if (route.params?.openScanner) setScannerOpen(true)
-		if (route.params?.update) {
-			handleGetStations()
-		}
+		if (route.params?.update) handleGetStations()
 	}, [route.params])
 
 	useFocusEffect(
@@ -120,7 +120,7 @@ const Map = ({ route, navigation }) => {
 
 		const interval = setInterval(() => {
 			fetchDataAndProcess()
-		}, 3000);
+		}, 2000);
 
 		return () => clearInterval(interval)
 	}, [])
@@ -163,17 +163,6 @@ const Map = ({ route, navigation }) => {
 				))}
 			</MapView>
 
-
-			{/* <FlatList
-				data={stations}
-				renderItem={({ item, index }) => (
-					<View>
-						<Text>{item.stationName}</Text>
-					</View>
-				)}
-				keyExtractor={(item, index) => index.toString()}
-			/> */}
-
 			<Scanner isOpen={isScannerOpen} onToggle={setScannerOpen} navigation={navigation} bikeId={route.params?.bikeId} />
 
 			<View style={styles.uppperBtnsWrapper}>
@@ -201,15 +190,15 @@ const Map = ({ route, navigation }) => {
 					onPress={() => rideRef.current.presentBottomSheet()}
 				/>}
 
-				{!route.params?.rented &&
-					<CustomButton
+				{!route.params?.rented && currentUserPosition &&
+					< CustomButton
 						icon="hubspot"
 						color="white"
 						magicNumber={0.125}
 						onPress={() => hubsRef.current.presentBottomSheet()}
 					/>}
 
-				{!route.params?.rented &&
+				{!route.params?.rented && userRole === "ROLE_ORDINARY_USER" &&
 					<CustomButton
 						icon="qrcode-scan"
 						color="white"

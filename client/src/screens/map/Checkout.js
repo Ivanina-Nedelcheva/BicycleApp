@@ -1,78 +1,53 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Alert, Button } from 'react-native';
+import { View, StyleSheet, Alert, Button, Text } from 'react-native';
 import { StripeProvider, CardForm, useConfirmPayment, useStripe } from '@stripe/stripe-react-native'
-import { getPaymentSheetParams } from '../../api/payment'
+import { getPaymentSheetParams, charge } from '../../api/payment'
 import { useAuth } from '../../context/AuthContext';
 
 export default function Checkout() {
-  const { initPaymentSheet, presentPaymentSheet } = useStripe();
   const [loading, setLoading] = useState(false);
-  const [pId, setPId] = useState(null)
-
+  const [customerId, setCustomerId] = useState(null)
   const { userInfo } = useAuth()
   const { createPaymentMethod } = useStripe();
+  const [card, setCard] = useState(null)
 
   const handleCreatePaymentMethod = async () => {
     const { paymentMethod, error } = await createPaymentMethod({
       paymentMethodType: 'Card',
+      card
     });
-
-    console.log(paymentMethod?.id);
-    setPId(paymentMethod.id)
 
     if (error) {
       console.log('Error creating payment method:', error);
-    } else {
-      console.log('Payment method created:', paymentMethod);
+      return;
+    }
+
+    console.log('Payment method created:', paymentMethod);
+
+    if (customerId) {
+      const chargeResponse = await charge(customerId, paymentMethod.id, 1000);
+
+      if (chargeResponse) {
+        console.log('Successfully charged:', chargeResponse);
+      } else {
+        console.log('Failed to charge the customer.');
+      }
     }
   };
 
 
   const fetchPaymentSheetParams = async () => {
-    console.log(pId);
-    const res = await getPaymentSheetParams(userInfo.id, pId)
-    console.log(res);
-
-    const { setupIntent, ephemeralKey, customer } = await res
-
-    return {
-      setupIntent,
-      ephemeralKey,
-      customer,
-    };
+    const res = await getPaymentSheetParams(userInfo.id)
+    console.log(res.customer)
+    setCustomerId(res.customer)
   };
-
-  const initializePaymentSheet = async () => {
-    const {
-      setupIntent,
-      ephemeralKey,
-      customer,
-    } = await fetchPaymentSheetParams();
-
-    const { error } = await initPaymentSheet({
-      merchantDisplayName: "Example, Inc.",
-      customerId: customer,
-      customerEphemeralKeySecret: ephemeralKey,
-      setupIntentClientSecret: setupIntent,
-    });
-    if (!error) {
-      setLoading(true);
-    }
-  };
-
-  const openPaymentSheet = async () => {
-    // see below
-  };
-
-  useEffect(() => {
-    initializePaymentSheet();
-  }, [pId]);
 
   return (
     <View>
       <CardForm
         onFormComplete={(cardDetails) => {
           console.log('Form complete with card details:', cardDetails);
+          setCard(cardDetails)
         }}
         style={{
           width: '100%',
@@ -81,16 +56,19 @@ export default function Checkout() {
       />
 
 
-      {/* <Button
+      <Button
         variant="primary"
-        disabled={!loading}
-        title="Set up"
-        onPress={openPaymentSheet}
-      /> */}
+        // disabled={!loading}
+        title="Pay"
+        onPress={handleCreatePaymentMethod}
+      />
+
+      <Text>..............</Text>
+
       <Button
         variant="secondary"
-        title="Create"
-        onPress={handleCreatePaymentMethod}
+        title="Fetch"
+        onPress={fetchPaymentSheetParams}
       />
     </View>
   );

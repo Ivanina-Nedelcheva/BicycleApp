@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect, useContext } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableHighlight, Alert } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import BikeDetails from '../../components/BikeDetails';
 import RideReceipt from '../../components/RideReceipt';
@@ -27,7 +28,7 @@ const Station = ({ route, navigation }) => {
     setModalVisible(true);
   };
 
-  const closeModal = () => {
+  const closeReceiptModal = () => {
     setModalVisible(false);
     setIsRented(false)
     Alert.alert('Bicycle returned', null, [{
@@ -87,9 +88,17 @@ const Station = ({ route, navigation }) => {
     return `${dayName}, ${day} ${month} ${year}`;
   };
 
+  const isFocused = useIsFocused()
+
   useEffect(() => {
     handleUserDetails()
-  }, [])
+
+    return () => {
+      if (bottomSheetRef.current) {
+        bottomSheetRef.current.dismiss();
+      }
+    };
+  }, [isFocused])
 
   const bike = ({ item }) => (
     <TouchableHighlight onPress={() => selectBike(item)} underlayColor="transparent">
@@ -161,14 +170,13 @@ const Station = ({ route, navigation }) => {
       {modalVisible &&
         <RideReceipt
           rideRecord={selectedRideRecord}
-          onClose={closeModal}
+          onClose={closeReceiptModal}
           formatDate={formatDate}
         />
       }
     </View>
   );
 };
-
 
 const styles = StyleSheet.create({
   contentContainer: {

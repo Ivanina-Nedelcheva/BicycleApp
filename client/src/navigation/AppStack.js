@@ -1,8 +1,8 @@
-import React, { useContext } from "react"
+import React from "react"
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { Map, Profile, History, Payment, BikeReports, Station, ReportIssue, AddStation, Inquiry, Checkout } from '../screens'
 import CustomButton from "../components/CustomButton";
-import { AuthContext } from "../context/AuthContext";
+import { useAuth } from "../context/AuthContext";
 import CustomDrawer from "../components/CustomDrawer";
 import { colors } from "../../styles/styles";
 
@@ -14,8 +14,7 @@ const AppStack = () => {
     textAlign: 'center',
     color: colors.bleuDeFrance,
   }
-
-  const { userRole } = useContext(AuthContext)
+  const { userRole } = useAuth()
 
   const screens = [
     {
@@ -50,7 +49,7 @@ const AppStack = () => {
       name: 'History',
       component: History,
       icon: ['history', 'history'],
-      visible: userRole !== "ROLE_SYSTEM_ADMIN",
+      visible: userRole !== "ROLE_SYSTEM_ADMIN" && userRole !== "ROLE_OBSERVER",
       options: {
         drawerLabelStyle,
       },
@@ -59,7 +58,7 @@ const AppStack = () => {
       name: 'Payment',
       component: Payment,
       icon: ['wallet', 'wallet-outline'],
-      visible: userRole !== "ROLE_SYSTEM_ADMIN",
+      visible: userRole !== "ROLE_SYSTEM_ADMIN" && userRole !== "ROLE_OBSERVER",
       options: {
         drawerLabelStyle,
       },
@@ -68,7 +67,7 @@ const AppStack = () => {
       name: 'Bicycle Reports',
       component: BikeReports,
       icon: ['alert', 'alert-outline'],
-      visible: userRole !== "ROLE_ORDINARY_USER",
+      visible: userRole !== "ROLE_ORDINARY_USER" && userRole !== "ROLE_OBSERVER",
       options: {
         drawerLabelStyle,
       },
@@ -77,7 +76,7 @@ const AppStack = () => {
       name: 'Add Station',
       component: AddStation,
       icon: ['hubspot', 'hubspot'],
-      visible: userRole !== "ROLE_ORDINARY_USER",
+      visible: userRole !== "ROLE_ORDINARY_USER" && userRole !== "ROLE_OBSERVER",
       options: {
         drawerLabelStyle,
       },
@@ -94,12 +93,12 @@ const AppStack = () => {
       icon: ['alert-circle', 'alert-circle-outline'],
       visible: true,
     },
-    {
-      name: 'Checkout',
-      component: Checkout,
-      icon: ['alert-circle', 'alert-circle-outline'],
-      visible: true,
-    },
+    // {
+    //   name: 'Checkout',
+    //   component: Checkout,
+    //   icon: ['alert-circle', 'alert-circle-outline'],
+    //   visible: true,
+    // },
   ];
 
 
@@ -121,7 +120,9 @@ const AppStack = () => {
                       icon="arrow-left"
                       color="white"
                       magicNumber={0.12}
-                      onPress={() => navigation.goBack()}
+                      onPress={() => {
+                        navigation.goBack()
+                      }}
                     />
                   ),
                 };

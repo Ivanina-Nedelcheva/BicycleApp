@@ -6,11 +6,11 @@ import CustomButton from '../../components/CustomButton';
 import { colors } from '../../../styles/styles'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import DeleteAccount from '../../components/DeleteAccount';
-import { AuthContext } from '../../context/AuthContext';
+import { useAuth } from '../../context/AuthContext';
 import { updateUser } from '../../api/users';
 
 const Profile = ({ navigation }) => {
-  const { logout, userInfo } = useContext(AuthContext)
+  const { logout, userInfo, userRole } = useAuth()
 
   console.log(userInfo);
   const validationSchema = Yup.object().shape({
@@ -59,12 +59,11 @@ const Profile = ({ navigation }) => {
 
   return (
     <ScrollView contentContainerStyle={styles.scroll}>
-      <View style={styles.container}>
-        {/* <Image
-        style={styles.image}
-        source={require('../../../assets/images/bike3.jpg')}
-      /> */}
+      {userRole !== "ROLE_ORDINARY_USER" && <View>
+        <Text style={styles.heading}>{`${userInfo.firstName} ${userInfo.lastName}`}</Text>
+      </View>}
 
+      <View style={styles.container}>
         <Formik
           initialValues={{ firstName: userInfo.firstName, lastName: userInfo.lastName, phoneNumber: userInfo.phoneNumber, email: userInfo.email, password: '' }}
           validationSchema={validationSchema}
@@ -72,62 +71,66 @@ const Profile = ({ navigation }) => {
         >
           {({ handleChange, handleSubmit, values, errors, isValid, dirty, setFieldValue }) => (
             <View style={styles.form}>
-              <View>
-                <TextInput
-                  value={values.firstName}
-                  onChangeText={handleChange('firstName')}
-                  placeholder="First name"
-                  style={styles.input}
-                />
+              {userRole === "ROLE_ORDINARY_USER" && (
+                <>
+                  <View>
+                    <TextInput
+                      value={values.firstName}
+                      onChangeText={handleChange('firstName')}
+                      placeholder="First name"
+                      style={styles.input}
+                    />
 
-                {values.firstName && !errors.firstName && (
-                  <MaterialCommunityIcons name="check-circle" size={20} color={colors.keppel} style={styles.inputIcon} />
-                )}
-              </View>
-              {errors.firstName && <Text style={styles.errorMessage}>{errors.firstName}</Text>}
+                    {values.firstName && !errors.firstName && (
+                      <MaterialCommunityIcons name="check-circle" size={20} color={colors.keppel} style={styles.inputIcon} />
+                    )}
+                  </View>
+                  {errors.firstName && <Text style={styles.errorMessage}>{errors.firstName}</Text>}
 
-              <View>
-                <TextInput
-                  value={values.lastName}
-                  onChangeText={handleChange('lastName')}
-                  placeholder="Last name"
-                  style={styles.input}
-                />
-                {values.lastName && !errors.lastName && (
-                  <MaterialCommunityIcons name="check-circle" size={20} color={colors.keppel} style={styles.inputIcon} />
-                )}
-              </View>
-              {errors.lastName && <Text style={styles.errorMessage}>{errors.lastName}</Text>}
+                  <View>
+                    <TextInput
+                      value={values.lastName}
+                      onChangeText={handleChange('lastName')}
+                      placeholder="Last name"
+                      style={styles.input}
+                    />
+                    {values.lastName && !errors.lastName && (
+                      <MaterialCommunityIcons name="check-circle" size={20} color={colors.keppel} style={styles.inputIcon} />
+                    )}
+                  </View>
+                  {errors.lastName && <Text style={styles.errorMessage}>{errors.lastName}</Text>}
 
-              <View>
-                <TextInput
-                  value={values.phoneNumber}
-                  onChangeText={handleChange('phoneNumber')}
-                  placeholder="Phone number"
-                  keyboardType="phone-pad"
-                  style={styles.input}
-                />
+                  <View>
+                    <TextInput
+                      value={values.phoneNumber}
+                      onChangeText={handleChange('phoneNumber')}
+                      placeholder="Phone number"
+                      keyboardType="phone-pad"
+                      style={styles.input}
+                    />
 
-                {values.phoneNumber && !errors.phoneNumber && (
-                  <MaterialCommunityIcons name="check-circle" size={20} color={colors.keppel} style={styles.inputIcon} />
-                )}
-              </View>
-              {errors.phoneNumber && <Text style={styles.errorMessage}>{errors.phoneNumber}</Text>}
+                    {values.phoneNumber && !errors.phoneNumber && (
+                      <MaterialCommunityIcons name="check-circle" size={20} color={colors.keppel} style={styles.inputIcon} />
+                    )}
+                  </View>
+                  {errors.phoneNumber && <Text style={styles.errorMessage}>{errors.phoneNumber}</Text>}
 
-              <View>
-                <TextInput
-                  value={values.email}
-                  onChangeText={handleChange('email')}
-                  placeholder="Email"
-                  keyboardType="email-address"
-                  style={styles.input}
-                />
+                  <View>
+                    <TextInput
+                      value={values.email}
+                      onChangeText={handleChange('email')}
+                      placeholder="Email"
+                      keyboardType="email-address"
+                      style={styles.input}
+                    />
 
-                {values.email && !errors.email && (
-                  <MaterialCommunityIcons name="check-circle" size={20} color={colors.keppel} style={styles.inputIcon} />
-                )}
-              </View>
-              {errors.email && <Text style={styles.errorMessage}>{errors.email}</Text>}
+                    {values.email && !errors.email && (
+                      <MaterialCommunityIcons name="check-circle" size={20} color={colors.keppel} style={styles.inputIcon} />
+                    )}
+                  </View>
+                  {errors.email && <Text style={styles.errorMessage}>{errors.email}</Text>}
+                </>
+              )}
 
               <View>
                 <TextInput
@@ -180,13 +183,14 @@ const Profile = ({ navigation }) => {
                   style={styles.btn}
                 />
 
-                <CustomButton
+                {userRole === "ROLE_ORDINARY_USER" && <CustomButton
                   title="Delete Account"
                   color={colors.ultraViolet}
                   magicNumber={0.8}
                   onPress={() => setModalVisible(!modalVisible)}
                   style={styles.btn}
-                />
+                />}
+
               </View>
             </View>
           )}
@@ -201,15 +205,19 @@ const Profile = ({ navigation }) => {
 const styles = StyleSheet.create({
   scroll: {
     flexGrow: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     paddingVertical: 20,
     backgroundColor: colors.seasalt
   },
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    // justifyContent: 'center',
+    marginTop: 40
+  },
+  heading: {
+    fontFamily: 'Roboto-Regular',
+    fontSize: 22,
+    marginLeft: 40
   },
   form: {
     width: '80%',

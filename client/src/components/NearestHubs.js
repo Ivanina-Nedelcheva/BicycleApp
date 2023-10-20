@@ -1,6 +1,8 @@
 import React, { useRef, useState, useMemo, useEffect, useImperativeHandle, forwardRef } from 'react';
 import { View, Text, FlatList, TouchableHighlight, ActivityIndicator, StyleSheet } from 'react-native';
 import { BottomSheetModal, BottomSheetModalProvider, BottomSheetFlatList } from '@gorhom/bottom-sheet';
+import { useFocusEffect } from '@react-navigation/native';
+
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import * as geolib from 'geolib';
 import { colors } from '../../styles/styles'
@@ -8,6 +10,11 @@ import { getStations } from '../api/stations';
 
 const NearestHubs = forwardRef(({ userPosition, onSelectStation }, ref) => {
   const bottomSheetRef = useRef(null);
+  const snapPoints = useMemo(() => ['35%', '55%'], []);
+  const [stations, setStations] = useState([])
+  const [orderedStations, setOrderedStations] = useState([])
+
+  // console.log(orderedStations);
 
   useImperativeHandle(ref, () => ({
     presentBottomSheet() {
@@ -15,10 +22,14 @@ const NearestHubs = forwardRef(({ userPosition, onSelectStation }, ref) => {
     }
   }));
 
-  const snapPoints = useMemo(() => ['55%'], []);
-  const [stations, setStations] = useState([])
-  const [orderedStations, setOrderedStations] = useState([])
-
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await getStations();
+      setStations(data)
+      await orderLocations(data)
+    }
+    fetchData()
+  }, [])
 
   async function handleOpenSheet(index) {
     if (index !== -1) {
@@ -29,31 +40,33 @@ const NearestHubs = forwardRef(({ userPosition, onSelectStation }, ref) => {
   }
 
   async function orderLocations(stations) {
-    const ordered = geolib.orderByDistance(
-      userPosition,
-      stations.map((item, index) => ({
-        key: index,
-        longitude: item.longitude,
-        latitude: item.latitude,
-      }))
-    );
+    if (userPosition) {
+      const ordered = geolib.orderByDistance(
+        userPosition,
+        stations.map((item, index) => ({
+          key: index,
+          longitude: item.longitude,
+          latitude: item.latitude,
+        }))
+      );
 
-    function calculateTimeToStation(distanceMeters) {
-      const averageSpeedMps = 1.4;
-      const timeSeconds = distanceMeters / averageSpeedMps;
-      const timeMinutes = timeSeconds / 60;
-      return timeMinutes;
+      function calculateTimeToStation(distanceMeters) {
+        const averageSpeedMps = 1.4;
+        const timeSeconds = distanceMeters / averageSpeedMps;
+        const timeMinutes = timeSeconds / 60;
+        return timeMinutes;
+      }
+
+      const orderedStationsData = ordered.map(orderedStation => {
+        const station = stations[orderedStation.key];
+        const meters = geolib.getDistance(userPosition, { latitude: orderedStation.latitude, longitude: orderedStation.longitude })
+        const km = geolib.convertDistance(meters, 'km').toFixed(2);
+        const minutes = Math.round(calculateTimeToStation(meters))
+        return { ...station, meters, km, minutes };
+      });
+
+      setOrderedStations(orderedStationsData)
     }
-
-    const orderedStationsData = ordered.map(orderedStation => {
-      const station = stations[orderedStation.key];
-      const meters = geolib.getDistance(userPosition, { latitude: orderedStation.latitude, longitude: orderedStation.longitude })
-      const km = geolib.convertDistance(meters, 'km').toFixed(2);
-      const minutes = Math.round(calculateTimeToStation(meters))
-      return { ...station, meters, km, minutes };
-    });
-
-    setOrderedStations(orderedStationsData)
   }
 
   const selectHub = (hub) => {
@@ -83,7 +96,7 @@ const NearestHubs = forwardRef(({ userPosition, onSelectStation }, ref) => {
 
         <View style={styles.right}>
           <View>
-            <Text style={{ fontSize: 18, fontFamily: 'Roboto-Regular' }}>{item.stationName}</Text>
+            <Text style={{ fontSize: 16, fontFamily: 'Roboto-Regular' }}>{item.stationName}</Text>
 
             {item.bicycles.some(bike => bike.state === 'FREE') ? (
               <Text style={styles.info}>Cycle available</Text>
@@ -109,11 +122,13 @@ const NearestHubs = forwardRef(({ userPosition, onSelectStation }, ref) => {
         style={styles.modal}
         backgroundStyle={{ backgroundColor: colors.seasalt, borderWidth: 1, borderColor: colors.darkFrenchGray }}
         onChange={handleOpenSheet}
+
       >
         <Text style={styles.heading}>Nearest Hubs</Text>
         {
           orderedStations.length ? (
             <BottomSheetFlatList
+              focusHook={useFocusEffect}
               data={orderedStations}
               renderItem={hub}
               keyExtractor={(item) => item.id.toString()}
@@ -135,7 +150,7 @@ const styles = StyleSheet.create({
   heading: {
     fontFamily: 'Roboto-Regular',
     fontSize: 24,
-    paddingBottom: 20
+    paddingBottom: 18
   },
   list: {
     // marginTop: 50
