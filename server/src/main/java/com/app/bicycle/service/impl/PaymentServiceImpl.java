@@ -37,7 +37,7 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public Map<String, String> paymentSheet(Long userId) {
+    public Map<String, String> paymentSheet(Long userId, String paymentMethodId) {
         User currentUser = userRepository.findUserById(userId);
         CustomerCreateParams customerParams = CustomerCreateParams.builder()
                 .setName(currentUser.getFirstName() + " " + currentUser.getLastName())
@@ -55,6 +55,7 @@ public class PaymentServiceImpl implements PaymentService {
 
         SetupIntentCreateParams setupIntentParams = SetupIntentCreateParams.builder()
                 .setCustomer(customer.getId())
+                .setPaymentMethod(paymentMethodId)
                 .build();
         SetupIntent setupIntent = null;
         try {
@@ -72,7 +73,7 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public Map<String, Object> chargeSavedPaymentMethod(String customerId, String paymentMethodId, Long amount) {
+    public Map<String, Object> chargeSavedPaymentMethod(String customerId, Long amount) {
 
         Map<String, Object> responseData = new HashMap<>();
         try {
@@ -82,8 +83,8 @@ public class PaymentServiceImpl implements PaymentService {
                     .build();
             PaymentMethodCollection paymentMethods = PaymentMethod.list(params);
 
-//            if (!paymentMethods.getData().isEmpty()) {
-//                String paymentMethodIds = paymentMethods.getData().get(0).getId();
+            if (!paymentMethods.getData().isEmpty()) {
+                String paymentMethodId = paymentMethods.getData().get(0).getId();
 
                 PaymentIntentCreateParams createParams = PaymentIntentCreateParams.builder()
                         .setCurrency("bgn")
@@ -99,11 +100,11 @@ public class PaymentServiceImpl implements PaymentService {
                         .build();
 
                 PaymentIntent intent = PaymentIntent.create(createParams);
+                intent.getI
                 responseData.put("paymentIntent", intent);
-//            }
-//            else {
-//                responseData.put("error", "No payment method found");
-//            }
+            } else {
+                responseData.put("error", "No payment method found");
+            }
         } catch (CardException e) {
             responseData.put("error", "Error code is : " + e.getCode());
         } catch (StripeException e) {

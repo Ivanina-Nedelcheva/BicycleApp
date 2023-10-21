@@ -26,12 +26,12 @@ public class PaymentController {
 
     @PostMapping("/paymentSheet")
     @PreAuthorize("hasRole('ROLE_ORDINARY_USER')")
-    public ResponseEntity<Map<String, String>> handlePaymentSheet(@RequestParam Long userId) {
+    public ResponseEntity<Map<String, String>> handlePaymentSheet(@RequestParam Long userId, @RequestParam String paymentMethodId) {
 
         Map<String, String> response;
         try {
             Stripe.apiKey = stripeSecretKey;
-            response = paymentsService.paymentSheet(userId);
+            response = paymentsService.paymentSheet(userId, paymentMethodId);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
@@ -56,11 +56,11 @@ public class PaymentController {
 
     @PostMapping("/chargeSavedPaymentMethod")
     @PreAuthorize("hasRole('ROLE_ORDINARY_USER')")
-    public ResponseEntity<Map<String, Object>> chargeSavedPaymentMethod(@RequestParam String customerId,@RequestParam String paymentMethodId, @RequestParam Long amount) {
+    public ResponseEntity<Map<String, Object>> chargeSavedPaymentMethod(@RequestParam String customerId, @RequestParam Long amount) {
         Map<String, Object> response;
         try {
             Stripe.apiKey = stripeSecretKey;
-            response = paymentsService.chargeSavedPaymentMethod(customerId, paymentMethodId, amount);
+            response = paymentsService.chargeSavedPaymentMethod(customerId, amount);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
