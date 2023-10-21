@@ -16,7 +16,7 @@ import java.util.Map;
 @RequestMapping("payment")
 public class PaymentController {
 
-    private final PaymentService paymentsService;   
+    private final PaymentService paymentsService;
     @Value("${STRIPE_SECRET_KEY}")
     private String stripeSecretKey;
 
@@ -37,22 +37,6 @@ public class PaymentController {
         }
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-
-
-//    @RequestMapping(value = "/attachPaymentMethod", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-//    @PreAuthorize("hasAnyRole(T(com.app.bicycle.enums.UserRole).ORDINARY_USER)")
-//        public ResponseEntity<String> attachPaymentMethodToCustomer(@RequestParam String paymentMethodId, @RequestParam String stripeId) {
-//            try {
-//                Stripe.apiKey = stripeSecretKey;
-//                PaymentMethod paymentMethod = PaymentMethod.retrieve(paymentMethodId);
-//                PaymentMethod updatedPaymentMethod = paymentMethod.attach(PaymentMethodAttachParams.builder().setCustomer(stripeId).build());
-//                return new ResponseEntity<>(updatedPaymentMethod.getId(), HttpStatus.OK);
-//            } catch (StripeException e) {
-//                e.printStackTrace();
-//                return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-//            }
-//    }
-
 
     @PostMapping("/chargeSavedPaymentMethod")
     @PreAuthorize("hasRole('ROLE_ORDINARY_USER')")

@@ -8,7 +8,10 @@ import com.app.bicycle.service.PaymentService;
 import com.stripe.exception.CardException;
 import com.stripe.exception.StripeException;
 import com.stripe.model.*;
-import com.stripe.param.*;
+import com.stripe.param.CustomerCreateParams;
+import com.stripe.param.PaymentIntentCreateParams;
+import com.stripe.param.PaymentMethodListParams;
+import com.stripe.param.SetupIntentCreateParams;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -100,7 +103,6 @@ public class PaymentServiceImpl implements PaymentService {
                         .build();
 
                 PaymentIntent intent = PaymentIntent.create(createParams);
-                intent.getI
                 responseData.put("paymentIntent", intent);
             } else {
                 responseData.put("error", "No payment method found");

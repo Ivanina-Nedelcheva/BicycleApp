@@ -12,8 +12,6 @@ public interface BicycleService {
 
     BicycleDTO findBicycleById(Long bikeId);
 
-    Long getBicycleNextId();
-
     CustomResponse deactivateBicycle(Long bikeId);
 
     CustomResponse activateBicycle(Long bikeId);

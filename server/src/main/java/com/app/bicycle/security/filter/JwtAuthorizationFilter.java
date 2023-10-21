@@ -1,10 +1,6 @@
 package com.app.bicycle.security.filter;
 
 import com.app.bicycle.security.JwtTokenProvider;
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -14,6 +10,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -31,7 +31,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             response.setStatus(HttpStatus.OK.value());
         } else {
             String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-            if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ") || Arrays.asList(PUBLIC_URLS).contains(request.getServletPath())) {//[propuskame publichnite urli
+            if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ") || Arrays.asList(PUBLIC_URLS).contains(request.getServletPath())) {
                 filterChain.doFilter(request, response);
             } else {
                 try {

@@ -66,11 +66,6 @@ public class BicycleServiceImpl extends BaseService implements BicycleService {
     }
 
     @Override
-    public Long getBicycleNextId() {
-        return bicycleRepository.getMaxBicycleId() + 1;
-    }
-
-    @Override
     public CustomResponse deactivateBicycle(Long bikeId) {
         Bicycle bicycle = bicycleRepository.getBicycleByIdAndActiveFlagTrue(bikeId);
         if (bicycle != null) {

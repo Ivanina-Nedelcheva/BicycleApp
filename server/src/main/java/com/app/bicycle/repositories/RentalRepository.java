@@ -1,6 +1,5 @@
 package com.app.bicycle.repositories;
 
-import com.app.bicycle.entities.Bicycle;
 import com.app.bicycle.entities.Rental;
 import com.app.bicycle.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
