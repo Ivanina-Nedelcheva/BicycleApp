@@ -43,6 +43,13 @@ public class StationServiceImpl extends BaseService implements StationService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public StationDTO getStation(Long stationId) {
+        Station station = stationRepository.getStationById(stationId);
+        return convertSBtoDTO(station);
+    }
+
+
     private StationDTO convertSBtoDTO(Station station) {
         StationDTO dto = new StationDTO();
         dto.setId(station.getId());

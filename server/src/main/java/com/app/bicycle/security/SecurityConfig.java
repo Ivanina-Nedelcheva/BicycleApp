@@ -28,7 +28,7 @@ import java.util.List;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     public static final String[] PUBLIC_URLS = {"app/login", "app/user/registerUser", "app/user/getFaultReports",
-            "app/stations/getStationWithBicycles", "app/payment/getPrices", "app/bicycles/changeState"
+            "app/stations/getStation", "app/stations/getStationWithBicycles", "app/payment/getPrices", "app/bicycles/changeState",
     };
 
     @Autowired

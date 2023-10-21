@@ -36,6 +36,16 @@ public class StationController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @GetMapping("/getStation")
+    public ResponseEntity<StationDTO> getStations(@RequestParam Long stationId) {
+        StationDTO response;
+        try {
+            response = stationService.getStation(stationId);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
     @PostMapping("/newStation")
     @PreAuthorize("hasRole('ROLE_SYSTEM_ADMIN')")

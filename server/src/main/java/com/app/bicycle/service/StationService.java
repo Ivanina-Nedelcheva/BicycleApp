@@ -11,6 +11,8 @@ public interface StationService {
 
     List<StationDTO> getAllStationsWithBicycles();
 
+    StationDTO getStation(Long stationId);
+
     CustomResponse deactivateStation(Long stationId);
 
     CustomResponse activateStation(Long stationId);
