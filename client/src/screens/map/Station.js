@@ -15,6 +15,7 @@ const Station = ({ route, navigation }) => {
   const { stationId } = route.params
   const [station, setStation] = useState(null)
   const [selectedBike, setSelectedBike] = useState({})
+  const [bikeErrorMessage, setBikeErrorMessage] = useState('')
   const [selectedRideRecord, setSelectedRideRide] = useState([]);
   const [isRented, setIsRented] = useState(false)
   const [isActiveStation, setIsActiveStation] = useState(true)
@@ -23,16 +24,18 @@ const Station = ({ route, navigation }) => {
   const bottomSheetRef = useRef(null)
   const { userRole, userInfo } = useContext(AuthContext)
 
+  console.log(stationId);
 
   const getData = async () => {
     const station = await getStation(stationId)
-    console.log(station);
     setStation(station)
   }
 
   useEffect(() => {
     getData()
-  }, [])
+
+    return () => setStation(null)
+  }, [stationId])
 
   const openRecord = (rideRecord) => {
     setSelectedRideRide(rideRecord);
@@ -59,8 +62,18 @@ const Station = ({ route, navigation }) => {
     bottomSheetRef.current?.present();
   };
 
-  async function handleAddBicycle() {
-    newBicycle(station.id)
+  async function addBicycle() {
+    try {
+      await newBicycle(station.id)
+    } catch (error) {
+      if (error.status === 500) {
+        setBikeErrorMessage('Maximum number of bicycles reached. You cannot add more bicycles at this time.')
+      }
+    }
+    await getData()
+  }
+
+  function handleAddBicycle() {
     Alert.alert(
       'Add bicycle',
       'Do you want to add the bicycle?',
@@ -71,7 +84,14 @@ const Station = ({ route, navigation }) => {
         },
         {
           text: 'OK',
-          onPress: () => getData()
+          onPress: async () => {
+            try {
+              await addBicycle()
+
+            } catch (error) {
+              console.log(error);
+            }
+          }
         },
       ],
       { cancelable: true }
