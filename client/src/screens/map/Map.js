@@ -146,7 +146,7 @@ const Map = ({ route, navigation }) => {
 							longitude: station.longitude,
 						}}
 						key={index}
-						onPress={() => navigation.navigate('Station', { station })}
+						onPress={() => navigation.navigate('Station', { stationId: station.id })}
 					>
 						{region.longitudeDelta > 0.2 || region.latitudeDelta > 0.2 ? (
 							<View style={styles.stationDot} />

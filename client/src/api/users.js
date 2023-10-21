@@ -16,7 +16,7 @@ export async function getUserDetails(userId) {
         userId
       }
     });
-    console.log('Response from the server:', response.data);
+    // console.log('Response from the server:', response.data);
     return response.data
   } catch (error) {
     console.error('Error uploading data:', error);

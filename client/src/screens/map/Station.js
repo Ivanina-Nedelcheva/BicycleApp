@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect, useContext } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableHighlight, Alert } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableHighlight, Alert, ActivityIndicator } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import BikeDetails from '../../components/BikeDetails';
@@ -9,10 +9,11 @@ import { AuthContext } from '../../context/AuthContext';
 import CustomButton from '../../components/CustomButton';
 import { newBicycle } from '../../api/bicycles';
 import { getUserDetails, returnBicycle } from '../../api/users';
-import { activateStation, deactivateStation } from '../../api/stations';
+import { activateStation, deactivateStation, getStation } from '../../api/stations';
 
 const Station = ({ route, navigation }) => {
-  const { station } = route.params
+  const { stationId } = route.params
+  const [station, setStation] = useState(null)
   const [selectedBike, setSelectedBike] = useState({})
   const [selectedRideRecord, setSelectedRideRide] = useState([]);
   const [isRented, setIsRented] = useState(false)
@@ -20,8 +21,18 @@ const Station = ({ route, navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [message, setMessage] = useState('');
   const bottomSheetRef = useRef(null)
-
   const { userRole, userInfo } = useContext(AuthContext)
+
+
+  const getData = async () => {
+    const station = await getStation(stationId)
+    console.log(station);
+    setStation(station)
+  }
+
+  useEffect(() => {
+    getData()
+  }, [])
 
   const openRecord = (rideRecord) => {
     setSelectedRideRide(rideRecord);
@@ -51,7 +62,7 @@ const Station = ({ route, navigation }) => {
   async function handleAddBicycle() {
     newBicycle(station.id)
     Alert.alert(
-      'Activate',
+      'Add bicycle',
       'Do you want to add the bicycle?',
       [
         {
@@ -60,7 +71,7 @@ const Station = ({ route, navigation }) => {
         },
         {
           text: 'OK',
-          onPress: () => navigation.navigate('Map')
+          onPress: () => getData()
         },
       ],
       { cancelable: true }
@@ -166,60 +177,67 @@ const Station = ({ route, navigation }) => {
 
   return (
     <View style={styles.contentContainer}>
-      <Text style={styles.heading}>{station.stationName}</Text>
+      {station ? (
+        <>
+          <Text style={styles.heading}>{station.stationName}</Text>
 
-      <FlatList
-        data={station.bicycles}
-        renderItem={bike}
-        keyExtractor={(item) => item.id.toString()}
-        style={styles.list}
-      />
-
-      <Text style={styles.msg}>{message}</Text>
-
-      <View style={styles.bottomBtnsWrapper}>
-        {userRole === "ROLE_SYSTEM_ADMIN" || userRole === "ROLE_TECH_SUPPORT_MEMBER" ? (
-          <CustomButton
-            icon="power"
-            color={isActiveStation ? 'black' : 'white'}
-            iconColor={isActiveStation ? colors.antiFlashWhite : null}
-            magicNumber={0.125}
-            onPress={toggleStationState}
+          <FlatList
+            data={station.bicycles}
+            renderItem={bike}
+            keyExtractor={(item) => item.id.toString()}
+            style={styles.list}
           />
-        ) : null}
-        {userRole === "ROLE_SYSTEM_ADMIN" &&
-          <CustomButton
-            icon="plus"
-            color="white"
-            magicNumber={0.125}
-            onPress={handleAddBicycle}
+
+          <Text style={styles.msg}>{message}</Text>
+
+          <View style={styles.bottomBtnsWrapper}>
+            {userRole === "ROLE_SYSTEM_ADMIN" || userRole === "ROLE_TECH_SUPPORT_MEMBER" ? (
+              <CustomButton
+                icon="power"
+                color={isActiveStation ? 'black' : 'white'}
+                iconColor={isActiveStation ? colors.antiFlashWhite : null}
+                magicNumber={0.125}
+                onPress={toggleStationState}
+              />
+            ) : null}
+
+            {userRole === "ROLE_SYSTEM_ADMIN" &&
+              <CustomButton
+                icon="plus"
+                color="white"
+                magicNumber={0.125}
+                onPress={handleAddBicycle}
+              />
+            }
+          </View>
+
+          {userRole == "ROLE_ORDINARY_USER" && isRented &&
+            <CustomButton
+              title="Return bicycle"
+              color={colors.bleuDeFrance}
+              magicNumber={0.4}
+              onPress={handleReturnBicycle}
+            />
+          }
+
+          <BikeDetails
+            bike={selectedBike}
+            stationName={station.stationName}
+            bottomSheetRef={bottomSheetRef}
+            navigation={navigation}
           />
-        }
-      </View>
 
-      {userRole == "ROLE_ORDINARY_USER" && isRented &&
-        <CustomButton
-          title="Return bicycle"
-          color={colors.bleuDeFrance}
-          magicNumber={0.4}
-          onPress={handleReturnBicycle}
-        />
-      }
-
-      <BikeDetails
-        bike={selectedBike}
-        stationName={station.stationName}
-        bottomSheetRef={bottomSheetRef}
-        navigation={navigation}
-      />
-
-      {modalVisible &&
-        <RideReceipt
-          rideRecord={selectedRideRecord}
-          onClose={closeReceiptModal}
-          formatDate={formatDate}
-        />
-      }
+          {modalVisible &&
+            <RideReceipt
+              rideRecord={selectedRideRecord}
+              onClose={closeReceiptModal}
+              formatDate={formatDate}
+            />
+          }
+        </>
+      ) : (
+        <ActivityIndicator size={80} color={colors.bleuDeFrance} />
+      )}
     </View>
   );
 };
@@ -228,6 +246,7 @@ const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
     alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: colors.platinum,
   },
   list: {
