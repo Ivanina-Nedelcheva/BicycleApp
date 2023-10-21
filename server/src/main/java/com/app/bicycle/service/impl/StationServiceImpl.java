@@ -56,6 +56,7 @@ public class StationServiceImpl extends BaseService implements StationService {
         dto.setStationName(station.getStationName());
         dto.setLatitude(station.getLatitude());
         dto.setLongitude(station.getLongitude());
+        dto.setActiveFlag(station.getActiveFlag());
 
         List<BicycleDTO> bicycleDTOs =
                 station.getStationBicycles().stream()
