@@ -44,7 +44,12 @@ const Map = ({ route, navigation }) => {
 
 	useEffect(() => {
 		if (route.params?.center) centerCamera()
-		if (route.params?.rented) Alert.alert('Ride started!', null, [{ onPress: () => centerCamera() }])
+		if (route.params?.rented) Alert.alert('Ride started!', null, [{
+			onPress: () => {
+				rideRef.current.presentBottomSheet()
+				centerCamera()
+			}
+		}])
 		if (route.params?.openScanner) setScannerOpen(true)
 	}, [route.params])
 
@@ -114,8 +119,6 @@ const Map = ({ route, navigation }) => {
 				console.error('Error fetching data:', error);
 			}
 		}
-
-		if (route.params?.rented) rideRef.current.presentBottomSheet()
 
 		const interval = setInterval(() => {
 			fetchDataAndProcess()

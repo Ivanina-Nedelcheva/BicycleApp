@@ -35,9 +35,10 @@ export async function newBicycle(stationId) {
     console.log('Response from the server:', response.data);
   } catch (error) {
     console.error('Error uploading data:', error);
+    throw error
   }
-
 }
+
 export async function changeBicycleState(bikeId, newState) {
   try {
     const response = await API.post(changeBicycleStateURI, null, {

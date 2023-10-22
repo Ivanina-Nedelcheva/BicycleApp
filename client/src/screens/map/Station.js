@@ -15,26 +15,26 @@ const Station = ({ route, navigation }) => {
   const { stationId } = route.params
   const [station, setStation] = useState(null)
   const [selectedBike, setSelectedBike] = useState({})
-  const [bikeErrorMessage, setBikeErrorMessage] = useState('')
   const [selectedRideRecord, setSelectedRideRide] = useState([]);
   const [isRented, setIsRented] = useState(false)
-  const [isActiveStation, setIsActiveStation] = useState(true)
+  const [isActiveStation, setIsActiveStation] = useState(null)
   const [modalVisible, setModalVisible] = useState(false);
-  const [message, setMessage] = useState('');
   const bottomSheetRef = useRef(null)
   const { userRole, userInfo } = useContext(AuthContext)
-
-  console.log(stationId);
 
   const getData = async () => {
     const station = await getStation(stationId)
     setStation(station)
+    setIsActiveStation(station.activeFlag)
   }
 
   useEffect(() => {
     getData()
 
-    return () => setStation(null)
+    return () => {
+      setStation(null)
+      setIsActiveStation(null)
+    }
   }, [stationId])
 
   const openRecord = (rideRecord) => {
@@ -52,10 +52,7 @@ const Station = ({ route, navigation }) => {
 
   const selectBike = (bike) => {
     if (isRented) {
-      setMessage("Sorry, only one bicycle rental allowed per user at a time.")
-      setTimeout(() => {
-        setMessage('')
-      }, 3000)
+      Alert.alert("Sorry, only one bicycle rental allowed per user at a time.")
       return
     }
     setSelectedBike(bike)
@@ -64,13 +61,15 @@ const Station = ({ route, navigation }) => {
 
   async function addBicycle() {
     try {
-      await newBicycle(station.id)
+      await newBicycle(station.id);
     } catch (error) {
-      if (error.status === 500) {
-        setBikeErrorMessage('Maximum number of bicycles reached. You cannot add more bicycles at this time.')
+      if (error.response.status === 500) {
+        Alert.alert('Maximum number of bicycles reached!', 'You cannot add more bicycles at this time.');
+      } else {
+        Alert.alert('An error occurred while adding the bicycle!', 'Please try again later.');
       }
     }
-    await getData()
+    await getData();
   }
 
   function handleAddBicycle() {
@@ -84,14 +83,7 @@ const Station = ({ route, navigation }) => {
         },
         {
           text: 'OK',
-          onPress: async () => {
-            try {
-              await addBicycle()
-
-            } catch (error) {
-              console.log(error);
-            }
-          }
+          onPress: () => addBicycle()
         },
       ],
       { cancelable: true }
@@ -109,7 +101,10 @@ const Station = ({ route, navigation }) => {
     const res = await returnBicycle(userInfo.id, station.id)
     openRecord(res)
   }
+
   async function toggleStationState() {
+    console.log(station.activeFlag);
+
     if (isActiveStation) {
       Alert.alert(
         'Deactivate',
@@ -196,9 +191,9 @@ const Station = ({ route, navigation }) => {
   );
 
   return (
-    <View style={styles.contentContainer}>
+    <View style={{ flex: 1 }}>
       {station ? (
-        <>
+        <View style={styles.contentContainer}>
           <Text style={styles.heading}>{station.stationName}</Text>
 
           <FlatList
@@ -207,8 +202,6 @@ const Station = ({ route, navigation }) => {
             keyExtractor={(item) => item.id.toString()}
             style={styles.list}
           />
-
-          <Text style={styles.msg}>{message}</Text>
 
           <View style={styles.bottomBtnsWrapper}>
             {userRole === "ROLE_SYSTEM_ADMIN" || userRole === "ROLE_TECH_SUPPORT_MEMBER" ? (
@@ -229,16 +222,15 @@ const Station = ({ route, navigation }) => {
                 onPress={handleAddBicycle}
               />
             }
+            {userRole == "ROLE_ORDINARY_USER" && isRented &&
+              <CustomButton
+                title="Return bicycle"
+                color={colors.bleuDeFrance}
+                magicNumber={0.4}
+                onPress={handleReturnBicycle}
+              />
+            }
           </View>
-
-          {userRole == "ROLE_ORDINARY_USER" && isRented &&
-            <CustomButton
-              title="Return bicycle"
-              color={colors.bleuDeFrance}
-              magicNumber={0.4}
-              onPress={handleReturnBicycle}
-            />
-          }
 
           <BikeDetails
             bike={selectedBike}
@@ -254,11 +246,14 @@ const Station = ({ route, navigation }) => {
               formatDate={formatDate}
             />
           }
-        </>
+        </View>
       ) : (
-        <ActivityIndicator size={80} color={colors.bleuDeFrance} />
-      )}
-    </View>
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+          <ActivityIndicator size={80} color={colors.bleuDeFrance} />
+        </View>
+      )
+      }
+    </View >
   );
 };
 
@@ -266,7 +261,6 @@ const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
     backgroundColor: colors.platinum,
   },
   list: {
@@ -276,7 +270,7 @@ const styles = StyleSheet.create({
   heading: {
     fontFamily: 'Roboto-Regular',
     fontSize: 28,
-    marginTop: 24
+    marginTop: 24,
   },
   itemContainer: {
     alignItems: 'center',
@@ -300,6 +294,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 20,
+    position: 'absolute',
     bottom: 20,
   },
   msg: {
@@ -308,6 +303,8 @@ const styles = StyleSheet.create({
     bottom: 100,
     fontSize: 18,
     color: colors.red,
+    textAlign: 'center',
+    width: '60%'
   }
 });
 
