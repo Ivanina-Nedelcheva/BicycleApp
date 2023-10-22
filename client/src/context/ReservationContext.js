@@ -5,12 +5,15 @@ const ReservationContext = createContext();
 export const ReservationProvider = ({ children }) => {
   const [isReserved, setIsReserved] = useState(false)
   const [reservedBikeId, setReservedBikeId] = useState(null)
+  const [bikeStationName, setBikeStationName] = useState(null)
 
   const contextValue = {
     isReserved,
     setIsReserved,
     reservedBikeId,
-    setReservedBikeId
+    setReservedBikeId,
+    bikeStationName,
+    setBikeStationName,
   };
 
   return (

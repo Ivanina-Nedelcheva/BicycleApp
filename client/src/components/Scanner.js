@@ -38,7 +38,10 @@ const Scanner = ({ isOpen, onToggle, navigation }) => {
     setIsScanned(true);
     if (isCard) {
       try {
-        rentBicycle(userInfo.id, rentedBikeId || setRentedBikeId(getRandomNumber()))
+        const num = getRandomNumber()
+        console.log(num);
+        rentBicycle(userInfo.id, rentedBikeId || num)
+        if (!rentedBikeId) setRentedBikeId(num)
         onToggle(false);
         setIsRented(true)
         navigation.navigate('Map')

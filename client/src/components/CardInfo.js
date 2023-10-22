@@ -34,14 +34,14 @@ const CardInformation = ({ navigation, route }) => {
 
     if (!route.params && !isRented && cardDetails?.complete) {
       setIsCard(true)
-      Alert.alert("Card Successfully Added!", "You can now use this card for future transactions.", [{ onPress: () => navigation.navigate('Map') }])
+      Alert.alert("Card Successfully Added!", "You can now use this card for future transactions.")// [{ onPress: () => navigation.navigate('Map') }]
+      return
     }
 
-    if (isRented && cardDetails?.complete) {
+    if (route.params?.rent && cardDetails?.complete) {
       setIsCard(true)
-      rentBicycle(userInfo.id, rentedBikeId)
-      setIsRented(true)
-      navigation.navigate('Map')
+      Alert.alert('Card Successfully Added!', null, [{ onPress: () => toggleScanner() }])
+      return
     }
 
     if (route.params?.isScanned && cardDetails?.complete) {
@@ -106,7 +106,7 @@ const CardInformation = ({ navigation, route }) => {
         <CardForm
           style={styles.cardForm}
           cardStyle={{ borderRadius: 5, fontFamily: 'Roboto-Regular' }}
-          // postalCodeEnabled={false}
+          postalCodeEnabled={false}
           onFormComplete={(details) => setCardDetails(details)}
         />
 

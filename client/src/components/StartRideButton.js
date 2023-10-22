@@ -47,9 +47,8 @@ const StartRideButton = ({ navigation, bikeId }) => {
 
   const animationActionComplete = () => {
     if (!isCard) {
-      setIsRented(true)
       setRentedBikeId(bikeId)
-      navigation.navigate('Payment')
+      navigation.navigate('Payment', { rent: true })
     }
     if (_value === 1 && isCard) {
       setRentedBikeId(bikeId)

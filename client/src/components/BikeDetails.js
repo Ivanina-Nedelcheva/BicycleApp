@@ -13,7 +13,7 @@ import { useReservation } from '../context/ReservationContext';
 import { useTimer } from '../context/ReservationTimerContext';
 
 const BikeDetails = ({ bike, bottomSheetRef, navigation, stationName }) => {
-  const { isReserved, setIsReserved, reservedBikeId, setReservedBikeId } = useReservation()
+  const { isReserved, setIsReserved, reservedBikeId, setReservedBikeId, bikeStationName, setBikeStationName } = useReservation()
   const [prices, setPrices] = useState({})
   const { startTimer, remainingTime } = useTimer();
   const { userRole } = useAuth()
@@ -24,6 +24,7 @@ const BikeDetails = ({ bike, bottomSheetRef, navigation, stationName }) => {
   function handleReserveBike() {
     changeBicycleState(bike.id, 'RESERVED')
     setIsReserved(true);
+    setBikeStationName(stationName)
     setReservedBikeId(bike.id)
     startTimer(15 * 60 * 1000)
   }
@@ -38,6 +39,7 @@ const BikeDetails = ({ bike, bottomSheetRef, navigation, stationName }) => {
     if (!isReserved) return
     setIsReserved(false)
     setReservedBikeId(null)
+    setBikeStationName(null)
     changeBicycleState(reservedBikeId, 'FREE')
   }
 
@@ -82,7 +84,7 @@ const BikeDetails = ({ bike, bottomSheetRef, navigation, stationName }) => {
           <View style={styles.details}>
             {isReserved && <View style={styles.bikeAttributes}>
               <Text style={styles.attribute}>Station: </Text>
-              <Text style={styles.attribute}>{stationName}</Text>
+              <Text style={styles.attribute}>{bikeStationName}</Text>
             </View>}
 
             <View style={styles.bikeAttributes}>

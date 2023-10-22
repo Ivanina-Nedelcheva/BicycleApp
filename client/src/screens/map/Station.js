@@ -23,7 +23,7 @@ const Station = ({ route, navigation }) => {
   const bottomSheetRef = useRef(null)
 
   const { userRole, userInfo } = useAuth()
-  const { isRented, setIsRented } = useRent()
+  const { isRented, setIsRented, setRentedBikeId } = useRent()
   const { isReserved } = useReservation()
 
   const getData = async () => {
@@ -109,6 +109,7 @@ const Station = ({ route, navigation }) => {
   async function handleReturnBicycle() {
     const res = await returnBicycle(userInfo.id, station.id)
     openRecord(res)
+    setRentedBikeId(null)
   }
 
   async function toggleStationState() {
