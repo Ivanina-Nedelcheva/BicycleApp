@@ -1,8 +1,8 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
-export const TimerContext = createContext();
+export const ReservationTimerContext = createContext();
 
-export const TimerProvider = ({ children }) => {
+export const ReservationTimerProvider = ({ children }) => {
   const [endTime, setEndTime] = useState(null);
   const [remainingTime, setRemainingTime] = useState(null);
 
@@ -36,16 +36,16 @@ export const TimerProvider = ({ children }) => {
   };
 
   return (
-    <TimerContext.Provider value={contextValue}>
+    <ReservationTimerContext.Provider value={contextValue}>
       {children}
-    </TimerContext.Provider>
+    </ReservationTimerContext.Provider>
   );
 };
 
 export const useTimer = () => {
-  const context = useContext(TimerContext);
+  const context = useContext(ReservationTimerContext);
   if (!context) {
-    throw new Error('useTimer must be used within a TimerProvider');
+    throw new Error('useTimer must be used within a ReservationTimerProvider');
   }
   return context;
 };

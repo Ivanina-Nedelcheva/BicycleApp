@@ -1,21 +1,24 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { Text, View, StyleSheet, StatusBar, Button, Modal, TextInput, Alert } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { Text, View, StyleSheet, StatusBar, Modal, TextInput } from 'react-native';
 import { Camera } from 'expo-camera';
 import { colors } from '../../styles/styles';
 import CustomButton from './CustomButton';
 import { useCard } from '../context/CardContext';
 import { rentBicycle } from '../api/users';
-import { AuthContext } from '../context/AuthContext';
+import { useAuth } from '../context/AuthContext';
+import { useRent } from '../context/RentContext';
 
-const Scanner = ({ isOpen, onToggle, navigation, bikeId }) => {
+const Scanner = ({ isOpen, onToggle, navigation }) => {
   const [hasPermission, setHasPermission] = useState(null);
-  const [scanned, setScanned] = useState(false);
+  const [isScanned, setIsScanned] = useState(false);
   const [isFlashlightOn, setIsFlashlightOn] = useState(false);
   const [isInputVisible, setInputVisible] = useState(false);
   const [vehicleCode, setVehicleCode] = useState('');
 
-  const { card } = useCard();
-  const { userInfo } = useContext(AuthContext)
+  const { isCard } = useCard();
+  const { setIsRented, rentedBikeId, setRentedBikeId } = useRent()
+  const { userInfo } = useAuth()
+
 
   useEffect(() => {
     const getBarCodeScannerPermissions = async () => {
@@ -32,19 +35,21 @@ const Scanner = ({ isOpen, onToggle, navigation, bikeId }) => {
   }
 
   const handleBarCodeScanned = async ({ type, data }) => {
-    setScanned(true);
-    if (card) {
+    setIsScanned(true);
+    if (isCard) {
       try {
-        const res = await rentBicycle(userInfo.id, bikeId || getRandomNumber())
+        rentBicycle(userInfo.id, rentedBikeId || setRentedBikeId(getRandomNumber()))
         onToggle(false);
-        navigation.navigate('Map', { rented: true, bikeId })
+        setIsRented(true)
+        navigation.navigate('Map')
       } catch (error) {
         console.log(error);
       }
 
     } else {
       onToggle(false);
-      navigation.navigate('Payment', { scanned: true })
+      setRentedBikeId(getRandomNumber())
+      navigation.navigate('Payment', { isScanned: true })
     }
   };
 
@@ -53,7 +58,6 @@ const Scanner = ({ isOpen, onToggle, navigation, bikeId }) => {
   };
 
   const handleManualCodeSubmit = () => {
-    // Handle the action when the user submits a manual code
     alert(`Manually inserted code: ${vehicleCode}`);
   };
 
@@ -63,7 +67,7 @@ const Scanner = ({ isOpen, onToggle, navigation, bikeId }) => {
 
   useEffect(() => {
     if (isOpen) {
-      setScanned(false);
+      setIsScanned(false);
     }
   }, [isOpen]);
 
@@ -117,14 +121,14 @@ const Scanner = ({ isOpen, onToggle, navigation, bikeId }) => {
           <View style={styles.actionWrapper}>
             <View style={styles.scannerContainer}>
               <Camera
-                onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+                onBarCodeScanned={isScanned ? undefined : handleBarCodeScanned}
                 style={styles.scanner}
                 autoFocus={Camera.Constants.AutoFocus.on}
                 flashMode={isFlashlightOn ? Camera.Constants.FlashMode.torch : Camera.Constants.FlashMode.off}
               />
             </View>
-            {/* {scanned && (
-              <Button title={'Tap to Scan Again'} onPress={() => setScanned(false)} />
+            {/* {isScanned && (
+              <Button title={'Tap to Scan Again'} onPress={() => setIsScanned(false)} />
             )} */}
 
             <View style={styles.buttonsContainer}>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { StyleSheet, View, TextInput, Text, Alert } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import CustomButton from '../../components/CustomButton';
@@ -9,6 +9,8 @@ import { addStation } from '../../api/stations';
 
 
 const AddStation = ({ navigation }) => {
+  const inputNameRef = useRef()
+
   const validationSchema = Yup.object().shape({
     longitude: Yup.string().required('Longitude is required'),
     latitude: Yup.string().required('Latitude is required'),
@@ -19,6 +21,10 @@ const AddStation = ({ navigation }) => {
     addStation(values)
     Alert.alert('Тhe station has been added', null, [{ onPress: () => navigation.navigate('Map') }])
   };
+
+  useEffect(() => {
+    inputNameRef.current.focus()
+  }, [])
 
   return (
     <View style={styles.container}>
@@ -31,6 +37,7 @@ const AddStation = ({ navigation }) => {
           <View style={styles.form}>
             <View>
               <TextInput
+                ref={inputNameRef}
                 value={values.stationName}
                 onChangeText={handleChange('stationName')}
                 placeholder="Station name"
@@ -74,13 +81,11 @@ const AddStation = ({ navigation }) => {
             {errors.latitude && <Text style={styles.errorMessage}>{errors.latitude}</Text>}
 
             <CustomButton
-              icon="plus"
-              color="white"
-              iconColor={isValid ? 'black' : colors.disabled}
-              magicNumber={0.13}
+              title="Add"
+              color={colors.bleuDeFrance}
               onPress={() => handleSubmit(values)}
+              magicNumber={0.8}
               disabled={!dirty || !isValid}
-              style={{ borderWidth: 1, borderColor: isValid ? 'black' : colors.disabled, marginTop: 20 }}
             />
           </View>
         )}
@@ -93,6 +98,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
+    justifyContent: 'center',
     paddingVertical: 40,
     backgroundColor: colors.seasalt
   },

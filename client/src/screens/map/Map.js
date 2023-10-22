@@ -11,6 +11,7 @@ import { colors } from '../../../styles/styles'
 import { getStations } from '../../api/stations';
 import RideProgress from '../../components/RideProgress';
 import { useAuth } from '../../context/AuthContext';
+import { useRent } from '../../context/RentContext';
 
 const Map = ({ route, navigation }) => {
 	const [region, setRegion] = useState({})
@@ -20,6 +21,7 @@ const Map = ({ route, navigation }) => {
 	const [stations, setStations] = useState([])
 
 	const { userRole } = useAuth()
+	const { isRented } = useRent()
 
 	const hubsRef = useRef();
 	const rideRef = useRef();
@@ -44,14 +46,14 @@ const Map = ({ route, navigation }) => {
 
 	useEffect(() => {
 		if (route.params?.center) centerCamera()
-		if (route.params?.rented) Alert.alert('Ride started!', null, [{
+		if (isRented) Alert.alert('Ride started!', null, [{
 			onPress: () => {
 				rideRef.current.presentBottomSheet()
 				centerCamera()
 			}
 		}])
 		if (route.params?.openScanner) setScannerOpen(true)
-	}, [route.params])
+	}, [route.params, isRented])
 
 	useFocusEffect(
 		useCallback(() => {
@@ -165,7 +167,7 @@ const Map = ({ route, navigation }) => {
 				))}
 			</MapView>
 
-			<Scanner isOpen={isScannerOpen} onToggle={setScannerOpen} navigation={navigation} bikeId={route.params?.bikeId} />
+			<Scanner isOpen={isScannerOpen} onToggle={setScannerOpen} navigation={navigation} />
 
 			<View style={styles.uppperBtnsWrapper}>
 				<CustomButton
@@ -185,7 +187,7 @@ const Map = ({ route, navigation }) => {
 			</View>
 
 			<View style={styles.bottomBtnsWrapper}>
-				{route.params?.rented &&
+				{isRented &&
 					<CustomButton
 						icon="bike-fast"
 						color="white"
@@ -194,7 +196,7 @@ const Map = ({ route, navigation }) => {
 					/>
 				}
 
-				{!route.params?.rented && currentUserPosition &&
+				{!isRented && currentUserPosition &&
 					<CustomButton
 						icon="hubspot"
 						color="white"
@@ -203,7 +205,7 @@ const Map = ({ route, navigation }) => {
 					/>
 				}
 
-				{!route.params?.rented && userRole === "ROLE_ORDINARY_USER" &&
+				{!isRented && userRole === "ROLE_ORDINARY_USER" &&
 					<CustomButton
 						icon="qrcode-scan"
 						color="white"
@@ -213,8 +215,8 @@ const Map = ({ route, navigation }) => {
 				}
 			</View>
 
-			{route.params ? (
-				<RideProgress ref={rideRef} bikeId={route.params?.bikeId}></RideProgress>
+			{isRented ? (
+				<RideProgress ref={rideRef}></RideProgress>
 			) : (
 				<NearestHubs userPosition={currentUserPosition} ref={hubsRef} stations={stations} onSelectStation={locateStation} />
 			)}

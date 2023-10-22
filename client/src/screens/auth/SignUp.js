@@ -13,7 +13,6 @@ import { AuthContext } from '../../context/AuthContext';
 const SignUp = ({ navigation }) => {
   const { register } = useContext(AuthContext)
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [termsAccepted, setTermsAccepted] = useState(false);
   const [privacyAccepted, setPrivacyAccepted] = useState(false);
   const [datePickerVisible, setDatePickerVisible] = useState(false);
   const [dateOfBirth, setDateOfBirth] = useState(new Date())
@@ -57,7 +56,7 @@ const SignUp = ({ navigation }) => {
     <ScrollView contentContainerStyle={styles.scroll}>
       <View style={styles.container}>
         <Formik
-          initialValues={{ firstName: 'Pom', lastName: 'Pom', phoneNumber: '0888555299', email: 'asd@gmail.com', password: 'Hasmukar123!', confirmPassword: 'Hasmukar123!', dateOfBirth: '' }}
+          initialValues={{ firstName: '', lastName: '', phoneNumber: '', email: '', password: '', confirmPassword: '', dateOfBirth: '' }}
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
           initialErrors={true}
@@ -194,22 +193,6 @@ const SignUp = ({ navigation }) => {
                     <MaterialCommunityIcons name="chevron-right" size={24} color="black" />
                   </View>
                 </TouchableWithoutFeedback>
-
-                {/* <View style={styles.checkboxContainer}>
-                  <Checkbox
-                    value={termsAccepted}
-                    onValueChange={() => setTermsAccepted(!termsAccepted)}
-                    color={termsAccepted ? colors.primary : undefined}
-                  />
-                  <Text style={styles.checkboxLabel}>I accept the terms and conditions</Text>
-                </View>
-
-                <TouchableWithoutFeedback onPress={() => navigation.navigate('PrivacyPolicy')}>
-                  <View style={styles.linkWrapper}>
-                    <Text style={styles.linkText}>Read Privacy Policy</Text>
-                    <MaterialCommunityIcons name="chevron-right" size={24} color="black" />
-                  </View>
-                </TouchableWithoutFeedback> */}
 
                 <View style={styles.checkboxContainer}>
                   <Checkbox

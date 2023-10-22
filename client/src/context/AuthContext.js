@@ -86,7 +86,7 @@ export const AuthProvider = ({ children }) => {
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error('useTimer must be used within a TimerProvider');
+    throw new Error('useAuth must be used within a AuthProvider');
   }
   return context;
 };

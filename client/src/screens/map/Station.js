@@ -1,26 +1,30 @@
-import React, { useRef, useState, useEffect, useContext } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableHighlight, Alert, ActivityIndicator } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import BikeDetails from '../../components/BikeDetails';
 import RideReceipt from '../../components/RideReceipt';
 import { colors } from '../../../styles/styles';
-import { AuthContext } from '../../context/AuthContext';
+import { useAuth } from '../../context/AuthContext';
 import CustomButton from '../../components/CustomButton';
 import { newBicycle } from '../../api/bicycles';
 import { getUserDetails, returnBicycle } from '../../api/users';
 import { activateStation, deactivateStation, getStation } from '../../api/stations';
+import { useRent } from '../../context/RentContext';
+import { useReservation } from '../../context/ReservationContext';
 
 const Station = ({ route, navigation }) => {
   const { stationId } = route.params
   const [station, setStation] = useState(null)
   const [selectedBike, setSelectedBike] = useState({})
   const [selectedRideRecord, setSelectedRideRide] = useState([]);
-  const [isRented, setIsRented] = useState(false)
   const [isActiveStation, setIsActiveStation] = useState(null)
   const [modalVisible, setModalVisible] = useState(false);
   const bottomSheetRef = useRef(null)
-  const { userRole, userInfo } = useContext(AuthContext)
+
+  const { userRole, userInfo } = useAuth()
+  const { isRented, setIsRented } = useRent()
+  const { isReserved } = useReservation()
 
   const getData = async () => {
     const station = await getStation(stationId)
@@ -32,10 +36,11 @@ const Station = ({ route, navigation }) => {
     getData()
 
     return () => {
+      if (isReserved) return
       setStation(null)
       setIsActiveStation(null)
     }
-  }, [stationId])
+  }, [stationId, isRented, isFocused])
 
   const openRecord = (rideRecord) => {
     setSelectedRideRide(rideRecord);
@@ -53,6 +58,10 @@ const Station = ({ route, navigation }) => {
   const selectBike = (bike) => {
     if (isRented) {
       Alert.alert("Sorry, only one bicycle rental allowed per user at a time.")
+      return
+    }
+    if (isReserved) {
+      bottomSheetRef.current?.present();
       return
     }
     setSelectedBike(bike)

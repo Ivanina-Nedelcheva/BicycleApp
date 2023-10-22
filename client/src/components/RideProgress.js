@@ -2,12 +2,15 @@ import React, { useRef, useState, useMemo, useEffect, useImperativeHandle, forwa
 import { View, Text, StyleSheet } from 'react-native';
 import { BottomSheetModal, BottomSheetModalProvider, } from '@gorhom/bottom-sheet';
 import { colors } from '../../styles/styles'
+import { useRent } from '../context/RentContext';
 
-const RideProgress = forwardRef(({ bikeId }, ref) => {
+const RideProgress = forwardRef((props, ref) => {
   const bottomSheetRef = useRef(null);
   const [seconds, setSeconds] = useState(0);
   const [isActive, setIsActive] = useState(false);
   const timeoutId = useRef(null)
+  const { rentedBikeId } = useRent()
+
 
   useImperativeHandle(ref, () => ({
     presentBottomSheet() {
@@ -86,7 +89,7 @@ const RideProgress = forwardRef(({ bikeId }, ref) => {
         <View style={styles.details}>
           <View style={styles.rideInfo}>
             <Text style={styles.attribute}>Bike ID:</Text>
-            <Text style={styles.attribute}>{bikeId}</Text>
+            <Text style={styles.attribute}>{rentedBikeId}</Text>
           </View>
 
           <View style={styles.rideInfo}>

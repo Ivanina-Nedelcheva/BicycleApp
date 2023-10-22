@@ -5,80 +5,91 @@ import { colors } from '../../styles/styles'
 import CustomButton from './CustomButton'
 import Scanner from './Scanner';
 import { useCard } from '../context/CardContext'
+import { useRent } from '../context/RentContext';
+import { rentBicycle } from '../api/users';
+import { useAuth } from '../context/AuthContext';
 
 const CardInformation = ({ navigation, route }) => {
-  const { card, setCard } = useCard()
+  const { isCard, setIsCard } = useCard()
+  const { isRented, setIsRented, rentedBikeId } = useRent()
+  const { userInfo } = useAuth()
   const [isScannerOpen, setScannerOpen] = useState(false);
   const [cardDetails, setCardDetails] = useState();
   const [loading, setLoading] = useState(false);
-
 
   const toggleScanner = () => {
     setScannerOpen(!isScannerOpen);
   };
 
-  // function addCardInfo() {
-  //   if (!route.params) {
-  //     setCard(true)
-  //     Alert.alert('Success!', null, [{ onPress: () => toggleScanner() }])
-  //   }
-
-  //   if (route.params?.rent && !card) {
-  //     setCard(true)
-  //     Alert.alert('Success!', null, [{ onPress: () => toggleScanner() }])
-  //   }
-
-  //   if (route.params?.scanned) {
-  //     setCard(true)
-  //     Alert.alert('Ride Started!', null, [{ onPress: () => navigation.navigate('Map', { center: true }) }])
-  //   }
-  // }
-
-  async function fetchPaymentIntentClientSecret() {
-    const response = await fetch(`${API_URL}/create-payment-intent`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      }
-    })
-
-    const { clientSecret } = await response.json()
-    return clientSecret
-  }
-
-  async function addCardInfo() {
-    console.log(cardDetails);
-    if (!cardDetails?.complete) {
-      Alert.alert('Please enter complete information')
+  function addCardInfo() {
+    if (isCard && cardDetails?.complete) {
+      Alert.alert("Card Successfully Updated!")
       return
     }
 
-    try {
-      const { clientSecret, error } = await fetchPaymentIntentClientSecret()
-      if (error) {
-        console.log("Unable to process payment");
-      } else {
-        const { paymentIntent, error } = await confirmPayment(clientSecret, {
-          type: "Card",
-          // billingDetails,
-        })
-
-        setLoading(true)
-
-        if (error) {
-          Alert.alert(`Payment Confirmation Error ${error.message}`)
-        } else if (paymentIntent) {
-          Alert.alert("Payment Successful")
-          console.log("Payment Successful", paymentIntent);
-        }
-      }
-
-    } catch (err) {
-      console.log(err);
+    if (!cardDetails?.complete) {
+      Alert.alert('Please enter complete information!')
+      return
     }
 
-    setLoading(false)
+    if (!route.params && cardDetails?.complete) {
+      setIsCard(true)
+      Alert.alert("Card Successfully Added!", "You can now use this card for future transactions.", [{ onPress: () => navigation.navigate('Map') }])
+    }
+
+    if (route.params?.isScanned && cardDetails?.complete) {
+      setIsCard(true)
+      rentBicycle(userInfo.id, rentedBikeId)
+      setIsRented(true)
+      navigation.navigate('Map')
+    }
   }
+
+  // async function fetchPaymentIntentClientSecret() {
+  //   const response = await fetch(`${API_URL}/create-payment-intent`, {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     }
+  //   })
+
+  //   const { clientSecret } = await response.json()
+  //   return clientSecret
+  // }
+
+  // async function addCardInfo() {
+  //   console.log(cardDetails);
+  //   if (!cardDetails?.complete) {
+  //     Alert.alert('Please enter complete information')
+  //     return
+  //   }
+
+  //   try {
+  //     const { clientSecret, error } = await fetchPaymentIntentClientSecret()
+  //     if (error) {
+  //       console.log("Unable to process payment");
+  //     } else {
+  //       const { paymentIntent, error } = await confirmPayment(clientSecret, {
+  //         type: "Card",
+  //         // billingDetails,
+  //       })
+
+  //       setLoading(true)
+
+  //       if (error) {
+  //         Alert.alert(`Payment Confirmation Error ${error.message}`)
+  //       } else if (paymentIntent) {
+  //         Alert.alert("Payment Successful")
+  //         console.log("Payment Successful", paymentIntent);
+  //       }
+  //     }
+
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+
+  //   setLoading(false)
+  // }
 
   return (
     <StripeProvider
@@ -88,7 +99,7 @@ const CardInformation = ({ navigation, route }) => {
         <CardForm
           style={styles.cardForm}
           cardStyle={{ borderRadius: 5, fontFamily: 'Roboto-Regular' }}
-          postalCodeEnabled={false}
+          // postalCodeEnabled={false}
           onFormComplete={(details) => setCardDetails(details)}
         />
 
@@ -101,7 +112,7 @@ const CardInformation = ({ navigation, route }) => {
           disabled={loading}
         />
 
-        <Scanner isOpen={isScannerOpen} onToggle={setScannerOpen} navigation={navigation} bikeId={route.params?.bikeId} />
+        <Scanner isOpen={isScannerOpen} onToggle={setScannerOpen} navigation={navigation} />
       </View>
     </StripeProvider>
   );
@@ -127,7 +138,7 @@ const styles = StyleSheet.create({
     maxWidth: '100%',
   },
   cardForm: {
-    height: 200,
+    height: 260,
     marginTop: 40,
   },
   btnContainer: {

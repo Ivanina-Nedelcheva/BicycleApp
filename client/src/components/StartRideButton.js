@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { useCard } from "../context/CardContext";
 import { colors } from "../../styles/styles";
+import { useRent } from "../context/RentContext";
 
 const ACTION_TIMER = 500;
 const COLORS = [colors.columbiaBlue, colors.bleuDeFrance];
@@ -18,7 +19,9 @@ const StartRideButton = ({ navigation, bikeId }) => {
   const [buttonHeight, setButtonHeight] = useState(0);
   const pressAction = useRef(new Animated.Value(0)).current;
   let _value = 0;
-  const { card } = useCard()
+  const { isCard } = useCard()
+
+  const { setIsRented, setRentedBikeId } = useRent()
 
   pressAction.addListener((v) => (_value = v.value));
 
@@ -43,11 +46,14 @@ const StartRideButton = ({ navigation, bikeId }) => {
   };
 
   const animationActionComplete = () => {
-    if (!card) {
-      navigation.navigate('Payment', { rent: true, bikeId })
+    if (!isCard) {
+      setIsRented(true)
+      setRentedBikeId(bikeId)
+      navigation.navigate('Payment')
     }
-    if (_value === 1 && card) {
-      navigation.navigate('Map', { openScanner: true, bikeId })
+    if (_value === 1 && isCard) {
+      setRentedBikeId(bikeId)
+      navigation.navigate('Map', { openScanner: true })
     }
   };
 

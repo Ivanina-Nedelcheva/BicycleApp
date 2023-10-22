@@ -3,10 +3,10 @@ import React, { createContext, useContext, useState } from 'react';
 const CardContext = createContext();
 
 export const CardProvider = ({ children }) => {
-  const [card, setCard] = useState(true);
+  const [isCard, setIsCard] = useState(false);
 
   return (
-    <CardContext.Provider value={{ card, setCard }}>
+    <CardContext.Provider value={{ isCard, setIsCard }}>
       {children}
     </CardContext.Provider>
   );

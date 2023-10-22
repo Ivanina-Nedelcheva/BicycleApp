@@ -1,8 +1,7 @@
 import React, { useRef, useState, useMemo, useEffect, useImperativeHandle, forwardRef } from 'react';
-import { View, Text, FlatList, TouchableHighlight, ActivityIndicator, StyleSheet } from 'react-native';
+import { View, Text, TouchableHighlight, ActivityIndicator, StyleSheet } from 'react-native';
 import { BottomSheetModal, BottomSheetModalProvider, BottomSheetFlatList } from '@gorhom/bottom-sheet';
 import { useFocusEffect } from '@react-navigation/native';
-
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import * as geolib from 'geolib';
 import { colors } from '../../styles/styles'
@@ -10,11 +9,9 @@ import { getStations } from '../api/stations';
 
 const NearestHubs = forwardRef(({ userPosition, onSelectStation }, ref) => {
   const bottomSheetRef = useRef(null);
-  const snapPoints = useMemo(() => ['35%', '55%'], []);
+  const snapPoints = useMemo(() => ['35%', '95%'], []);
   const [stations, setStations] = useState([])
   const [orderedStations, setOrderedStations] = useState([])
-
-  // console.log(orderedStations);
 
   useImperativeHandle(ref, () => ({
     presentBottomSheet() {

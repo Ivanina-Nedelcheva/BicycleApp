@@ -6,15 +6,15 @@ import StartRideButton from './StartRideButton'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { changeBicycleState } from '../api/bicycles';
 import { getPrices } from '../api/payment';
-import { useTimer } from '../context/TimerContext';
 import { colors } from '../../styles/styles'
 import * as Notifications from 'expo-notifications';
 import { useAuth } from '../context/AuthContext';
+import { useReservation } from '../context/ReservationContext';
+import { useTimer } from '../context/ReservationTimerContext';
 
 const BikeDetails = ({ bike, bottomSheetRef, navigation, stationName }) => {
-  const [reservation, setReservation] = useState(false)
+  const { isReserved, setIsReserved, reservedBikeId, setReservedBikeId } = useReservation()
   const [prices, setPrices] = useState({})
-  const [reservedBicycleId, setReservedBicycleId] = useState(null)
   const { startTimer, remainingTime } = useTimer();
   const { userRole } = useAuth()
 
@@ -23,8 +23,8 @@ const BikeDetails = ({ bike, bottomSheetRef, navigation, stationName }) => {
 
   function handleReserveBike() {
     changeBicycleState(bike.id, 'RESERVED')
-    setReservation(true);
-    setReservedBicycleId(bike.id)
+    setIsReserved(true);
+    setReservedBikeId(bike.id)
     startTimer(15 * 60 * 1000)
   }
 
@@ -35,19 +35,20 @@ const BikeDetails = ({ bike, bottomSheetRef, navigation, stationName }) => {
   };
 
   function cancelReservation() {
-    setReservation(false)
-    setReservedBicycleId(null)
-    changeBicycleState(reservedBicycleId, 'FREE')
+    if (!isReserved) return
+    setIsReserved(false)
+    setReservedBikeId(null)
+    changeBicycleState(reservedBikeId, 'FREE')
   }
 
   function handleReportIssue() {
-    console.log(bike);
     navigation.navigate('Report Issue', { id: bike.id })
   }
 
   useEffect(() => {
-    if (!reservation) return
-    if (Math.floor((remainingTime / 1000) % 60) == 0) {
+    if (!isReserved) return
+
+    if (!remainingTime) {
       cancelReservation()
 
       Notifications.scheduleNotificationAsync({
@@ -79,16 +80,16 @@ const BikeDetails = ({ bike, bottomSheetRef, navigation, stationName }) => {
           <Text style={styles.heading}>Bicycle Details</Text>
 
           <View style={styles.details}>
-            {reservation && <View style={styles.bikeAttributes}>
+            {isReserved && <View style={styles.bikeAttributes}>
               <Text style={styles.attribute}>Station: </Text>
               <Text style={styles.attribute}>{stationName}</Text>
             </View>}
 
             <View style={styles.bikeAttributes}>
-              <MaterialCommunityIcons name={reservation ? 'barcode-off' : 'barcode'} size={24} color="black" />
+              <MaterialCommunityIcons name={isReserved ? 'barcode-off' : 'barcode'} size={24} color="black" />
 
-              {/* <Text style={styles.attribute}>{reservation ? "Reserved Bicycle ID: " : "Bike ID:"}</Text> */}
-              <Text style={styles.attribute}>{reservedBicycleId || bike.id}</Text>
+              {/* <Text style={styles.attribute}>{isReserved ? "Reserved Bicycle ID: " : "Bike ID:"}</Text> */}
+              <Text style={styles.attribute}>{reservedBikeId || bike.id}</Text>
             </View>
 
             <View style={styles.bikeAttributes}>
@@ -105,10 +106,10 @@ const BikeDetails = ({ bike, bottomSheetRef, navigation, stationName }) => {
 
             <View style={styles.bikeAttributes}>
               <MaterialCommunityIcons name="state-machine" size={24} color="black" />
-              <Text style={styles.attribute}>{bike.state}</Text>
+              <Text style={styles.attribute}>{isReserved ? 'RESERVED' : bike.state}</Text>
             </View>
 
-            {reservation && <View style={styles.bikeAttributes}>
+            {isReserved && <View style={styles.bikeAttributes}>
               <MaterialCommunityIcons name="clock-outline" size={24} color="black" />
               <Text style={styles.text}>Remaining time: </Text>
               <Text style={styles.attribute}>{formatTime(remainingTime)}</Text>
@@ -126,7 +127,7 @@ const BikeDetails = ({ bike, bottomSheetRef, navigation, stationName }) => {
               />
             }
 
-            {reservation &&
+            {isReserved &&
               <CustomButton
                 title="Cancel"
                 icon="cancel"
@@ -146,7 +147,7 @@ const BikeDetails = ({ bike, bottomSheetRef, navigation, stationName }) => {
               <Text style={styles.subMsg}>Hold to start ride</Text>
 
               <View style={styles.bottomBtns}>
-                {!reservation ? (
+                {!isReserved ? (
                   <CustomButton
                     title="Reserve"
                     color={colors.bleuDeFrance}
@@ -157,7 +158,12 @@ const BikeDetails = ({ bike, bottomSheetRef, navigation, stationName }) => {
                   <StartRideButton navigation={navigation} bikeId={bike.id} />
                 )}
 
-                {!reservation && <StartRideButton navigation={navigation} bikeId={bike.id} />}
+                {!isReserved &&
+                  <StartRideButton
+                    navigation={navigation}
+                    bikeId={bike.id}
+                  />
+                }
               </View>
             </View>}
         </View>

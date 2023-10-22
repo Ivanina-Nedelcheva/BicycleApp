@@ -14,8 +14,6 @@ const RideReceipt = ({ rideRecord, onClose, formatDate }) => {
     })()
   }, [])
 
-  console.log(rideRecord);
-
   return (
     <Modal visible={true} animationType="slide">
       <View style={styles.modalContainer}>
@@ -42,7 +40,6 @@ const RideReceipt = ({ rideRecord, onClose, formatDate }) => {
         </View>
 
         <View style={styles.total}>
-          {/* <DetailRow label="Total:" value={`${(rideRecord?.price).toFixed(2)} lv`} /> */}
           <DetailRow label="Total:" value={`${(rideRecord?.minutes * prices.minutePrice + prices.unlockPrice).toFixed(2)} lv`} />
         </View>
       </View>
