@@ -32,9 +32,16 @@ const CardInformation = ({ navigation, route }) => {
       return
     }
 
-    if (!route.params && cardDetails?.complete) {
+    if (!route.params && !isRented && cardDetails?.complete) {
       setIsCard(true)
       Alert.alert("Card Successfully Added!", "You can now use this card for future transactions.", [{ onPress: () => navigation.navigate('Map') }])
+    }
+
+    if (isRented && cardDetails?.complete) {
+      setIsCard(true)
+      rentBicycle(userInfo.id, rentedBikeId)
+      setIsRented(true)
+      navigation.navigate('Map')
     }
 
     if (route.params?.isScanned && cardDetails?.complete) {

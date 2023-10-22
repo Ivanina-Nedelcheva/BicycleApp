@@ -6,8 +6,8 @@ import { useReservation } from '../context/ReservationContext';
 
 const ReservationTimer = forwardRef((props, ref) => {
   const bottomSheetRef = useRef(null);
-
   const { reservedBikeId } = useReservation()
+
   useImperativeHandle(ref, () => ({
     presentBottomSheet() {
       bottomSheetRef.current.present();

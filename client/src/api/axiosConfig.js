@@ -1,6 +1,5 @@
 import axios from 'axios';
 
-const LAURL = "http://192.168.191.208:8080/app"
 const SOFIAURL = 'http://192.168.1.102:8080/app'
 
 export const setAuthToken = (token) => {

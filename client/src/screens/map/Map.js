@@ -12,6 +12,7 @@ import { getStations } from '../../api/stations';
 import RideProgress from '../../components/RideProgress';
 import { useAuth } from '../../context/AuthContext';
 import { useRent } from '../../context/RentContext';
+import { useCard } from '../../context/CardContext';
 
 const Map = ({ route, navigation }) => {
 	const [region, setRegion] = useState({})
@@ -22,6 +23,7 @@ const Map = ({ route, navigation }) => {
 
 	const { userRole } = useAuth()
 	const { isRented } = useRent()
+	const { isCard } = useCard()
 
 	const hubsRef = useRef();
 	const rideRef = useRef();
@@ -46,14 +48,14 @@ const Map = ({ route, navigation }) => {
 
 	useEffect(() => {
 		if (route.params?.center) centerCamera()
-		if (isRented) Alert.alert('Ride started!', null, [{
+		if (isRented && isCard) Alert.alert('Ride started!', null, [{
 			onPress: () => {
 				rideRef.current.presentBottomSheet()
 				centerCamera()
 			}
 		}])
 		if (route.params?.openScanner) setScannerOpen(true)
-	}, [route.params, isRented])
+	}, [route.params, isRented, isCard])
 
 	useFocusEffect(
 		useCallback(() => {
