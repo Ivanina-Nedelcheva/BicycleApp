@@ -52,7 +52,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManagerBean(), jwtTokenProvider, modelMapper);
         jwtAuthenticationFilter.setFilterProcessesUrl("/login");
         http
-                .cors().and().
+                .cors().configurationSource(corsConfigurationSource()).and().
                 csrf().disable().
                 sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().
                 authorizeRequests().antMatchers(PUBLIC_URLS).permitAll().and().

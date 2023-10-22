@@ -7,7 +7,10 @@ VALUES (1, 23.321, 42.698, 'Serdika'),
        (1, 23.313, 42.625, 'Vitosha'),
        (1, 23.314, 42.65, 'Krastova vada'),
        (1, 23.277, 42.656, 'Manastirski livadi'),
-       (1, 23.363, 42.673, 'Tsarigradsko Shose');
+       (1, 23.363, 42.673, 'Tsarigradsko Shose'),
+       (1, 23.397, 42.664, 'Drujba 1'),
+       (1, 23.310, 42.678, 'NDK'),
+       (1, 23.317, 42.710, 'Banishora');
 
 
 INSERT INTO `bicycleapp`.`bicycle` (`active_flag`, `battery_level`, `state`)
