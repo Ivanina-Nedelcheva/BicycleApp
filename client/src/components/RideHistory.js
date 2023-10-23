@@ -69,7 +69,7 @@ const RideHistory = ({ history }) => {
 
             <View style={styles.wrapper}>
               <MaterialCommunityIcons name="leaf" size={24} color={colors.darkgrey} />
-              <Text style={styles.text}>{rideRecord.distance * caloriesPerKm}</Text>
+              <Text style={styles.text}>{Math.round(rideRecord.distance * caloriesPerKm)}</Text>
               <Text style={styles.label}>Calories</Text>
             </View>
           </View>

@@ -11,7 +11,6 @@ const RideProgress = forwardRef((props, ref) => {
   const timeoutId = useRef(null)
   const { rentedBikeId } = useRent()
 
-
   useImperativeHandle(ref, () => ({
     presentBottomSheet() {
       bottomSheetRef.current.present();

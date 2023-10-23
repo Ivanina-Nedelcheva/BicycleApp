@@ -21,7 +21,7 @@ const StartRideButton = ({ navigation, bikeId }) => {
   let _value = 0;
   const { isCard } = useCard()
 
-  const { setIsRented, setRentedBikeId } = useRent()
+  const { setRentedBikeId } = useRent()
 
   pressAction.addListener((v) => (_value = v.value));
 

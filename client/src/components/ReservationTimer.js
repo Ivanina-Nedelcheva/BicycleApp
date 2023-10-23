@@ -1,4 +1,4 @@
-import React, { useRef, useState, useMemo, useEffect, useImperativeHandle, forwardRef } from 'react';
+import React, { useRef, useMemo, useImperativeHandle, forwardRef } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { BottomSheetModal, BottomSheetModalProvider, } from '@gorhom/bottom-sheet';
 import { colors } from '../../styles/styles'

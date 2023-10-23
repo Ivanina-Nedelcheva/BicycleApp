@@ -6,7 +6,6 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import CustomButton from '../../components/CustomButton';
 import { colors } from '../../../styles/styles'
 import { useAuth } from '../../context/AuthContext';
-import { useIsFocused } from '@react-navigation/native';
 
 const SignIn = ({ navigation }) => {
   const { login } = useAuth()

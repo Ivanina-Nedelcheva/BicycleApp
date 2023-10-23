@@ -19,7 +19,6 @@ const Scanner = ({ isOpen, onToggle, navigation }) => {
   const { setIsRented, rentedBikeId, setRentedBikeId } = useRent()
   const { userInfo } = useAuth()
 
-
   useEffect(() => {
     const getBarCodeScannerPermissions = async () => {
       const { status } = await Camera.requestCameraPermissionsAsync();
@@ -130,9 +129,6 @@ const Scanner = ({ isOpen, onToggle, navigation }) => {
                 flashMode={isFlashlightOn ? Camera.Constants.FlashMode.torch : Camera.Constants.FlashMode.off}
               />
             </View>
-            {/* {isScanned && (
-              <Button title={'Tap to Scan Again'} onPress={() => setIsScanned(false)} />
-            )} */}
 
             <View style={styles.buttonsContainer}>
               <CustomButton

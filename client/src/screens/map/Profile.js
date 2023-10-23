@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { StyleSheet, View, TextInput, Text, ScrollView, Alert } from 'react-native';
@@ -12,21 +12,19 @@ import { updateUser } from '../../api/users';
 const Profile = ({ navigation }) => {
   const { logout, userInfo, userRole } = useAuth()
 
-  console.log(userInfo);
   const validationSchema = Yup.object().shape({
-    // firstName: Yup.string().required('First name is required'),
-    // lastName: Yup.string().required('Last name is required'),
-    // phoneNumber: Yup.string().required('Phone number is required').matches(
-    //   /^(((\+|00)359[- ]?)|(0))(8[- ]?[789]([- ]?\d){7})$/gm,
-    //   "Plese enter valid phone number"
-    // ),
-    // email: Yup.string().email('Invalid email').required('Email is required'),
-    // password: Yup.string().min(8).required('Password is required').matches(
-    //   /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
-    //   "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"
-    // ),
-    // confirmPassword: Yup.string().required('Confirm password is required').min(8).oneOf([Yup.ref('password')], 'Your password do not match'),
-
+    firstName: Yup.string().required('First name is required'),
+    lastName: Yup.string().required('Last name is required'),
+    phoneNumber: Yup.string().required('Phone number is required').matches(
+      /^(((\+|00)359[- ]?)|(0))(8[- ]?[789]([- ]?\d){7})$/gm,
+      "Plese enter valid phone number"
+    ),
+    email: Yup.string().email('Invalid email').required('Email is required'),
+    password: Yup.string().min(8).required('Password is required').matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
+      "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"
+    ),
+    confirmPassword: Yup.string().required('Confirm password is required').min(8).oneOf([Yup.ref('password')], 'Your password do not match'),
   });
 
   const [modalVisible, setModalVisible] = useState(false);

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import { StyleSheet, View, Text, Modal, FlatList } from 'react-native';
 import CustomButton from '../components/CustomButton';
 import { colors } from '../../styles/styles'

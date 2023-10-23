@@ -5,7 +5,6 @@ const deactivateBicycleURI = 'bicycles/deactivateBicycle'
 const newBicycleURI = 'bicycles/newBicycle'
 const changeBicycleStateURI = 'bicycles/changeState'
 
-
 export async function activateBicycle(id) {
   try {
     const response = await API.post(activateBicycleURI, id);
@@ -31,7 +30,6 @@ export async function newBicycle(stationId) {
         stationId
       }
     });
-
     console.log('Response from the server:', response.data);
   } catch (error) {
     console.error('Error uploading data:', error);
