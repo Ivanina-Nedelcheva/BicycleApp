@@ -25,6 +25,7 @@ import java.time.Period;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -91,7 +92,6 @@ public class UserServiceImpl extends BaseService implements UserService {
     public UserDTO editUser(UserDTO input) {
         User foundUser = userRepository.findById(input.getId()).orElseThrow(() -> new UsernameNotFoundException("No user found!"));
         setUser(input, foundUser);
-        foundUser.setAge(foundUser.getAge());
         userRepository.save(foundUser);
         return modelMapper.map(foundUser, UserDTO.class);
     }
@@ -280,13 +280,25 @@ public class UserServiceImpl extends BaseService implements UserService {
     }
 
     private void setUser(UserDTO input, User foundUser) {
-        foundUser.setFirstName(input.getFirstName());
-        foundUser.setLastName(input.getLastName());
-        Integer age = Period.between(input.getDateOfBirth(), LocalDate.now()).getYears();
-        foundUser.setAge(age);
-        foundUser.setEmail(input.getEmail());
-        foundUser.setPhoneNumber(input.getPhoneNumber());
-        foundUser.setPassword(passwordEncoder.encode(input.getPassword()));
+        if (input.getFirstName() != null) {
+            foundUser.setFirstName(input.getFirstName());
+        }
+        if (input.getLastName() != null) {
+            foundUser.setLastName(input.getLastName());
+        }
+        if (input.getDateOfBirth() != null) {
+            Integer age = Period.between(input.getDateOfBirth(), LocalDate.now()).getYears();
+            foundUser.setAge(age);
+        }
+        if (input.getEmail() != null) {
+            foundUser.setEmail(input.getEmail());
+        }
+        if (input.getPhoneNumber() != null) {
+            foundUser.setPhoneNumber(input.getPhoneNumber());
+        }
+        if (!Objects.equals(input.getPassword(), "")) {
+            foundUser.setPassword(passwordEncoder.encode(input.getPassword()));
+        }
     }
 
     private UserDTO userToDTO(User user) {
