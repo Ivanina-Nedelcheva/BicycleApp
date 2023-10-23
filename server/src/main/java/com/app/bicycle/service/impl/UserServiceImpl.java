@@ -91,7 +91,8 @@ public class UserServiceImpl extends BaseService implements UserService {
     public UserDTO editUser(UserDTO input) {
         User foundUser = userRepository.findById(input.getId()).orElseThrow(() -> new UsernameNotFoundException("No user found!"));
         setUser(input, foundUser);
-
+        foundUser.setAge(foundUser.getAge());
+        userRepository.save(foundUser);
         return modelMapper.map(foundUser, UserDTO.class);
     }
 
