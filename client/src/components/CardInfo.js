@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Alert } from 'react-native';
-import { StripeProvider, CardForm, useConfirmPayment, confirmPayment } from '@stripe/stripe-react-native'
+import { StripeProvider, CardForm, confirmPayment } from '@stripe/stripe-react-native'
 import { colors } from '../../styles/styles'
 import CustomButton from './CustomButton'
 import Scanner from './Scanner';
@@ -52,51 +52,50 @@ const CardInformation = ({ navigation, route }) => {
     }
   }
 
-  // async function fetchPaymentIntentClientSecret() {
-  //   const response = await fetch(`${API_URL}/create-payment-intent`, {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     }
-  //   })
+  async function fetchPaymentIntentClientSecret() {
+    const response = await fetch(`${API_URL}/create-payment-intent`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      }
+    })
 
-  //   const { clientSecret } = await response.json()
-  //   return clientSecret
-  // }
+    const { clientSecret } = await response.json()
+    return clientSecret
+  }
 
-  // async function addCardInfo() {
-  //   console.log(cardDetails);
-  //   if (!cardDetails?.complete) {
-  //     Alert.alert('Please enter complete information')
-  //     return
-  //   }
+  async function addCard() {
+    console.log(cardDetails);
+    if (!cardDetails?.complete) {
+      Alert.alert('Please enter complete information')
+      return
+    }
 
-  //   try {
-  //     const { clientSecret, error } = await fetchPaymentIntentClientSecret()
-  //     if (error) {
-  //       console.log("Unable to process payment");
-  //     } else {
-  //       const { paymentIntent, error } = await confirmPayment(clientSecret, {
-  //         type: "Card",
-  //         // billingDetails,
-  //       })
+    try {
+      const { clientSecret, error } = await fetchPaymentIntentClientSecret()
+      if (error) {
+        console.log("Unable to process payment");
+      } else {
+        const { paymentIntent, error } = await confirmPayment(clientSecret, {
+          type: "Card",
+        })
 
-  //       setLoading(true)
+        setLoading(true)
 
-  //       if (error) {
-  //         Alert.alert(`Payment Confirmation Error ${error.message}`)
-  //       } else if (paymentIntent) {
-  //         Alert.alert("Payment Successful")
-  //         console.log("Payment Successful", paymentIntent);
-  //       }
-  //     }
+        if (error) {
+          Alert.alert(`Payment Confirmation Error ${error.message}`)
+        } else if (paymentIntent) {
+          Alert.alert("Payment Successful")
+          console.log("Payment Successful", paymentIntent);
+        }
+      }
 
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
+    } catch (err) {
+      console.log(err);
+    }
 
-  //   setLoading(false)
-  // }
+    setLoading(false)
+  }
 
   return (
     <StripeProvider
