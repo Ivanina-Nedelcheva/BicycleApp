@@ -154,7 +154,6 @@ const styles = StyleSheet.create({
     gap: 20
   },
   btn: {
-    marginTop: 20,
     alignSelf: 'center'
   },
 });

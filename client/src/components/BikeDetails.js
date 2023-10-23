@@ -157,13 +157,18 @@ const BikeDetails = ({ bike, bottomSheetRef, navigation, stationName }) => {
                     magicNumber={0.4}
                   />
                 ) : (
-                  <StartRideButton navigation={navigation} bikeId={bike.id} />
+                  <StartRideButton
+                    navigation={navigation}
+                    bikeId={bike.id}
+                    cancelReservation={cancelReservation}
+                  />
                 )}
 
                 {!isReserved &&
                   <StartRideButton
                     navigation={navigation}
                     bikeId={bike.id}
+                    cancelReservation={cancelReservation}
                   />
                 }
               </View>
