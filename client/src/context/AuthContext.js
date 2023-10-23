@@ -3,6 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { API, setAuthToken } from '../api/axiosConfig'
 import { addUser } from '../api/users'
 import jwtDecode from 'jwt-decode';
+import { Alert } from 'react-native';
 
 export const AuthContext = createContext()
 
@@ -10,7 +11,6 @@ export const AuthProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [userToken, setUserToken] = useState('')
   const [userInfo, setUserInfo] = useState(null)
-  const [errorLoginMessage, setErrorLoginMessage] = useState('')
   const [userRole, setUserRole] = useState(null)
 
   function register(userData) {
@@ -30,11 +30,9 @@ export const AuthProvider = ({ children }) => {
 
     } catch (error) {
       console.error(error)
-      let errorMessage = 'An error occurred while logging in.'
       if (error.response.status === 403) {
-        errorMessage = 'The username or password you entered is incorrect. Please double-check your credentials and try again.'
+        Alert.alert("The username or password you entered is incorrect.", "Please double-check your credentials and try again.")
       }
-      setErrorLoginMessage(errorMessage)
     }
   }
 
@@ -74,8 +72,6 @@ export const AuthProvider = ({ children }) => {
       isLoading,
       userToken,
       userInfo,
-      errorLoginMessage,
-      setErrorLoginMessage,
       userRole
     }}>
       {children}

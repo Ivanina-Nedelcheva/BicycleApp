@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const SOFIAURL = 'http://192.168.1.102:8080/app'
+const localIP = 'http://192.168.1.102:8080/app'
 
 export const setAuthToken = (token) => {
   API.defaults.headers.common['Authorization'] = `Bearer ${token}`;
@@ -11,7 +11,7 @@ export const setAuthToken = (token) => {
 };
 
 export const API = axios.create({
-  baseURL: SOFIAURL,
+  baseURL: localIP,
   headers: {
     'Content-Type': 'application/json',
   },

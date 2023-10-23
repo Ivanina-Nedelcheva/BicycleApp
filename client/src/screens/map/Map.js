@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { StyleSheet, Text, View, StatusBar, Image, Alert } from 'react-native';
+import { StyleSheet, Text, View, StatusBar, Image, Alert, ActivityIndicator } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
@@ -41,11 +41,6 @@ const Map = ({ route, navigation }) => {
 		left: 0,
 	}
 
-	async function handleGetStations() {
-		const data = await getStations();
-		setStations(data)
-	}
-
 	useEffect(() => {
 		if (route.params?.center) centerCamera()
 		if (isRented && isCard) Alert.alert('Ride started!', null, [{
@@ -57,9 +52,40 @@ const Map = ({ route, navigation }) => {
 		if (route.params?.openScanner) setScannerOpen(true)
 	}, [route.params, isRented, isCard])
 
+	const updateCurrentPosition = async () => {
+		let { status } = await Location.requestForegroundPermissionsAsync();
+		if (status !== 'granted') {
+			setErrorMsg('Permission to access location was denied')
+			return;
+		}
+
+		let location = await Location.getCurrentPositionAsync({});
+		return location
+	};
+
+	async function handleGetStations() {
+		const data = await getStations();
+		setStations(data)
+	}
+
+	async function getCurrentPosition() {
+		try {
+			const position = await updateCurrentPosition();
+			setCurrentUserPosition({
+				latitude: position.coords.latitude,
+				longitude: position.coords.longitude,
+				latitudeDelta: 0.03,
+				longitudeDelta: 0.04,
+			})
+		} catch (error) {
+			console.error('Error fetching data:', error);
+		}
+	}
+
 	useFocusEffect(
 		useCallback(() => {
 			handleGetStations()
+			getCurrentPosition()
 		}, [])
 	);
 
@@ -74,17 +100,6 @@ const Map = ({ route, navigation }) => {
 	const throttleSetCurrentRegion = throttle((newRegion) => {
 		setRegion(newRegion);
 	}, 100);
-
-	const updateCurrentPosition = async () => {
-		let { status } = await Location.requestForegroundPermissionsAsync();
-		if (status !== 'granted') {
-			setErrorMsg('Permission to access location was denied')
-			return;
-		}
-
-		let location = await Location.getCurrentPositionAsync({});
-		return location
-	};
 
 	const centerCamera = () => {
 		if (currentUserPosition) {
@@ -109,65 +124,47 @@ const Map = ({ route, navigation }) => {
 		setScannerOpen(!isScannerOpen);
 	};
 
-	useEffect(() => {
-		async function fetchDataAndProcess() {
-			try {
-				const position = await updateCurrentPosition();
-				setCurrentUserPosition({
-					latitude: position.coords.latitude,
-					longitude: position.coords.longitude,
-					latitudeDelta: 0.03,
-					longitudeDelta: 0.04,
-				})
-			} catch (error) {
-				console.error('Error fetching data:', error);
-			}
-		}
-
-		const interval = setInterval(() => {
-			fetchDataAndProcess()
-		}, 2000);
-
-		return () => clearInterval(interval)
-	}, [])
-
 	return (
-		<View style={styles.container}>
-			<MapView
-				ref={mapRef}
-				style={styles.map}
-				scrollEnabled={true}
-				zoomEnabled={true}
-				showsUserLocation={true}
-				followsUserLocation={true}
-				showsMyLocationButton={false}
-				showsCompass={false}
-				onRegionChange={handleRegionChange}
-				mapPadding={mapPadding}
-				initialRegion={sofiaCity}
-			>
-				{stations.map((station, index) => (
-					<Marker
-						coordinate={{
-							latitude: station.latitude,
-							longitude: station.longitude,
-						}}
-						key={index}
-						onPress={() => navigation.navigate('Station', { stationId: station.id })}
-					>
-						{region.longitudeDelta > 0.2 || region.latitudeDelta > 0.2 ? (
-							<View style={styles.stationDot} />
-						) : (
-							<View>
-								<Image
-									source={require('../../../assets/images/bike-icon2.png')}
-									style={styles.stationIcon}
-								/>
-							</View>
-						)}
-					</Marker>
-				))}
-			</MapView>
+		<View iew style={styles.container}>
+			{stations.length ? (
+				<MapView
+					ref={mapRef}
+					style={styles.map}
+					scrollEnabled={true}
+					zoomEnabled={true}
+					showsUserLocation={true}
+					followsUserLocation={true}
+					showsMyLocationButton={false}
+					showsCompass={false}
+					onRegionChange={handleRegionChange}
+					mapPadding={mapPadding}
+					initialRegion={sofiaCity}
+				>
+					{stations.map((station, index) => (
+						<Marker
+							coordinate={{
+								latitude: station.latitude,
+								longitude: station.longitude,
+							}}
+							key={index}
+							onPress={() => navigation.navigate('Station', { stationId: station.id })}
+						>
+							{region.longitudeDelta > 0.2 || region.latitudeDelta > 0.2 ? (
+								<View style={styles.stationDot} />
+							) : (
+								<View>
+									<Image
+										source={require('../../../assets/images/bike-icon2.png')}
+										style={styles.stationIcon}
+									/>
+								</View>
+							)}
+						</Marker>
+					))}
+				</MapView>
+			) : (
+				<ActivityIndicator style={styles.spinner} size={60} color={colors.bleuDeFrance} />
+			)}
 
 			<Scanner isOpen={isScannerOpen} onToggle={setScannerOpen} navigation={navigation} />
 
@@ -230,6 +227,7 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		...StyleSheet.absoluteFillObject,
+		justifyContent: 'center'
 	},
 	map: {
 		flex: 1,

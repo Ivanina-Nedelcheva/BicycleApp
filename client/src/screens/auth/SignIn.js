@@ -5,24 +5,16 @@ import { StyleSheet, View, Text, TextInput } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import CustomButton from '../../components/CustomButton';
 import { colors } from '../../../styles/styles'
-import { AuthContext } from '../../context/AuthContext';
+import { useAuth } from '../../context/AuthContext';
 import { useIsFocused } from '@react-navigation/native';
 
 const SignIn = ({ navigation }) => {
-  const { login, errorLoginMessage, setErrorLoginMessage } = useContext(AuthContext)
+  const { login } = useAuth()
   const [passwordVisible, setPasswordVisible] = useState(false);
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
-
-  const isFocused = useIsFocused();
-
-  useEffect(() => {
-    if (!isFocused) {
-      setErrorLoginMessage('');
-    }
-  }, [isFocused, setErrorLoginMessage]);
 
   const validationSchema = Yup.object().shape({
     username: Yup.string().email('Invalid email').required('Email is required'),
@@ -83,8 +75,6 @@ const SignIn = ({ navigation }) => {
               // disabled={!dirty || !isValid}
               disabled={!isValid}
             />
-
-            {errorLoginMessage && <Text style={styles.errorMessage}>{errorLoginMessage}</Text>}
           </View>
         )}
       </Formik>
