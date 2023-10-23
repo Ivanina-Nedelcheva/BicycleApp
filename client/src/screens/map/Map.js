@@ -7,12 +7,12 @@ import { throttle } from 'lodash';
 import NearestHubs from '../../components/NearestHubs';
 import CustomButton from '../../components/CustomButton'
 import Scanner from '../../components/Scanner'
-import { colors } from '../../../styles/styles'
-import { getStations } from '../../api/stations';
 import RideProgress from '../../components/RideProgress';
+import { getStations } from '../../api/stations';
 import { useAuth } from '../../context/AuthContext';
 import { useRent } from '../../context/RentContext';
 import { useCard } from '../../context/CardContext';
+import { colors } from '../../../styles/styles'
 
 const Map = ({ route, navigation }) => {
 	const [region, setRegion] = useState({})

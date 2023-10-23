@@ -37,6 +37,7 @@ const RideReceipt = ({ rideRecord, onClose, formatDate }) => {
         <View style={styles.paymentDetails}>
           <DetailRow label="Unlock Fee:" value={`${prices.unlockPrice?.toFixed(2)} lv`} />
           <DetailRow label={`Riding - ${prices.minutePrice?.toFixed(2)} lv./min`} value={`${(rideRecord?.minutes * prices.minutePrice)?.toFixed(2)} lv`} />
+          {/* <DetailRow label={`Riding - ${prices.minutePrice?.toFixed(2)} lv./min`} value={`${rideRecord?.price.toFixed(2)} lv`} /> */}
         </View>
 
         <View style={styles.total}>

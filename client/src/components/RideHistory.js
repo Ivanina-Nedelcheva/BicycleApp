@@ -1,12 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, ScrollView, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import RideReceipt from './RideReceipt';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { colors } from '../../styles/styles';
+import { getPrices } from '../api/payment';
 
 const RideHistory = ({ history }) => {
   const [selectedRideRecord, setSelectedRideRide] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
+  const [prices, setPrices] = useState({})
+
+  useEffect(() => {
+    (async () => {
+      const data = await getPrices()
+      setPrices(data)
+    })()
+  }, [])
 
   const openRecord = (rideRecord) => {
     setSelectedRideRide(rideRecord);
@@ -42,7 +51,7 @@ const RideHistory = ({ history }) => {
         >
           <View style={styles.dateAndCost}>
             <Text style={styles.date}>{`${formatDate(rideRecord.date)}`}</Text>
-            <Text style={styles.price}>BGN: {rideRecord.price?.toFixed(2)}lv</Text>
+            <Text style={styles.price}>{`BGN: ${(rideRecord?.minutes * prices.minutePrice + prices.unlockPrice).toFixed(2)} lv`}</Text>
           </View>
 
           <View style={styles.statistics}>
