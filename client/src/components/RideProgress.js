@@ -21,6 +21,8 @@ const RideProgress = forwardRef((props, ref) => {
 
   const timerDuration = 1000
   const maxSeconds = 3600
+  const averageSpeed = 15.5
+
 
   const repeatFunction = () => {
     setSeconds((prevSeconds) => prevSeconds + 1);
@@ -61,6 +63,8 @@ const RideProgress = forwardRef((props, ref) => {
       if (timeoutId.current) {
         clearTimeout(timeoutId.current);
       }
+      console.log('Time on unmount: ', formatTime());
+
     };
   }, []);
 
@@ -72,6 +76,11 @@ const RideProgress = forwardRef((props, ref) => {
     const formatNumber = (number) => `0${number}`.slice(-2);
 
     return `${formatNumber(getHours)}:${formatNumber(getMinutes)}:${formatNumber(getSeconds)}`;
+  };
+
+  const calculateMileage = () => {
+    const hours = seconds / 3600;
+    return (hours * averageSpeed).toFixed(2);
   };
 
 
@@ -98,7 +107,7 @@ const RideProgress = forwardRef((props, ref) => {
 
           <View style={styles.rideInfo}>
             <Text style={styles.attribute}>Mileage: </Text>
-            <Text style={styles.attribute}>0 km</Text>
+            <Text style={styles.attribute}>{calculateMileage()} km</Text>
           </View>
         </View>
       </BottomSheetModal>
