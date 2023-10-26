@@ -3,9 +3,11 @@ import { View, Text, Modal, StyleSheet } from 'react-native';
 import CustomButton from './CustomButton';
 import { colors } from '../../styles/styles';
 import { getPrices } from '../api/payment';
+import { useRent } from '../context/RentContext';
 
 const RideReceipt = ({ rideRecord, onClose, formatDate }) => {
   const [prices, setPrices] = useState({})
+  const { mileage } = useRent()
 
   useEffect(() => {
     (async () => {
@@ -30,7 +32,7 @@ const RideReceipt = ({ rideRecord, onClose, formatDate }) => {
 
         <View style={styles.rideDetails}>
           <DetailRow label="Date:" value={formatDate(rideRecord?.date)} />
-          <DetailRow label="Distance:" value={`${rideRecord?.distance} km`} />
+          <DetailRow label="Distance:" value={`${mileage} km`} />
           <DetailRow label="Time:" value={`${rideRecord?.minutes} min`} />
         </View>
 

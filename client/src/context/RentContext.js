@@ -5,12 +5,19 @@ const RentContext = createContext();
 export const RentProvider = ({ children }) => {
   const [isRented, setIsRented] = useState(null);
   const [rentedBikeId, setRentedBikeId] = useState(null)
+  const [mileage, setMileage] = useState(null)
+  const [isActive, setIsActive] = useState(false);
+
 
   const contextValue = {
     isRented,
     setIsRented,
     rentedBikeId,
-    setRentedBikeId
+    setRentedBikeId,
+    mileage,
+    setMileage,
+    isActive,
+    setIsActive
   };
 
   return (

@@ -3,13 +3,13 @@ import { View, Text, StyleSheet } from 'react-native';
 import { BottomSheetModal, BottomSheetModalProvider, } from '@gorhom/bottom-sheet';
 import { colors } from '../../styles/styles'
 import { useRent } from '../context/RentContext';
+import CustomButton from './CustomButton';
 
 const RideProgress = forwardRef((props, ref) => {
   const bottomSheetRef = useRef(null);
   const [seconds, setSeconds] = useState(0);
-  const [isActive, setIsActive] = useState(false);
   const timeoutId = useRef(null)
-  const { rentedBikeId } = useRent()
+  const { rentedBikeId, setMileage, isActive, setIsActive } = useRent()
 
   useImperativeHandle(ref, () => ({
     presentBottomSheet() {
@@ -51,22 +51,41 @@ const RideProgress = forwardRef((props, ref) => {
     init(timer);
   };
 
-  const toggle = () => {
-    setSeconds(0);
-    setIsActive(!isActive);
+  const stop = () => {
+    setIsActive(false)
+  };
+
+  const start = () => {
+    setIsActive(true)
+  };
+
+  const calculateMileage = () => {
+    const hours = seconds / 3600;
+    return (hours * averageSpeed).toFixed(2);
   };
 
   useEffect(() => {
-    accuTime(timerDuration, maxSeconds, repeatFunction, callbackFunction);
+    setIsActive(true)
+  }, [])
+
+  useEffect(() => {
+    console.log('isActive', isActive);
+
+    if (isActive) accuTime(timerDuration, maxSeconds, repeatFunction, callbackFunction);
+
+    if (!isActive) {
+      console.log('calc', calculateMileage());
+      setMileage(calculateMileage())
+      setSeconds(0);
+    }
 
     return () => {
       if (timeoutId.current) {
         clearTimeout(timeoutId.current);
       }
-      console.log('Time on unmount: ', formatTime());
-
     };
-  }, []);
+  }, [isActive]);
+
 
   const formatTime = () => {
     const getHours = Math.floor(seconds / 3600);
@@ -77,12 +96,6 @@ const RideProgress = forwardRef((props, ref) => {
 
     return `${formatNumber(getHours)}:${formatNumber(getMinutes)}:${formatNumber(getSeconds)}`;
   };
-
-  const calculateMileage = () => {
-    const hours = seconds / 3600;
-    return (hours * averageSpeed).toFixed(2);
-  };
-
 
   return (
     <BottomSheetModalProvider>
@@ -109,7 +122,22 @@ const RideProgress = forwardRef((props, ref) => {
             <Text style={styles.attribute}>Mileage: </Text>
             <Text style={styles.attribute}>{calculateMileage()} km</Text>
           </View>
+
         </View>
+
+        {/* <CustomButton
+          title="Stop"
+          onPress={stop}
+          magicNumber={0.4}
+          color='black'
+        />
+
+        <CustomButton
+          title="Start"
+          onPress={start}
+          magicNumber={0.4}
+          color='black'
+        /> */}
       </BottomSheetModal>
     </BottomSheetModalProvider >
   );
